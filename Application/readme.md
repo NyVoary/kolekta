@@ -1,4 +1,6 @@
 # MVC spring-boot par défaut
+lancé le projet:
+# mvn spring-boot:run 
 
 Technologies utilisées:
 
