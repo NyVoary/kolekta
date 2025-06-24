@@ -1,0 +1,167 @@
+.body {
+    background-color: #F2F5FD;
+}
+
+/* Styles pour les messages de notification */
+.message-box {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-width: 300px;
+    max-width: 500px;
+    opacity: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.message-box.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message-box.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.message-text {
+    flex: 1;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+    color: inherit;
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.produits-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* au lieu de space-between */
+    gap: 20px;
+}
+
+.produit {
+    border: 1px solid #ccc;
+    padding: 12px;
+    width: calc(20% - 30px); /* 5 éléments par ligne avec gap cohérent */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    height: 350px;
+    font-size: 14px;
+    margin-left: 5px;
+    margin-right: 5px;
+    border-radius: 20px;
+}
+
+.produit-image {
+    width: 100%;
+    height: 200px;
+    background-color: #45a049;
+    border-radius: 20px;
+}
+.produit-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.produit-nom {
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.produit-nom h2 {
+    font-size: 15px;
+    margin: 0;
+    text-align: center;
+}
+
+.produit-description {
+    height: 48px;
+    overflow: hidden;
+    text-align: center;
+    font-size: 13px;
+    margin: 4px 0;
+}
+
+.produit-prix {
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.produit-formulaire {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.quantite-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.quantite-controls button {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+}
+
+.quantite-controls input {
+    width: 36px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.produit-formulaire button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 13px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.produit-formulaire button[type="submit"]:hover {
+    background-color: #45a049;
+}
