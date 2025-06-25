@@ -1,7 +1,7 @@
-<%@ include file="includes/head.html" %>
+<%@ include file="includes/head.jsp" %>
 <body>
   <div class="container-scroller">
-    <%@ include file="includes/navbar.html" %>
+    <%@ include file="includes/navbar.jsp" %>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
       <div id="right-sidebar" class="settings-panel">
@@ -74,12 +74,12 @@
           <!-- To do section tab ends -->
         </div>
       </div>
-      <%@ include file="includes/sidebar.html" %>
+      <%@ include file="includes/sidebar.jsp" %>
       <!-- partial -->
       <div class="main-panel">
         vfgh
-        <!-- partial:partials/_footer.html -->
-      <%@ include file="includes/footer.html" %>
+        <!-- partial:partials/_footer.jsp -->
+      <%@ include file="includes/footer.jsp" %>
       </div>
     </div>   
   </div>

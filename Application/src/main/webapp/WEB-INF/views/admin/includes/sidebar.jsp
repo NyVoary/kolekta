@@ -2,28 +2,28 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/admin">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <i class="icon-layout menu-icon"></i>
+              <i class="ti-tag menu-icon"></i>
               <span class="menu-title">Produits</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="admin/ajout-produit">Nouveau produit</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/dropdowns.html">Liste des produits</a></li>
-                <li class="nav-item"> <a class="nav-link" href="pages/ui-features/typography.html">Statistiques</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-produit">Nouveau produit</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/liste-produit">Liste des produits</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/stat-produit">Statistiques</a></li>
               </ul>
             </div>
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
+              <i class="ti-menu-alt menu-icon"></i>
               <span class="menu-title">Categories</span>
               <i class="menu-arrow"></i>
             </a>
@@ -36,7 +36,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
-              <i class="icon-bar-graph menu-icon"></i>
+              <i class="icon-head menu-icon"></i>
               <span class="menu-title">Clients</span>
               <i class="menu-arrow"></i>
             </a>
@@ -49,8 +49,8 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
-              <i class="icon-grid-2 menu-icon"></i>
-              <span class="menu-title">Fournisseurs</span>
+              <i class="icon-head menu-icon"></i>
+              <span class="menu-title">Fournisseurs </span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="tables">
@@ -63,7 +63,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-              <i class="icon-contract menu-icon"></i>
+              <i class="icon-head menu-icon"></i>
               <span class="menu-title">Employes</span>
               <i class="menu-arrow"></i>
             </a>
@@ -78,7 +78,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-              <i class="icon-head menu-icon"></i>
+              <i class="ti-truck menu-icon"></i>
               <span class="menu-title">Camions</span>
               <i class="menu-arrow"></i>
             </a>
@@ -91,7 +91,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
-              <i class="icon-ban menu-icon"></i>
+              <i class="ti-shopping-cart-full menu-icon"></i>
               <span class="menu-title">Commandes&Livraisons</span>
               <i class="menu-arrow"></i>
             </a>
