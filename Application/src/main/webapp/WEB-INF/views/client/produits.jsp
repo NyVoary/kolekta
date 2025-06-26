@@ -44,7 +44,10 @@
 
         <label for="categorie">Catégorie :</label>
         <select id="categorie" name="categorie">
-            <option value="" disabled selected>-- Choisir une catégorie --</option>
+            <option value="">-- Toutes les catégories --</option>
+            <c:forEach var="cat" items="${categories}">
+                <option value="${cat.nom}" ${cat.nom == categorie ? 'selected' : ''}>${cat.nom}</option>
+            </c:forEach>
         </select>
 
         <label for="prixMin">Prix Minimal :</label>

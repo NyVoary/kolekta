@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.demo.entity.Categorie;
 import com.example.demo.entity.Produit;
+import com.example.demo.service.CategorieService;
 import com.example.demo.service.ProduitService;
 
 @Controller
@@ -16,6 +18,9 @@ public class ProduitController {
 
     @Autowired
     private ProduitService produitService;
+
+    @Autowired
+    private CategorieService categorieService;
 
     @GetMapping("/produits")
     public String afficherProduits(Model model) {
@@ -62,9 +67,8 @@ public class ProduitController {
         }
 
         model.addAttribute("produits", produits);
-
         model.addAttribute("search", search);
-        List<String> categories = produitService.getToutesCategories();
+        List<Categorie> categories = categorieService.getAllCategories();
         model.addAttribute("categories", categories);
         model.addAttribute("prixMin", prixMin);
         model.addAttribute("prixMax", prixMax);
