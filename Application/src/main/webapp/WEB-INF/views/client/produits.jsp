@@ -38,6 +38,24 @@
 
     <h1>Liste des produits</h1>
 
+    <form method="get" action="/produits">
+        <label for="search">Nom :</label>
+        <input type="text" id="search" name="search" placeholder="Rechercher par nom..." value="${search}" />
+
+        <label for="categorie">Catégorie :</label>
+        <select id="categorie" name="categorie">
+            <option value="" disabled selected>-- Choisir une catégorie --</option>
+        </select>
+
+        <label for="prixMin">Prix Minimal :</label>
+        <input type="number" step="0.01" id="prixMin" name="prixMin" placeholder="ex : 1000" value="${prixMin}" />
+
+        <label for="prixMax">Prix Maximal :</label>
+        <input type="number" step="0.01" id="prixMax" name="prixMax" placeholder="ex : 1500" value="${prixMax}" />
+
+        <button type="submit">Rechercher</button>
+    </form>
+
     <c:if test="${empty produits}">
         <p>Aucun produit disponible.</p>
     </c:if>
