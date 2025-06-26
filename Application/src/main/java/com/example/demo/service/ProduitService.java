@@ -17,10 +17,6 @@ public class ProduitService {
         return produitRepository.findAll();
     }
 
-    public List<String> getToutesCategories() {
-        return produitRepository.findAllCategories();
-    }
-
     public List<Produit> rechercherProduits(String search, String categorie, Double prixMin, Double prixMax) {
         return produitRepository.findProduitsByCritere(search, categorie, prixMin, prixMax);
     }
