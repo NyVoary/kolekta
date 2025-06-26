@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ClientController {
-    @GetMapping("/login-client")
+    @GetMapping("/")
     public String welcomePage(Model model) {
         // model.addAttribute("liste", service.getAll());
         return "client/Login";

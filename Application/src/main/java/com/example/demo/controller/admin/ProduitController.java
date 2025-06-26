@@ -1,8 +1,10 @@
-package com.example.demo.controller;
+package com.example.demo.controller.admin;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+// import com.example.demo.service.admin.ProduitService;
 
 @Controller
 public class ProduitController {
