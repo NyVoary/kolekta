@@ -21,76 +21,152 @@
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
 </head>
 <body>
-    <!-- Messages de notification -->
-    <c:if test="${not empty message}">
-        <div class="message-box success" id="messageBox">
-            <span class="message-text">${message}</span>
-            <button class="close-btn" onclick="fermerMessage()">&times;</button>
-        </div>
-    </c:if>
+    <div class="container-scroller">
+        <!-- Messages de notification -->
+        <c:if test="${not empty message}">
+            <div class="message-box success" id="messageBox">
+                <span class="message-text">${message}</span>
+                <button class="close-btn" onclick="fermerMessage()">&times;</button>
+            </div>
+        </c:if>
 
-    <c:if test="${not empty erreur}">
-        <div class="message-box error" id="messageBox">
-            <span class="message-text">${erreur}</span>
-            <button class="close-btn" onclick="fermerMessage()">&times;</button>
-        </div>
-    </c:if>
+        <c:if test="${not empty erreur}">
+            <div class="message-box error" id="messageBox">
+                <span class="message-text">${erreur}</span>
+                <button class="close-btn" onclick="fermerMessage()">&times;</button>
+            </div>
+        </c:if>
 
-    <h1>Liste des produits</h1>
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"></div>
 
-    <form method="get" action="/produits">
-        <label for="search">Nom :</label>
-        <input type="text" id="search" name="search" placeholder="Rechercher par nom..." value="${search}" />
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <form method="get" action="/produits" class="form-inline">
+                    <!-- Nom du produit -->
+                    <ul class="navbar-nav mr-lg-2">
+                        <li class="nav-item nav-search d-none d-lg-block">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="search"
+                                    name="search"
+                                    placeholder="Nom du produit"
+                                    value="${search}"
+                                >
+                            </div>
+                        </li>
+                    </ul>
 
-        <label for="categorie">Catégorie :</label>
-        <select id="categorie" name="categorie">
-            <option value="">-- Toutes les catégories --</option>
-            <c:forEach var="cat" items="${categories}">
-                <option value="${cat.nom}" ${cat.nom == categorie ? 'selected' : ''}>${cat.nom}</option>
-            </c:forEach>
-        </select>
+                    <!-- Catégorie avec dropdown -->
+                    <div class="input-group mr-2">
+                        <!-- Input caché qui contient la catégorie choisie -->
+                        <input type="hidden" id="categorie" name="categorie" value="${categorie}">
 
-        <label for="prixMin">Prix Minimal :</label>
-        <input type="number" step="0.01" id="prixMin" name="prixMin" placeholder="ex : 1000" value="${prixMin}" />
-
-        <label for="prixMax">Prix Maximal :</label>
-        <input type="number" step="0.01" id="prixMax" name="prixMax" placeholder="ex : 1500" value="${prixMax}" />
-
-        <button type="submit">Rechercher</button>
-    </form>
-
-    <c:if test="${empty produits}">
-        <p>Aucun produit disponible.</p>
-    </c:if>
-
-    <div class="produits-container">
-        <c:forEach var="produit" items="${produits}">
-            <div class="produit">
-                <div class="produit-image">
-                    <img src="${produit.image}" alt="${produit.nom}" />
-                </div>
-                <div class="produit-nom">
-                    <h2>${produit.nom}</h2>
-                </div>
-                <div class="produit-description">
-                    <p>${produit.description}</p>
-                </div>
-                <div class="produit-prix">
-                    <p><strong>${produit.prixVente}</strong> Ar / ${produit.uniteMesure}</p>
-                </div>
-                <div class="produit-formulaire">
-                    <form method="post" action="/commande/ajouter">
-                        <input type="hidden" name="produitId" value="${produit.id}" />
-                        <div class="quantite-controls">
-                            <button type="button" onclick="changerQuantite(this, -1)">−</button>
-                            <input type="number" name="quantite" value="1" min="1" />
-                            <button type="button" onclick="changerQuantite(this, 1)">+</button>
+                        <button
+                            class="btn btn-light dropdown-toggle"
+                            type="button"
+                            id="dropdownCategorie"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                        >
+                            ${categorie != null && !categorie.isEmpty() ? categorie : "Sélectionnez une catégorie"}
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownCategorie">
+                            <c:forEach var="cat" items="${categories}">
+                                <a class="dropdown-item" href="#" data-value="${cat.nom}">
+                                    ${cat.nom}
+                                </a>
+                            </c:forEach>
                         </div>
-                        <button type="submit" class="btn btn-success btn-sm">Ajouter au panier</button>
-                    </form>
+                    </div>
+
+                    <!-- Prix minimal -->
+                    <ul class="navbar-nav mr-lg-2">
+                        <li class="nav-item nav-search d-none d-lg-block">
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="prixMin"
+                                    placeholder="Prix minimal"
+                                    step="0.01"
+                                    value="${prixMin}"
+                                >
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!-- Prix maximal -->
+                    <ul class="navbar-nav mr-lg-2">
+                        <li class="nav-item nav-search d-none d-lg-block">
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="prixMax"
+                                    placeholder="Prix maximal"
+                                    step="0.01"
+                                    value="${prixMax}"
+                                >
+                            </div>
+                        </li>
+                    </ul>
+
+                    <!-- Bouton de recherche -->
+                    <button type="submit" class="btn btn-inverse-primary btn-rounded btn-icon">
+                        <i class="icon-search"></i>
+                    </button>
+                </form>                
+
+                <ul class="navbar-nav navbar-nav-right"></ul>
+            </div>
+        </nav>    
+
+        <div class="container-fluid page-body-wrapper">
+            <!-- partial:partials/_sidebar.html -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar"></nav>
+
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <h1>Liste des produits</h1>
+
+                    <c:if test="${empty produits}">
+                        <p>Aucun produit disponible.</p>
+                    </c:if>
+
+                    <div class="produits-container">
+                        <c:forEach var="produit" items="${produits}">
+                            <div class="produit">
+                                <div class="produit-image">
+                                    <img src="${produit.image}" alt="${produit.nom}" />
+                                </div>
+                                <div class="produit-nom">
+                                    <h2>${produit.nom}</h2>
+                                </div>
+                                <div class="produit-description">
+                                    <p>${produit.description}</p>
+                                </div>
+                                <div class="produit-prix">
+                                    <p><strong>${produit.prixVente}</strong> Ar / ${produit.uniteMesure}</p>
+                                </div>
+                                <div class="produit-formulaire">
+                                    <form method="post" action="/commande/ajouter">
+                                        <input type="hidden" name="produitId" value="${produit.id}" />
+                                        <div class="quantite-controls">
+                                            <button type="button" onclick="changerQuantite(this, -1)">−</button>
+                                            <input type="number" name="quantite" value="1" min="1" />
+                                            <button type="button" onclick="changerQuantite(this, 1)">+</button>
+                                        </div>
+                                        <button type="submit" class="btn btn-success btn-sm">Ajouter au panier</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
                 </div>
             </div>
-        </c:forEach>
+        </div>
     </div>
 
     <script>
@@ -120,5 +196,27 @@
             }
         };
     </script>
+
+    <!-- plugins:js -->
+    <script src="vendors/js/vendor.bundle.base.js"></script>
+    <!-- endinject -->
+    <!-- Plugin js for this page -->
+    <script src="vendors/chart.js/Chart.min.js"></script>
+    <script src="vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <script src="js/dataTables.select.min.js"></script>
+    
+    <!-- End plugin js for this page -->
+    <!-- inject:js -->
+    <script src="js/off-canvas.js"></script>
+    <script src="js/hoverable-collapse.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/todolist.js"></script>
+    <!-- endinject -->
+    <!-- Custom js for this page-->
+    <script src="js/dashboard.js"></script>
+    <script src="js/Chart.roundedBarCharts.js"></script>
+    <!-- End custom js for this page-->
 </body>
 </html>
