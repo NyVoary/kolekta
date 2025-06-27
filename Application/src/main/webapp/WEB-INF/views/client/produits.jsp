@@ -41,7 +41,7 @@
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"></div>
 
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-                <form method="get" action="/produits" class="form-inline">
+                <form method="get" action="/produits/recherche" class="form-inline">
                     <!-- Nom du produit -->
                     <ul class="navbar-nav mr-lg-2">
                         <li class="nav-item nav-search d-none d-lg-block">
@@ -52,7 +52,7 @@
                                     id="search"
                                     name="search"
                                     placeholder="Nom du produit"
-                                    value="${search}"
+                                   value="${search != null ? search : ''}"
                                 >
                             </div>
                         </li>
@@ -61,7 +61,7 @@
                     <!-- Catégorie avec dropdown -->
                     <div class="input-group mr-2">
                         <!-- Input caché qui contient la catégorie choisie -->
-                        <input type="hidden" id="categorie" name="categorie" value="${categorie}">
+                        <input type="hidden" id="categorie" name="categorie" value="${categorie != null ? categorie : ''}">
 
                         <button
                             class="btn btn-light dropdown-toggle"
@@ -81,6 +81,20 @@
                         </div>
                     </div>
 
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var dropdownItems = document.querySelectorAll('.dropdown-item[data-value]');
+                            dropdownItems.forEach(function(item) {
+                                item.addEventListener('click', function(e) {
+                                    e.preventDefault();
+                                    var value = this.getAttribute('data-value');
+                                    document.getElementById('categorie').value = value;
+                                    document.getElementById('dropdownCategorie').textContent = value;
+                                });
+                            });
+                        });
+                    </script>
+
                     <!-- Prix minimal -->
                     <ul class="navbar-nav mr-lg-2">
                         <li class="nav-item nav-search d-none d-lg-block">
@@ -91,7 +105,7 @@
                                     name="prixMin"
                                     placeholder="Prix minimal"
                                     step="0.01"
-                                    value="${prixMin}"
+                                    value="${prixMin != null ? prixMin : ''}"
                                 >
                             </div>
                         </li>
@@ -107,7 +121,7 @@
                                     name="prixMax"
                                     placeholder="Prix maximal"
                                     step="0.01"
-                                    value="${prixMax}"
+                                    value="${prixMax != null ? prixMax : ''}"
                                 >
                             </div>
                         </li>

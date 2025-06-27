@@ -40,6 +40,9 @@ public class ProduitController {
 
         model.addAttribute("produits", produits);
 
+        List<Categorie> categories = categorieService.getAllCategories();
+        model.addAttribute("categories", categories);
+
         System.out.println("=== Fin de afficherProduits ===");
 
         // Le fichier JSP se trouve dans /WEB-INF/jsp/client/produits.jsp

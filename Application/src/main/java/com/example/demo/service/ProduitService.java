@@ -18,6 +18,10 @@ public class ProduitService {
     }
 
     public List<Produit> rechercherProduits(String search, String categorie, Double prixMin, Double prixMax) {
-        return produitRepository.findProduitsByCritere(search, categorie, prixMin, prixMax);
+        // Convertir les chaînes vides en null
+        String searchParam = (search != null && search.isEmpty()) ? null : search;
+        String categorieParam = (categorie != null && categorie.isEmpty()) ? null : categorie;
+    
+    return produitRepository.findProduitsByCritere(searchParam, categorieParam, prixMin, prixMax);
     }
 }

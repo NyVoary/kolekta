@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -45,6 +47,15 @@ public class Produit {
     public Produit() {
         this.dateAjout = LocalDate.now();
     }
+
+    // Relation avec Catégorie
+    @ManyToOne
+    @JoinColumn(name = "id_categorie", insertable = false, updatable = false)
+    private Categorie categorie;
+
+    // ... getters et setters pour categorie
+    public Categorie getCategorie() { return categorie; }
+    public void setCategorie(Categorie categorie) { this.categorie = categorie; }
 
     // Getters et Setters
     public Long getId() { return id; }
