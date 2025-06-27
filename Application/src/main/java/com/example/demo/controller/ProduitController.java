@@ -34,17 +34,26 @@ public class ProduitController {
             // Vérifier si au moins un critère de recherche est fourni
             if (search != null || categorie != null || prixMin != null || prixMax != null) {
                 produits = produitService.rechercherProduits(search, categorie, prixMin, prixMax);
+
+                // Logs pour débogage
+                System.out.println("Nombre de produits filtrés trouvés : " + (produits != null ? produits.size() : "null"));
+                if (produits != null && !produits.isEmpty()) {
+                    for (Produit p : produits) {
+                        System.out.println("Produit : " + p.getNom() + " - Prix : " + p.getPrixVente());
+                    }
+                }
             } else {
                 produits = produitService.getTousLesProduits();
-            }
-            
-            // Logs pour débogage
-            System.out.println("Nombre de produits trouvés : " + (produits != null ? produits.size() : "null"));
-            if (produits != null && !produits.isEmpty()) {
-                for (Produit p : produits) {
-                    System.out.println("Produit : " + p.getNom() + " - Prix : " + p.getPrixVente());
+
+                // Logs pour débogage
+                System.out.println("Nombre de produits trouvés : " + (produits != null ? produits.size() : "null"));
+                if (produits != null && !produits.isEmpty()) {
+                    for (Produit p : produits) {
+                        System.out.println("Produit : " + p.getNom() + " - Prix : " + p.getPrixVente());
+                    }
                 }
             }
+            
             // Ajouter les produits et les catégories au modèle
             model.addAttribute("produits", produits);
             List<Categorie> categories = categorieService.getAllCategories();

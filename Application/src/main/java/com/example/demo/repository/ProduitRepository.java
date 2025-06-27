@@ -11,20 +11,14 @@ import com.example.demo.entity.Produit;
 
 @Repository
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
-    @Query(value = """
-        SELECT p.* 
-        FROM produits p
-        JOIN categories c ON p.id_categorie = c.id_categorie
-        WHERE 
-            (:search IS NULL OR p.nom ILIKE '%' || :search || '%')
-            AND (:categorie IS NULL OR c.libelle ILIKE '%' || :categorie || '%')
-            AND (:prixMin IS NULL OR p.prix_vente >= :prixMin)
-            AND (:prixMax IS NULL OR p.prix_vente <= :prixMax)
-    """, nativeQuery = true)
-    List<Produit> findProduitsByCritere(
-            @Param("search") String search,
-            @Param("categorie") String categorie,
-            @Param("prixMin") Double prixMin,
-            @Param("prixMax") Double prixMax
-    );
+    @Query("SELECT p FROM Produit p WHERE "
+    + "(:search IS NULL OR LOWER(p.nom) LIKE LOWER(concat('%', :search, '%'))) "
+    + "AND (:categorie IS NULL OR p.categorie.libelle LIKE %:categorie%) "
+    + "AND (:prixMin IS NULL OR p.prixVente >= :prixMin) "
+    + "AND (:prixMax IS NULL OR p.prixVente <= :prixMax)")
+List<Produit> findProduitsByCritere(
+        @Param("search") String search,
+        @Param("categorie") String categorie,
+        @Param("prixMin") Double prixMin,
+        @Param("prixMax") Double prixMax);
 }
