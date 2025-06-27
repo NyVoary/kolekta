@@ -19,10 +19,10 @@
 </head>
 <body>
 <div class="container mt-5">
-    <h3>Ajouter une livraison</h3>
+    <h3>Information pour la livraison</h3>
 
     <%
-        Commande liste = (Commande) request.getAttribute("liste");
+        Commande commande = (Commande) request.getAttribute("liste");
 
         Long idCommande = null;
         String adresse = "";
@@ -30,13 +30,12 @@
         String telephone = "";
         String email = "";
 
-       
-        if (liste != null) {
-            idCommande = liste.getId();
-            adresse = liste.getAdresseLivraison() != null ? liste.getAdresseLivraison() : "";
-            ville = liste.getVilleLivraison() != null ? liste.getVilleLivraison() : "";
-            telephone = liste.getTelephoneLivraison() != null ? liste.getTelephoneLivraison() : "";
-            email = liste.getEmailLivraison() != null ? liste.getEmailLivraison() : "";
+        if (commande != null) {
+            idCommande = commande.getId();
+            adresse = commande.getAdresseLivraison() != null ? commande.getAdresseLivraison() : "";
+            ville = commande.getVilleLivraison() != null ? commande.getVilleLivraison() : "";
+            telephone = commande.getTelephoneLivraison() != null ? commande.getTelephoneLivraison() : "";
+            email = commande.getEmailLivraison() != null ? commande.getEmailLivraison() : "";
         }
     %>
 

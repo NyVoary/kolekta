@@ -13,7 +13,7 @@ public class Commande {
     private Long id;
 
     @Column(name = "id_client", nullable = false)
-    private Integer idClient;
+    private Long idClient;
 
     @Column(name = "date_commande", nullable = false)
     private LocalDate dateCommande;
@@ -48,11 +48,11 @@ public class Commande {
         this.id = id;
     }
 
-    public Integer getIdClient() {
+    public Long getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(Integer idClient) {
+    public void setIdClient(Long idClient) {
         this.idClient = idClient;
     }
 
@@ -118,6 +118,11 @@ public class Commande {
 
     public void setLivraison(Livraison livraison) {
         this.livraison = livraison;
+    }
+
+    public Long getIdCommande() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getIdCommande'");
     }
 
 }

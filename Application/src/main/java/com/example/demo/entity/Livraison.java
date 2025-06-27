@@ -24,7 +24,7 @@ public class Livraison {
     private LocalDate dateLivraison;
 
     @OneToOne
-    @JoinColumn(name = "id_commande", nullable = false)
+    @JoinColumn(name = "id_commande", nullable = false , unique = true)
     private Commande commande;
 
     public Long getId() {

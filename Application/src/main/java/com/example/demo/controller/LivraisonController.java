@@ -13,12 +13,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.entity.Commande;
 import com.example.demo.entity.Livraison;
 import com.example.demo.service.LivraisonService;
+import com.example.demo.service.Partage;
 
 @Controller
 public class LivraisonController {
 
     @Autowired
     private LivraisonService livraisonService;
+
+    @Autowired
+    private Partage partage;
 
     @GetMapping("/Livraison-client")
     public String getLivraisons(Model model) {
@@ -49,6 +53,6 @@ public class LivraisonController {
 
         livraisonService.update(id, livraison, commande);
 
-        return "redirect:/"; 
+        return "redirect:/Livraison-client"; 
     }
 }
