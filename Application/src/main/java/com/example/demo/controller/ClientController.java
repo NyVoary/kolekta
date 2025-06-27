@@ -1,16 +1,11 @@
 package com.example.demo.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.ClientDTO;
 import com.example.demo.dto.ClientLoginDTO;
@@ -42,7 +37,7 @@ public class ClientController {
             Client client = clientService.inscrire(clientDTO);
             session.setAttribute("client-connected", client);
             model.addAttribute("message", "Inscription réussie !");
-            return "redirect:/"; // Page après succès
+            return "redirect:/produits"; // Page après succès
         } catch (Exception e) {
             session.setAttribute("error-client", e.getMessage());
             return "redirect:/inscription-client";
@@ -54,7 +49,7 @@ public class ClientController {
         try {
             Client client = clientService.login(loginDTO);
             session.setAttribute("client-connected", client);
-            return "redirect:/";
+            return "redirect:/produits";
         } catch (Exception e) {
             session.setAttribute("error-client", e.getMessage());
             return "redirect:/login-client";

@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.entity.Client;
 import com.example.demo.entity.Panier;
 import com.example.demo.entity.Panier_Produits;
 import com.example.demo.entity.Produit;
-import com.example.demo.entity.Utilisateur;
 import com.example.demo.repository.PanierAddRepository;
 import com.example.demo.repository.PanierProduitAddRepository;
 import com.example.demo.repository.ProduitRepository;
@@ -41,34 +41,9 @@ public class CommandeController {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    @GetMapping("/login")
-    public String simulerConnexion(HttpSession session, RedirectAttributes redirectAttributes) {
-        Utilisateur user = new Utilisateur();
-        user.setId(2L); 
-        user.setNom("TestClient2");
-        user.setEmail("test2@example.com");
-
-        // Vérifie si le client existe réellement
-        Integer nbClients = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM clients WHERE id_client = ?",
-                Integer.class,
-                user.getId());
-
-        if (nbClients == null || nbClients == 0) {
-            logger.warn("Connexion simulée avec ID inexistant: {}", user.getId());
-            redirectAttributes.addFlashAttribute("erreur", "Erreur : l'utilisateur ID " + user.getId() + " n'existe pas.");
-            return "redirect:/commande/login-erreur";
-        }
-
-        session.setAttribute("utilisateur", user);
-        logger.info("Utilisateur simulé connecté: {}", user.getId());
-        return "redirect:/produits";
-    }
-
     @GetMapping("/login-erreur")
     public String afficherLoginErreur() {
-        // JSP login.jsp dans dossier client
-        return "client/login-error";
+        return "client/login-client";
     }
 
     @PostMapping("/ajouter")
@@ -78,12 +53,12 @@ public class CommandeController {
             HttpSession session,
             RedirectAttributes redirectAttributes) {
 
-        Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+        Client utilisateur = (Client) session.getAttribute("client-connected");
 
         if (utilisateur == null) {
             logger.warn("Utilisateur non connecté – redirection vers login.jsp");
             redirectAttributes.addFlashAttribute("erreur", "Veuillez vous connecter avant d'ajouter au panier.");
-            return "redirect:/commande/login-erreur";
+            return "redirect:/login-client";
         }
 
         if (produitId == null || quantite == null || quantite <= 0) {
@@ -92,7 +67,7 @@ public class CommandeController {
             return "redirect:/produits";
         }
 
-        Long idClient = utilisateur.getId();
+        Long idClient = utilisateur.getIdClient();
 
         try {
             Panier panier = panierAddRepository.findByIdClient(idClient)
@@ -116,7 +91,6 @@ public class CommandeController {
 
             panierProduitAddRepository.save(ligne);
 
-            // Message de succès amélioré
             String nomProduit = produitOpt.get().getNom();
             redirectAttributes.addFlashAttribute("message", 
                 "Produit ajouté dans le panier avec succès ! (" + quantite + " x " + nomProduit + ")");
