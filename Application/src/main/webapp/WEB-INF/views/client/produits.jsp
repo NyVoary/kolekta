@@ -74,8 +74,8 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownCategorie">
                             <c:forEach var="cat" items="${categories}">
-                                <a class="dropdown-item" href="#" data-value="${cat.nom}">
-                                    ${cat.nom}
+                                <a class="dropdown-item" href="#" data-value="${cat.libelle}">
+                                    ${cat.libelle}
                                 </a>
                             </c:forEach>
                         </div>
