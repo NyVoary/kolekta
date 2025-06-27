@@ -11,23 +11,20 @@ import com.example.demo.entity.Produit;
 
 @Repository
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
-     @Query(value = """
-        SELECT p FROM Produit p
-        JOIN p.categorie c
+    @Query(value = """
+        SELECT p.* 
+        FROM produits p
+        JOIN categories c ON p.id_categorie = c.id_categorie
         WHERE 
-            (:search IS NULL OR LOWER(p.nom) LIKE LOWER(CONCAT('%', :search, '%')))
-            AND (:categorie IS NULL OR LOWER(c.libelle) LIKE LOWER(CONCAT('%', :categorie, '%')))
-            AND (
-                (:prixMin IS NULL AND :prixMax IS NULL)
-                OR (:prixMin IS NULL AND p.prixVente <= :prixMax)
-                OR (:prixMax IS NULL AND p.prixVente >= :prixMin)
-                OR (p.prixVente BETWEEN :prixMin AND :prixMax)
-            )
-    """) 
+            (:search IS NULL OR p.nom ILIKE '%' || :search || '%')
+            AND (:categorie IS NULL OR c.libelle ILIKE '%' || :categorie || '%')
+            AND (:prixMin IS NULL OR p.prix_vente >= :prixMin)
+            AND (:prixMax IS NULL OR p.prix_vente <= :prixMax)
+    """, nativeQuery = true)
     List<Produit> findProduitsByCritere(
-        @Param("search") String search,
-        @Param("categorie") String categorie,
-        @Param("prixMin") Double prixMin,
-        @Param("prixMax") Double prixMax
+            @Param("search") String search,
+            @Param("categorie") String categorie,
+            @Param("prixMin") Double prixMin,
+            @Param("prixMax") Double prixMax
     );
 }
