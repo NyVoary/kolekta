@@ -30,6 +30,8 @@ public class ProduitController {
         @RequestParam(required = false) Double prixMax,
         Model model) {
             List<Produit> produits;
+
+            List<Categorie> categories = categorieService.getAllCategories();
             
             // Vérifier si au moins un critère de recherche est fourni
             if (search != null || categorie != null || prixMin != null || prixMax != null) {
@@ -56,7 +58,6 @@ public class ProduitController {
             
             // Ajouter les produits et les catégories au modèle
             model.addAttribute("produits", produits);
-            List<Categorie> categories = categorieService.getAllCategories();
             model.addAttribute("categories", categories);
             // Ajouter les paramètres de recherche pour pré-remplir le formulaire
             model.addAttribute("search", search);
