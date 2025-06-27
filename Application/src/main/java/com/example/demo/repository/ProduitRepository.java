@@ -11,7 +11,7 @@ import com.example.demo.entity.Produit;
 
 @Repository
 public interface ProduitRepository extends JpaRepository<Produit, Long> {
-    @Query("""
+    @Query(value = """
         SELECT p FROM Produit p
         JOIN p.categorie c
         WHERE 
@@ -23,7 +23,7 @@ public interface ProduitRepository extends JpaRepository<Produit, Long> {
                 OR (:prixMax IS NULL AND p.prixVente >= :prixMin)
                 OR (p.prixVente BETWEEN :prixMin AND :prixMax)
             )
-    """)
+    """, nativeQuery = true)
     List<Produit> findProduitsByCritere(
         @Param("search") String search,
         @Param("categorie") String categorie,
