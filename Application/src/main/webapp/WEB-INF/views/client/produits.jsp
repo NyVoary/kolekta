@@ -41,7 +41,7 @@
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"></div>
 
             <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-                <form method="get" action="/produits/recherche" class="form-inline">
+                <form method="get" action="/produits" class="form-inline">
                     <!-- Nom du produit -->
                     <ul class="navbar-nav mr-lg-2">
                         <li class="nav-item nav-search d-none d-lg-block">

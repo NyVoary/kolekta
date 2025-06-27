@@ -23,59 +23,38 @@ public class ProduitController {
     private CategorieService categorieService;
 
     @GetMapping("/produits")
-    public String afficherProduits(Model model) {
-        System.out.println("=== Début de afficherProduits ===");
-
-        List<Produit> produits = produitService.getTousLesProduits();
-
-        System.out.println("Nombre de produits trouvés : " + 
-            (produits != null ? produits.size() : "null"));
-
-        if (produits != null && !produits.isEmpty()) {
-            for (Produit p : produits) {
-                System.out.println("Produit : " + p.getNom() + 
-                    " - Prix : " + p.getPrixVente());
+    public String afficherProduits(
+        @RequestParam(required = false) String search,
+        @RequestParam(required = false) String categorie,
+        @RequestParam(required = false) Double prixMin,
+        @RequestParam(required = false) Double prixMax,
+        Model model) {
+            List<Produit> produits;
+            
+            // Vérifier si au moins un critère de recherche est fourni
+            if (search != null || categorie != null || prixMin != null || prixMax != null) {
+                produits = produitService.rechercherProduits(search, categorie, prixMin, prixMax);
+            } else {
+                produits = produitService.getTousLesProduits();
             }
-        }
-
-        model.addAttribute("produits", produits);
-
-        List<Categorie> categories = categorieService.getAllCategories();
-        model.addAttribute("categories", categories);
-
-        System.out.println("=== Fin de afficherProduits ===");
-
-        // Le fichier JSP se trouve dans /WEB-INF/jsp/client/produits.jsp
-        return "client/produits";
-    }
-
-    @GetMapping("/produits/recherche")
-    public String afficherProduitsFiltres(
-            @RequestParam(required = false) String search,
-            @RequestParam(required = false) String categorie,
-            @RequestParam(required = false) Double prixMin,
-            @RequestParam(required = false) Double prixMax,
-            Model model) {
-
-        List<Produit> produits = produitService.rechercherProduits(search, categorie, prixMin, prixMax);
-
-        System.out.println("Nombre de produits filtrés trouvés : " + 
-            (produits != null ? produits.size() : "null"));
-
-        if (produits != null && !produits.isEmpty()) {
-            for (Produit p : produits) {
-                System.out.println("Produit : " + p.getNom() + 
-                    " - Prix : " + p.getPrixVente());
+            
+            // Logs pour débogage
+            System.out.println("Nombre de produits trouvés : " + (produits != null ? produits.size() : "null"));
+            if (produits != null && !produits.isEmpty()) {
+                for (Produit p : produits) {
+                    System.out.println("Produit : " + p.getNom() + " - Prix : " + p.getPrixVente());
+                }
             }
-        }
-
-        model.addAttribute("produits", produits);
-        model.addAttribute("search", search);
-        List<Categorie> categories = categorieService.getAllCategories();
-        model.addAttribute("categories", categories);
-        model.addAttribute("prixMin", prixMin);
-        model.addAttribute("prixMax", prixMax);
-
-        return "client/produits"; // même vue réutilisée
+            // Ajouter les produits et les catégories au modèle
+            model.addAttribute("produits", produits);
+            List<Categorie> categories = categorieService.getAllCategories();
+            model.addAttribute("categories", categories);
+            // Ajouter les paramètres de recherche pour pré-remplir le formulaire
+            model.addAttribute("search", search);
+            model.addAttribute("categorie", categorie);
+            model.addAttribute("prixMin", prixMin);
+            model.addAttribute("prixMax", prixMax);
+            
+            return "client/produits";
     }
-}
+}   
