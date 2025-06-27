@@ -48,4 +48,8 @@ Thumbs.db
 *.mov
 *.wmv
 
+# Ignorer les fichiers compilés
+Application/target/
+
+# Ignorer les fichiers de configuration sensibles
 Application/src/main/resources/application.properties
