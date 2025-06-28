@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.controller.client;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +24,15 @@ public class ClientController {
     @Autowired
     ClientService clientService;
     
+    @GetMapping("/")
+    public String firstLogin(Model model) {
+        return "client/Login";
+    }
+    @GetMapping("/home")
+    public String home(Model model) {
+        return "client/home";
+    }
+
     @GetMapping("/login-client")
     public String login(Model model) {
         return "client/Login";
@@ -42,7 +51,7 @@ public class ClientController {
             Client client = clientService.inscrire(clientDTO);
             session.setAttribute("client-connected", client);
             model.addAttribute("message", "Inscription réussie !");
-            return "redirect:/"; // Page après succès
+            return "redirect:/";
         } catch (Exception e) {
             session.setAttribute("error-client", e.getMessage());
             return "redirect:/inscription-client";
@@ -54,7 +63,7 @@ public class ClientController {
         try {
             Client client = clientService.login(loginDTO);
             session.setAttribute("client-connected", client);
-            return "redirect:/";
+            return "redirect:/home";
         } catch (Exception e) {
             session.setAttribute("error-client", e.getMessage());
             return "redirect:/login-client";
