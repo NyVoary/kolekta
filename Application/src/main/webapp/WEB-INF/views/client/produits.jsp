@@ -36,6 +36,7 @@
                 <button class="close-btn" onclick="fermerMessage()">&times;</button>
             </div>
         </c:if>
+        
 
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"></div>
@@ -60,24 +61,20 @@
 
                     <!-- Catégorie avec dropdown -->
                     <div class="input-group mr-2">
-                        <!-- Input caché qui contient la catégorie choisie -->
-                        <input type="hidden" id="categorie" name="categorie" value="${categorie != null ? categorie : ''}">
+                        <div class="dropdown">
+                             <!-- Input caché qui contient la catégorie choisie -->
+                            <input type="hidden" id="categorie" name="categorie" value="${categorie != null ? categorie : ''}">
 
-                        <button
-                            class="btn btn-light dropdown-toggle"
-                            type="button"
-                            id="dropdownCategorie"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            ${categorie != null && !categorie.isEmpty() ? categorie : "Sélectionnez une catégorie"}
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownCategorie">
-                            <c:forEach var="cat" items="${categories}">
-                                <a class="dropdown-item" href="#" data-value="${cat.libelle}">
-                                    ${cat.libelle}
-                                </a>
-                            </c:forEach>
+                            <button type="button" class="btn btn-outline-info dropdown-toggle" id="dropdownCategorie" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                ${categorie != null && !categorie.isEmpty() ? categorie : "Sélectionnez une catégorie"}
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownCategorie">
+                                <c:forEach var="cat" items="${categories}">
+                                    <a class="dropdown-item" href="#" data-value="${cat.libelle}">
+                                        ${cat.libelle}
+                                    </a>
+                                </c:forEach>
+                            </div>
                         </div>
                     </div>
 
@@ -128,8 +125,8 @@
                     </ul>
 
                     <!-- Bouton de recherche -->
-                    <button type="submit" class="btn btn-inverse-primary btn-rounded btn-icon">
-                        <i class="icon-search"></i>
+                    <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
+                        <i class="ti-search text-info"></i>                          
                     </button>
                 </form>                
 

@@ -16,7 +16,7 @@ public interface ProduitRepository extends JpaRepository<Produit, Long> {
     + "AND (:categorie IS NULL OR p.categorie.libelle LIKE %:categorie%) "
     + "AND (:prixMin IS NULL OR p.prixVente >= :prixMin) "
     + "AND (:prixMax IS NULL OR p.prixVente <= :prixMax)")
-List<Produit> findProduitsByCritere(
+    List<Produit> findProduitsByCritere(
         @Param("search") String search,
         @Param("categorie") String categorie,
         @Param("prixMin") Double prixMin,
