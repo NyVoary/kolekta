@@ -36,103 +36,109 @@
                 <button class="close-btn" onclick="fermerMessage()">&times;</button>
             </div>
         </c:if>
-        
 
         <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"></div>
 
-            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-                <form method="get" action="/produits" class="form-inline">
-                    <!-- Nom du produit -->
-                    <ul class="navbar-nav mr-lg-2">
-                        <li class="nav-item nav-search d-none d-lg-block">
-                            <div class="input-group">
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="search"
-                                    name="search"
-                                    placeholder="Nom du produit"
-                                   value="${search != null ? search : ''}"
-                                >
-                            </div>
-                        </li>
-                    </ul>
+            <div class="navbar-menu-wrapper d-flex align-items-center">
+                <!-- Partie gauche -->
+                <div class="d-flex"></div>
 
-                    <!-- Catégorie avec dropdown -->
-                    <div class="input-group mr-2">
-                        <div class="dropdown">
-                             <!-- Input caché qui contient la catégorie choisie -->
-                            <input type="hidden" id="categorie" name="categorie" value="${categorie != null ? categorie : ''}">
+                <!-- Partie centrale -->
+                <div class="d-flex justify-content-center flex-grow-1">
+                    <form method="get" action="/produits" class="form-inline">
+                        <!-- Nom du produit -->
+                        <ul class="navbar-nav mr-lg-2">
+                            <li class="nav-item nav-search d-none d-lg-block">
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="search"
+                                        name="search"
+                                        placeholder="Nom du produit"
+                                       value="${search != null ? search : ''}"
+                                    >
+                                </div>
+                            </li>
+                        </ul>
 
-                            <button type="button" class="btn btn-outline-info dropdown-toggle" id="dropdownCategorie" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                ${categorie != null && !categorie.isEmpty() ? categorie : "Sélectionnez une catégorie"}
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownCategorie">
-                                <c:forEach var="cat" items="${categories}">
-                                    <a class="dropdown-item" href="#" data-value="${cat.libelle}">
-                                        ${cat.libelle}
-                                    </a>
-                                </c:forEach>
+                        <!-- Catégorie avec dropdown -->
+                        <div class="input-group mr-2">
+                            <div class="dropdown">
+                                 <!-- Input caché qui contient la catégorie choisie -->
+                                <input type="hidden" id="categorie" name="categorie" value="${categorie != null ? categorie : ''}">
+
+                                <button type="button" class="btn btn-outline-info dropdown-toggle" id="dropdownCategorie" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    ${categorie != null && !categorie.isEmpty() ? categorie : "Catégorie"}
+                                </button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownCategorie">
+                                    <c:forEach var="cat" items="${categories}">
+                                        <a class="dropdown-item" href="#" data-value="${cat.libelle}">
+                                            ${cat.libelle}
+                                        </a>
+                                    </c:forEach>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <script>
-                        document.addEventListener('DOMContentLoaded', function() {
-                            var dropdownItems = document.querySelectorAll('.dropdown-item[data-value]');
-                            dropdownItems.forEach(function(item) {
-                                item.addEventListener('click', function(e) {
-                                    e.preventDefault();
-                                    var value = this.getAttribute('data-value');
-                                    document.getElementById('categorie').value = value;
-                                    document.getElementById('dropdownCategorie').textContent = value;
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var dropdownItems = document.querySelectorAll('.dropdown-item[data-value]');
+                                dropdownItems.forEach(function(item) {
+                                    item.addEventListener('click', function(e) {
+                                        e.preventDefault();
+                                        var value = this.getAttribute('data-value');
+                                        document.getElementById('categorie').value = value;
+                                        document.getElementById('dropdownCategorie').textContent = value;
+                                    });
                                 });
                             });
-                        });
-                    </script>
+                        </script>
 
-                    <!-- Prix minimal -->
-                    <ul class="navbar-nav mr-lg-2">
-                        <li class="nav-item nav-search d-none d-lg-block">
-                            <div class="input-group">
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="prixMin"
-                                    placeholder="Prix minimal"
-                                    step="0.01"
-                                    value="${prixMin != null ? prixMin : ''}"
-                                >
-                            </div>
-                        </li>
-                    </ul>
+                        <!-- Prix minimal -->
+                        <ul class="navbar-nav mr-lg-2">
+                            <li class="nav-item nav-search d-none d-lg-block">
+                                <div class="input-group">
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="prixMin"
+                                        placeholder="Prix minimal"
+                                        step="0.01"
+                                        value="${prixMin != null ? prixMin : ''}"
+                                    >
+                                </div>
+                            </li>
+                        </ul>
 
-                    <!-- Prix maximal -->
-                    <ul class="navbar-nav mr-lg-2">
-                        <li class="nav-item nav-search d-none d-lg-block">
-                            <div class="input-group">
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="prixMax"
-                                    placeholder="Prix maximal"
-                                    step="0.01"
-                                    value="${prixMax != null ? prixMax : ''}"
-                                >
-                            </div>
-                        </li>
-                    </ul>
+                        <!-- Prix maximal -->
+                        <ul class="navbar-nav mr-lg-2">
+                            <li class="nav-item nav-search d-none d-lg-block">
+                                <div class="input-group">
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="prixMax"
+                                        placeholder="Prix maximal"
+                                        step="0.01"
+                                        value="${prixMax != null ? prixMax : ''}"
+                                    >
+                                </div>
+                            </li>
+                        </ul>
 
-                    <!-- Bouton de recherche -->
-                    <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
-                        <i class="ti-search text-info"></i>                          
-                    </button>
-                </form>                
+                        <!-- Bouton de recherche -->
+                        <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
+                            <i class="ti-search text-info"></i>                          
+                        </button>
+                    </form> 
+                </div>
 
-                <ul class="navbar-nav navbar-nav-right"></ul>
+                <!-- Partie droite -->
+                <div class="d-flex"></div>
             </div>
-        </nav>    
+        </nav>  
 
         <div class="container-fluid page-body-wrapper">
             <!-- partial:partials/_sidebar.html -->
