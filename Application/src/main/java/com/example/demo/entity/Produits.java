@@ -1,4 +1,4 @@
-package com.example.demo.entity.admin;
+package com.example.demo.entity;
 
 import java.sql.Date;
 
@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "produits")
-public class Produit {
+public class Produits {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

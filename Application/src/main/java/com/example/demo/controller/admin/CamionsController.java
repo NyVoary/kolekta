@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 // import com.example.demo.service.admin.CamionService;
 
 @Controller
-public class CamionController {
+public class CamionsController {
     @GetMapping("/admin/ajout-camion")
     public String ajoutCamion(Model model) {
         // model.addAttribute("camion", new Camion());

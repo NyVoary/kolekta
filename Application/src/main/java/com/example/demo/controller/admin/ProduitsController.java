@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 // import com.example.demo.service.admin.ProduitService;
 
 @Controller
-public class ProduitController {
+public class ProduitsController {
     @GetMapping("/admin/ajout-produit")
      public String addProduct(Model model) {
         return "admin/produits/ajout-produit";

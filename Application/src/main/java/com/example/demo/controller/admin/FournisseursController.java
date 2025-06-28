@@ -5,7 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class FournisseurController {
+public class FournisseursController {
     
     @GetMapping("/admin/ajout-fournisseur")
     public String ajoutFournisseur(Model model) {
