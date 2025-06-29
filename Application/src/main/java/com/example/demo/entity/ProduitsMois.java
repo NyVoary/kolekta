@@ -19,7 +19,7 @@ public class ProduitsMois {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_produit_mois")
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_produit", nullable = false)
@@ -39,11 +39,11 @@ public class ProduitsMois {
         this.mois = mois;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

@@ -76,7 +76,6 @@ public class ClientController {
 
     @GetMapping("/home")
     public String accueil(Model model) {
-        model.addAttribute("produitsSaison", produitsService.listsProduitsSaisonniers());
-        return "client/home";
+        return "redirect:/produits";
     }
 }

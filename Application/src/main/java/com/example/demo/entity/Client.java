@@ -10,7 +10,7 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_client")
-    private Long idClient;
+    private int idClient;
 
     @Column(nullable = false, length = 100)
     private String nom;
@@ -41,11 +41,11 @@ public class Client {
 
     // --- Getters et Setters ---
 
-    public Long getIdClient() {
+    public int getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(Long idClient) {
+    public void setIdClient(int idClient) {
         this.idClient = idClient;
     }
 

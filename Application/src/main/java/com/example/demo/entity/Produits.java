@@ -1,6 +1,6 @@
 package com.example.demo.entity;
 
-import java.math.BigDecimal;
+// import java.math.double;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
@@ -40,10 +40,10 @@ public class Produits {
     private String unite_mesure;
 
     @Column(nullable = false)
-    private BigDecimal prix_achat;
+    private double prix_achat;
 
     @Column(nullable = false)
-    private BigDecimal prix_vente;
+    private double prix_vente;
 
     @Column(nullable = false)
     private LocalDate date_ajout;
@@ -98,19 +98,19 @@ public class Produits {
         this.unite_mesure = unite_mesure;
     }
 
-    public BigDecimal getPrix_achat() {
+    public double getPrix_achat() {
         return prix_achat;
     }
 
-    public void setPrix_achat(BigDecimal prix_achat) {
+    public void setPrix_achat(double prix_achat) {
         this.prix_achat = prix_achat;
     }
 
-    public BigDecimal getPrix_vente() {
+    public double getPrix_vente() {
         return prix_vente;
     }
 
-    public void setPrix_vente(BigDecimal prix_vente) {
+    public void setPrix_vente(double prix_vente) {
         this.prix_vente = prix_vente;
     }
 

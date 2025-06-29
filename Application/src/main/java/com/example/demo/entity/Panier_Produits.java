@@ -14,13 +14,13 @@ public class Panier_Produits {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_panier_produit")
-    private Long id;
+    private int id;
 
     @Column(name = "id_panier")
-    private Long idPanier;
+    private int idPanier;
 
     @Column(name = "id_produit")
-    private Long idProduit;
+    private int idProduit;
 
     private int quantite;
 
@@ -28,14 +28,14 @@ public class Panier_Produits {
     private double prixUnitaire;
 
     // Getters / Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public Long getIdPanier() { return idPanier; }
-    public void setIdPanier(Long idPanier) { this.idPanier = idPanier; }
+    public int getIdPanier() { return idPanier; }
+    public void setIdPanier(int idPanier) { this.idPanier = idPanier; }
 
-    public Long getIdProduit() { return idProduit; }
-    public void setIdProduit(Long idProduit) { this.idProduit = idProduit; }
+    public int getIdProduit() { return idProduit; }
+    public void setIdProduit(int idProduit) { this.idProduit = idProduit; }
 
     public int getQuantite() { return quantite; }
     public void setQuantite(int quantite) { this.quantite = quantite; }

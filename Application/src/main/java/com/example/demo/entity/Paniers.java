@@ -11,15 +11,15 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "panier")
-public class Panier {
+public class Paniers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_panier")
-    private Long id;
+    private int id;
 
     @Column(name = "id_client", nullable = false)
-    private Long idClient;
+    private int idClient;
 
     @Column(name = "date_creation", nullable = false)
     private LocalDate dateCreation;
@@ -32,7 +32,7 @@ public class Panier {
     // @Column(name = "prix_unitaire")
     // private Double prixUnitaire;
 
-    public Panier() {
+    public Paniers() {
         this.dateCreation = LocalDate.now();
         // Initialisez les autres champs si nécessaire
         // this.quantite = 0;
@@ -40,14 +40,15 @@ public class Panier {
     }
 
     // Getters / Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public Long getIdClient() { return idClient; }
-    public void setIdClient(Long idClient) { this.idClient = idClient; }
+    public int getIdClient() { return idClient; }
+    public void setIdClient(int idClient) { this.idClient = idClient; }
 
     public LocalDate getDateCreation() { return dateCreation; }
     public void setDateCreation(LocalDate dateCreation) { this.dateCreation = dateCreation; }
     
+
     // Ajoutez les getters/setters pour les colonnes supplémentaires si nécessaire
 }

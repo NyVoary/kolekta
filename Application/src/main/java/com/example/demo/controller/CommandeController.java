@@ -14,12 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Client;
-import com.example.demo.entity.Panier;
+import com.example.demo.entity.Paniers;
 import com.example.demo.entity.Panier_Produits;
-import com.example.demo.entity.Produit;
-import com.example.demo.repository.PanierAddRepository;
-import com.example.demo.repository.PanierProduitAddRepository;
-import com.example.demo.repository.ProduitRepository;
+import com.example.demo.entity.Produits;
+import com.example.demo.repository.*;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -36,10 +34,10 @@ public class CommandeController {
     private PanierProduitAddRepository panierProduitAddRepository;
 
     @Autowired
-    private ProduitRepository produitRepository;
+    private ProduitsRepository produitsRepository;
 
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    // private JdbcTemplate jdbcTemplate;
 
     @GetMapping("/login-erreur")
     public String afficherLoginErreur() {
@@ -48,7 +46,7 @@ public class CommandeController {
 
     @PostMapping("/ajouter")
     public String ajouterAuPanier(
-            @RequestParam(required = false) Long produitId,
+            @RequestParam(required = false) Integer produitId,
             @RequestParam(required = false) Integer quantite,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
@@ -67,17 +65,17 @@ public class CommandeController {
             return "redirect:/produits";
         }
 
-        Long idClient = utilisateur.getIdClient();
+        int idClient = utilisateur.getIdClient();
 
         try {
-            Panier panier = panierAddRepository.findByIdClient(idClient)
+            Paniers panier = panierAddRepository.findByIdClient(idClient)
                     .orElseGet(() -> {
-                        Panier nouveau = new Panier();
+                        Paniers nouveau = new Paniers();
                         nouveau.setIdClient(idClient);
                         return panierAddRepository.save(nouveau);
                     });
 
-            Optional<Produit> produitOpt = produitRepository.findById(produitId);
+            Optional<Produits> produitOpt = produitsRepository.findById(produitId);
             if (produitOpt.isEmpty()) {
                 redirectAttributes.addFlashAttribute("erreur", "Produit introuvable.");
                 return "redirect:/produits";
@@ -87,7 +85,7 @@ public class CommandeController {
             ligne.setIdPanier(panier.getId());
             ligne.setIdProduit(produitId);
             ligne.setQuantite(quantite);
-            ligne.setPrixUnitaire(produitOpt.get().getPrixVente());
+            ligne.setPrixUnitaire(produitOpt.get().getPrix_vente());
 
             panierProduitAddRepository.save(ligne);
 
