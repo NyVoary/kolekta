@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import java.time.LocalDate;
 // import java.time.LocalDate;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import com.example.demo.repository.ProduitsRepository;
 
 @Service
 public class ProduitsService {
-    
+
     private final ProduitsRepository repository;
 
     @Autowired
@@ -36,7 +37,8 @@ public class ProduitsService {
     }
 
     public List<Produits> listsProduitsSaisonniers() {
-        int mois = 2;
+        int mois = LocalDate.now().getMonthValue();
         return repository.listProduitsSaisonniers(mois);
     }
+
 }
