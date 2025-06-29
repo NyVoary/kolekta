@@ -1,27 +1,42 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Produits;
-import com.example.demo.repository.ProduitsRepository;
+// import java.time.LocalDate;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Produits;
+import com.example.demo.repository.ProduitsRepository;
 
 @Service
 public class ProduitsService {
     
-    @Autowired
-    private ProduitsRepository produitsRepository;
+    private final ProduitsRepository repository;
 
-    public Produits save(Produits produit) {
-        return produitsRepository.save(produit);
+    @Autowired
+    public ProduitsService(ProduitsRepository produitsRepository) {
+        this.repository = produitsRepository;
     }
-    public Produits findById(int id) {
-        return produitsRepository.findById(id).orElse(null);
+
+    public void delete(int id) {
+        repository.deleteById(id);
     }
-    public void deleteById(int id) {
-        produitsRepository.deleteById(id);
+
+    public void saveOrUpdate(Produits produits) {
+        repository.save(produits);
     }
-    public Iterable<Produits> findAll() {
-        return produitsRepository.findAll();
+
+    public List<Produits> getAll() {
+        return repository.findAll();
     }
-    
+
+    public Produits getBYid(int id) {
+        return repository.findById(id).get();
+    }
+
+    public List<Produits> listsProduitsSaisonniers() {
+        int mois = 2;
+        return repository.listProduitsSaisonniers(mois);
+    }
 }

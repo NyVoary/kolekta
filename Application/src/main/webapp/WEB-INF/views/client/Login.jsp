@@ -17,6 +17,11 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
   <!-- endinject -->
   <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
+  
+<%-- <%@ include file="../inc/css.jsp" %> --%>
+<%-- REMOVED --%>
+
+
 </head>
 
 <body>
@@ -81,6 +86,10 @@
   <script src="${pageContext.request.contextPath}/js/settings.js"></script>
   <script src="${pageContext.request.contextPath}/js/todolist.js"></script>
   <!-- endinject -->
+
+  <%-- <%@ include file="../inc/js.jsp" %> --%>
+  <%-- REMOVED --%>
+
 </body>
 
 </html>

@@ -1,31 +1,69 @@
 package com.example.demo.entity;
 
-import java.sql.Date;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "produits")
 public class Produits {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int id_fournisseur;
+    @Column(name = "id_produit")
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_fournisseur", nullable = false)
+    private Fournisseurs fournisseurs;
+
+    @Column(nullable = false)
     private String nom;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_categorie", nullable = false)
+    private Categories categories;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
-    private int id_categorie;
+
+    @Column(nullable = false)
     private String unite_mesure;
-    private double prix_achat;
-    private double prix_vente;
-    private Date date_ajout;
+
+    @Column(nullable = false)
+    private BigDecimal prix_achat;
+
+    @Column(nullable = false)
+    private BigDecimal prix_vente;
+
+    @Column(nullable = false)
+    private LocalDate date_ajout;
+
     private String image;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public Fournisseurs getFournisseurs() {
+        return fournisseurs;
+    }
+
+    public void setFournisseurs(Fournisseurs fournisseurs) {
+        this.fournisseurs = fournisseurs;
     }
 
     public String getNom() {
@@ -36,28 +74,20 @@ public class Produits {
         this.nom = nom;
     }
 
+    public Categories getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Categories categories) {
+        this.categories = categories;
+    }
+
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public int getId_fournisseur() {
-        return id_fournisseur;
-    }
-
-    public void setId_fournisseur(int id_fournisseur) {
-        this.id_fournisseur = id_fournisseur;
-    }
-
-    public int getId_categorie() {
-        return id_categorie;
-    }
-
-    public void setId_categorie(int id_categorie) {
-        this.id_categorie = id_categorie;
     }
 
     public String getUnite_mesure() {
@@ -68,27 +98,27 @@ public class Produits {
         this.unite_mesure = unite_mesure;
     }
 
-    public double getPrix_achat() {
+    public BigDecimal getPrix_achat() {
         return prix_achat;
     }
 
-    public void setPrix_achat(double prix_achat) {
+    public void setPrix_achat(BigDecimal prix_achat) {
         this.prix_achat = prix_achat;
     }
 
-    public double getPrix_vente() {
+    public BigDecimal getPrix_vente() {
         return prix_vente;
     }
 
-    public void setPrix_vente(double prix_vente) {
+    public void setPrix_vente(BigDecimal prix_vente) {
         this.prix_vente = prix_vente;
     }
 
-    public Date getDate_ajout() {
+    public LocalDate getDate_ajout() {
         return date_ajout;
     }
 
-    public void setDate_ajout(Date date_ajout) {
+    public void setDate_ajout(LocalDate date_ajout) {
         this.date_ajout = date_ajout;
     }
 
