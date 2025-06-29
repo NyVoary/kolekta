@@ -1,8 +1,5 @@
 package com.example.demo.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.ClientDTO;
 import com.example.demo.dto.ClientLoginDTO;
 import com.example.demo.entity.Client;
 import com.example.demo.service.ClientService;
 import com.example.demo.service.HistoriqueAchatService;
-import com.example.demo.dto.HistoriqueAchat;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

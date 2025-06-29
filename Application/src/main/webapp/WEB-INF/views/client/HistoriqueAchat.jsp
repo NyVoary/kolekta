@@ -4,11 +4,7 @@
 <html>
 <head>
     <title>Historique d'achat</title>
-    <link rel="stylesheet" href="/static/css/style.css"/>
-    <link rel="stylesheet" href="/static/vendors/css/vendor.bundle.base.css"/>
-    <link rel="stylesheet" href="/static/vendors/datatables.net-bs4/dataTables.bootstrap4.css"/>
-    <link rel="stylesheet" href="/static/css/vertical-layout-light/style.css"/>
-    <link rel="stylesheet" href="/css/historique-achat.css"/>
+    <link rel="stylesheet" href="/static/css/historique-achat.css"/>
 </head>
 <body class="sidebar-light">
 <div class="container">

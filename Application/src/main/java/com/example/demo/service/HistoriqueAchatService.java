@@ -1,9 +1,9 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.HistoriqueAchat;
 import com.example.demo.entity.Commande;
 import com.example.demo.entity.CommandeProduit;
 import com.example.demo.entity.CommandeStatus;
+import com.example.demo.entity.HistoriqueAchat;
 import com.example.demo.repository.CommandeProduitRepository;
 import com.example.demo.repository.CommandeRepository;
 import org.slf4j.Logger;
@@ -77,7 +77,6 @@ public class HistoriqueAchatService {
                                 unicodeSeq.toString().trim(), libelleNormalise);
                     }
                 }
-                // Correction : filtrage robuste sur le libellé (normalisation sans accent)
                 if (c.getStatuts() != null && c.getStatuts().stream().anyMatch(cs -> {
                     String libelle = cs.getStatus() != null ? cs.getStatus().getLibelle() : null;
                     String libelleNormalise = removeAccents(libelle != null ? libelle.trim().toLowerCase() : "");
@@ -98,7 +97,6 @@ public class HistoriqueAchatService {
         return historique;
     }
 
-
     public List<HistoriqueAchat> getHistoriqueAchatByClientAndDate(Long clientId, LocalDate dateDebut,
             LocalDate dateFin) {
         logger.info("Recherche de l'historique d'achat pour le client {} entre {} et {}", clientId, dateDebut, dateFin);
@@ -107,7 +105,6 @@ public class HistoriqueAchatService {
         for (Commande c : toutesCommandes) {
             if (c.getClient() != null && c.getClient().getIdClient() != null
                     && c.getClient().getIdClient().equals(clientId)) {
-                // Filtrage par date
                 if (c.getDateCommande() != null) {
                     LocalDate dateCommande = c.getDateCommande();
                     boolean inRange = (dateDebut == null || !dateCommande.isBefore(dateDebut))
@@ -115,7 +112,6 @@ public class HistoriqueAchatService {
                     if (!inRange)
                         continue;
                 }
-                // Filtrage sur le statut "Validée"
                 if (c.getStatuts() != null && c.getStatuts().stream().anyMatch(cs -> {
                     String libelle = cs.getStatus() != null ? cs.getStatus().getLibelle() : null;
                     String libelleNormalise = removeAccents(libelle != null ? libelle.trim().toLowerCase() : "");
