@@ -70,7 +70,7 @@
                     <form method="post" action="/commande/ajouter">
                         <input type="hidden" name="produitId" value="${produit.id}" />
                         <div class="quantite-controls">
-                            <button type="button" onclick="changerQuantite(this, -1)">−</button>
+                            <button type="button" onclick="changerQuantite(this, -1)">-</button>
                             <input type="number" name="quantite" value="1" min="1" />
                             <button type="button" onclick="changerQuantite(this, 1)">+</button>
                         </div>

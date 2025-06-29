@@ -29,26 +29,19 @@
               <div class="brand-logo">
                 <img src="${pageContext.request.contextPath}/images/logo.svg" alt="logo">
               </div>
-              <h4>Hello! let's get started</h4>
-              <h6 class="font-weight-light">Sign in to continue.</h6>
-              <form class="pt-3" method="post">
+               <h4 class="text-center font-weight-bold mb-2">
+                Admin Login
+              </h4>
+              <p class="text-center text-muted mb-4">Please enter your credentials to access the admin dashboard.</p>
+              <form action="${pageContext.request.contextPath}/admin/connexion" method="post">
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Username" name="username">
+                  <input type="text" class="form-control form-control-lg" id="" placeholder="Username" name="username" Required>
                 </div>
                 <div class="form-group">
-                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password" name="password">
+                  <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password" name="password" Required>
                 </div>
-                <div class="mt-3">
-                  <a class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" href="admin/connexion">SIGN IN</a>
-                </div>
+                <button type="submit" class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn">LOG IN</button>
                 <div class="my-2 d-flex justify-content-between align-items-center">
-                  <div class="form-check">
-                    <label class="form-check-label text-muted">
-                      <input type="checkbox" class="form-check-input">
-                      Keep me signed in
-                    </label>
-                  </div>
-                  <a href="#" class="auth-link text-black">Forgot password?</a>
                 </div>
               </form>
             </div>

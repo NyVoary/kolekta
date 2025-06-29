@@ -77,7 +77,7 @@
       <%@ include file="includes/sidebar.jsp" %>
       <!-- partial -->
       <div class="main-panel">
-        vfgh
+        <p>Bienvenue, ${username} !</p>
         <!-- partial:partials/_footer.jsp -->
       <%@ include file="includes/footer.jsp" %>
       </div>
