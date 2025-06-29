@@ -1,3 +1,4 @@
+<jsp:useBean id="acces" class="com.example.demo.entity.Acces" scope="session" />
 <%@ include file="includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -77,7 +78,7 @@
       <%@ include file="includes/sidebar.jsp" %>
       <!-- partial -->
       <div class="main-panel">
-        <p>Bienvenue, ${username} !</p>
+        <p>Bonjour, ${acces.nomUtilisateur} (role : ${acces.role})</p>
         <!-- partial:partials/_footer.jsp -->
       <%@ include file="includes/footer.jsp" %>
       </div>

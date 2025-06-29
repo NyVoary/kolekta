@@ -26,6 +26,14 @@
         <div class="row w-100 mx-0">
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
+               <% if (request.getAttribute("erreur") != null) { %>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Erreur !</strong> ${erreur}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                <% } %>
               <div class="brand-logo">
                 <img src="${pageContext.request.contextPath}/images/logo.svg" alt="logo">
               </div>
