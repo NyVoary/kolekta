@@ -17,7 +17,7 @@ public class TestController {
         this.service = service;
     }
 
-    @GetMapping("/")
+    @GetMapping("/test")
     public String welcomePage(Model model) {
         // model.addAttribute("liste", service.getAll());
         return "home";
