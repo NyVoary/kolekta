@@ -15,6 +15,7 @@ public class Categorie {
     @Column(name = "id_categorie")
     private Long id;
 
+    @Column(name = "libelle")
     private String libelle;
 
     // Getters et Setters
