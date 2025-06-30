@@ -16,6 +16,7 @@ import com.example.demo.entity.Commande;
 import com.example.demo.service.PanierService;
 import com.example.demo.service.CommandeService;
 import com.example.demo.service.Partage;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/panier")
@@ -112,8 +113,10 @@ public class PanierController {
 
         Commande commandeCree = commandeService.creerCommandeDepuisPanier(idClient);
         redirectAttributes.addFlashAttribute("successMessage", "Commande enregistrée avec succès !");
-        System.out.println("idCommande-------------------------------------------------------------:"+commandeCree.getIdCommande());
+        
+        System.out.println("idCommande-------------------------------------------------------------:" + commandeCree.getIdCommande());
         partage.setIdCommande(commandeCree.getIdCommande());
+
         return "redirect:/Livraison-client";
     }
 }

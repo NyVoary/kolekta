@@ -26,9 +26,14 @@ public class LivraisonController {
 
     @GetMapping("/Livraison-client")
     public String getLivraisons(Model model) {
-        // Long id ito mandray anle 1 commande creer apres validation panier exemple io 1 io
-        Long id = 1L; 
-        Commande commande = livraisonService.getCommande(id);
+        Long idCommande = partage.getIdCommande();
+    
+        if (idCommande == null) {
+            // idCommande = (Long) session.getAttribute("idCommande");
+            return "redirect:/panier";
+        }
+    
+        Commande commande = livraisonService.getCommande(idCommande);
         model.addAttribute("liste", commande);
         return "client/Livraison";
     }
@@ -53,6 +58,6 @@ public class LivraisonController {
 
         livraisonService.update(id, livraison, commande);
 
-        return "redirect:/Livraison-client"; 
+        return "redirect:/panier"; 
     }
 }

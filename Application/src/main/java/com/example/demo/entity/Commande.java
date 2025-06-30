@@ -43,7 +43,7 @@ public class Commande {
     public Long getId() {
         return id;
     }
-
+    
     public void setId(Long id) {
         this.id = id;
     }
@@ -121,8 +121,8 @@ public class Commande {
     }
 
     public Long getIdCommande() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getIdCommande'");
+        return id;
     }
+
 
 }
