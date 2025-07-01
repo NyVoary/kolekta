@@ -1,4 +1,5 @@
 <%@ include file="../includes/head.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>
@@ -78,6 +79,38 @@
       <!-- partial -->
       <div class="main-panel">
         <h1>Ajout produit:</h1>
+        <form action="/admin/ajout-produit" method="post" enctype="multipart/form-data">
+          <label for="nom">Nom du produit:</label>
+          <input type="text" name="nom" id="nom" placeholder="Nom du produit" required>
+          <label for="fournisseur">Fournisseur:</label>
+          <select name="fournisseur" id="fournisseur" required>
+            <option value="">-- Sélectionner un fournisseur --</option>
+            <c:forEach var="fournisseur" items="${fournisseurs}">
+              <option value="${fournisseur.id}">${fournisseur.nom}</option>
+            </c:forEach>
+          </select>
+          <label for="description">Description :</label>
+          <input type="text" name="description" id="description" placeholder="Description du produit">
+          <label for="categorie">Categorie:</label>
+          <select name="categorie" id="categorie" required>
+            <option value="">-- Sélectionner une catégorie --</option>
+            <c:forEach var="categorie" items="${categories}">
+              <option value="${categorie.id}">${categorie.libelle}</option>
+            </c:forEach>
+          </select>
+          <label for="unite_mesure">Unité de mesure:</label>
+          <select name="unite_mesure" id="unite_mesure" required>
+            <option value="kg">Par kilo</option>
+            <option value="pc">Par piece</option>
+          </select>
+          <label for="prix_achat">Prix d'achat:</label>
+          <input type="number" step="0.01" name="prix_achat" id="prix_achat" placeholder="Prix d'achat" required>
+          <label for="prix_vente">Prix de vente:</label>
+          <input type="number" step="0.01" name="prix_vente" id="prix_vente" placeholder="Prix de vente" required>
+          <label for="image">Image:</label>
+          <input type="file" name="image" id="image" accept="image/*">
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
       </div>

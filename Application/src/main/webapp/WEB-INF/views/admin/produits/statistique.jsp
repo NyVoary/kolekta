@@ -78,6 +78,14 @@
       <!-- partial -->
       <div class="main-panel">
         <h1>Statistique produit:</h1>
+        <div class="col-lg-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Bar chart</h4>
+                  <canvas id="barChart"></canvas>
+                </div>
+              </div>
+            </div>
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
       </div>
