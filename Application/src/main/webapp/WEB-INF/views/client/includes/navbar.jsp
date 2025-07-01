@@ -10,7 +10,7 @@
     </button> --%>
     <ul class="navbar-nav mr-lg-2">
       <li class="nav-item nav-search d-none d-lg-block">
-        <div class="input-group">
+        <%-- <div class="input-group">
           <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
             <span class="input-group-text" id="search">
               <i class="icon-search"></i>
@@ -18,7 +18,7 @@
           </div>
           <input type="text" class="form-control" id="navbar-search-input" placeholder="Search now" aria-label="search"
             aria-describedby="search">
-        </div>
+        </div> --%>
       </li>
     </ul> 
     <ul class="navbar-nav navbar-nav-right">
@@ -72,6 +72,13 @@
         </div>
       </li> -->
       <li class="nav-item nav-profile dropdown">
+        <a class="nav-link dropdown-toggle" href="/produits" data-toggle="dropdown" id="profileDropdown">
+        <form class="form-inline" action="/produits" method="get">
+          <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
+                            <i class="ti-search text-info"></i>                          
+          </button>
+          </form>
+        </a>
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
           <img src="images/faces/face28.jpg" alt="profile" />
         </a>

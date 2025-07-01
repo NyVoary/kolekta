@@ -64,7 +64,7 @@
                     <p>${produit.description}</p>
                 </div>
                 <div class="produit-prix">
-                    <p><strong>${produit.prix_vente}</strong> Ar / ${produit.unite_mesure}</p>
+                    <p><strong>${produit.prixVente}</strong> Ar / ${produit.uniteMesure}</p>
                 </div>
                 <div class="produit-formulaire">
                     <form method="post" action="/commande/ajouter">

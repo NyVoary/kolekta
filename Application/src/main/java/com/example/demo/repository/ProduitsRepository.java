@@ -19,14 +19,15 @@ public interface ProduitsRepository extends JpaRepository<Produits, Integer> {
     @SuppressWarnings("null")
     Optional<Produits> findById(Integer id);
 
-    @Query("SELECT p FROM Produit p WHERE "
-    + "(:search IS NULL OR LOWER(p.nom) LIKE LOWER(concat('%', :search, '%'))) "
-    + "AND (:categorie IS NULL OR p.categorie.libelle LIKE %:categorie%) "
-    + "AND (:prixMin IS NULL OR p.prixVente >= :prixMin) "
-    + "AND (:prixMax IS NULL OR p.prixVente <= :prixMax)")
+    @Query("SELECT p FROM Produits p WHERE "
+            + "(:search IS NULL OR LOWER(p.nom) LIKE LOWER(CONCAT('%', :search, '%'))) "
+            + "AND (:categorie IS NULL OR LOWER(p.categorie.libelle) LIKE LOWER(CONCAT('%', :categorie, '%'))) "
+            + "AND (:prixMin IS NULL OR p.prixVente >= :prixMin) "
+            + "AND (:prixMax IS NULL OR p.prixVente <= :prixMax)")
     List<Produits> findProduitsByCritere(
-        @Param("search") String search,
-        @Param("categorie") String categorie,
-        @Param("prixMin") Double prixMin,
-        @Param("prixMax") Double prixMax);
+            @Param("search") String search,
+            @Param("categorie") String categorie,
+            @Param("prixMin") Double prixMin,
+            @Param("prixMax") Double prixMax);
+
 }
