@@ -41,4 +41,11 @@ public class ProduitsService {
         return repository.listProduitsSaisonniers(mois);
     }
 
+    public List<Produits> rechercherProduits(String search, String categorie, Double prixMin, Double prixMax) {
+        // Convertir les chaînes vides en null
+        String searchParam = (search != null && search.isEmpty()) ? null : search;
+        String categorieParam = (categorie != null && categorie.isEmpty()) ? null : categorie;
+
+        return repository.findProduitsByCritere(searchParam, categorieParam, prixMin, prixMax);
+    }
 }

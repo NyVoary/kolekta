@@ -10,27 +10,18 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "categories")
 public class Categories {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categorie")
     private Long id;
-    @Column(nullable = false)
+
+    @Column(name = "libelle")
     private String libelle;
 
-    public String getLibelle() {
-        return libelle;
-    }
+    // Getters et Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getLibelle() { return libelle; }
+    public void setLibelle(String libelle) { this.libelle = libelle; }
 }

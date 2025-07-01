@@ -29,7 +29,7 @@ public class ProduitsController {
         return "client/produits/produits_saison";
     }
 
-    @RequestMapping("/produits")
+    @RequestMapping("/produits_liste")
     public String afficherProduits(Model model) {
         System.out.println("=== Début de afficherProduits ===");
         List<Produits> produits = service.getAll();

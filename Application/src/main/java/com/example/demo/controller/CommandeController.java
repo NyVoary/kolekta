@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+// import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -85,7 +85,7 @@ public class CommandeController {
             ligne.setIdPanier(panier.getId());
             ligne.setIdProduit(produitId);
             ligne.setQuantite(quantite);
-            ligne.setPrixUnitaire(produitOpt.get().getPrix_vente());
+            ligne.setPrixUnitaire(produitOpt.get().getPrixVente());
 
             panierProduitAddRepository.save(ligne);
 

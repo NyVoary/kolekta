@@ -76,6 +76,6 @@ public class ClientController {
 
     @GetMapping("/home")
     public String accueil(Model model) {
-        return "redirect:/produits";
+        return "redirect:/produits_liste";
     }
 }

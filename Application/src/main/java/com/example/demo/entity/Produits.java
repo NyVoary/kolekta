@@ -1,11 +1,9 @@
 package com.example.demo.entity;
 
-// import java.math.double;
 import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "produits")
+@Table(name = "Produits")
 public class Produits {
 
     @Id
@@ -22,112 +20,71 @@ public class Produits {
     @Column(name = "id_produit")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_fournisseur", nullable = false)
-    private Fournisseurs fournisseurs;
+    @Column(name = "id_fournisseur")
+    private Long idFournisseur;
 
-    @Column(nullable = false)
     private String nom;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_categorie", nullable = false)
-    private Categories categories;
+    @Column(name = "id_categorie")
+    private Long idCategorie;
 
-    @Column(columnDefinition = "TEXT")
     private String description;
 
-    @Column(nullable = false)
-    private String unite_mesure;
+    @Column(name = "unite_mesure")
+    private String uniteMesure;
 
-    @Column(nullable = false)
-    private double prix_achat;
+    @Column(name = "prix_achat")
+    private double prixAchat;
 
-    @Column(nullable = false)
-    private double prix_vente;
+    @Column(name = "prix_vente")
+    private double prixVente;
 
-    @Column(nullable = false)
-    private LocalDate date_ajout;
+    @Column(name = "date_ajout")
+    private LocalDate dateAjout;
 
     private String image;
 
-    public Long getId() {
-        return id;
+    public Produits() {
+        this.dateAjout = LocalDate.now();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    // Relation avec Catégorie
+    @ManyToOne
+    @JoinColumn(name = "id_categorie", insertable = false, updatable = false)
+    private Categories categorie;
 
-    public Fournisseurs getFournisseurs() {
-        return fournisseurs;
-    }
+    // ... getters et setters pour categorie
+    public Categories getCategorie() { return categorie; }
+    public void setCategorie(Categories categorie) { this.categorie = categorie; }
 
-    public void setFournisseurs(Fournisseurs fournisseurs) {
-        this.fournisseurs = fournisseurs;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public Categories getCategories() {
-        return categories;
-    }
-
-    public void setCategories(Categories categories) {
-        this.categories = categories;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUnite_mesure() {
-        return unite_mesure;
-    }
-
-    public void setUnite_mesure(String unite_mesure) {
-        this.unite_mesure = unite_mesure;
-    }
-
-    public double getPrix_achat() {
-        return prix_achat;
-    }
-
-    public void setPrix_achat(double prix_achat) {
-        this.prix_achat = prix_achat;
-    }
-
-    public double getPrix_vente() {
-        return prix_vente;
-    }
-
-    public void setPrix_vente(double prix_vente) {
-        this.prix_vente = prix_vente;
-    }
-
-    public LocalDate getDate_ajout() {
-        return date_ajout;
-    }
-
-    public void setDate_ajout(LocalDate date_ajout) {
-        this.date_ajout = date_ajout;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
+    // Getters et Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    
+    public Long getIdFournisseur() { return idFournisseur; }
+    public void setIdFournisseur(Long idFournisseur) { this.idFournisseur = idFournisseur; }
+    
+    public String getNom() { return nom; }
+    public void setNom(String nom) { this.nom = nom; }
+    
+    public Long getIdCategorie() { return idCategorie; }
+    public void setIdCategorie(Long idCategorie) { this.idCategorie = idCategorie; }
+    
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+    
+    public String getUniteMesure() { return uniteMesure; }
+    public void setUniteMesure(String uniteMesure) { this.uniteMesure = uniteMesure; }
+    
+    public double getPrixAchat() { return prixAchat; }
+    public void setPrixAchat(double prixAchat) { this.prixAchat = prixAchat; }
+    
+    public double getPrixVente() { return prixVente; }
+    public void setPrixVente(double prixVente) { this.prixVente = prixVente; }
+    
+    public LocalDate getDateAjout() { return dateAjout; }
+    public void setDateAjout(LocalDate dateAjout) { this.dateAjout = dateAjout; }
+    
+    public String getImage() { return image; }
+    public void setImage(String image) { this.image = image; }
 }

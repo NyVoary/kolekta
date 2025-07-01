@@ -8,19 +8,19 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.entity.Categorie;
-import com.example.demo.entity.Produit;
-import com.example.demo.service.CategorieService;
-import com.example.demo.service.ProduitService;
+import com.example.demo.entity.Categories;
+import com.example.demo.entity.Produits;
+import com.example.demo.service.CategoriesService;
+import com.example.demo.service.ProduitsService;
 
 @Controller
 public class ProduitController {
 
     @Autowired
-    private ProduitService produitService;
+    private ProduitsService produitService;
 
     @Autowired
-    private CategorieService categorieService;
+    private CategoriesService categorieService;
 
     @GetMapping("/produits")
     public String afficherProduits(
@@ -29,9 +29,9 @@ public class ProduitController {
         @RequestParam(required = false) Double prixMin,
         @RequestParam(required = false) Double prixMax,
         Model model) {
-            List<Produit> produits;
+            List<Produits> produits;
 
-            List<Categorie> categories = categorieService.getAllCategories();
+            List<Categories> categories = categorieService.getAllCategories();
             
             // Vérifier si au moins un critère de recherche est fourni
             if (search != null || categorie != null || prixMin != null || prixMax != null) {
@@ -40,17 +40,17 @@ public class ProduitController {
                 // Logs pour débogage
                 System.out.println("Nombre de produits filtrés trouvés : " + (produits != null ? produits.size() : "null"));
                 if (produits != null && !produits.isEmpty()) {
-                    for (Produit p : produits) {
+                    for (Produits p : produits) {
                         System.out.println("Produit : " + p.getNom() + " - Prix : " + p.getPrixVente());
                     }
                 }
             } else {
-                produits = produitService.getTousLesProduits();
+                produits = produitService.getAll();
 
                 // Logs pour débogage
                 System.out.println("Nombre de produits trouvés : " + (produits != null ? produits.size() : "null"));
                 if (produits != null && !produits.isEmpty()) {
-                    for (Produit p : produits) {
+                    for (Produits p : produits) {
                         System.out.println("Produit : " + p.getNom() + " - Prix : " + p.getPrixVente());
                     }
                 }
