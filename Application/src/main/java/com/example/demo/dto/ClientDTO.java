@@ -8,7 +8,7 @@ public class ClientDTO {
     private String nom;
     private String prenoms;
     private LocalDate dtn; // date de naissance
-    private char sexe;
+    private String sexe;
     private String email;
     private String telephone;
     private String adresse;
@@ -41,11 +41,11 @@ public class ClientDTO {
         this.dtn = dtn;
     }
 
-    public char getSexe() {
+    public String getSexe() {
         return sexe;
     }
 
-    public void setSexe(char sexe) {
+    public void setSexe(String sexe) {
         this.sexe = sexe;
     }
 

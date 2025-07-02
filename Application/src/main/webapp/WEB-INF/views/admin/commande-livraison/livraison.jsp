@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.example.demo.dto.LivraisonDTO,java.util.List" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -77,13 +79,62 @@
       <%@ include file="../includes/sidebar.jsp" %>
       <!-- partial -->
       <div class="main-panel">
-        <h1>Livraisons:</h1>
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Liste des Livraisons</h4>
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th>ID Livraison</th>
+                          <th>Date Livraison</th>
+                          <th>Client</th>
+                          <th>Adresse</th>
+                          <th>Ville</th>
+                          <th>Camion</th>
+                          <th>Chauffeur</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%
+                          List<LivraisonDTO> livraisons = (List<LivraisonDTO>) request.getAttribute("livraisons");
+                          if (livraisons != null) {
+                            for (LivraisonDTO livraison : livraisons) {
+                        %>
+                        <tr>
+                          <td><%= livraison.getIdLivraison() %></td>
+                          <td><%= livraison.getDateLivraison() %></td>
+                          <td><%= livraison.getClientNom() %></td>
+                          <td><%= livraison.getAdresseLivraison() %></td>
+                          <td><%= livraison.getVilleLivraison() %></td>
+                          <td><%= livraison.getImmatriculation() %></td>
+                          <td><%= livraison.getChauffeurNom() %></td>
+                        </tr>
+                        <%
+                            }
+                          } else {
+                        %>
+                        <tr>
+                          <td colspan="7" class="text-center">Aucune livraison trouvée</td>
+                        </tr>
+                        <%
+                          }
+                        %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- partial:partials/_footer.html -->
-      <%@ include file="../includes/footer.jsp" %>
+        <%@ include file="../includes/footer.jsp" %>
       </div>
     </div>   
   </div>
 </body>
-
 </html>
-

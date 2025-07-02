@@ -23,7 +23,7 @@ public class ProduitsMois {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_produit", nullable = false)
-    private Produits produits;
+    private Produit produit;
 
     @Min(1)
     @Max(12)
@@ -34,8 +34,8 @@ public class ProduitsMois {
     public ProduitsMois() {
     }
 
-    public ProduitsMois(Produits produits, int mois) {
-        this.produits = produits;
+    public ProduitsMois(Produit produit, int mois) {
+        this.produit = produit;
         this.mois = mois;
     }
 
@@ -47,12 +47,12 @@ public class ProduitsMois {
         this.id = id;
     }
 
-    public Produits getProduits() {
-        return produits;
+    public Produit getProduits() {
+        return produit;
     }
 
-    public void setProduits(Produits produits) {
-        this.produits = produits;
+    public void setProduits(Produit produit) {
+        this.produit = produit;
     }
 
     public int getMois() {

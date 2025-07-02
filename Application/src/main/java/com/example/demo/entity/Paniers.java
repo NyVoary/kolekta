@@ -19,7 +19,7 @@ public class Paniers {
     private int id;
 
     @Column(name = "id_client", nullable = false)
-    private int idClient;
+    private Long idClient;
 
     @Column(name = "date_creation", nullable = false)
     private LocalDate dateCreation;
@@ -43,8 +43,8 @@ public class Paniers {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public int getIdClient() { return idClient; }
-    public void setIdClient(int idClient) { this.idClient = idClient; }
+    public Long getIdClient() { return idClient; }
+    public void setIdClient(Long idClient) { this.idClient = idClient; }
 
     public LocalDate getDateCreation() { return dateCreation; }
     public void setDateCreation(LocalDate dateCreation) { this.dateCreation = dateCreation; }
