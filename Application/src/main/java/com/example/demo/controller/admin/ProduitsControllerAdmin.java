@@ -16,6 +16,12 @@ public class ProduitsControllerAdmin {
      public String listProduct(Model model) {
         return "admin/produits/liste-produit";
     }
+
+    @GetMapping("/admin/ajout-produitMois")
+    public String addProductMois(Model model) {
+        return "admin/produits/ajout-produitMois";
+    }
+    
     @GetMapping("/admin/stat-produit")
      public String statProduct(Model model) {
         return "admin/produits/statistique";

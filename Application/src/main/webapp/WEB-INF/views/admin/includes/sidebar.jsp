@@ -16,6 +16,7 @@
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="/admin/ajout-produit">Ajout produit</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-produitMois">Ajout produit du mois</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/liste-produit">Liste des produits</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/stat-produit">Statistiques</a></li>
               </ul>

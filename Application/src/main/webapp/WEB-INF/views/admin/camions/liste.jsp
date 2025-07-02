@@ -78,6 +78,61 @@
       <!-- partial -->
       <div class="main-panel">
         <h1>Liste camion:</h1>
+        <div class="content-wrapper">
+          <div class="row">
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.demo.entity.Camion" %>
+          
+<%
+    List<Camion> camions = (List<Camion>) request.getAttribute("camions");
+%>
+<div class="col-lg-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Immatriculation</th>
+              <th>Capacite (t)</th>
+              <th>Nom du chauffeur</th>
+              <th>Telephone du chauffeur</th>
+            </tr>
+          </thead>
+          <tbody>
+            <%
+              if (camions != null && !camions.isEmpty()) {
+                int index = 1;
+                for (Camion camion : camions) {
+            %>
+              <tr>
+                <td><%= index++ %></td>
+                <td><%= camion.getImmatriculation() %></td>
+                <td><%= camion.getCapacite() %></td>
+                <td><%= camion.getChauffeur_nom() %></td>
+                <td><%= camion.getChauffeur_telephone() %></td>
+              </tr>
+            <%
+                }
+              } else {
+            %>
+              <tr>
+                <td colspan="5" class="text-center text-danger">Aucun resultat</td>
+              </tr>
+            <%
+              }
+            %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+            
+          </div>
+        </div>
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
       </div>

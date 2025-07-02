@@ -78,6 +78,83 @@
       <!-- partial -->
       <div class="main-panel">
         <h1>Ajout camion:</h1>
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <!-- <h4 class="card-title">Ajout de Camion</h4> -->
+                  <form class="form-sample" method="post" action="/admin/ajout-camion">
+                    <p class="card-description">
+                      Informations du camion
+                    </p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-4 col-form-label">Immatriculation</label>
+                          <div class="col-sm-8">
+                            <input type="text" name="immatriculation" class="form-control" placeholder="Ex: ABC-1234" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-4 col-form-label">Capacite (en tonnes)</label>
+                          <div class="col-sm-8">
+                            <input type="number" name="capacite" class="form-control" placeholder="Ex: 15" min="0" required />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="card-description">
+                      Informations du chauffeur
+                    </p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-4 col-form-label">Nom du chauffeur</label>
+                          <div class="col-sm-8">
+                            <input type="text" name="chauffeur_nom" class="form-control" placeholder="Ex: Jean Rakoto" required />
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-6">
+                        <div class="form-group row">
+                          <label class="col-sm-4 col-form-label">Telephone</label>
+                          <div class="col-sm-8">
+                            <input type="tel" name="chauffeur_telephone" class="form-control" placeholder="Ex: 0321234567" required />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-end mt-4">
+                      <button type="submit" class="btn btn-primary">Ajouter le camion</button>
+                    </div>
+                  </form>
+                  <%
+                    String erreur = (String) session.getAttribute("error-camion");
+                    if (erreur != null) {
+                  %>
+                    <div class="alert alert-danger mt-2"><%= erreur %></div>
+                  <%
+                      session.removeAttribute("error-camion");
+                    }
+                  %>
+
+                  <%
+                    String succes = (String) session.getAttribute("succes-camion");
+                    if (succes != null) {
+                  %>
+                    <div class="alert alert-success mt-2"><%= succes %></div>
+                  <%
+                      session.removeAttribute("succes-camion");
+                    }
+                  %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
       </div>
