@@ -8,36 +8,59 @@
     <div class="container-fluid page-body-wrapper">
       <%@ include file="../includes/sidebar.jsp" %>
       <div class="main-panel">
-        <h1>Liste des fournisseurs</h1>
-  
-        <c:forEach var="fournisseur" items="${fournisseurs}">
-          <div class="card mb-4" style="box-shadow:0 2px 12px rgba(60,72,100,0.07);border-radius:14px;padding:24px;">
-            <div style="display:flex;align-items:center;gap:24px;">
-              <div style="flex:1;">
-                <h3 style="margin:0 0 8px 0;">${fournisseur.nom}</h3>
-                <div><b>Adresse :</b> ${fournisseur.adresse}</div>
-                <div><b>Téléphone :</b> ${fournisseur.telephone}</div>
-                <div><b>Email :</b> ${fournisseur.email}</div>
-              </div>
-              <div>
-                <img src="/static/images/${fournisseur.image}" alt="Image fournisseur" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid #e2e8f0;">
-              </div>
-            </div>
-            <div style="margin-top:18px;">
-              <b>Produits :</b>
-              <ul style="margin:8px 0 0 18px;padding:0;list-style:disc;">
-                <c:forEach var="produit" items="${produitsParFournisseur[fournisseur.id]}">
-                  <li style="margin-bottom:2px;">
-                    <span style="font-weight:600;">${produit.nom}</span> - ${produit.uniteMesure} - ${produit.prixVente} €
-                  </li>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h1 class="h3">Liste des fournisseurs</h1>
+          <a href="/admin/fournisseurs/ajout" class="btn btn-primary">
+            <i class="ti-plus"></i> Ajouter un fournisseur
+          </a>
+        </div>
+        <div class="card p-3 shadow-sm">
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered bg-white rounded">
+              <thead class="thead-light">
+                <tr>
+                  <th>Image</th>
+                  <th>Nom</th>
+                  <th>Adresse</th>
+                  <th>Téléphone</th>
+                  <th>Email</th>
+                  <th>Produits</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <c:forEach var="fournisseur" items="${fournisseurs}">
+                  <tr>
+                    <td><img src="/static/images/${fournisseur.image}" alt="Image fournisseur" style="width:48px;height:48px;object-fit:cover;border-radius:50%;border:2px solid #e2e8f0;"></td>
+                    <td><b>${fournisseur.nom}</b></td>
+                    <td>${fournisseur.adresse}</td>
+                    <td>${fournisseur.telephone}</td>
+                    <td>${fournisseur.email}</td>
+                    <td>
+                      <c:choose>
+                        <c:when test="${not empty produitsParFournisseur[fournisseur.id]}">
+                          <ul class="mb-0 pl-3">
+                            <c:forEach var="produit" items="${produitsParFournisseur[fournisseur.id]}">
+                              <li>${produit.nom} <span class="text-muted">(${produit.uniteMesure}, ${produit.prixVente} €)</span></li>
+                            </c:forEach>
+                          </ul>
+                        </c:when>
+                        <c:otherwise>
+                          <span class="text-muted">Aucun produit</span>
+                        </c:otherwise>
+                      </c:choose>
+                    </td>
+                    <td>
+                      <a href="/admin/fournisseurs/edit?id=${fournisseur.id}" class="btn btn-warning btn-sm" title="Modifier"><i class="ti-pencil"></i></a>
+                      <a href="/admin/fournisseurs/delete?id=${fournisseur.id}" class="btn btn-danger btn-sm" title="Supprimer" onclick="return confirm('Supprimer ce fournisseur ?');"><i class="ti-trash"></i></a>
+                      <a href="/admin/fournisseurs/ajout-disponibilite" class="btn btn-info btn-sm" title="Ajouter disponibilité"><i class="ti-package"></i></a>
+                    </td>
+                  </tr>
                 </c:forEach>
-                <c:if test="${empty produitsParFournisseur[fournisseur.id]}">
-                  <li style="color:#a0aec0;">Aucun produit pour ce fournisseur.</li>
-                </c:if>
-              </ul>
-            </div>
+              </tbody>
+            </table>
           </div>
-        </c:forEach>
+        </div>
       </div>
     </div>
   </div>

@@ -2,88 +2,99 @@
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>
-    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <div id="right-sidebar" class="settings-panel">
-        <i class="settings-close ti-close"></i>
-        <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="setting-content">
-          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-            <div class="add-items d-flex px-3 mb-0">
-              <form class="form w-100">
-                <div class="form-group d-flex">
-                  <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
-                  <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">Add</button>
-                </div>
-              </form>
-            </div>
-            <div class="list-wrapper px-3">
-              <ul class="d-flex flex-column-reverse todo-list">
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Team review meeting at 3.00 PM
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Prepare for presentation
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Resolve all the low priority tickets due today
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Schedule meeting for next week
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Project review
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-              </ul>
+      <%@ include file="../includes/sidebar.jsp" %>
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row mb-4">
+            <div class="col-12 text-center">
+              <h2 class="font-weight-bold mb-3">Statistiques Fournisseurs</h2>
+              <p class="text-muted">Vue d'ensemble des fournisseurs et de leurs produits</p>
             </div>
           </div>
-          <!-- To do section tab ends -->
+          <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+              <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Nombre total de fournisseurs</h5>
+                  <h2 class="text-primary font-weight-bold">${totalFournisseurs}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Nombre total de produits</h5>
+                  <h2 class="text-success font-weight-bold">${totalProduits}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <div class="card shadow-sm h-100">
+                <div class="card-body text-center">
+                  <h5 class="card-title">Top fournisseur (produits)</h5>
+                  <h2 class="text-warning font-weight-bold">${topFournisseur.nom}</h2>
+                  <p class="mb-0">${topFournisseur.nbProduits} produits</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mb-4">
+            <div class="col-12">
+              <div class="card shadow-sm">
+                <div class="card-body">
+                  <h5 class="card-title">Répartition des produits par fournisseur</h5>
+                  <canvas id="produitsParFournisseurChart" height="100"></canvas>
+                  <c:if test="${empty fournisseursJson || fournisseursJson == '[]'}">
+                    <div class="alert alert-info mt-3">Aucune donnée à afficher pour le graphique.</div>
+                  </c:if>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-center">
+              <a href="/admin/fournisseurs/liste" class="btn btn-outline-primary">Retour à la liste des fournisseurs</a>
+            </div>
+          </div>
         </div>
+        <%@ include file="../includes/footer.jsp" %>
       </div>
-      <%@ include file="../includes/sidebar.jsp" %>
-      <!-- partial -->
-      <div class="main-panel">
-        <h1>Statistique fournisseur:</h1>
-        <!-- partial:partials/_footer.html -->
-      <%@ include file="../includes/footer.jsp" %>
-      </div>
-    </div>   
+    </div>
   </div>
+  <script src="/Affichage/Template/js/chart.js"></script>
+  <script>
+    // Données dynamiques passées depuis le contrôleur
+    const fournisseurs = JSON.parse('${fournisseursJson}'.replace(/&quot;/g,'"'));
+    if(fournisseurs.length > 0) {
+      const labels = fournisseurs.map(f => f.nom);
+      const data = fournisseurs.map(f => f.nbProduits);
+      const ctx = document.getElementById('produitsParFournisseurChart').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Nombre de produits',
+            data: data,
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: false }
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    }
+  </script>
 </body>
-
 </html>
 

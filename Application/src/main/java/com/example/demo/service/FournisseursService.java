@@ -1,7 +1,9 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Disponibilite;
 import com.example.demo.entity.Fournisseurs;
 import com.example.demo.entity.Produits;
+import com.example.demo.repository.DisponibiliteRepository;
 import com.example.demo.repository.FornisseursRepository;
 import com.example.demo.repository.ProduitsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,9 @@ public class FournisseursService {
 
     @Autowired
     private ProduitsRepository produitsRepository;
+
+    @Autowired
+    private DisponibiliteRepository disponibiliteRepository;
 
     public Fournisseurs save(Fournisseurs fournisseur) {
         return fournisseursRepository.save(fournisseur);
@@ -44,5 +49,9 @@ public class FournisseursService {
             System.out.println("[DEBUG] Produit: id=" + p.getId() + ", nom=" + p.getNom());
         }
         return produits;
+    }
+
+    public Disponibilite saveDisponibilite(Disponibilite disponibilite) {
+        return disponibiliteRepository.save(disponibilite);
     }
 }
