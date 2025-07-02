@@ -49,7 +49,9 @@ public class CamionsController {
         return "admin/camions/paiement";
     }
     @GetMapping("/admin/assignation-camion")
-    public String assignationCamion(Model model) {
+    public String assignationCamion(Model model) throws Exception { 
+        List<Camion> camions = camionService.getAll(); // ou repository.findAll() 
+        model.addAttribute("camions", camions);
         return "admin/camions/assignation";
     }
 
