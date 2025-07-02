@@ -8,16 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 // import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.entity.Client;
-import com.example.demo.entity.Paniers;
-import com.example.demo.entity.Panier_Produits;
-import com.example.demo.entity.Produits;
+import com.example.demo.entity.*;
 import com.example.demo.repository.*;
+import com.example.demo.service.*;
+import org.springframework.ui.Model;
+
+
 
 import jakarta.servlet.http.HttpSession;
 
@@ -36,8 +38,11 @@ public class CommandeController {
     @Autowired
     private ProduitsRepository produitsRepository;
 
-    @Autowired
+    // @Autowired
     // private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private CommandeService commandeService;
 
     @GetMapping("/login-erreur")
     public String afficherLoginErreur() {
@@ -103,5 +108,13 @@ public class CommandeController {
             redirectAttributes.addFlashAttribute("erreur", "Erreur technique : " + e.getMessage());
             return "redirect:/produits";
         }
+    }
+
+    @GetMapping("/commandes/{id}")
+    public String detailCommande(@PathVariable Long id, Model model) {
+        Commande commande = commandeService.getCommandeWithProduits(id);
+        model.addAttribute("commande", commande);
+        model.addAttribute("progression", commande.getProgression());
+        return "client/detail-commande";
     }
 }
