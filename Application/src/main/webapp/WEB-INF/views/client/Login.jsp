@@ -44,7 +44,7 @@
                   <input type="password" class="form-control form-control-lg" name="mdp" id="exampleInputPassword1" placeholder="mot de passe">
                 </div>
                 <div class="mt-3">
-                  <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" >Connection</button>
+                  <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" >Connexion</button>
                 </div>
                   <%
                     String erreur = (String) session.getAttribute("error-client");

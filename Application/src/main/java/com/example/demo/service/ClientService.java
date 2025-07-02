@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -12,6 +11,7 @@ import java.util.Optional;
 
 import com.example.demo.dto.ClientDTO;
 import com.example.demo.dto.ClientLoginDTO;
+
 import com.example.demo.entity.Client;
 import com.example.demo.repository.ClientRepository;
 
@@ -23,11 +23,11 @@ public class ClientService {
 
     public Client inscrire(ClientDTO dto) throws Exception {
         if ((clientRepository.findByEmail(dto.getEmail())) != null) {
-            throw new Exception("Email déjà utilisé"); 
+            throw new Exception("Email déjà utilisé");
         }
 
-
-        File staticUploads = ResourceUtils.getFile(new File("src/main/resources/static/images/uploads").getAbsolutePath());
+        File staticUploads = ResourceUtils
+                .getFile(new File("src/main/resources/static/images/uploads").getAbsolutePath());
 
         if (!staticUploads.exists()) {
             staticUploads.mkdirs(); // juste au cas où
@@ -36,7 +36,6 @@ public class ClientService {
         String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
         File destinationFile = new File(staticUploads, fileName);
         image.transferTo(destinationFile);
-                
 
         Client client = new Client();
         client.setNom(dto.getNom());
@@ -59,5 +58,21 @@ public class ClientService {
         } else {
             throw new Exception("Email ou mot de passe incorrect");
         }
+    }
+
+    public Optional<Client> getClientById(Integer id) {
+        return clientRepository.findById(id);
+    }
+
+    public Client enregistrerClient(Client client) {
+        return clientRepository.save(client);
+    }
+
+    public void supprimerClient(Integer id) {
+        clientRepository.deleteById(id);
+    }
+
+    public boolean existeClient(Integer id) {
+        return clientRepository.existsById(id);
     }
 }

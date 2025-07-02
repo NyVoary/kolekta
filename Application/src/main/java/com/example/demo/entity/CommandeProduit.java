@@ -16,7 +16,7 @@ public class CommandeProduit {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_produit", nullable = false)
-    private Produit produit;
+    private Produits produit;
 
     @Column(nullable = false)
     private Integer quantite;
@@ -41,11 +41,11 @@ public class CommandeProduit {
         this.commande = commande;
     }
 
-    public Produit getProduit() {
+    public Produits getProduit() {
         return produit;
     }
 
-    public void setProduit(Produit produit) {
+    public void setProduit(Produits produit) {
         this.produit = produit;
     }
 
