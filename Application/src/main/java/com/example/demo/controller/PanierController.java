@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
-import java.math.BigDecimal;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +14,6 @@ import com.example.demo.entity.Commande;
 import com.example.demo.service.PanierService;
 import com.example.demo.service.CommandeService;
 import com.example.demo.service.Partage;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/panier")
@@ -42,11 +39,11 @@ public class PanierController {
 
         if (panierOpt.isPresent()) {
             Panier panier = panierOpt.get();
-            BigDecimal montantHT = panierService.calculerMontantHT(panier);
-            BigDecimal tva = panierService.calculerTVA(montantHT);
-            BigDecimal montantTTC = panierService.calculerMontantTTC(montantHT);
-            BigDecimal fraisLivraison = panierService.getFraisLivraison();
-            BigDecimal montantTotal = panierService.calculerMontantTotal(montantTTC);
+            Double montantHT = panierService.calculerMontantHT(panier);
+            Double tva = panierService.calculerTVA(montantHT);
+            Double montantTTC = panierService.calculerMontantTTC(montantHT);
+            Double fraisLivraison = panierService.getFraisLivraison();
+            Double montantTotal = panierService.calculerMontantTotal(montantTTC);
 
             model.addAttribute("panier", panier);
             model.addAttribute("montantHT", montantHT);
@@ -58,9 +55,9 @@ public class PanierController {
         } else {
             panierService.creerPanierPourClient(idClient);
             model.addAttribute("panier", null);
-            model.addAttribute("montantHT", BigDecimal.ZERO);
-            model.addAttribute("tva", BigDecimal.ZERO);
-            model.addAttribute("montantTTC", BigDecimal.ZERO);
+            model.addAttribute("montantHT", 0.0);
+            model.addAttribute("tva", 0.0);
+            model.addAttribute("montantTTC", 0.0);
             model.addAttribute("fraisLivraison", panierService.getFraisLivraison());
             model.addAttribute("montantTotal", panierService.getFraisLivraison());
             model.addAttribute("nombreArticles", 0);
@@ -114,8 +111,8 @@ public class PanierController {
         Commande commandeCree = commandeService.creerCommandeDepuisPanier(idClient);
         redirectAttributes.addFlashAttribute("successMessage", "Commande enregistrée avec succès !");
         
-        System.out.println("idCommande-------------------------------------------------------------:" + commandeCree.getIdCommande());
-        partage.setIdCommande(commandeCree.getIdCommande());
+        System.out.println("idCommande-------------------------------------------------------------:" + commandeCree.getId());
+        partage.setIdCommande(commandeCree.getId());
 
         return "redirect:/Livraison-client";
     }

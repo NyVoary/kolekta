@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
 @Table(name = "panier_produits")
@@ -18,18 +17,18 @@ public class PanierProduit {
     
     @ManyToOne
     @JoinColumn(name = "id_produit", nullable = false)
-    private Produit produit;
+    private Produits produit;
     
     @Column(name = "quantite", nullable = false)
     private Integer quantite;
     
-    @Column(name = "prix_unitaire", nullable = false, precision = 10, scale = 2)
-    private BigDecimal prixUnitaire;
+    @Column(name = "prix_unitaire", nullable = false)
+    private Double prixUnitaire;
     
     
     public PanierProduit() {}
     
-    public PanierProduit(Panier panier, Produit produit, Integer quantite, BigDecimal prixUnitaire) {
+    public PanierProduit(Panier panier, Produits produit, Integer quantite, Double prixUnitaire) {
         this.panier = panier;
         this.produit = produit;
         this.quantite = quantite;
@@ -53,11 +52,11 @@ public class PanierProduit {
         this.panier = panier;
     }
     
-    public Produit getProduit() {
+    public Produits getProduit() {
         return produit;
     }
     
-    public void setProduit(Produit produit) {
+    public void setProduit(Produits produit) {
         this.produit = produit;
     }
     
@@ -69,16 +68,16 @@ public class PanierProduit {
         this.quantite = quantite;
     }
     
-    public BigDecimal getPrixUnitaire() {
+    public Double getPrixUnitaire() {
         return prixUnitaire;
     }
     
-    public void setPrixUnitaire(BigDecimal prixUnitaire) {
+    public void setPrixUnitaire(Double prixUnitaire) {
         this.prixUnitaire = prixUnitaire;
     }
     
     
-    public BigDecimal getSousTotal() {
-        return prixUnitaire.multiply(BigDecimal.valueOf(quantite));
+    public Double getSousTotal() {
+        return prixUnitaire * quantite;
     }
 }

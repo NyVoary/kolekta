@@ -21,13 +21,13 @@ public interface PanierProduitRepository extends JpaRepository<PanierProduit, Lo
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM PanierProduit pp WHERE pp.panier.idPanier = :idPanier AND pp.produit.idProduit = :idProduit")
+    @Query("DELETE FROM Panier_Produits pp WHERE pp.panier.idPanier = :idPanier AND pp.produit.idProduit = :idProduit")
     void deleteByPanierIdAndProduitId(@Param("idPanier") Long idPanier, @Param("idProduit") Long idProduit);
 
-    @Query("SELECT COUNT(pp) FROM PanierProduit pp WHERE pp.panier.idPanier = :idPanier")
+    @Query("SELECT COUNT(pp) FROM Panier_Produits pp WHERE pp.panier.idPanier = :idPanier")
     Long countByPanierId(@Param("idPanier") Long idPanier);
 
     @Modifying
-    @Query("DELETE FROM PanierProduit pp WHERE pp.panier.idPanier = :idPanier")
+    @Query("DELETE FROM Panier_Produits pp WHERE pp.panier.idPanier = :idPanier")
     void deleteByPanierId(@Param("idPanier") Long idPanier);
 }
