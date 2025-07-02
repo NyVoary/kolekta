@@ -1,5 +1,8 @@
 <%@ include file="../includes/head.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/ajout-produit.css">
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>

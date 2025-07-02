@@ -1,6 +1,0 @@
-Notre premiere objectif dans ce code c'est de randre le formulaire dans admin/produits/statique.jsp fonctionnel
-pour le controller tu n'as le droit d'ecrit que dans controller/admin/ProduitsController
-pour le reste c'est a dire Entity,Repository,Service tu es libre. 
-Pour le formulaire tu n'as pas le droit de changer son design.
-Maintenant passons a la page.
-

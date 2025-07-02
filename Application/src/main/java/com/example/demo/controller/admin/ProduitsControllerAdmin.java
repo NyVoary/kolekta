@@ -16,12 +16,14 @@ import com.example.demo.service.ProduitsService;
 import com.example.demo.service.FournisseursService;
 import com.example.demo.service.CategoriesService;
 import com.example.demo.service.ProduitsMoisService;
+import com.example.demo.service.StatistiquesService;
 
 import java.time.LocalDate;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -38,6 +40,9 @@ public class ProduitsControllerAdmin {
     
     @Autowired
     private ProduitsMoisService produitsMoisService;
+    
+    @Autowired
+    private StatistiquesService statistiquesService;
 
     @GetMapping("/admin/ajout-produit")
      public String addProduct(Model model) {
@@ -192,7 +197,14 @@ public class ProduitsControllerAdmin {
 
     @GetMapping("/admin/stat-produit")
      public String statProduct(Model model) {
-        return "admin/produits/statistique";
+        try {
+            Map<String, Object> stats = statistiquesService.getToutesLesStatistiques();
+            model.addAttribute("statistics", stats);
+            return "admin/produits/statistique";
+        } catch (Exception e) {
+            model.addAttribute("error", "Erreur lors du chargement des statistiques: " + e.getMessage());
+            return "admin/produits/statistique";
+        }
     }
 }
 

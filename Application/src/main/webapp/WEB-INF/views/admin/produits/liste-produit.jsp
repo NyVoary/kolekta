@@ -1,5 +1,8 @@
 <%@ include file="../includes/head.jsp" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/liste-produit.css">
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>
@@ -79,7 +82,10 @@
       <!-- partial -->
       <div class="main-panel">
         <h1>Liste des produits:</h1>
-        <div class="card-deck">
+        <div class="scroll-container">
+          <button class="scroll-btn scroll-btn-left" onclick="scrollLeft()">&lt;</button>
+          <button class="scroll-btn scroll-btn-right" onclick="scrollRight()">&gt;</button>
+          <div class="card-deck" id="cardDeck">
           <c:forEach var="produit" items="${produits}">
           <div class="card">
             <div class="card-body">
@@ -119,6 +125,7 @@
             </div>
           </div>
           </c:forEach>
+          </div>
         </div>
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
@@ -217,6 +224,23 @@
         $('#produitPrixVente').val(prixVente);
       });
     });
+
+    // Fonctions de scroll horizontal
+    function scrollLeft() {
+      const cardDeck = document.getElementById('cardDeck');
+      cardDeck.scrollBy({
+        left: -320,
+        behavior: 'smooth'
+      });
+    }
+
+    function scrollRight() {
+      const cardDeck = document.getElementById('cardDeck');
+      cardDeck.scrollBy({
+        left: 320,
+        behavior: 'smooth'
+      });
+    }
   </script>
 </body>
 
