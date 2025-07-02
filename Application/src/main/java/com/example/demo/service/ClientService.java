@@ -7,6 +7,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.dto.ClientDTO;
@@ -58,5 +59,9 @@ public class ClientService {
         } else {
             throw new Exception("Email ou mot de passe incorrect");
         }
+    }
+
+    public List<Client> getAllClients() {
+        return clientRepository.findAll();
     }
 }

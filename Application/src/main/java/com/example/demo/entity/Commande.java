@@ -19,22 +19,26 @@ public class Commande {
     @Column(nullable = false)
     private LocalDate dateCommande;
 
-    @Column(nullable = false)
+    @Column(name = "frais_livraison", nullable = false)
     private BigDecimal fraisLivraison;
 
-    @Column(nullable = false)
+    @Column(name = "montant_total", nullable = false)
     private BigDecimal montantTotal;
 
-    @Column(nullable = false)
+    @Column(name = "adresse_livraison", nullable = false)
     private String adresseLivraison;
 
-    @Column(nullable = false)
+    @Column(name = "ville_livraison", nullable = false)
     private String villeLivraison;
 
-    @Column(nullable = false)
+    @Column(name = "telephone_livraison", nullable = false)
     private String telephoneLivraison;
 
+    @Column(name = "email_livraison")
     private String emailLivraison;
+
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
+    private List<CommandeProduit> commandeProduits;
 
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
     private List<CommandeStatus> commandeStatuses;
@@ -58,6 +62,8 @@ public class Commande {
     public void setTelephoneLivraison(String telephoneLivraison) { this.telephoneLivraison = telephoneLivraison; }
     public String getEmailLivraison() { return emailLivraison; }
     public void setEmailLivraison(String emailLivraison) { this.emailLivraison = emailLivraison; }
+    public List<CommandeProduit> getCommandeProduits() { return commandeProduits; }
+    public void setCommandeProduits(List<CommandeProduit> commandeProduits) { this.commandeProduits = commandeProduits; }
     public List<CommandeStatus> getCommandeStatuses() { return commandeStatuses; }
     public void setCommandeStatuses(List<CommandeStatus> commandeStatuses) { this.commandeStatuses = commandeStatuses; }
 }

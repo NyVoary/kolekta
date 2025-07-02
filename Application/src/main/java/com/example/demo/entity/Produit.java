@@ -1,4 +1,4 @@
-package com.example.model;
+package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import java.math.BigDecimal;
@@ -9,6 +9,7 @@ import java.time.LocalDate;
 public class Produit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_produit")
     private Long idProduit;
 
     @ManyToOne
@@ -40,7 +41,7 @@ public class Produit {
 
     // Getters et Setters
     public Long getIdProduit() { return idProduit; }
-    public void setIdProduit(Long idProduit) { this.idProduit = idProduit; }
+    public void setId(Long idProduit) { this.idProduit = idProduit; }
     public Fournisseur getFournisseur() { return fournisseur; }
     public void setFournisseur(Fournisseur fournisseur) { this.fournisseur = fournisseur; }
     public String getNom() { return nom; }

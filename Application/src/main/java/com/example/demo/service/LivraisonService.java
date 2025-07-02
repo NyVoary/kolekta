@@ -3,7 +3,6 @@ package com.example.demo.service;
 import com.example.demo.dto.LivraisonDTO;
 import com.example.demo.entity.*;
 import com.example.demo.repository.LivraisonRepository;
-import com.example.demo.repository.CommandeRepository;
 import com.example.demo.repository.CommandeCamionRepository;    
 import com.example.demo.repository.CommandeStatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,6 @@ public class LivraisonService {
 
     @Autowired
     private LivraisonRepository livraisonRepository;
-
-    @Autowired
-    private CommandeRepository commandeRepository;
 
     @Autowired
     private CommandeCamionRepository commandeCamionRepository;
