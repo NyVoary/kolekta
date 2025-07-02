@@ -4,6 +4,7 @@ import com.example.demo.entity.Disponibilite;
 import com.example.demo.entity.Fournisseurs;
 import com.example.demo.entity.Produits;
 import com.example.demo.repository.DisponibiliteRepository;
+import com.example.demo.service.FournisseurStatService;
 import com.example.demo.service.FournisseursService;
 import com.example.demo.service.ProduitsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Controller
 public class AdminFournisseurController {
@@ -25,6 +30,10 @@ public class AdminFournisseurController {
     private ProduitsService produitsService;
     @Autowired
     private DisponibiliteRepository disponibiliteRepository;
+    @Autowired
+    private FournisseurStatService fournisseurStatService;
+
+    private static final Logger log = LoggerFactory.getLogger(AdminFournisseurController.class);
 
     @GetMapping("/admin/fournisseurs/ajout")
     public String showAjoutFournisseurForm(Model model) {
@@ -88,43 +97,28 @@ public class AdminFournisseurController {
     }
 
     @GetMapping("/admin/fournisseurs/statistique")
-    public String statistiquesFournisseurs(Model model) {
-        List<Fournisseurs> fournisseurs = fournisseursService.findAll();
-        int totalFournisseurs = fournisseurs.size();
-        int totalProduits = 0;
-        String topFournisseurNom = "-";
-        int maxProduits = 0;
-        int nbProduitsTop = 0;
-        // Pour le graphique
-        List<Map<String, Object>> fournisseursList = new java.util.ArrayList<>();
-        for (Fournisseurs f : fournisseurs) {
-            List<Produits> produits = fournisseursService.getProduitsByFournisseur(f.getId());
-            int nbProduits = produits.size();
-            totalProduits += nbProduits;
-            if (nbProduits > maxProduits) {
-                maxProduits = nbProduits;
-                topFournisseurNom = f.getNom();
-                nbProduitsTop = nbProduits;
-            }
-            Map<String, Object> entry = new java.util.HashMap<>();
-            entry.put("nom", f.getNom());
-            entry.put("nbProduits", nbProduits);
-            fournisseursList.add(entry);
-        }
+    public String statistiquesFournisseurs(
+            @RequestParam(value = "dateDebut", required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate dateDebut,
+            @RequestParam(value = "dateFin", required = false) @org.springframework.format.annotation.DateTimeFormat(iso = org.springframework.format.annotation.DateTimeFormat.ISO.DATE) LocalDate dateFin,
+            Model model) {
+        if (dateDebut == null)
+            dateDebut = LocalDate.now().minusMonths(1);
+        if (dateFin == null)
+            dateFin = LocalDate.now();
+        long totalFournisseurs = fournisseurStatService.getTotalFournisseurs(dateDebut, dateFin);
+        List<Fournisseurs> nouveauxFournisseurs = fournisseurStatService.getNouveauxFournisseurs(dateDebut, dateFin);
+        Double moyenneProduits = fournisseurStatService.getMoyenneProduitsParFournisseur(dateDebut, dateFin);
+        List<Map<String, Object>> topFournisseurs = fournisseurStatService.getTopFournisseursByVentes(dateDebut,
+                dateFin);
+        log.info(
+                "[CONTROLLER] Statistiques envoyées à la vue : totalFournisseurs={}, nouveauxFournisseurs={}, moyenneProduits={}, topFournisseurs={}",
+                totalFournisseurs, nouveauxFournisseurs.size(), moyenneProduits, topFournisseurs.size());
+        model.addAttribute("dateDebut", dateDebut);
+        model.addAttribute("dateFin", dateFin);
         model.addAttribute("totalFournisseurs", totalFournisseurs);
-        model.addAttribute("totalProduits", totalProduits);
-        Map<String, Object> topFournisseur = new java.util.HashMap<>();
-        topFournisseur.put("nom", topFournisseurNom);
-        topFournisseur.put("nbProduits", nbProduitsTop);
-        model.addAttribute("topFournisseur", topFournisseur);
-        // Générer JSON pour le graphique
-        String fournisseursJson = "[]";
-        try {
-            fournisseursJson = new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(fournisseursList);
-        } catch (Exception e) {
-            // fallback
-        }
-        model.addAttribute("fournisseursJson", fournisseursJson);
+        model.addAttribute("nouveauxFournisseurs", nouveauxFournisseurs);
+        model.addAttribute("moyenneProduits", moyenneProduits);
+        model.addAttribute("topFournisseurs", topFournisseurs);
         return "admin/fournisseurs/statistique";
     }
 }

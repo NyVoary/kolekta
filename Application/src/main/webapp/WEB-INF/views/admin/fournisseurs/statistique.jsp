@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -6,55 +7,59 @@
       <%@ include file="../includes/sidebar.jsp" %>
       <div class="main-panel">
         <div class="content-wrapper">
+          <form class="row mb-4 justify-content-center" method="get" action="">
+            <div class="col-md-3 mb-2">
+              <label for="dateDebut">Date début</label>
+              <input type="date" class="form-control form-control-lg" name="dateDebut" id="dateDebut" value="${dateDebut}" />
+            </div>
+            <div class="col-md-3 mb-2">
+              <label for="dateFin">Date fin</label>
+              <input type="date" class="form-control form-control-lg" name="dateFin" id="dateFin" value="${dateFin}" />
+            </div>
+            <div class="col-md-2 mb-2 d-flex align-items-end">
+              <button type="submit" class="btn btn-gradient-primary btn-lg w-100">Filtrer</button>
+            </div>
+          </form>
           <div class="row mb-4">
-            <div class="col-12 text-center">
-              <h2 class="font-weight-bold mb-3">Statistiques Fournisseurs</h2>
-              <p class="text-muted">Vue d'ensemble des fournisseurs et de leurs produits</p>
-            </div>
-          </div>
-          <div class="row mb-4">
-            <div class="col-md-4 mb-3">
-              <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Nombre total de fournisseurs</h5>
-                  <h2 class="text-primary font-weight-bold">${totalFournisseurs}</h2>
-                </div>
+            <div class="col-md-3 mb-3">
+              <div class="card shadow-sm h-100 text-center p-3">
+                <h6 class="text-muted">Nombre total de fournisseurs</h6>
+                <h2 class="text-primary font-weight-bold">${totalFournisseurs}</h2>
               </div>
             </div>
-            <div class="col-md-4 mb-3">
-              <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Nombre total de produits</h5>
-                  <h2 class="text-success font-weight-bold">${totalProduits}</h2>
-                </div>
+            <div class="col-md-3 mb-3">
+              <div class="card shadow-sm h-100 text-center p-3">
+                <h6 class="text-muted">Nouveaux fournisseurs</h6>
+                <h2 class="text-success font-weight-bold">${nouveauxFournisseurs.size()}</h2>
+                <c:if test="${not empty nouveauxFournisseurs}">
+                  <ul class="list-unstyled small mt-2">
+                    <c:forEach var="f" items="${nouveauxFournisseurs}">
+                      <li><i class="ti-user"></i> ${f.nom}</li>
+                    </c:forEach>
+                  </ul>
+                </c:if>
               </div>
             </div>
-            <div class="col-md-4 mb-3">
-              <div class="card shadow-sm h-100">
-                <div class="card-body text-center">
-                  <h5 class="card-title">Top fournisseur (produits)</h5>
-                  <h2 class="text-warning font-weight-bold">${topFournisseur.nom}</h2>
-                  <p class="mb-0">${topFournisseur.nbProduits} produits</p>
-                </div>
+            <div class="col-md-3 mb-3">
+              <div class="card shadow-sm h-100 text-center p-3">
+                <h6 class="text-muted">Moyenne produits/fournisseur</h6>
+                <h2 class="text-info font-weight-bold">${moyenneProduits}</h2>
               </div>
             </div>
-          </div>
-          <div class="row mb-4">
-            <div class="col-12">
-              <div class="card shadow-sm">
-                <div class="card-body">
-                  <h5 class="card-title">Répartition des produits par fournisseur</h5>
-                  <canvas id="produitsParFournisseurChart" height="100"></canvas>
-                  <c:if test="${empty fournisseursJson || fournisseursJson == '[]'}">
-                    <div class="alert alert-info mt-3">Aucune donnée à afficher pour le graphique.</div>
-                  </c:if>
-                </div>
+            <div class="col-md-3 mb-3">
+              <div class="card shadow-sm h-100 text-center p-3">
+                <h6 class="text-muted">Top fournisseurs (ventes)</h6>
+                <c:if test="${not empty topFournisseurs}">
+                  <ol class="list-unstyled mt-2">
+                    <c:forEach var="tf" items="${topFournisseurs}">
+                      <li><i class="ti-crown text-warning"></i> Fournisseur #${tf.idFournisseur} - ${tf.totalVendus} ventes</li>
+                    </c:forEach>
+                  </ol>
+                </c:if>
+                <c:if test="${empty topFournisseurs}">
+                  <span class="text-muted">Aucune vente sur la période</span>
+                </c:if>
               </div>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-12 text-center">
-              <a href="/admin/fournisseurs/liste" class="btn btn-outline-primary">Retour à la liste des fournisseurs</a>
             </div>
           </div>
         </div>
@@ -62,39 +67,6 @@
       </div>
     </div>
   </div>
-  <script src="/Affichage/Template/js/chart.js"></script>
-  <script>
-    // Données dynamiques passées depuis le contrôleur
-    const fournisseurs = JSON.parse('${fournisseursJson}'.replace(/&quot;/g,'"'));
-    if(fournisseurs.length > 0) {
-      const labels = fournisseurs.map(f => f.nom);
-      const data = fournisseurs.map(f => f.nbProduits);
-      const ctx = document.getElementById('produitsParFournisseurChart').getContext('2d');
-      new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [{
-            label: 'Nombre de produits',
-            data: data,
-            backgroundColor: 'rgba(54, 162, 235, 0.6)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-          }]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: { display: false },
-            title: { display: false }
-          },
-          scales: {
-            y: { beginAtZero: true }
-          }
-        }
-      });
-    }
-  </script>
 </body>
 </html>
 

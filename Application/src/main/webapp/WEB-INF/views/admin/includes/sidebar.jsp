@@ -60,7 +60,7 @@
                 <li class="nav-item"> <a class="nav-link" href="/admin/fournisseurs/liste">Liste</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/paiement-fournisseur">Paiments</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/fournisseurs/ajout-disponibilite">Ajout disponibilite</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/stat-fournisseur">Statistique</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/fournisseurs/statistique">Statistique</a></li>
               </ul>
             </div>
           </li>
