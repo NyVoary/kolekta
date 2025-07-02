@@ -78,6 +78,32 @@
       <!-- partial -->
       <div class="main-panel">
         <h1>Ajout fournisseur:</h1>
+        <c:if test="${not empty success}">
+          <div class="alert alert-success">${success}</div>
+        </c:if>
+        <form action="/admin/fournisseurs/ajout" method="post" class="forms-sample" style="max-width: 500px; margin-top: 24px;">
+          <div class="form-group">
+            <label for="nom">Nom</label>
+            <input type="text" class="form-control" id="nom" name="nom" value="${fournisseur.nom}" required>
+          </div>
+          <div class="form-group">
+            <label for="adresse">Adresse</label>
+            <input type="text" class="form-control" id="adresse" name="adresse" value="${fournisseur.adresse}" required>
+          </div>
+          <div class="form-group">
+            <label for="telephone">Téléphone</label>
+            <input type="text" class="form-control" id="telephone" name="telephone" value="${fournisseur.telephone}">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" value="${fournisseur.email}">
+          </div>
+          <div class="form-group">
+            <label for="image">Image (URL ou nom de fichier)</label>
+            <input type="text" class="form-control" id="image" name="image" value="${fournisseur.image}">
+          </div>
+          <button type="submit" class="btn btn-primary mr-2">Ajouter</button>
+        </form>
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
       </div>

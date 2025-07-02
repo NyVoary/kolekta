@@ -1,89 +1,46 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>
-    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <div id="right-sidebar" class="settings-panel">
-        <i class="settings-close ti-close"></i>
-        <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="setting-content">
-          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-            <div class="add-items d-flex px-3 mb-0">
-              <form class="form w-100">
-                <div class="form-group d-flex">
-                  <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
-                  <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">Add</button>
-                </div>
-              </form>
+      <%@ include file="../includes/sidebar.jsp" %>
+      <div class="main-panel">
+        <h1>Liste des fournisseurs</h1>
+  
+        <c:forEach var="fournisseur" items="${fournisseurs}">
+          <div class="card mb-4" style="box-shadow:0 2px 12px rgba(60,72,100,0.07);border-radius:14px;padding:24px;">
+            <div style="display:flex;align-items:center;gap:24px;">
+              <div style="flex:1;">
+                <h3 style="margin:0 0 8px 0;">${fournisseur.nom}</h3>
+                <div><b>Adresse :</b> ${fournisseur.adresse}</div>
+                <div><b>Téléphone :</b> ${fournisseur.telephone}</div>
+                <div><b>Email :</b> ${fournisseur.email}</div>
+              </div>
+              <div>
+                <img src="/static/images/${fournisseur.image}" alt="Image fournisseur" style="width:80px;height:80px;object-fit:cover;border-radius:50%;border:2px solid #e2e8f0;">
+              </div>
             </div>
-            <div class="list-wrapper px-3">
-              <ul class="d-flex flex-column-reverse todo-list">
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Team review meeting at 3.00 PM
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Prepare for presentation
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Resolve all the low priority tickets due today
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Schedule meeting for next week
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Project review
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
+            <div style="margin-top:18px;">
+              <b>Produits :</b>
+              <ul style="margin:8px 0 0 18px;padding:0;list-style:disc;">
+                <c:forEach var="produit" items="${produitsParFournisseur[fournisseur.id]}">
+                  <li style="margin-bottom:2px;">
+                    <span style="font-weight:600;">${produit.nom}</span> - ${produit.uniteMesure} - ${produit.prixVente} €
+                  </li>
+                </c:forEach>
+                <c:if test="${empty produitsParFournisseur[fournisseur.id]}">
+                  <li style="color:#a0aec0;">Aucun produit pour ce fournisseur.</li>
+                </c:if>
               </ul>
             </div>
           </div>
-          <!-- To do section tab ends -->
-        </div>
+        </c:forEach>
       </div>
-      <%@ include file="../includes/sidebar.jsp" %>
-      <!-- partial -->
-      <div class="main-panel">
-        <h1>Liste fournisseur:</h1>
-        <!-- partial:partials/_footer.html -->
-      <%@ include file="../includes/footer.jsp" %>
-      </div>
-    </div>   
+    </div>
   </div>
 </body>
-
 </html>
 

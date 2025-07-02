@@ -130,4 +130,36 @@ public class Produits {
         this.image = image;
     }
 
+    public String getUniteMesure() {
+        return unite_mesure;
+    }
+
+    public void setUniteMesure(String uniteMesure) {
+        this.unite_mesure = uniteMesure;
+    }
+
+    public double getPrixAchat() {
+        return prix_achat;
+    }
+
+    public void setPrixAchat(double prixAchat) {
+        this.prix_achat = prixAchat;
+    }
+
+    public double getPrixVente() {
+        return prix_vente;
+    }
+
+    public void setPrixVente(double prixVente) {
+        this.prix_vente = prixVente;
+    }
+
+    public LocalDate getDateAjout() {
+        return date_ajout;
+    }
+
+    public void setDateAjout(LocalDate dateAjout) {
+        this.date_ajout = dateAjout;
+    }
+
 }
