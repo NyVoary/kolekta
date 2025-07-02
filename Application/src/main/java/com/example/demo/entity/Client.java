@@ -39,9 +39,7 @@ public class Client {
     @Column(length = 100)
     private String image;
 
-    // --- Getters et Setters ---
-
-    public int getIdClient() {
+    public Long getIdClient() {
         return idClient;
     }
 

@@ -4,8 +4,8 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.demo.entity.Paniers;
+import com.example.demo.entity.Panier;
 
-public interface PanierAddRepository extends JpaRepository<Paniers, Integer> {
-    Optional<Paniers> findByIdClient(int idClient);
+public interface PanierAddRepository extends JpaRepository<Panier, Long> {
+    Optional<Panier> findByIdClient(Long idClient);
 }

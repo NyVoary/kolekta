@@ -15,6 +15,7 @@ public class ClientDTO {
     private String mdp;
     private MultipartFile image; // pour gérer le fichier envoyé via le formulaire
 
+
     // Getters et Setters
     public String getNom() {
         return nom;

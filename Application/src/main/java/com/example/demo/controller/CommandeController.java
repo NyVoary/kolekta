@@ -104,4 +104,70 @@ public class CommandeController {
             return "redirect:/produits";
         }
     }
+
+    @GetMapping("/login-erreur")
+    public String afficherLoginErreur() {
+        return "client/login-client";
+    }   
+
+    @PostMapping("/ajouter")
+    public String ajouterAuPanier(
+            @RequestParam(required = false) Long produitId,
+            @RequestParam(required = false) Integer quantite,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+
+        Client utilisateur = (Client) session.getAttribute("client-connected");
+
+        if (utilisateur == null) {
+            logger.warn("Utilisateur non connecté – redirection vers login.jsp");
+            redirectAttributes.addFlashAttribute("erreur", "Veuillez vous connecter avant d'ajouter au panier.");
+            return "redirect:/login-client";
+        }
+
+        if (produitId == null || quantite == null || quantite <= 0) {
+            logger.warn("Paramètres invalides - produitId={}, quantite={}", produitId, quantite);
+            redirectAttributes.addFlashAttribute("erreur", "Paramètres invalides.");
+            return "redirect:/produits";
+        }
+
+        Long idClient = utilisateur.getIdClient();
+
+        try {
+            Panier panier = panierAddRepository.findByIdClient(idClient)
+                    .orElseGet(() -> {
+                        Panier nouveau = new Panier();
+                        nouveau.setIdClient(idClient);
+                        return panierAddRepository.save(nouveau);
+                    });
+
+            Optional<Produit> produitOpt = produitRepository.findById(produitId);
+            if (produitOpt.isEmpty()) {
+                redirectAttributes.addFlashAttribute("erreur", "Produit introuvable.");
+                return "redirect:/produits";
+            }
+
+            Panier_Produits ligne = new Panier_Produits();
+            ligne.setIdPanier(panier.getId());
+            ligne.setIdProduit(produitId);
+            ligne.setQuantite(quantite);
+            ligne.setPrixUnitaire(produitOpt.get().getPrixVente());
+
+            panierProduitAddRepository.save(ligne);
+
+            String nomProduit = produitOpt.get().getNom();
+            redirectAttributes.addFlashAttribute("message", 
+                "Produit ajouté dans le panier avec succès ! (" + quantite + " x " + nomProduit + ")");
+            
+            logger.info("Produit ajouté au panier - Client: {}, Produit: {}, Quantité: {}", 
+                       idClient, produitId, quantite);
+            
+            return "redirect:/produits";
+
+        } catch (Exception e) {
+            logger.error("Erreur technique : ", e);
+            redirectAttributes.addFlashAttribute("erreur", "Erreur technique : " + e.getMessage());
+            return "redirect:/produits";
+        }
+    }
 }
