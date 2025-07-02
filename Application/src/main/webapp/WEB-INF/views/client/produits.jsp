@@ -1,27 +1,27 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Produits disponibles</title>
-
-    <!-- plugins:css -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/feather/feather.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/css/vendor.bundle.base.css">
-    <!-- endinject -->
-
-    <!-- inject:css -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
-    <!-- endinject -->
-
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/produits.css" />
     <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/produits.css" />
 </head>
+
 <body>
+
+    <%-- <%@ include file="./inc/css.jsp"  %>
+    <%@ include file="./inc/header.jsp" %> --%>
     <div class="container-scroller">
+    <%@ include file="includes/navbar.jsp" %>
         <!-- Messages de notification -->
         <c:if test="${not empty message}">
             <div class="message-box success" id="messageBox">
@@ -37,10 +37,7 @@
             </div>
         </c:if>
 
-        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-            <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center"></div>
-
-            <div class="navbar-menu-wrapper d-flex align-items-center">
+            <div class="navbar-menu-wrapper d-flex align-items-center" style="margin-top: 10vh;">
                 <!-- Partie gauche -->
                 <div class="d-flex"></div>
 
@@ -63,38 +60,16 @@
                             </li>
                         </ul>
 
-                        <!-- Catégorie avec dropdown -->
                         <div class="input-group mr-2">
-                            <div class="dropdown">
-                                 <!-- Input caché qui contient la catégorie choisie -->
-                                <input type="hidden" id="categorie" name="categorie" value="${categorie != null ? categorie : ''}">
-
-                                <button type="button" class="btn btn-outline-info dropdown-toggle" id="dropdownCategorie" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    ${categorie != null && !categorie.isEmpty() ? categorie : "Catégorie"}
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownCategorie">
-                                    <c:forEach var="cat" items="${categories}">
-                                        <a class="dropdown-item" href="#" data-value="${cat.libelle}">
-                                            ${cat.libelle}
-                                        </a>
-                                    </c:forEach>
-                                </div>
-                            </div>
+                            <select class="form-control" name="categorie" id="categorie">
+                                <option value="">Catégorie</option>
+                                <c:forEach var="cat" items="${categories}">
+                                <option value="${cat.libelle}" ${categorie == cat.libelle ? 'selected' : ''}>
+                                    ${cat.libelle}
+                                </option>
+                                </c:forEach>
+                            </select>
                         </div>
-
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                var dropdownItems = document.querySelectorAll('.dropdown-item[data-value]');
-                                dropdownItems.forEach(function(item) {
-                                    item.addEventListener('click', function(e) {
-                                        e.preventDefault();
-                                        var value = this.getAttribute('data-value');
-                                        document.getElementById('categorie').value = value;
-                                        document.getElementById('dropdownCategorie').textContent = value;
-                                    });
-                                });
-                            });
-                        </script>
 
                         <!-- Prix minimal -->
                         <ul class="navbar-nav mr-lg-2">
@@ -138,12 +113,9 @@
                 <!-- Partie droite -->
                 <div class="d-flex"></div>
             </div>
-        </nav>  
 
         <div class="container-fluid page-body-wrapper">
             <!-- partial:partials/_sidebar.html -->
-            <nav class="sidebar sidebar-offcanvas" id="sidebar"></nav>
-
             <div class="main-panel">
                 <div class="content-wrapper">
                     <h1>Liste des produits</h1>

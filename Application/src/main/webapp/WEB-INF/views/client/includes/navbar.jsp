@@ -1,8 +1,9 @@
 <!-- partial:partials/_navbar.html -->
+  <%@ include file="head.jsp" %>
 <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
   <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-    <a class="navbar-brand brand-logo mr-5" href="index.html"><img src="images/logo.svg" class="mr-2" alt="logo" /></a>
-    <a class="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo" /></a>
+    <a class="navbar-brand brand-logo mr-5" href="/produits_liste"><img src="images/logo.svg" class="mr-2" alt="logo" /></a>
+    <a class="navbar-brand brand-logo-mini" href="/produits_liste"><img src="images/logo-mini.svg" alt="logo" /></a>
   </div>
   <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
     <%-- <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -22,6 +23,7 @@
       </li>
     </ul> 
     <ul class="navbar-nav navbar-nav-right">
+    <%-- notifications  --%>
       <!-- <li class="nav-item dropdown">
         <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
           <i class="icon-bell mx-0"></i>
@@ -72,31 +74,41 @@
         </div>
       </li> -->
       <li class="nav-item nav-profile dropdown">
-        <a class="nav-link dropdown-toggle" href="/produits" data-toggle="dropdown" id="profileDropdown">
+        <a class="nav-link dropdown-toggle" href="/produits" data-toggle="dropdown" >
         <form class="form-inline" action="/produits" method="get">
           <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
                             <i class="ti-search text-info"></i>                          
           </button>
           </form>
         </a>
+      </li>
+      <li class="nav-item nav-profile dropdown">
+        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" >
+        <form class="form-inline" action="/panier" method="get">
+          <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
+                <i class="ti-shopping-cart text-info"></i>                     
+          </button>
+          </form>
+        </a>
+      </li>
+      <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
           <img src="images/faces/face28.jpg" alt="profile" />
         </a>
         <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-          <a class="dropdown-item">
-            <i class="ti-settings text-primary"></i>
-            Settings
-          </a>
-          <a class="dropdown-item">
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/profil" style="color:black;font-decoration:none;">
             <i class="ti-power-off text-primary"></i>
-            Logout
+            Mon profil
+          </a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/historique" style="color:black;font-decoration:none;">
+            <i class="ti-power-off text-primary"></i>
+            Historique des commandes
+          </a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/logout" style="color:black;font-decoration:none;">
+            <i class="ti-power-off text-primary"></i>
+            Deconnexion
           </a>
         </div>
-      </li>
-      <li class="nav-item nav-settings d-none d-lg-flex">
-        <a class="nav-link" href="#">
-          <i class="icon-ellipsis"></i>
-        </a>
       </li>
     </ul>
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
@@ -105,3 +117,5 @@
     </button>
   </div>
 </nav>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>

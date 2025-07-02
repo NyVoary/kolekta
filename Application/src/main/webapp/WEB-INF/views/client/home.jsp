@@ -17,6 +17,10 @@
 </head>
 
 <body>
+
+    <%-- <%@ include file="./inc/css.jsp"  %>
+    <%@ include file="./inc/header.jsp" %> --%>
+    <%@ include file="includes/navbar.jsp" %>
 <!-- Messages de notification -->
     <c:if test="${not empty message}">
         <div class="message-box success" id="messageBox">
@@ -32,9 +36,6 @@
         </div>
     </c:if>
 
-    <%-- <%@ include file="./inc/css.jsp"  %>
-    <%@ include file="./inc/header.jsp" %> --%>
-    <%@ include file="includes/navbar.jsp" %>
     <div class="section" style="margin-top: 10vh;background-color:rgb(86, 135, 185); padding: 20px;">
         <h1>Produits du moment:</h1>
         <ul>

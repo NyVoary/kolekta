@@ -38,7 +38,7 @@ public class ClientController {
         return "client/Login";
     }
 
-     @GetMapping("/inscription-client")
+    @GetMapping("/inscription-client")
     public String inscription(Model model) {
         return "client/Inscription";
     }
@@ -78,4 +78,16 @@ public class ClientController {
     public String accueil(Model model) {
         return "redirect:/produits_liste";
     }
+
+    @GetMapping("/panier")
+    public String panier(Model model) {
+        return "client/panier";
+    }
+    
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate(); 
+        return "client/Login";
+    }
+    
 }
