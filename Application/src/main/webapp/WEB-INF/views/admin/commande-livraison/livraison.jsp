@@ -96,6 +96,7 @@
                           <th>Ville</th>
                           <th>Camion</th>
                           <th>Chauffeur</th>
+                          <th>Statut</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -112,6 +113,7 @@
                           <td><%= livraison.getVilleLivraison() %></td>
                           <td><%= livraison.getImmatriculation() %></td>
                           <td><%= livraison.getChauffeurNom() %></td>
+                          <td><%= livraison.getStatut() %></td>
                         </tr>
                         <%
                             }

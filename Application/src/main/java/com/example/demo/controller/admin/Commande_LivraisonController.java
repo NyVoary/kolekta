@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.example.demo.dto.CommandeDTO;
 import com.example.demo.dto.LivraisonDTO;
+import com.example.demo.service.CommandeService;
 import com.example.demo.service.LivraisonService;
 
 
@@ -16,6 +18,9 @@ public class Commande_LivraisonController {
 
     @Autowired
     private LivraisonService livraisonService;
+
+    @Autowired
+    private CommandeService commandeService;
 
     @GetMapping("/admin/livraison")
     public String livraison(Model model) {
@@ -26,6 +31,8 @@ public class Commande_LivraisonController {
 
     @GetMapping("/admin/commande")
     public String commande(Model model) {
+        List<CommandeDTO> commandes = commandeService.getAllCommandes();
+        model.addAttribute("commandes", commandes);
         return "admin/commande-livraison/commande";
     }
 
