@@ -52,7 +52,7 @@ public class ClientController {
             Client client = clientService.inscrire(clientDTO);
             session.setAttribute("client-connected", client);
             model.addAttribute("message", "Inscription réussie !");
-            return "redirect:/"; // Page après succès
+            return "redirect:/produits"; // Page après succès
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -67,7 +67,6 @@ public class ClientController {
             Client client = clientService.login(loginDTO);
             session.setAttribute("client-connected", client);
             return "redirect:/home";
-            // return "redirect:/produits";
         } catch (Exception e) {
             session.setAttribute("error-client", e.getMessage());
             return "redirect:/login-client";
