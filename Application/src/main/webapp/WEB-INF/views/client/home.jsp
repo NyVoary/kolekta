@@ -17,7 +17,6 @@
 </head>
 
 <body>
-
     <%-- <%@ include file="./inc/css.jsp"  %>
     <%@ include file="./inc/header.jsp" %> --%>
     <%@ include file="includes/navbar.jsp" %>

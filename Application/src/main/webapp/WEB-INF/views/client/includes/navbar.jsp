@@ -74,8 +74,8 @@
         </div>
       </li> -->
       <li class="nav-item nav-profile dropdown">
-        <a class="nav-link dropdown-toggle" href="/produits" data-toggle="dropdown" >
-        <form class="form-inline" action="/produits" method="get">
+        <a class="nav-link dropdown-toggle" href="/recherche_produits" data-toggle="dropdown" >
+        <form class="form-inline" action="/recherche_produits" method="get">
           <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
                             <i class="ti-search text-info"></i>                          
           </button>
@@ -84,32 +84,45 @@
       </li>
       <li class="nav-item nav-profile dropdown">
         <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" >
-        <form class="form-inline" action="/panier" method="get">
+        <form class="form-inline" action="/panier/monpanier" method="get">
           <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
                 <i class="ti-shopping-cart text-info"></i>                     
           </button>
           </form>
         </a>
       </li>
-      <li class="nav-item nav-profile dropdown">
-        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
-          <img src="images/faces/face28.jpg" alt="profile" />
-        </a>
-        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-          <a class="dropdown-item" href="${pageContext.request.contextPath}/profil" style="color:black;font-decoration:none;">
-            <i class="ti-power-off text-primary"></i>
-            Mon profil
+      <!-- Afficher le profil seulement si le client est connecté -->
+      <c:if test="${sessionScope['client-connected'] != null}">
+        <li class="nav-item nav-profile dropdown profile">
+          <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+            <img src="images/faces/face28.jpg" alt="profile" />
           </a>
-          <a class="dropdown-item" href="${pageContext.request.contextPath}/historique" style="color:black;font-decoration:none;">
-            <i class="ti-power-off text-primary"></i>
-            Historique des commandes
+          <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/profil" style="color:black;text-decoration:none;">
+              <i class="ti-user text-primary"></i>
+              Mon profil
+            </a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/historique" style="color:black;text-decoration:none;">
+              <i class="ti-time text-primary"></i>
+              Historique des commandes
+            </a>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/logout" style="color:black;text-decoration:none;">
+              <i class="ti-power-off text-primary"></i>
+              Deconnexion
+            </a>
+          </div>
+        </li>
+      </c:if>
+
+      <!-- Optionnel : Afficher un bouton de connexion si pas connecté -->
+      <c:if test="${sessionScope['client-connected'] == null}">
+        <li class="nav-item">
+          <a class="nav-link" href="${pageContext.request.contextPath}/login-client">
+            <i class="ti-user"></i>
+            Se connecter
           </a>
-          <a class="dropdown-item" href="${pageContext.request.contextPath}/logout" style="color:black;font-decoration:none;">
-            <i class="ti-power-off text-primary"></i>
-            Deconnexion
-          </a>
-        </div>
-      </li>
+        </li>
+      </c:if>
     </ul>
     <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button"
       data-toggle="offcanvas">

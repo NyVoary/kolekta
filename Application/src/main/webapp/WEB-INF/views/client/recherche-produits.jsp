@@ -43,7 +43,7 @@
 
                 <!-- Partie centrale -->
                 <div class="d-flex justify-content-center flex-grow-1">
-                    <form method="get" action="/produits" class="form-inline">
+                    <form method="get" action="/recherche_produits" class="form-inline">
                         <!-- Nom du produit -->
                         <ul class="navbar-nav mr-lg-2">
                             <li class="nav-item nav-search d-none d-lg-block">

@@ -19,18 +19,13 @@ import com.example.demo.service.ProduitsService;
 @Controller
 public class ClientController {
 
-    private final  ProduitsService produitsService;
+    private final ProduitsService produitsService;
     private final ClientService clientService;
 
     @Autowired
     public ClientController(ProduitsService produitsService, ClientService clientService) {
         this.produitsService = produitsService;
         this.clientService = clientService;
-    }
-
-    @GetMapping("/")
-    public String firstLogin(Model model) {
-        return "client/Login";
     }
 
     @GetMapping("/login-client")
@@ -45,14 +40,14 @@ public class ClientController {
 
     @PostMapping("/inscription-client")
     public String inscriptionClient(@ModelAttribute ClientDTO clientDTO,
-                                    Model model,
-                                    HttpSession session) {
+            Model model,
+            HttpSession session) {
         System.out.println("wawa");
         try {
             Client client = clientService.inscrire(clientDTO);
             session.setAttribute("client-connected", client);
             model.addAttribute("message", "Inscription réussie !");
-            return "redirect:/produits"; // Page après succès
+            return "redirect:/"; 
         } catch (Exception e) {
             e.printStackTrace();
 
@@ -66,7 +61,7 @@ public class ClientController {
         try {
             Client client = clientService.login(loginDTO);
             session.setAttribute("client-connected", client);
-            return "redirect:/home";
+            return "redirect:/";
             // return "redirect:/produits";
         } catch (Exception e) {
             session.setAttribute("error-client", e.getMessage());
@@ -74,20 +69,15 @@ public class ClientController {
         }
     }
 
-    @GetMapping("/home")
+    @GetMapping("/")
     public String accueil(Model model) {
         return "redirect:/produits_liste";
     }
 
-    @GetMapping("/panier")
-    public String panier(Model model) {
-        return "client/panier";
-    }
-    
     @GetMapping("/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); 
+        session.invalidate();
         return "client/Login";
     }
-    
+
 }

@@ -37,18 +37,14 @@ public class ProduitsController {
 
     @RequestMapping("/produits_liste")
     public String afficherProduits(Model model) {
-        System.out.println("=== Début de afficherProduits ===");
         List<Produits> produits = service.getAll();
-        System.out.println("Nombre de produits trouvés : " + 
-            (produits != null ? produits.size() : "null"));
         model.addAttribute("produits", produits);
         model.addAttribute("produitsSaison", service.listsProduitsSaisonniers());
-        System.out.println("=== Fin de afficherProduits ===");
         return "client/home";
     }
 
     
-    @GetMapping("/produits")
+    @GetMapping("/recherche_produits")
     public String afficherProduits(
         @RequestParam(required = false) String search,
         @RequestParam(required = false) String categorie,
@@ -59,29 +55,11 @@ public class ProduitsController {
 
             List<Categories> categories = categorieService.getAllCategories();
             
-            // Vérifier si au moins un critère de recherche est fourni
             if (search != null || categorie != null || prixMin != null || prixMax != null) {
                 produits = service.rechercherProduits(search, categorie, prixMin, prixMax);
-
-                // Logs pour débogage
-                System.out.println("Nombre de produits filtrés trouvés : " + (produits != null ? produits.size() : "null"));
-                if (produits != null && !produits.isEmpty()) {
-                    for (Produits p : produits) {
-                        System.out.println("Produit : " + p.getNom() + " - Prix : " + p.getPrixVente());
-                    }
-                }
             } else {
                 produits = service.getAll();
-
-                // Logs pour débogage
-                System.out.println("Nombre de produits trouvés : " + (produits != null ? produits.size() : "null"));
-                if (produits != null && !produits.isEmpty()) {
-                    for (Produits p : produits) {
-                        System.out.println("Produit : " + p.getNom() + " - Prix : " + p.getPrixVente());
-                    }
-                }
             }
-            
             // Ajouter les produits et les catégories au modèle
             model.addAttribute("produits", produits);
             model.addAttribute("categories", categories);
@@ -90,7 +68,6 @@ public class ProduitsController {
             model.addAttribute("categorie", categorie);
             model.addAttribute("prixMin", prixMin);
             model.addAttribute("prixMax", prixMax);
-            
-            return "client/produits";
+            return "client/recherche-produits";
     }
 }

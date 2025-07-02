@@ -38,12 +38,12 @@ public class CommandeService {
 
         commande = commandeRepository.save(commande);
 
-        for (PanierProduit pp : panier.getPanierProduits()) {
+        for (PanierProduits pp : panier.getPanierProduits()) {
             CommandeProduit cp = new CommandeProduit();
             cp.setCommande(commande);
             cp.setProduit(pp.getProduit());
-            cp.setQuantite(pp.getQuantite());
-            cp.setPrixUnitaire(pp.getPrixUnitaire().doubleValue());
+            cp.setQuantite(pp.getQuantite() != null ? pp.getQuantite().intValue() : null);
+            cp.setPrixUnitaire(pp.getPrixUnitaire());
             commandeProduitRepository.save(cp);
         }
 

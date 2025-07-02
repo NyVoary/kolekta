@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.Panier;
-import com.example.demo.entity.PanierProduit;
+import com.example.demo.entity.*;
 import com.example.demo.entity.Produits;
+import com.example.demo.entity.PanierProduits;
 import com.example.demo.repository.PanierProduitRepository;
 import com.example.demo.repository.PanierRepository;
 import com.example.demo.repository.ProduitRepository;
@@ -54,18 +56,18 @@ public class PanierService {
 
         Produits produit = produitOpt.get();
 
-        Optional<PanierProduit> panierProduitExistant = panierProduitRepository
-                .findByPanierIdPanierAndProduitIdProduit(panier.getIdPanier(), idProduit);
+        Optional<PanierProduits> panierProduitExistant = panierProduitRepository
+                .findByPanierIdPanierAndProduitId(panier.getIdPanier(), idProduit);
 
         if (panierProduitExistant.isPresent()) {
 
-            PanierProduit pp = panierProduitExistant.get();
+            PanierProduits pp = panierProduitExistant.get();
             pp.setQuantite(pp.getQuantite() + quantite);
             panierProduitRepository.save(pp);
         } else {
 
-            PanierProduit nouveauPanierProduit = new PanierProduit(
-                    panier, produit, quantite, Double.valueOf(produit.getPrixVente()));
+            PanierProduits nouveauPanierProduit = new PanierProduits(
+                    panier, produit, quantite.longValue(), Double.valueOf(produit.getPrixVente()));
             panierProduitRepository.save(nouveauPanierProduit);
         }
     }
@@ -76,15 +78,15 @@ public class PanierService {
             throw new RuntimeException("Panier non trouvé");
         }
 
-        Optional<PanierProduit> panierProduitOpt = panierProduitRepository.findByPanierIdPanierAndProduitIdProduit(
+        Optional<PanierProduits> panierProduitOpt = panierProduitRepository.findByPanierIdPanierAndProduitId(
                 panierOpt.get().getIdPanier(), idProduit);
 
         if (panierProduitOpt.isPresent()) {
             if (nouvelleQuantite <= 0) {
                 supprimerProduitDuPanier(idClient, idProduit);
             } else {
-                PanierProduit pp = panierProduitOpt.get();
-                pp.setQuantite(nouvelleQuantite);
+                PanierProduits pp = panierProduitOpt.get();
+                pp.setQuantite(nouvelleQuantite.longValue());
                 panierProduitRepository.save(pp);
             }
         }
@@ -100,7 +102,8 @@ public class PanierService {
 
     public Double calculerMontantHT(Panier panier) {
         return panier.getPanierProduits().stream()
-                .map(PanierProduit::getSousTotal) // retourne Double
+                .map(PanierProduits::getSousTotal)
+                .filter(Objects::nonNull)
                 .reduce(0.0, Double::sum);
     }
 

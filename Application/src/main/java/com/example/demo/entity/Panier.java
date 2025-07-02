@@ -29,7 +29,7 @@ public class Panier {
     private LocalDate dateCreation;
     
     @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<PanierProduit> panierProduits;
+    private List<PanierProduits> panierProduits;
     
    
     public Panier() {}
@@ -64,11 +64,11 @@ public class Panier {
         this.dateCreation = dateCreation;
     }
     
-    public List<PanierProduit> getPanierProduits() {
+    public List<PanierProduits> getPanierProduits() {
         return panierProduits;
     }
     
-    public void setPanierProduits(List<PanierProduit> panierProduits) {
+    public void setPanierProduits(List<PanierProduits> panierProduits) {
         this.panierProduits = panierProduits;
     }
 }

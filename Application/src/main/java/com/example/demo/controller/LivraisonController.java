@@ -45,7 +45,8 @@ public class LivraisonController {
         @RequestParam("villeLivraison") String villeLivraison,
         @RequestParam("telephoneLivraison") String telephoneLivraison,
         @RequestParam("emailLivraison") String emailLivraison,
-        @RequestParam("dateLivraison") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateLivraison
+        @RequestParam("dateLivraison") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateLivraison,
+        Model model
     ) {
         Commande commande = new Commande();
         commande.setAdresseLivraison(adresseLivraison);
@@ -57,7 +58,7 @@ public class LivraisonController {
         livraison.setDateLivraison(dateLivraison);
 
         livraisonService.update(id, livraison, commande);
-
-        return "redirect:/panier"; 
+        model.addAttribute("message", "Livraison enregistrée avec succès !");
+        return "client/panier";
     }
 }

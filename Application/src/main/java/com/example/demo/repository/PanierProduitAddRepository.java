@@ -2,9 +2,9 @@ package com.example.demo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.example.demo.entity.Panier_Produits;
+import com.example.demo.entity.PanierProduits;
 
-public interface PanierProduitAddRepository extends JpaRepository<Panier_Produits, Integer> {
+public interface PanierProduitAddRepository extends JpaRepository<PanierProduits, Integer> {
     // Tu peux ajouter ici plus tard des méthodes comme :
     // List<PanierProduitAdd> findByIdPanier(Long idPanier);
 }

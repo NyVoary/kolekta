@@ -10,24 +10,25 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.entity.PanierProduit;
+import com.example.demo.entity.PanierProduits;
 
 @Repository
-public interface PanierProduitRepository extends JpaRepository<PanierProduit, Long> {
+public interface PanierProduitRepository extends JpaRepository<PanierProduits, Long> {
 
-    List<PanierProduit> findByPanierIdPanier(Long idPanier);
+    List<PanierProduits> findByPanierIdPanier(Long idPanier);
 
-    Optional<PanierProduit> findByPanierIdPanierAndProduitIdProduit(Long idPanier, Long idProduit);
+    Optional<PanierProduits> findByPanierIdPanierAndProduitId(Long idPanier, Long idProduit);
 
     @Modifying
     @Transactional
-    @Query("DELETE FROM Panier_Produits pp WHERE pp.panier.idPanier = :idPanier AND pp.produit.idProduit = :idProduit")
+    @Query("DELETE FROM PanierProduits pp WHERE pp.panier.id = :idPanier AND pp.produit.id = :idProduit")
     void deleteByPanierIdAndProduitId(@Param("idPanier") Long idPanier, @Param("idProduit") Long idProduit);
 
-    @Query("SELECT COUNT(pp) FROM Panier_Produits pp WHERE pp.panier.idPanier = :idPanier")
+    @Query("SELECT COUNT(pp) FROM PanierProduits pp WHERE pp.panier.id = :idPanier")
     Long countByPanierId(@Param("idPanier") Long idPanier);
 
     @Modifying
-    @Query("DELETE FROM Panier_Produits pp WHERE pp.panier.idPanier = :idPanier")
+    @Transactional
+    @Query("DELETE FROM PanierProduits pp WHERE pp.panier.id = :idPanier")
     void deleteByPanierId(@Param("idPanier") Long idPanier);
 }

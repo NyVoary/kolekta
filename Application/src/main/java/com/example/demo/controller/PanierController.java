@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.Panier;
+import com.example.demo.entity.Client;
 import com.example.demo.entity.Commande;
 import com.example.demo.service.PanierService;
 import com.example.demo.service.CommandeService;
 import com.example.demo.service.Partage;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/panier")
@@ -28,13 +31,17 @@ public class PanierController {
     @Autowired
     private Partage partage;
 
-
     // idClient fixé ici
-    private final Long idClient = 1L;
+    private Long idClient = 1L;
 
-    @GetMapping
-    public String afficherPanier(Model model, RedirectAttributes redirectAttributes) {
+    @GetMapping("/monpanier")
+    public String afficherPanier(Model model, RedirectAttributes redirectAttributes, HttpSession session) {
 
+        if (session.getAttribute("client-connected") == null) {
+            return "redirect:/login-client";
+        }
+        Client client = (Client) session.getAttribute("client-connected");
+        idClient = client.getIdClient();
         Optional<Panier> panierOpt = panierService.getPanierAvecProduits(idClient);
 
         if (panierOpt.isPresent()) {
@@ -68,13 +75,15 @@ public class PanierController {
 
     @PostMapping("/ajouter")
     public String ajouterProduit(Long idProduit, Integer quantite, RedirectAttributes redirectAttributes) {
-        if (quantite == null) quantite = 1;
+        if (quantite == null)
+            quantite = 1;
 
         try {
             panierService.ajouterProduitAuPanier(idClient, idProduit, quantite);
             redirectAttributes.addFlashAttribute("successMessage", "Produit ajouté au panier avec succès !");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de l'ajout du produit : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Erreur lors de l'ajout du produit : " + e.getMessage());
         }
 
         return "redirect:/panier";
@@ -84,34 +93,35 @@ public class PanierController {
     public String modifierQuantite(Long idProduit, Integer quantite, RedirectAttributes redirectAttrs) {
         panierService.mettreAJourQuantite(idClient, idProduit, quantite);
         redirectAttrs.addFlashAttribute("successMessage", "Quantité mise à jour.");
-        return "redirect:/panier";
+        return "redirect:/panier/monpanier";
     }
 
     @PostMapping("/supprimer")
     public String supprimerProduit(Long idProduit, RedirectAttributes redirectAttrs) {
         panierService.supprimerProduitDuPanier(idClient, idProduit);
         redirectAttrs.addFlashAttribute("successMessage", "Produit supprimé du panier.");
-        return "redirect:/panier";
+        return "redirect:/panier/monpanier";
     }
 
     @PostMapping("/vider")
     public String viderPanier(RedirectAttributes redirectAttrs) {
         panierService.viderPanier(idClient);
         redirectAttrs.addFlashAttribute("successMessage", "Le panier a été vidé.");
-        return "redirect:/panier";
+        return "redirect:/panier/monpanier";
     }
 
     @PostMapping("/valider")
     public String validerAchat(RedirectAttributes redirectAttributes) {
         if (panierService.compterArticlesPanier(idClient) == 0) {
             redirectAttributes.addFlashAttribute("errorMessage", "Votre panier est vide !");
-            return "redirect:/panier";
+            return "redirect:/panier/monpanier";
         }
 
         Commande commandeCree = commandeService.creerCommandeDepuisPanier(idClient);
         redirectAttributes.addFlashAttribute("successMessage", "Commande enregistrée avec succès !");
-        
-        System.out.println("idCommande-------------------------------------------------------------:" + commandeCree.getId());
+
+        System.out.println(
+                "idCommande-------------------------------------------------------------:" + commandeCree.getId());
         partage.setIdCommande(commandeCree.getId());
 
         return "redirect:/Livraison-client";

@@ -67,29 +67,29 @@ public class CommandeController {
         if (produitId == null || quantite == null || quantite <= 0) {
             logger.warn("Paramètres invalides - produitId={}, quantite={}", produitId, quantite);
             redirectAttributes.addFlashAttribute("erreur", "Paramètres invalides.");
-            return "redirect:/produits";
+            return "redirect:/produits_liste";
         }
 
-        int idClient = utilisateur.getIdClient();
+        Long idClient = Long.valueOf(utilisateur.getIdClient());
 
         try {
-            Paniers panier = panierAddRepository.findByIdClient(idClient)
+            Panier panier = panierAddRepository.findByIdClient(idClient)
                     .orElseGet(() -> {
-                        Paniers nouveau = new Paniers();
-                        nouveau.setIdClient(idClient);
+                        Panier nouveau = new Panier();
+                        nouveau.setIdClient(Long.valueOf(idClient));
                         return panierAddRepository.save(nouveau);
                     });
 
             Optional<Produits> produitOpt = produitsRepository.findById(produitId);
             if (produitOpt.isEmpty()) {
                 redirectAttributes.addFlashAttribute("erreur", "Produit introuvable.");
-                return "redirect:/produits";
+                return "redirect:/produits_liste";
             }
 
-            Panier_Produits ligne = new Panier_Produits();
-            ligne.setIdPanier(panier.getId());
-            ligne.setIdProduit(produitId);
-            ligne.setQuantite(quantite);
+            PanierProduits ligne = new PanierProduits();
+            ligne.setPanier(panier);
+            ligne.setProduit(produitOpt.get());
+            ligne.setQuantite(quantite.longValue());
             ligne.setPrixUnitaire(produitOpt.get().getPrixVente());
 
             panierProduitAddRepository.save(ligne);
@@ -101,12 +101,12 @@ public class CommandeController {
             logger.info("Produit ajouté au panier - Client: {}, Produit: {}, Quantité: {}", 
                        idClient, produitId, quantite);
             
-            return "redirect:/produits";
+            return "redirect:/produits_liste";
 
         } catch (Exception e) {
             logger.error("Erreur technique : ", e);
             redirectAttributes.addFlashAttribute("erreur", "Erreur technique : " + e.getMessage());
-            return "redirect:/produits";
+            return "redirect:/produits_liste";
         }
     }
 
