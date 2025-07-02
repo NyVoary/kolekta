@@ -52,9 +52,9 @@ public class AdminFournisseurController {
     @GetMapping("/admin/fournisseurs/liste")
     public String listeFournisseurs(Model model) {
         List<Fournisseurs> fournisseurs = fournisseursService.findAll();
-        Map<Long, List<Produits>> produitsParFournisseur = new HashMap<>();
+        Map<Long, List<Map<String, Object>>> produitsParFournisseur = new HashMap<>();
         for (Fournisseurs f : fournisseurs) {
-            List<Produits> produits = fournisseursService.getProduitsByFournisseur(f.getId());
+            List<Map<String, Object>> produits = fournisseursService.getProduitsAvecQuantiteByFournisseur(f.getId());
             produitsParFournisseur.put(f.getId(), produits);
         }
         model.addAttribute("fournisseurs", fournisseurs);

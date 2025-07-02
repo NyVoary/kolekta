@@ -9,9 +9,8 @@
       <div class="main-panel">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h1 class="h3">Modifier un fournisseur</h1>
-          <a href="/admin/fournisseurs/liste" class="btn btn-outline-secondary">Retour à la liste</a>
         </div>
-        <div class="card p-4 shadow-lg" style="max-width:900px;width:95vw;margin:auto;background:rgba(245,248,255,0.98);border-radius:2rem;">
+        <div class="card p-4 shadow-lg bg-light" style="max-width:900px;width:95vw;margin:auto;border-radius:2rem;">
           <form action="/admin/fournisseurs/update" method="post" autocomplete="off" aria-label="Formulaire de modification fournisseur">
             <input type="hidden" name="id" value="${fournisseur.id}" />
             <div class="form-group mb-4 position-relative">
@@ -54,12 +53,12 @@
               </div>
               <small id="imgHelp" class="form-text text-muted">Nom du fichier (ex : logo.png)</small>
             </div>
-            <button type="submit" class="btn btn-gradient-primary btn-lg w-100 rounded-pill py-3">Enregistrer les modifications</button>
+            <button type="submit" class="btn btn-gradient-primary btn-lg w-100 rounded-pill py-3 shadow">Enregistrer les modifications</button>
             <c:if test="${not empty success}">
-              <div class="alert alert-success mt-3" role="alert">${success}</div>
+              <div class="alert alert-success mt-3 text-center" role="alert">${success}</div>
             </c:if>
             <c:if test="${not empty error}">
-              <div class="alert alert-danger mt-3" role="alert">${error}</div>
+              <div class="alert alert-danger mt-3 text-center" role="alert">${error}</div>
             </c:if>
           </form>
         </div>
