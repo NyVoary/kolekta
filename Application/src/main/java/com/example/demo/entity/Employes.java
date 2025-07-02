@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -41,6 +43,7 @@ public class Employes {
     @Column(nullable = false)
     private BigDecimal salaire;
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Mode_paiement mode_paiement;
     private String image;
 
