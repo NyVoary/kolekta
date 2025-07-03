@@ -1,0 +1,6 @@
+je voudrais que tu crée un css pour le fichier Application/src/main/webapp/WEb-INF/admin/produits/liste-produit.jsp
+je veux seulement un css pour ca: <div class="main-panel">
+Tu dois garder le thème de la page 
+le css tu dois le mettre dans <link rel="stylesheet" href="${pageContext.request.contextPath}/css/liste-produit.css">
+Pour la liste des produits tu mets tout sur une seule ligne mais on aurra des bouton (fleches) pour le scroll horizontale
+
