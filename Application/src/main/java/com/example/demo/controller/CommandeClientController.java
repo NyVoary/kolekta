@@ -5,6 +5,8 @@ import com.example.demo.dto.response.CommandeClientResponse;
 import com.example.demo.entity.Status;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.service.CommandeService;
+import com.example.demo.service.CommandeServiceInterface;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +19,7 @@ import java.util.List;
 public class CommandeClientController {
 
     @Autowired
-    private CommandeService commandeService;
+    private CommandeServiceInterface commandeService;
 
     @Autowired
     private StatusRepository statusRepository;

@@ -1,58 +1,47 @@
 package com.example.demo.repository;
 
-<<<<<<< HEAD
-import org.springframework.data.jpa.repository.JpaRepository;
-=======
-import com.example.demo.entity.Commande;
+import com.example.demo.entity.*;
 
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
->>>>>>> g1-details-commande
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< HEAD
-import com.example.demo.entity.Client;
-import com.example.demo.entity.Commandes;
-import java.util.List;
-
-@Repository
-public interface CommandeRepository extends JpaRepository<Commandes, Long> {
-    @Query("SELECT c FROM Commandes c WHERE c.client.id = :clientId")
-    List<Commandes> findByClient(@Param("clientId") Long id);
-}
-=======
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
 @Repository
-public interface CommandeRepository extends JpaRepository<Commande, Long> {
-    @EntityGraph(attributePaths = {"paiements", "commandeStatusList"})
-    List<Commande> findByIdClient(Long idClient);
-    List<Commande> findByDateCommande(Date dateCommande);
-    List<Commande> findByVilleLivraison(String villeLivraison);
+public interface CommandeRepository extends JpaRepository<Commandes, Long> {
+    @EntityGraph(attributePaths = { "paiements", "commandeStatusList" })
+    @Query("SELECT c FROM Commandes c WHERE c.client.idClient = :clientId")
+    List<Commandes> findByClientId(@Param("clientId") Long clientId);;
 
-    @Query("UPDATE Commande c SET c.dateCommande = :newDate WHERE c.idCommande = :id")
-    @Modifying
+    List<Commandes> findByDateCommande(Date dateCommande);
+
+    List<Commandes> findByVilleLivraison(String villeLivraison);
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query("UPDATE Commandes c SET c.dateCommande = :newDate WHERE c.id = :id")
     void updateDateCommande(@Param("id") Long id, @Param("newDate") LocalDate newDate);
 
     @Query(value = """
-    SELECT c.* FROM commandes c
-    JOIN commande_status cs ON c.id_commande = cs.id_commande
-    JOIN status s ON cs.id_status = s.id_status
-    WHERE c.id_client = :clientId
-    AND (:statut IS NULL OR s.libelle LIKE %:statut%)
-    AND (CAST(:dateFrom AS date) IS NULL OR c.date_commande >= :dateFrom)
-    AND (CAST(:dateTo AS date) IS NULL OR c.date_commande <= :dateTo)
-    ORDER BY c.date_commande DESC
-    """, nativeQuery = true)
-    List<Commande> findByClientIdWithFilters(
-        @Param("clientId") Long clientId,
-        @Param("statut") String statut,
-        @Param("dateFrom") LocalDate dateFrom,
-        @Param("dateTo") LocalDate dateTo);
+            SELECT c.* FROM commandes c
+            JOIN commande_status cs ON c.id_commande = cs.id_commande
+            JOIN status s ON cs.id_status = s.id_status
+            WHERE c.id_client = :clientId
+            AND (:statut IS NULL OR s.libelle LIKE %:statut%)
+            AND (CAST(:dateFrom AS date) IS NULL OR c.date_commande >= :dateFrom)
+            AND (CAST(:dateTo AS date) IS NULL OR c.date_commande <= :dateTo)
+            ORDER BY c.date_commande DESC
+            """, nativeQuery = true)
+    List<Commandes> findByClientIdWithFilters(
+            @Param("clientId") Long clientId,
+            @Param("statut") String statut,
+            @Param("dateFrom") LocalDate dateFrom,
+            @Param("dateTo") LocalDate dateTo);
 }
->>>>>>> g1-details-commande

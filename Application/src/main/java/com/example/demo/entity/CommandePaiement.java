@@ -1,7 +1,6 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -14,13 +13,13 @@ public class CommandePaiement {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_commande", referencedColumnName = "id_commande", nullable = false)
-    private Commande commande;
+    private Commandes commande;
 
     @Column(name = "date_paiement", nullable = false)
     private LocalDate datePaiement;
 
-    @Column(name = "montant", nullable = false, precision = 10, scale = 2)
-    private BigDecimal montant;
+    @Column(name = "montant", nullable = false)
+    private Double montant;
 
     @Column(name = "mode_paiement", nullable = false, length = 100)
     private String modePaiement;
@@ -29,7 +28,7 @@ public class CommandePaiement {
     public CommandePaiement() {
     }
 
-    public CommandePaiement(LocalDate datePaiement, BigDecimal montant, String modePaiement) {
+    public CommandePaiement(LocalDate datePaiement, Double montant, String modePaiement) {
         this.datePaiement = datePaiement;
         this.montant = montant;
         this.modePaiement = modePaiement;
@@ -44,11 +43,11 @@ public class CommandePaiement {
         this.idPaiement = idPaiement;
     }
 
-    public Commande getCommande() {
+    public Commandes getCommande() {
         return commande;
     }
 
-    public void setCommande(Commande commande) {
+    public void setCommande(Commandes commande) {
         this.commande = commande;
     }
 
@@ -60,11 +59,11 @@ public class CommandePaiement {
         this.datePaiement = datePaiement;
     }
 
-    public BigDecimal getMontant() {
+    public Double getMontant() {
         return montant;
     }
 
-    public void setMontant(BigDecimal montant) {
+    public void setMontant(Double montant) {
         this.montant = montant;
     }
 

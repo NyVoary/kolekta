@@ -9,8 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "produit_mois")
@@ -25,8 +23,6 @@ public class ProduitsMois {
     @JoinColumn(name = "id_produit", nullable = false)
     private Produits produits;
 
-    @Min(1)
-    @Max(12)
     @Column(nullable = false)
     private int mois;
 

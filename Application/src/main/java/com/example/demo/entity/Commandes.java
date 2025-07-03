@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -47,6 +48,32 @@ public class Commandes {
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("dateChangement DESC") // Pour avoir l'historique trié par date
     private List<CommandeStatus> commandesStatus = new ArrayList<>();
+
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
+    private List<CommandePaiement> paiements;
+
+    public Commandes() {
+    }
+
+    public Commandes(Client client, LocalDate dateCommande, Double fraisLivraison, Double montantTotal,
+            String adresseLivraison, String villeLivraison, String telephoneLivraison,
+            String emailLivraison) {
+        this.client = client;
+        this.dateCommande = dateCommande;
+        this.fraisLivraison = fraisLivraison;
+        this.montantTotal = montantTotal;
+        this.adresseLivraison = adresseLivraison;
+        this.villeLivraison = villeLivraison;
+        this.telephoneLivraison = telephoneLivraison;
+        this.emailLivraison = emailLivraison;
+    }
+    public List<CommandePaiement> getPaiements() {
+        return paiements;
+    }
+
+    public void setPaiements(List<CommandePaiement> paiements) {
+        this.paiements = paiements;
+    }
 
     public List<CommandeStatus> getCommandesStatus() {
         return commandesStatus;
@@ -179,5 +206,29 @@ public class Commandes {
 
     public void setProduits(List<CommandeProduit> produits) {
         this.produits = produits;
+    }
+
+    public List<CommandeStatus> getCommandeStatusList() {
+        return commandesStatus;
+    }
+
+    public void setCommandeStatusList(List<CommandeStatus> commandeStatusList) {
+        this.commandesStatus = commandeStatusList;
+    }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "Commande{" +
+                "idCommande=" + id +
+                ", client=" + client +
+                ", dateCommande=" + dateCommande +
+                ", fraisLivraison=" + fraisLivraison +
+                ", montantTotal=" + montantTotal +
+                ", adresseLivraison='" + adresseLivraison + '\'' +
+                ", villeLivraison='" + villeLivraison + '\'' +
+                ", telephoneLivraison='" + telephoneLivraison + '\'' +
+                ", emailLivraison='" + emailLivraison + '\'' +
+                '}';
     }
 }

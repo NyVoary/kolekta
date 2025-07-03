@@ -73,6 +73,7 @@ public class ClientController {
     public String accueil(Model model) {
         return "redirect:/produits_liste";
     }
+    
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {

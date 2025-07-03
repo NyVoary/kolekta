@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-<<<<<<< HEAD
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 
@@ -10,14 +9,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.demo.dto.request.FilterCommandesRequest;
+import com.example.demo.dto.response.CommandeClientResponse;
+import java.util.List;
+
 
 @Service
 public class CommandeService {
+
     @Autowired
     private CommandeRepository commandeRepository;
     @Autowired private CommandeProduitRepository commandeProduitRepository;
     @Autowired private PanierService panierService;
     @Autowired private ClientService clientService;
+
 
     public Commandes creerCommandeDepuisPanier(Long idClient) {
         Panier panier = panierService.getPanierAvecProduits(idClient).orElseThrow();
@@ -63,15 +68,6 @@ public class CommandeService {
     }
 
     public List<Commandes> getCommandesByClientId(Long client) {
-        return commandeRepository.findByClient(client);
+        return commandeRepository.findByClientId(client);
     }
 }
-=======
-import com.example.demo.dto.request.FilterCommandesRequest;
-import com.example.demo.dto.response.CommandeClientResponse;
-import java.util.List;
-
-public interface CommandeService {
-    List<CommandeClientResponse> getCommandesByClientWithFilters(Long clientId, FilterCommandesRequest filters);
-}
->>>>>>> g1-details-commande

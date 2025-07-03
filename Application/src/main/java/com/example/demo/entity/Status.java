@@ -1,32 +1,14 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-<<<<<<< HEAD
-=======
 import java.util.List;
->>>>>>> g1-details-commande
 
 @Entity
 @Table(name = "status")
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-<<<<<<< HEAD
     private Long id;
-    
-    private String libelle;
-    
-    // Getters et Setters
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-=======
-    @Column(name = "id_status")
-    private Integer idStatus;
-
     @Column(name = "libelle", nullable = false, length = 100)
     private String libelle;
 
@@ -40,15 +22,14 @@ public class Status {
     public Status(String libelle) {
         this.libelle = libelle;
     }
-
+    
     // Getters et Setters
-    public Integer getIdStatus() {
-        return idStatus;
+    public Long getId() {
+        return id;
     }
 
-    public void setIdStatus(Integer idStatus) {
-        this.idStatus = idStatus;
->>>>>>> g1-details-commande
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getLibelle() {
@@ -58,8 +39,6 @@ public class Status {
     public void setLibelle(String libelle) {
         this.libelle = libelle;
     }
-<<<<<<< HEAD
-=======
 
     public List<CommandeStatus> getCommandeStatusList() {
         return commandeStatusList;
@@ -68,5 +47,4 @@ public class Status {
     public void setCommandeStatusList(List<CommandeStatus> commandeStatusList) {
         this.commandeStatusList = commandeStatusList;
     }
->>>>>>> g1-details-commande
 }

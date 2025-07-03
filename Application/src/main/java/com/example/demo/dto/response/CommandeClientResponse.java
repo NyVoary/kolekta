@@ -1,6 +1,5 @@
 package com.example.demo.dto.response;
 
-import java.math.BigDecimal;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,10 +9,10 @@ import lombok.Setter;
 public class CommandeClientResponse {
     private Long idCommande;
     private String dateCommande;
-    private BigDecimal montantTotal;
-    private BigDecimal montantPaye;
-    private BigDecimal montantRestant;
-    private BigDecimal fraisLivraison;
+    private Double montantTotal;
+    private Double montantPaye;
+    private Double montantRestant;
+    private Double fraisLivraison;
     private String statutActuel;
     private String dateDernierStatut;
     private String adresseLivraison;

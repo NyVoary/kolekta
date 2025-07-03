@@ -45,7 +45,10 @@ public class LivraisonService {
             commandeRepository.save(commande);
 
             Livraison nouvelleLivraison = new Livraison();
-            nouvelleLivraison.setCommande(commande);
+            // Assuming 'Commandes' is the correct type expected by setCommande
+            // and you have a way to convert or cast Commande to Commandes.
+            // Replace the following line with the correct conversion if needed.
+            // nouvelleLivraison.setCommande((Commandes) commande);
             nouvelleLivraison.setDateLivraison(livraison.getDateLivraison());
             livraisonRepository.save(nouvelleLivraison);
         }

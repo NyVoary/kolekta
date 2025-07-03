@@ -102,8 +102,7 @@
               <i class="ti-user text-primary"></i>
               Mon profil
             </a>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/commande/historique" style="color:black;text-decoration:none;">
-              <i class="ti-time text-primary"></i>
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/client/${sessionScope['client-connected'].idClient}/commandes" style="color:black;text-decoration:none;">
               Historique des commandes
             </a>
             <a class="dropdown-item" href="${pageContext.request.contextPath}/logout" style="color:black;text-decoration:none;">
