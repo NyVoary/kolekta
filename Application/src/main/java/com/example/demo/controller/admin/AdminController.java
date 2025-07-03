@@ -52,7 +52,8 @@ public class AdminController {
         session.invalidate(); 
         return "redirect:/admin";
     }
-
+    //Modifier par Fenitra pour afficher les statistiques
+    
     /*@GetMapping("/admin/dashboard")
     public String dashboard(Model model) {
         return "admin/home";
