@@ -9,12 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.entity.Panier;
-import com.example.demo.entity.Client;
-import com.example.demo.entity.Commande;
-import com.example.demo.service.PanierService;
-import com.example.demo.service.CommandeService;
-import com.example.demo.service.Partage;
+import com.example.demo.entity.*;
+import com.example.demo.service.*;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -117,7 +113,7 @@ public class PanierController {
             return "redirect:/panier/monpanier";
         }
 
-        Commande commandeCree = commandeService.creerCommandeDepuisPanier(idClient);
+        Commandes commandeCree = commandeService.creerCommandeDepuisPanier(idClient);
         redirectAttributes.addFlashAttribute("successMessage", "Commande enregistrée avec succès !");
 
         System.out.println(

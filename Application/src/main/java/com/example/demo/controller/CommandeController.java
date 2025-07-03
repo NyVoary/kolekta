@@ -112,9 +112,17 @@ public class CommandeController {
 
     @GetMapping("/commandes/{id}")
     public String detailCommande(@PathVariable Long id, Model model) {
-        Commande commande = commandeService.getCommandeWithProduits(id);
+        Commandes commande = commandeService.getCommandeWithProduits(id);
         model.addAttribute("commande", commande);
         model.addAttribute("progression", commande.getProgression());
         return "client/detail-commande";
+    }
+
+    @GetMapping("/historique")
+    public String historiqueCommandes(HttpSession session, Model model) {
+        Client utilisateur = (Client) session.getAttribute("client-connected");
+        Long idClient = Long.valueOf(utilisateur.getIdClient());
+        model.addAttribute("commandes", commandeService.getCommandesByClientId(idClient));
+        return "client/historique-commandes";
     }
 }

@@ -10,7 +10,7 @@ import java.util.Comparator;
 
 @Entity
 @Table(name = "commandes")
-public class Commande {
+public class Commandes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_commande")

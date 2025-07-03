@@ -4,6 +4,7 @@ import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class CommandeService {
     @Autowired private PanierService panierService;
     @Autowired private ClientService clientService;
 
-    public Commande creerCommandeDepuisPanier(Long idClient) {
+    public Commandes creerCommandeDepuisPanier(Long idClient) {
         Panier panier = panierService.getPanierAvecProduits(idClient).orElseThrow();
         Client client = clientService.getClientById(idClient.intValue()).orElseThrow();
 
@@ -26,7 +27,7 @@ public class CommandeService {
         Double fraisLivraison = panierService.getFraisLivraison();
         Double montantTotal = panierService.calculerMontantTotal(montantTTC);
 
-        Commande commande = new Commande();
+        Commandes commande = new Commandes();
         commande.setClient(client);
         commande.setDateCommande(LocalDate.now());
         commande.setFraisLivraison(fraisLivraison.doubleValue());
@@ -52,11 +53,15 @@ public class CommandeService {
     }
 
     @Transactional(readOnly = true)
-    public Commande getCommandeWithProduits(Long id) {
-        Commande commande = commandeRepository.findById(id).orElse(null);
+    public Commandes getCommandeWithProduits(Long id) {
+        Commandes commande = commandeRepository.findById(id).orElse(null);
         if (commande != null) {
             commande.getProduits().size();
         }
         return commande;
+    }
+
+    public List<Commandes> getCommandesByClientId(Long client) {
+        return commandeRepository.findByClient(client);
     }
 }

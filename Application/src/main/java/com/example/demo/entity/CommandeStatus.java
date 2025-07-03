@@ -13,7 +13,7 @@ public class CommandeStatus {
 
     @ManyToOne
     @JoinColumn(name = "id_commande", nullable = false)
-    private Commande commande;
+    private Commandes commande;
 
     @ManyToOne
     @JoinColumn(name = "id_status", nullable = false)
@@ -34,11 +34,11 @@ public class CommandeStatus {
         this.id = id;
     }
 
-    public Commande getCommande() {
+    public Commandes getCommande() {
         return commande;
     }
 
-    public void setCommande(Commande commande) {
+    public void setCommande(Commandes commande) {
         this.commande = commande;
     }
 

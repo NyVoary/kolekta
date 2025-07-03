@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.entity.Commande;
+import com.example.demo.entity.*;
 import com.example.demo.entity.Livraison;
 import com.example.demo.service.LivraisonService;
 import com.example.demo.service.Partage;
@@ -33,7 +33,7 @@ public class LivraisonController {
             return "redirect:/panier";
         }
     
-        Commande commande = livraisonService.getCommande(idCommande);
+        Commandes commande = livraisonService.getCommande(idCommande);
         model.addAttribute("liste", commande);
         return "client/Livraison";
     }
@@ -48,7 +48,7 @@ public class LivraisonController {
         @RequestParam("dateLivraison") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateLivraison,
         Model model
     ) {
-        Commande commande = new Commande();
+        Commandes commande = new Commandes();
         commande.setAdresseLivraison(adresseLivraison);
         commande.setVilleLivraison(villeLivraison);
         commande.setTelephoneLivraison(telephoneLivraison);

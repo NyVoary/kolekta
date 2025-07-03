@@ -102,7 +102,7 @@
               <i class="ti-user text-primary"></i>
               Mon profil
             </a>
-            <a class="dropdown-item" href="${pageContext.request.contextPath}/historique" style="color:black;text-decoration:none;">
+            <a class="dropdown-item" href="${pageContext.request.contextPath}/commande/historique" style="color:black;text-decoration:none;">
               <i class="ti-time text-primary"></i>
               Historique des commandes
             </a>

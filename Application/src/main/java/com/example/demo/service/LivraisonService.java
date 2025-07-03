@@ -2,7 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
-import com.example.demo.entity.Commande;
+import com.example.demo.entity.*;
 import com.example.demo.entity.Livraison;
 import com.example.demo.repository.LivraisonRepository;
 import com.example.demo.repository.CommandeRepository;
@@ -26,7 +26,7 @@ public class LivraisonService {
         return livraisonRepository.save(livraison);
     }
 
-    public Commande getCommande(Long id) {
+    public Commandes getCommande(Long id) {
         return commandeRepository.findById(id).orElse(null);
     }
 
@@ -34,8 +34,8 @@ public class LivraisonService {
         return livraisonRepository.findById(id).orElse(null);
     }
 
-    public void update(Long id, Livraison livraison, Commande commandes) {
-        Commande commande = commandeRepository.findById(id).orElse(null);
+    public void update(Long id, Livraison livraison, Commandes commandes) {
+        Commandes commande = commandeRepository.findById(id).orElse(null);
 
         if (commande != null) {
             commande.setAdresseLivraison(commandes.getAdresseLivraison());
