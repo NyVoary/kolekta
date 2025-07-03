@@ -28,9 +28,9 @@ public class AssignationCamionController {
     @PostMapping("/ajout")
     public String ajouterAssignation(@ModelAttribute AssignationCamionDTO dto, HttpSession session) {
         try {
-            assignationService.ajouterAssignation(dto);
+            assignationService.ajouterAssignation(dto); 
             session.setAttribute("succes-assignation", "Assignation du camion reussi"); 
-        } catch (Exception e) {
+        } catch (Exception e) {      
             e.printStackTrace(); // à remplacer par gestion d’erreur
             session.setAttribute("error-assignation", e.getMessage());
         }

@@ -1,5 +1,5 @@
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.demo.entity.Camion" %>
+<%@ page import="com.example.demo.view.VCamionEtat" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -83,7 +83,7 @@
         <div class="content-wrapper">
           <div class="row">
             <%
-                List<Camion> camions = (List<Camion>) request.getAttribute("camions");
+                List<VCamionEtat> camions = (List<VCamionEtat>) request.getAttribute("camions");
             %>
 
             <div class="col-lg-12 grid-margin stretch-card">
@@ -96,7 +96,7 @@
                         <label>Camion</label>
                         <select name="idCamion" class="form-control" required>
                           <option value="">-- Choisir un camion --</option>
-                          <% for(Camion c : camions) { %>
+                          <% for(VCamionEtat c : camions) { %>
                             <option value="<%= c.getId() %>">
                               <%= c.getImmatriculation() %> - <%= c.getChauffeur_nom() %>
                             </option>

@@ -6,12 +6,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import java.util.List;
+
 import com.example.demo.dto.CamionDTO;
 import com.example.demo.dto.CamionDTO;
 import com.example.demo.entity.Camion;
+import com.example.demo.service.CamionEtatService;
 import com.example.demo.service.CamionService;
 import com.example.demo.service.ProduitsService;
+import com.example.demo.view.VCamionEtat;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -21,10 +26,12 @@ import jakarta.servlet.http.HttpSession;
 public class CamionsController {
 
     private final CamionService camionService; 
+    private final CamionEtatService  camionEtatService; 
 
     @Autowired
-    public CamionsController(CamionService camionService) {
+    public CamionsController(CamionService camionService, CamionEtatService camionEtatService ) {
         this.camionService = camionService;
+        this.camionEtatService = camionEtatService;
     }
 
     @GetMapping("/admin/ajout-camion")
@@ -35,8 +42,8 @@ public class CamionsController {
     @GetMapping("/admin/liste-camion")
     public String listeCamion(Model model) {
         try {
-            List<Camion> camions = camionService.getAll();
-            model.addAttribute("camions", camions);
+            List<VCamionEtat> camions = camionEtatService.getAllCamionsAvecEtat(); // ou repository.findAll() 
+        model.addAttribute("camions", camions);
         } catch (Exception e) {
             model.addAttribute("error", "Erreur lors du chargement des camions : " + e.getMessage());
         }
@@ -50,10 +57,17 @@ public class CamionsController {
     }
     @GetMapping("/admin/assignation-camion")
     public String assignationCamion(Model model) throws Exception { 
-        List<Camion> camions = camionService.getAll(); // ou repository.findAll() 
+       List<VCamionEtat> camions = camionEtatService.getAllCamionsDisponibles(); // ou repository.findAll() 
         model.addAttribute("camions", camions);
         return "admin/camions/assignation";
     }
+
+    @GetMapping("/admin/finir-trajet")
+    public String finirAssignationCamion(@RequestParam("id") String id,Model model) throws Exception { 
+       List<VCamionEtat> camions = camionEtatService.getAllCamionsDisponibles(); // ou repository.findAll() 
+        model.addAttribute("camions", camions);
+        return "admin/camions/assignation";
+    } 
 
     @PostMapping("/admin/ajout-camion")
     public String addCamionTraitement(@ModelAttribute CamionDTO camionDTO,
