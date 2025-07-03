@@ -7,6 +7,7 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.List;
 // import java.nio.file.Paths;
 import java.util.Optional;
 
@@ -37,7 +38,6 @@ public class ClientService {
         File destinationFile = new File(staticUploads, fileName);
         image.transferTo(destinationFile);
                 
-
         Client client = new Client();
         client.setNom(dto.getNom());
         client.setPrenoms(dto.getPrenoms());
@@ -59,5 +59,21 @@ public class ClientService {
         } else {
             throw new Exception("Email ou mot de passe incorrect");
         }
+    }
+
+    public List<Client> getAllClients() {
+        return clientRepository.findAll();
+    }    
+
+    public Client getClientById(int id) {
+        return clientRepository.findById(id).orElse(null);
+    }
+    
+    public Client updateClient(Client client) {
+        return clientRepository.save(client);
+    }
+
+    public void deleteClient(int id) {
+        clientRepository.deleteById(id);
     }
 }

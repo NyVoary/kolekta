@@ -39,6 +39,9 @@ public class Client {
     @Column(length = 100)
     private String image;
 
+    @Column(name = "date_creation", nullable = false, updatable = false)
+    private LocalDate dateCreation = LocalDate.now(); // Valeur par défaut
+
     // --- Getters et Setters ---
 
     public int getIdClient() {
@@ -119,5 +122,13 @@ public class Client {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public LocalDate getDateCreation() {
+        return dateCreation;
+    }
+    
+    public void setDateCreation(LocalDate dateCreation) {
+        this.dateCreation = dateCreation;
     }
 }
