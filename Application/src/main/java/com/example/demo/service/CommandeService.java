@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+<<<<<<< HEAD
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 
@@ -65,3 +66,12 @@ public class CommandeService {
         return commandeRepository.findByClient(client);
     }
 }
+=======
+import com.example.demo.dto.request.FilterCommandesRequest;
+import com.example.demo.dto.response.CommandeClientResponse;
+import java.util.List;
+
+public interface CommandeService {
+    List<CommandeClientResponse> getCommandesByClientWithFilters(Long clientId, FilterCommandesRequest filters);
+}
+>>>>>>> g1-details-commande
