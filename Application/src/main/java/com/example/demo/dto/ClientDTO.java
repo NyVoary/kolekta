@@ -1,21 +1,28 @@
 package com.example.demo.dto;
 
+import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class ClientDTO {
+    private Long id;
     private String nom;
     private String prenoms;
-    private LocalDate dtn; // date de naissance
-    private char sexe;
+    private LocalDate dtn;
+    private Character sexe;
     private String email;
     private String telephone;
     private String adresse;
     private String mdp;
-    private MultipartFile image; // pour gérer le fichier envoyé via le formulaire
+    private MultipartFile image;
 
-    // Getters et Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNom() {
         return nom;
     }
@@ -40,11 +47,11 @@ public class ClientDTO {
         this.dtn = dtn;
     }
 
-    public char getSexe() {
+    public Character getSexe() {
         return sexe;
     }
 
-    public void setSexe(char sexe) {
+    public void setSexe(Character sexe) {
         this.sexe = sexe;
     }
 

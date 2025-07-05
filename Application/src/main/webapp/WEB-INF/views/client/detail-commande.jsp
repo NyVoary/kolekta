@@ -31,11 +31,27 @@
         </head>
 
         <body>
-            <div class="">
+            <div class="container-fluid page-body-wrapper">
                 <%@ include file="includes/navbar.jsp" %>
+                <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="/client/monprofil">
+                                    <i class="icon-grid menu-icon"></i>
+                                    <span class="menu-title">Mon profil</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/client/${clientId}/commandes">
+                                    <i class="icon-paper menu-icon"></i>
+                                    <span class="menu-title">Commandes Clients</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
                 <!-- partial -->
                     <!-- partial -->
-                    <div class="" style="margin-top:10vh;">
+                    <div class="main-panel">
                         <div class="content-wrapper">
                             <div class="row">
                                 <div class="col-md-6 grid-margin stretch-card">

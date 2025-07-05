@@ -6,6 +6,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "clients")
 public class Client {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_client")
@@ -21,7 +22,7 @@ public class Client {
     private LocalDate dtn;
 
     @Column(nullable = false, length = 1)
-    private char sexe;
+    private Character sexe;
 
     @Column(length = 255)
     private String email;

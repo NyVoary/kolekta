@@ -19,8 +19,6 @@ import com.example.demo.repository.*;
 import com.example.demo.service.*;
 import org.springframework.ui.Model;
 
-
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -95,12 +93,12 @@ public class CommandeController {
             panierProduitAddRepository.save(ligne);
 
             String nomProduit = produitOpt.get().getNom();
-            redirectAttributes.addFlashAttribute("message", 
-                "Produit ajouté dans le panier avec succès ! (" + quantite + " x " + nomProduit + ")");
-            
-            logger.info("Produit ajouté au panier - Client: {}, Produit: {}, Quantité: {}", 
-                       idClient, produitId, quantite);
-            
+            redirectAttributes.addFlashAttribute("message",
+                    "Produit ajouté dans le panier avec succès ! (" + quantite + " x " + nomProduit + ")");
+
+            logger.info("Produit ajouté au panier - Client: {}, Produit: {}, Quantité: {}",
+                    idClient, produitId, quantite);
+
             return "redirect:/produits_liste";
 
         } catch (Exception e) {
@@ -111,18 +109,25 @@ public class CommandeController {
     }
 
     @GetMapping("/commandes/{id}")
-    public String detailCommande(@PathVariable Long id, Model model) {
+    public String detailCommande(@PathVariable Long id, Model model, HttpSession session) {
         Commandes commande = commandeService.getCommandeWithProduits(id);
         model.addAttribute("commande", commande);
         model.addAttribute("progression", commande.getProgression());
+
+        Client client = (Client) session.getAttribute("client-connected");
+        if (client != null) {
+            model.addAttribute("clientId", client.getIdClient());
+        }
+
         return "client/detail-commande";
     }
 
-    @GetMapping("/historique")
-    public String historiqueCommandes(HttpSession session, Model model) {
-        Client utilisateur = (Client) session.getAttribute("client-connected");
-        Long idClient = Long.valueOf(utilisateur.getIdClient());
-        model.addAttribute("commandes", commandeService.getCommandesByClientId(idClient));
-        return "client/historique-commandes";
-    }
+    // @GetMapping("/historique")
+    // public String historiqueCommandes(HttpSession session, Model model) {
+    // Client utilisateur = (Client) session.getAttribute("client-connected");
+    // Long idClient = Long.valueOf(utilisateur.getIdClient());
+    // model.addAttribute("commandes",
+    // commandeService.getCommandesByClientId(idClient));
+    // return "client/historique-commandes";
+    // }
 }

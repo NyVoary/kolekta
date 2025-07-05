@@ -1,17 +1,28 @@
 package com.example.demo.service;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> Robel
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+<<<<<<< HEAD
 // import java.nio.file.Paths;
+=======
+import java.nio.file.Paths;
+>>>>>>> Robel
 import java.util.Optional;
 
 import com.example.demo.dto.ClientDTO;
 import com.example.demo.dto.ClientLoginDTO;
+<<<<<<< HEAD
 
+=======
+>>>>>>> Robel
 import com.example.demo.entity.Client;
 import com.example.demo.repository.ClientRepository;
 
@@ -23,11 +34,18 @@ public class ClientService {
 
     public Client inscrire(ClientDTO dto) throws Exception {
         if ((clientRepository.findByEmail(dto.getEmail())) != null) {
+<<<<<<< HEAD
             throw new Exception("Email déjà utilisé");
         }
 
         File staticUploads = ResourceUtils
                 .getFile(new File("src/main/resources/static/images/uploads").getAbsolutePath());
+=======
+            throw new Exception("Email déjà utilisé"); 
+        }
+
+        File staticUploads = ResourceUtils.getFile(new File("src/main/resources/static/images/uploads").getAbsolutePath());
+>>>>>>> Robel
 
         if (!staticUploads.exists()) {
             staticUploads.mkdirs(); // juste au cas où
@@ -36,6 +54,10 @@ public class ClientService {
         String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
         File destinationFile = new File(staticUploads, fileName);
         image.transferTo(destinationFile);
+<<<<<<< HEAD
+=======
+                
+>>>>>>> Robel
 
         Client client = new Client();
         client.setNom(dto.getNom());
@@ -59,6 +81,7 @@ public class ClientService {
             throw new Exception("Email ou mot de passe incorrect");
         }
     }
+<<<<<<< HEAD
 
     public Optional<Client> getClientById(Integer id) {
         return clientRepository.findById(id);
@@ -75,4 +98,6 @@ public class ClientService {
     public boolean existeClient(Integer id) {
         return clientRepository.existsById(id);
     }
+=======
+>>>>>>> Robel
 }

@@ -22,9 +22,30 @@
         </head>
 
         <body>
-            <div class="">
-                <!-- partial:../../partials/_navbar.html -->
+            <div class="container-fluid page-body-wrapper">
                 <%@ include file="includes/navbar.jsp" %>
+                    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                        <ul class="nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="client/monprofil">
+                                    <i class="icon-grid menu-icon"></i>
+                                    <span class="menu-title">Mon profil</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/client/${clientId}/commandes">
+                                    <i class="icon-paper menu-icon"></i>
+                                    <span class="menu-title">Commandes Clients</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" href="/client/${clientId}">
+                                    <i class="icon-paper menu-icon"></i>
+                                    <span class="menu-title">Historique d'achat</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
             
                     <div class="" style="margin-top:10vh;">
                         <div class="content-wrapper">

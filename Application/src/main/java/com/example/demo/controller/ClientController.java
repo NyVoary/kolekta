@@ -1,31 +1,40 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import java.time.LocalDate;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import com.example.demo.dto.ClientDTO;
-import com.example.demo.dto.ClientLoginDTO;
-import com.example.demo.entity.Client;
-import com.example.demo.service.ClientService;
-
+import org.springframework.web.bind.annotation.RequestParam;
+import com.example.demo.dto.*;
+import com.example.demo.entity.*;
+import com.example.demo.service.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import jakarta.servlet.http.HttpSession;
 import jakarta.servlet.http.HttpSession;
 
-import com.example.demo.service.ProduitsService;
 
 @Controller
 public class ClientController {
 
     private final ProduitsService produitsService;
     private final ClientService clientService;
+    private final HistoriqueAchatService historiqueAchatService;
+
+    private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
+
 
     @Autowired
-    public ClientController(ProduitsService produitsService, ClientService clientService) {
+    public ClientController(ProduitsService produitsService, ClientService clientService,HistoriqueAchatService historiqueAchatService) {
         this.produitsService = produitsService;
         this.clientService = clientService;
+        this.historiqueAchatService = historiqueAchatService;
     }
 
     @GetMapping("/login-client")
@@ -42,15 +51,12 @@ public class ClientController {
     public String inscriptionClient(@ModelAttribute ClientDTO clientDTO,
             Model model,
             HttpSession session) {
-        System.out.println("wawa");
         try {
             Client client = clientService.inscrire(clientDTO);
             session.setAttribute("client-connected", client);
             model.addAttribute("message", "Inscription réussie !");
-            return "redirect:/"; 
+            return "redirect:/"; // Page après succès
         } catch (Exception e) {
-            e.printStackTrace();
-
             session.setAttribute("error-client", e.getMessage());
             return "redirect:/inscription-client";
         }
@@ -73,7 +79,6 @@ public class ClientController {
     public String accueil(Model model) {
         return "redirect:/produits_liste";
     }
-    
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -81,4 +86,27 @@ public class ClientController {
         return "client/Login";
     }
 
+    @GetMapping("/historique-achat")
+    public String historiqueAchat(Model model,
+            @RequestParam(value = "dateDebut", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateDebut,
+            @RequestParam(value = "dateFin", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFin,
+            HttpSession session) {
+        try {
+            Client client = (Client) session.getAttribute("client-connected");
+            if (client == null) {
+                model.addAttribute("error", "Vous devez être connecté pour voir l'historique d'achat.");
+                return "client/HistoriqueAchat";
+            }
+            Long clientId = client.getIdClient();
+            model.addAttribute("dateDebut", dateDebut);
+            model.addAttribute("dateFin", dateFin);
+            model.addAttribute("historique",
+                    historiqueAchatService.getHistoriqueAchatByClientAndDate(clientId, dateDebut, dateFin));
+            return "client/HistoriqueAchat";
+        } catch (Exception e) {
+            logger.error("Erreur lors de la récupération de l'historique d'achat", e);
+            model.addAttribute("error", "Erreur lors de la récupération de l'historique d'achat");
+            return "client/HistoriqueAchat";
+        }
+    }
 }
