@@ -47,7 +47,7 @@ public class Commandes {
 
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("dateChangement DESC") // Pour avoir l'historique trié par date
-    private List<CommandeStatus> commandesStatus = new ArrayList<>();
+    private List<CommandeStatus> status = new ArrayList<>();
 
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
     private List<CommandePaiement> paiements;
@@ -75,19 +75,19 @@ public class Commandes {
         this.paiements = paiements;
     }
 
-    public List<CommandeStatus> getCommandesStatus() {
-        return commandesStatus;
+    public List<CommandeStatus> getStatus() {
+        return status;
     }
 
-    public void setCommandesStatus(List<CommandeStatus> commandesStatus) {
-        this.commandesStatus = commandesStatus;
+    public void setstatus(List<CommandeStatus> status) {
+        this.status = status;
     }
 
     public Status getStatutActuel() {
-        if (this.commandesStatus == null || this.commandesStatus.isEmpty()) {
+        if (this.status == null || this.status.isEmpty()) {
             return null;
         }
-        return this.commandesStatus.stream()
+        return this.status.stream()
                 .filter(cs -> cs.getDateChangement() != null) // Filtre les dates null
                 .max(Comparator.comparing(CommandeStatus::getDateChangement))
                 .map(CommandeStatus::getStatus)
@@ -209,11 +209,19 @@ public class Commandes {
     }
 
     public List<CommandeStatus> getCommandeStatusList() {
-        return commandesStatus;
+        return status;
     }
 
     public void setCommandeStatusList(List<CommandeStatus> commandeStatusList) {
-        this.commandesStatus = commandeStatusList;
+        this.status = commandeStatusList;
+    }
+    
+    public List<CommandeStatus> getStatuts() {
+        return status;
+    }
+
+    public void setStatuts(List<CommandeStatus> statuts) {
+        this.status = statuts;
     }
 
     // toString method

@@ -26,11 +26,11 @@ public class CommandeService {
 
     public Commandes creerCommandeDepuisPanier(Long idClient) {
         Panier panier = panierService.getPanierAvecProduits(idClient).orElseThrow();
-        Client client = clientService.getClientById(idClient.intValue()).orElseThrow();
+        Client client = clientService.getClientById(idClient.longValue()).orElseThrow();
 
         Double montantHT = panierService.calculerMontantHT(panier);
         Double montantTTC = panierService.calculerMontantTTC(montantHT);
-        Double fraisLivraison = panierService.getFraisLivraison();
+        Double fraisLivraison = panierService.getFraisLivraison(montantHT);
         Double montantTotal = panierService.calculerMontantTotal(montantTTC);
 
         Commandes commande = new Commandes();

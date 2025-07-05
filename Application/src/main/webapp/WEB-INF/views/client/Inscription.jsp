@@ -43,9 +43,10 @@
                 </div>
                 <div class="form-group">
                   <select class="form-control form-control-lg" name="sexe" required>
-                    <option value="" disabled selected>Sexe</option>
+                    <option value="">Sexe</option>
                     <option value="M">Masculin</option>
                     <option value="F">Feminin</option>
+                    <option value="Autre">Autre</option>
                   </select>
                 </div>
                 <div class="form-group">

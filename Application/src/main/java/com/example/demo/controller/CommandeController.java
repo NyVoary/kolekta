@@ -113,12 +113,10 @@ public class CommandeController {
         Commandes commande = commandeService.getCommandeWithProduits(id);
         model.addAttribute("commande", commande);
         model.addAttribute("progression", commande.getProgression());
-
         Client client = (Client) session.getAttribute("client-connected");
         if (client != null) {
             model.addAttribute("clientId", client.getIdClient());
         }
-
         return "client/detail-commande";
     }
 

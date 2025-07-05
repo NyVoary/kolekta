@@ -115,8 +115,8 @@ public class PanierService {
         return montantHT + calculerTVA(montantHT);
     }
 
-    public Double calculerMontantTotal(Double montantTTC) {
-        return montantTTC + 5000.0;
+    public Double calculerMontantTotal(Double montantHT) {
+        return calculerMontantTTC(montantHT)+ getFraisLivraison(montantHT);
     }
 
     public void viderPanier(Long idClient) {
@@ -135,7 +135,10 @@ public class PanierService {
         return 0L;
     }
 
-    public Double getFraisLivraison() {
-        return FRAIS_LIVRAISON;
+    public Double getFraisLivraison(Double montantHT) {
+        if (montantHT*0.10 < 5000) {
+            return (double)5000;
+        }
+        return montantHT*0.10;
     }
 }

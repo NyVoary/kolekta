@@ -45,8 +45,8 @@ public class PanierController {
             Double montantHT = panierService.calculerMontantHT(panier);
             Double tva = panierService.calculerTVA(montantHT);
             Double montantTTC = panierService.calculerMontantTTC(montantHT);
-            Double fraisLivraison = panierService.getFraisLivraison();
-            Double montantTotal = panierService.calculerMontantTotal(montantTTC);
+            Double fraisLivraison = panierService.getFraisLivraison(montantHT);
+            Double montantTotal = panierService.calculerMontantTotal(montantHT);
 
             model.addAttribute("panier", panier);
             model.addAttribute("montantHT", montantHT);
@@ -61,8 +61,8 @@ public class PanierController {
             model.addAttribute("montantHT", 0.0);
             model.addAttribute("tva", 0.0);
             model.addAttribute("montantTTC", 0.0);
-            model.addAttribute("fraisLivraison", panierService.getFraisLivraison());
-            model.addAttribute("montantTotal", panierService.getFraisLivraison());
+            model.addAttribute("fraisLivraison", panierService.getFraisLivraison(0.0));
+            model.addAttribute("montantTotal", panierService.getFraisLivraison(0.0));
             model.addAttribute("nombreArticles", 0);
         }
 

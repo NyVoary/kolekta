@@ -207,15 +207,12 @@
 
                                 <!-- =================== BOUTONS ACTION =================== -->
                                 <% if (nombreArticles != null && nombreArticles > 0) { %>
-                                    <form action="/panier/valider" method="post">
-                                        <button type="submit" class="btn-commander mt-3">
+                                    <div class="text-center mt-3">
+                                        <form action="/panier/valider" method="post">
+                                        <button type="submit" class="btn btn-primary mr-2">
                                             <i class="fas fa-credit-card"></i> Valider la commande
                                         </button>
                                     </form>
-                                    <div class="text-center mt-3">
-                                        <a href="/produits" class="btn btn-outline-light">
-                                            <i class="fas fa-arrow-left" style="color:white"></i> Continuer mes achats
-                                        </a>
                                     </div>
                                 <% } else { %>
                                     <div class="text-center mt-3">

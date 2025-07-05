@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Commande;
+import com.example.demo.entity.Commandes;
 import com.example.demo.entity.CommandeProduit;
 import com.example.demo.entity.CommandeStatus;
 import com.example.demo.entity.HistoriqueAchat;
@@ -47,10 +47,10 @@ public class HistoriqueAchatService {
 
     public List<HistoriqueAchat> getHistoriqueAchatByClient(Long clientId) {
         logger.info("Recherche de l'historique d'achat pour le client {}", clientId);
-        List<Commande> toutesCommandes = commandeRepository.findAll();
+        List<Commandes> toutesCommandes = commandeRepository.findAll();
         logger.info("Commandes trouvées en base pour le client {} :", clientId);
         List<HistoriqueAchat> historique = new ArrayList<>();
-        for (Commande c : toutesCommandes) {
+        for (Commandes c : toutesCommandes) {
             if (c.getClient() != null && c.getClient().getIdClient() != null
                     && c.getClient().getIdClient().equals(clientId)) {
                 logger.info("Commande id={} date={} montant={} ...", c.getId(), c.getDateCommande(),
@@ -100,9 +100,9 @@ public class HistoriqueAchatService {
     public List<HistoriqueAchat> getHistoriqueAchatByClientAndDate(Long clientId, LocalDate dateDebut,
             LocalDate dateFin) {
         logger.info("Recherche de l'historique d'achat pour le client {} entre {} et {}", clientId, dateDebut, dateFin);
-        List<Commande> toutesCommandes = commandeRepository.findAll();
+        List<Commandes> toutesCommandes = commandeRepository.findAll();
         List<HistoriqueAchat> historique = new ArrayList<>();
-        for (Commande c : toutesCommandes) {
+        for (Commandes c : toutesCommandes) {
             if (c.getClient() != null && c.getClient().getIdClient() != null
                     && c.getClient().getIdClient().equals(clientId)) {
                 if (c.getDateCommande() != null) {

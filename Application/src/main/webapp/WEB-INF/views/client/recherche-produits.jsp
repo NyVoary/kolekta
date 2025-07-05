@@ -62,7 +62,7 @@
 
                         <div class="input-group mr-2">
                             <select class="form-control" name="categorie" id="categorie">
-                                <option value="">Catégorie</option>
+                                <option value="">Categorie</option>
                                 <c:forEach var="cat" items="${categories}">
                                 <option value="${cat.libelle}" ${categorie == cat.libelle ? 'selected' : ''}>
                                     ${cat.libelle}

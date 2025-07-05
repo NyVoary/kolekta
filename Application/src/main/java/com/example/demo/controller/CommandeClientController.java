@@ -2,20 +2,21 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.request.FilterCommandesRequest;
 import com.example.demo.dto.response.CommandeClientResponse;
-import com.example.demo.entity.Status;
 import com.example.demo.repository.StatusRepository;
 import com.example.demo.service.CommandeService;
 import com.example.demo.service.CommandeServiceInterface;
+
+import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.entity.*;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/client")
 public class CommandeClientController {
 
     @Autowired
@@ -24,21 +25,22 @@ public class CommandeClientController {
     @Autowired
     private StatusRepository statusRepository;
 
-    @GetMapping("/{clientId}/commandes")
+    @GetMapping("/historiqueCommandes")
+    // /historiqueCommandes
     public String listCommandes(
-            @PathVariable("clientId") Long clientId,
             @ModelAttribute FilterCommandesRequest filters,
-            Model model) {
-        
+            Model model, HttpSession session) {
+        Client client = (Client) session.getAttribute("client-connected");
+        if (client == null) {
+            model.addAttribute("error", "Vous devez être connecté pour voir l'historique d'achat.");
+            return "redirect:/login-client";
+        }
         List<CommandeClientResponse> commandes = commandeService
-            .getCommandesByClientWithFilters(clientId, filters);
+                .getCommandesByClientWithFilters(client.getIdClient(), filters);
         List<Status> allStatus = statusRepository.findAll();
-        
         model.addAttribute("commandes", commandes);
         model.addAttribute("filters", filters);
-        model.addAttribute("clientId", clientId);
         model.addAttribute("allStatus", allStatus);
-        
         return "client/commandes";
     }
 }
