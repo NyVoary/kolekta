@@ -16,8 +16,8 @@ public class Employes {
 
     public enum Mode_paiement {
         Virement,
-        Cheque,
-        Especes
+        Chèque,
+        Espèces
     };
 
     @Id
