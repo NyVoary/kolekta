@@ -16,7 +16,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
   
 <%-- <%@ include file="../inc/css.jsp" %> --%>
 <%-- REMOVED --%>
@@ -32,10 +32,10 @@
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-                <img src="${pageContext.request.contextPath}/images/logo.svg" alt="logo">
+                <img src="${pageContext.request.contextPath}/images/lokaly.png" alt="logo">
               </div>
-              <h4>Bienvenue dans le Nom du site</h4>
-              <h6 class="font-weight-light">Si vous avez un compte entrer les informations</h6>
+              <h4>Connectez-vous, commandez, savourez le meilleur du local.</h4>
+              <%-- <h6 class="font-weight-light">Si vous avez un compte entrer les informations</h6> --%>
               <form class="pt-3" method="post" action="/login-client">
                 <div class="form-group">
                   <input type="email" class="form-control form-control-lg" name="email" id="exampleInputEmail1" placeholder="email">

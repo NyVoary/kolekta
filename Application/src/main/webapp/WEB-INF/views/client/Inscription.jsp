@@ -16,7 +16,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
 </head>
 
 <body>
@@ -27,9 +27,9 @@
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-                <img src="${pageContext.request.contextPath}/images/logo.svg" alt="logo">
+                <a class="navbar-brand brand-logo mr-5" href="/produits_liste"><img src="images/lokaly.png" class="mr-2" alt="logo" /></a>
               </div>
-              <h4>Bienvenue dans le Nom du site</h4>
+              <h4>Votre lien direct avec le frais local commence ici.</h4>
               <h6 class="font-weight-light">Remplir ces informations pour l'inscription des clients</h6>
               <form class="pt-3" method="post" action="/inscription-client" enctype="multipart/form-data">
                 <div class="form-group">

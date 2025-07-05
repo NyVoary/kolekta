@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="<%= request.getContextPath() %>/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/js/select.dataTables.min.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/css/vertical-layout-light/style.css">
-    <link rel="shortcut icon" href="<%= request.getContextPath() %>/images/favicon.png" />
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
 </head>
 
 <body>

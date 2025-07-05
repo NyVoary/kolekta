@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/produits.css" />
 </head>
 

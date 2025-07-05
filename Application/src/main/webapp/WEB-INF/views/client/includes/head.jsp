@@ -19,6 +19,6 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
   <%-- <link href="https://cdn.jsdelivr.net/npm/@mdi/font@7.4.47/css/materialdesignicons.min.css" rel="stylesheet"> --%>
 </head>

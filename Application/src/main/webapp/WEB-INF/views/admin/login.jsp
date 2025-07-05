@@ -16,7 +16,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
 </head>
 
 <body>
@@ -35,7 +35,7 @@
                   </div>
                 <% } %>
               <div class="brand-logo">
-                <img src="${pageContext.request.contextPath}/images/logo.svg" alt="logo">
+                <img src="${pageContext.request.contextPath}/images/lokaly.png" alt="logo">
               </div>
                <h4 class="text-center font-weight-bold mb-2">
                 Admin Login

@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="includes/head.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-
+<link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
 <link rel="stylesheet" href="/css/barChart.css">
 
 <body>
