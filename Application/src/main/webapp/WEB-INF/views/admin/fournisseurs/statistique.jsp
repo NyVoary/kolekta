@@ -1,89 +1,140 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>
-    <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <div id="right-sidebar" class="settings-panel">
-        <i class="settings-close ti-close"></i>
-        <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="setting-content">
-          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-            <div class="add-items d-flex px-3 mb-0">
-              <form class="form w-100">
-                <div class="form-group d-flex">
-                  <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
-                  <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">Add</button>
-                </div>
-              </form>
+      <%@ include file="../includes/sidebar.jsp" %>
+      <div class="main-panel">
+        <div class="content-wrapper">
+          <form class="row mb-4 justify-content-center" method="get" action="">
+            <div class="col-12 col-md-3 mb-2">
+              <label for="dateDebut">Date début</label>
+              <input type="date" class="form-control form-control-lg" name="dateDebut" id="dateDebut" value="${dateDebut}" />
             </div>
-            <div class="list-wrapper px-3">
-              <ul class="d-flex flex-column-reverse todo-list">
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Team review meeting at 3.00 PM
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Prepare for presentation
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Resolve all the low priority tickets due today
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Schedule meeting for next week
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Project review
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-              </ul>
+            <div class="col-12 col-md-3 mb-2">
+              <label for="dateFin">Date fin</label>
+              <input type="date" class="form-control form-control-lg" name="dateFin" id="dateFin" value="${dateFin}" />
+            </div>
+            <div class="col-12 col-md-2 mb-2 d-flex align-items-end">
+              <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill shadow">Filtrer</button>
+            </div>
+          </form>
+          <style>
+            .stat-card {
+              box-shadow: 0 6px 24px 0 rgba(79,140,255,0.10), 0 1.5px 6px 0 rgba(0,0,0,0.06);
+              border-radius: 1.5rem;
+              margin-bottom: 2rem;
+              background: #fff;
+              border: 1.5px solid #e6eaf3;
+              transition: box-shadow 0.2s, border 0.2s;
+              min-height: 170px;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              text-align: left;
+            }
+            .stat-card:not(:last-child) {
+              margin-right: 1.5rem;
+            }
+            .stat-card h6 {
+              text-align: center;
+              font-size: 1.05rem;
+              font-weight: 600;
+              letter-spacing: 0.01em;
+              color: #6c757d;
+              margin-bottom: 0.7rem;
+              margin-top: 0.2rem;
+              width: 100%;
+              display: block;
+            }
+            .stat-card h2 {
+              text-align: center;
+              font-size: 2.2rem;
+              font-weight: 700;
+              margin-bottom: 0.2rem;
+              letter-spacing: 0.01em;
+              width: 100%;
+              display: block;
+            }
+            .stat-card ul, .stat-card ol {
+              margin-top: 0.7rem;
+              margin-bottom: 0;
+              padding-left: 1.2rem;
+              text-align: left;
+            }
+            .stat-card span.text-muted {
+              text-align: left;
+              display: block;
+            }
+            .stat-card .center-list {
+              text-align: center;
+              padding-left: 0;
+              margin-left: 0;
+            }
+            .stat-row {
+              margin-left: 0;
+              margin-right: 0;
+              gap: 2rem;
+              display: flex;
+              flex-wrap: wrap;
+              justify-content: center;
+            }
+            @media (max-width: 991px) {
+              .stat-row { gap: 1rem; }
+              .stat-card { margin-right: 0; margin-bottom: 1.2rem; }
+            }
+          </style>
+          <div class="stat-row mb-4">
+            <div class="col-12 col-md-3 mb-3 p-0">
+              <div class="card stat-card h-100 p-3">
+                <h6>Nombre total de fournisseurs</h6>
+                <h2 class="text-primary">${totalFournisseurs}</h2>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 mb-3 p-0">
+              <div class="card stat-card h-100 p-3" style="background: #f0f7fa;">
+                <h6>Moyenne produits/fournisseur</h6>
+                <h2 class="text-info">
+                  <fmt:formatNumber value="${moyenneProduits}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
+                </h2>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 mb-3 p-0">
+              <div class="card stat-card h-100 p-3" style="background: #f6fff8;">
+                <h6>Nouveaux fournisseurs</h6>
+                <h2 class="text-success">${nouveauxFournisseurs.size()}</h2>
+                <c:if test="${not empty nouveauxFournisseurs}">
+                  <ul class="list-unstyled small mt-2 center-list">
+                    <c:forEach var="f" items="${nouveauxFournisseurs}">
+                      <li><i class="ti-user"></i> ${f.nom}</li>
+                    </c:forEach>
+                  </ul>
+                </c:if>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 mb-3 p-0">
+              <div class="card stat-card h-100 p-3" style="background: #fffaf0;">
+                <h6>Top fournisseurs (ventes)</h6>
+                <c:if test="${not empty topFournisseurs}">
+                  <ol class="list-unstyled mt-2 center-list">
+                    <c:forEach var="tf" items="${topFournisseurs}">
+                      <li><i class="ti-crown text-warning"></i> Fournisseur #${tf.idFournisseur} - ${tf.totalVendus} ventes</li>
+                    </c:forEach>
+                  </ol>
+                </c:if>
+                <c:if test="${empty topFournisseurs}">
+                  <span class="text-muted">Aucune vente sur la période</span>
+                </c:if>
+              </div>
             </div>
           </div>
-          <!-- To do section tab ends -->
         </div>
       </div>
-      <%@ include file="../includes/sidebar.jsp" %>
-      <!-- partial -->
-      <div class="main-panel">
-        <h1>Statistique fournisseur:</h1>
-        <!-- partial:partials/_footer.html -->
-      <%@ include file="../includes/footer.jsp" %>
-      </div>
-    </div>   
+    </div>
   </div>
 </body>
-
 </html>
 

@@ -22,6 +22,7 @@ public class Fournisseurs {
     private String telephone;
     private String email;
     private String image;
+    private java.time.LocalDate dateAjout;
 
     public Long getId() {
         return id;
@@ -69,6 +70,14 @@ public class Fournisseurs {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public java.time.LocalDate getDateAjout() {
+        return dateAjout;
+    }
+
+    public void setDateAjout(java.time.LocalDate dateAjout) {
+        this.dateAjout = dateAjout;
     }
 
 }

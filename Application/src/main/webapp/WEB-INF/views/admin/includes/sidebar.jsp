@@ -50,7 +50,7 @@
             </div>
           </li>
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
+            <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables" id="sidebar-fournisseurs-link">
               <i class="icon-head menu-icon"></i>
               <span class="menu-title">Fournisseurs </span>
               <i class="menu-arrow"></i>
@@ -58,10 +58,10 @@
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="/admin/ajout-fournisseur">Ajout fournisseur</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/liste-fournisseur">Liste</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/fournisseurs/liste">Liste</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/paiement-fournisseur">Paiments</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-disponibilite">Ajout disponibilite</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/stat-fournisseur">Statistique</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/fournisseurs/ajout-disponibilite">Ajout disponibilite</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/fournisseurs/statistique">Statistique</a></li>
               </ul>
             </div>
           </li>
@@ -113,3 +113,17 @@
           </li>
         </ul>
       </nav>
+      <script>
+        // Ouvre automatiquement le menu Fournisseurs si on est sur une page du module Fournisseurs (liste, ajout, edit, etc.)
+        document.addEventListener('DOMContentLoaded', function() {
+          var path = window.location.pathname;
+          if(path.includes('/fournisseurs') || path.includes('/ajout-fournisseur')) {
+            var menu = document.getElementById('tables');
+            var link = document.getElementById('sidebar-fournisseurs-link');
+            if(menu && link) {
+              menu.classList.add('show');
+              link.setAttribute('aria-expanded', 'true');
+            }
+          }
+        });
+      </script>

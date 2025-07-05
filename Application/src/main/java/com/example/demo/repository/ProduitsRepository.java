@@ -1,5 +1,6 @@
 package com.example.demo.repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,4 +44,13 @@ public interface ProduitsRepository extends JpaRepository<Produits, Long> { // C
             @Param("categorie") String categorie,
             @Param("prixMin") Double prixMin,
             @Param("prixMax") Double prixMax);
+    List<Produits> findByFournisseurs_Id(Long idFournisseur);
+
+    @Query("SELECT COUNT(p.id) FROM Produits p WHERE p.fournisseurs.id = :fournisseurId AND p.date_ajout BETWEEN :dateDebut AND :dateFin")
+    Long countProduitsByFournisseurAndDate(@Param("fournisseurId") Long fournisseurId,
+            @Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin);
+
+    @Query("SELECT p.fournisseurs.id, COUNT(p.id) FROM Produits p WHERE p.date_ajout BETWEEN :dateDebut AND :dateFin GROUP BY p.fournisseurs.id")
+    List<Object[]> countProduitsGroupByFournisseur(@Param("dateDebut") LocalDate dateDebut,
+            @Param("dateFin") LocalDate dateFin);
 }
