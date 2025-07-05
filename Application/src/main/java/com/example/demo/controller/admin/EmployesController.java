@@ -42,6 +42,9 @@ public class EmployesController {
 
     @GetMapping("/liste-employe")
     public String listeEmploye(Model model) {
+        String source = "/";
+        model.addAttribute("employes", service.getAll());
+        model.addAttribute("src", source);
         return "admin/employes/liste";
     }
 

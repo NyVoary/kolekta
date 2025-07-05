@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import java.io.File;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class EmployesService {
     }
 
     public void CreatOrUpdate(EmployesDTO employesDTO) throws Exception {
-        File staticUploads = ResourceUtils.getFile(new File("src/main/resources/static/images/uploads").getAbsolutePath());
+        File staticUploads = ResourceUtils.getFile(new File("uploads/").getAbsolutePath());
         if (!staticUploads.exists()) {
             staticUploads.mkdirs();
         }
@@ -53,6 +54,10 @@ public class EmployesService {
         temp.setImage(fileName);
 
         repository.save(temp);
+    }
+
+    public List<Employes> getAll() {
+        return repository.findAll();
     }
 
     public Employes GetById(Long id) {
