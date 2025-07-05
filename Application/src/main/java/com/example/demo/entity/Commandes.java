@@ -8,12 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Comparator;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import java.time.LocalDate;
 
 @Entity
@@ -58,6 +52,9 @@ public class Commandes {
 
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
     private List<CommandePaiement> paiements;
+
+    @Transient
+    private String dernierStatut;
 
     public Commandes() {
     }
@@ -229,6 +226,32 @@ public class Commandes {
 
     public void setStatuts(List<CommandeStatus> statuts) {
         this.status = statuts;
+    }
+
+        // Méthodes utilitaires
+    public void addProduit(CommandeProduit produit) {
+        produits.add(produit);
+        produit.setCommande(this);
+    }
+
+    public void removeProduit(CommandeProduit produit) {
+        produits.remove(produit);
+        produit.setCommande(null);
+    }
+
+    // Calcul du montant total en fonction des produits
+    public void calculerMontantTotal() {
+        this.montantTotal = produits.stream()
+                .mapToDouble(CommandeProduit::getMontantTotal)
+                .sum() + fraisLivraison;
+    }
+
+    public String getDernierStatut() {
+        return dernierStatut;
+    }
+    
+    public void setDernierStatut(String dernierStatut) {
+        this.dernierStatut = dernierStatut;
     }
 
     // toString method

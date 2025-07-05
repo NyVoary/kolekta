@@ -22,7 +22,7 @@ public class FournisseursService {
         return repository.findAll();
     }
 
-    public Fournisseurs getById(int id) {
+    public Fournisseurs getById(Long id) {
         return repository.findById(id).orElse(null);
     }
 }

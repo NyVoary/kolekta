@@ -38,11 +38,8 @@ public class ClientService {
         String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
         File destinationFile = new File(staticUploads, fileName);
         image.transferTo(destinationFile);
-<<<<<<< HEAD
 
-=======
                 
->>>>>>> origin/sarobidy-admin
         Client client = new Client();
         client.setNom(dto.getNom());
         client.setPrenoms(dto.getPrenoms());
@@ -66,9 +63,12 @@ public class ClientService {
         }
     }
 
-<<<<<<< HEAD
     public Optional<Client> getClientById(Long id) {
         return clientRepository.findById(id);
+    }
+
+    public Client getClientByID(Long id) {
+        return clientRepository.findById(id).orElse(null);
     }
 
     public Client enregistrerClient(Client client) {
@@ -82,21 +82,15 @@ public class ClientService {
     public boolean existeClient(Long id) {
         return clientRepository.existsById(id);
     }
-=======
     public List<Client> getAllClients() {
         return clientRepository.findAll();
     }    
-
-    public Client getClientById(int id) {
-        return clientRepository.findById(id).orElse(null);
-    }
     
     public Client updateClient(Client client) {
         return clientRepository.save(client);
     }
 
-    public void deleteClient(int id) {
+    public void deleteClient(Long id) {
         clientRepository.deleteById(id);
     }
->>>>>>> origin/sarobidy-admin
 }

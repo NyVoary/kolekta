@@ -17,10 +17,10 @@ public interface ClientStatistiqueRepository extends JpaRepository<Client, Integ
     @Query("SELECT COUNT(c) FROM Client c")
     Long countAllClients();
     
-    @Query("SELECT COUNT(co) FROM Commande co")
+    @Query("SELECT COUNT(co) FROM Commandes co")
     Long countAllCommandes();
     
-    @Query("SELECT COALESCE(SUM(co.montantTotal), 0) FROM Commande co")
+    @Query("SELECT COALESCE(SUM(co.montantTotal), 0) FROM Commandes co")
     Double getGeneralChiffreAffairesTotal();
     
     default ClientStatistique getGeneralStats() {
@@ -45,7 +45,7 @@ public interface ClientStatistiqueRepository extends JpaRepository<Client, Integ
     // Statistiques générales par ville
     @Query("SELECT new com.example.demo.entity.ClientStatistique(" +
            "co.villeLivraison, COUNT(co), SUM(co.montantTotal)) " +
-           "FROM Commande co " +
+           "FROM Commandes co " +
            "GROUP BY co.villeLivraison " +
            "ORDER BY COUNT(co) DESC")
     List<ClientStatistique> getGeneralStatsByVille();
@@ -72,15 +72,15 @@ public interface ClientStatistiqueRepository extends JpaRepository<Client, Integ
     @Query("SELECT COUNT(c) FROM Client c WHERE c.dateCreation BETWEEN :debut AND :fin")
     Long countNewClients(@Param("debut") LocalDate debut, @Param("fin") LocalDate fin);
     
-    @Query("SELECT COUNT(c) FROM Commande c WHERE c.dateCommande BETWEEN :debut AND :fin")
+    @Query("SELECT COUNT(c) FROM Commandes c WHERE c.dateCommande BETWEEN :debut AND :fin")
     Long countCommandes(@Param("debut") LocalDate debut, @Param("fin") LocalDate fin);
 
-    @Query("SELECT COALESCE(SUM(c.montantTotal), 0) FROM Commande c WHERE c.dateCommande BETWEEN :debut AND :fin")
+    @Query("SELECT COALESCE(SUM(c.montantTotal), 0) FROM Commandes c WHERE c.dateCommande BETWEEN :debut AND :fin")
     Double getChiffreAffairesTotal(@Param("debut") LocalDate debut, @Param("fin") LocalDate fin);
     
     @Query("SELECT new com.example.demo.entity.ClientStatistique(" +
            "co.villeLivraison, COUNT(co), SUM(co.montantTotal)) " +
-           "FROM Commande co " +
+           "FROM Commandes co " +
            "WHERE co.dateCommande BETWEEN :debut AND :fin " +
            "GROUP BY co.villeLivraison " +
            "ORDER BY COUNT(co) DESC")

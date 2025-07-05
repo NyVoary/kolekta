@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-<<<<<<< HEAD
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
 
@@ -23,6 +22,7 @@ public class CommandeService {
     @Autowired private CommandeProduitRepository commandeProduitRepository;
     @Autowired private PanierService panierService;
     @Autowired private ClientService clientService;
+    @Autowired private CommandeStatusRepository commandeStatusRepository;
 
 
     public Commandes creerCommandeDepuisPanier(Long idClient) {
@@ -71,37 +71,17 @@ public class CommandeService {
     public List<Commandes> getCommandesByClientId(Long client) {
         return commandeRepository.findByClientId(client);
     }
-}
-=======
-import com.example.demo.entity.Commande;
-import com.example.demo.entity.Client;
-import com.example.demo.repository.CommandeRepository;
-import com.example.demo.repository.CommandeStatusRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import java.util.List;
-
-@Service
-public class CommandeService {
-    private CommandeRepository commandeRepository;
-    private CommandeStatusRepository commandeStatusRepository;
-
-    @Autowired
-    public CommandeService(CommandeRepository commandeRepository, 
-                         CommandeStatusRepository commandeStatusRepository) {
-        this.commandeRepository = commandeRepository;
-        this.commandeStatusRepository = commandeStatusRepository;
-    }
-    public List<Commande> getCommandesByClient(Client client) {
+    // ok 
+    public List<Commandes> getCommandesByClient(Client client) {
         return commandeRepository.findByClientOrderByDateCommandeDesc(client);
     }
 
-    public List<Commande> getCommandesWithProduitsByClientId(int clientId) {
+    public List<Commandes> getCommandesWithProduitsByClientId(int clientId) {
         return commandeRepository.findWithProduitsByClientId(clientId);
     }
 
-    public List<Commande> getAllCommandesByClientWithProduits(int clientId) {
+    public List<Commandes> getAllCommandesByClientWithProduits(int clientId) {
         return commandeRepository.findAllByClientIdWithProduits(clientId);
     }
 
@@ -111,4 +91,3 @@ public class CommandeService {
                 .orElse("Inconnu");
     }
 }
->>>>>>> origin/sarobidy-admin

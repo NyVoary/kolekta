@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.ClientDTO;
 import com.example.demo.entity.Client;
-import com.example.demo.entity.Commande;
+import com.example.demo.entity.Commandes;
 import com.example.demo.service.ClientService;
 import com.example.demo.service.CommandeService;
 
@@ -66,8 +66,8 @@ public class ClientsContoller {
     }
 
     @GetMapping("/admin/modifier-client/{id}")
-    public String modifierClient(@PathVariable("id") int id, Model model) {
-        Client client = clientService.getClientById(id);
+    public String modifierClient(@PathVariable("id") Long id, Model model) {
+        Client client = clientService.getClientByID(id);
         model.addAttribute("client", client);
         return "admin/clients/modifier-client";
     }
@@ -75,7 +75,7 @@ public class ClientsContoller {
     @PostMapping("/admin/update-client")
     public String updateClient(@ModelAttribute Client client, 
                              @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) throws Exception {
-        Client existingClient = clientService.getClientById(client.getIdClient());
+        Client existingClient = clientService.getClientByID(client.getIdClient());
         
         if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
@@ -102,21 +102,21 @@ public class ClientsContoller {
     }
 
     @GetMapping("/admin/supprimer-client/{id}")
-    public String supprimerClient(@PathVariable("id") int id) {
+    public String supprimerClient(@PathVariable("id") Long id) {
         clientService.deleteClient(id);
         return "redirect:/admin/liste-client";
     }
 
     @GetMapping("/admin/informations-client/{id}")
-    public String informationsClient(@PathVariable("id") int id, Model model) {
-        Client client = clientService.getClientById(id);
+    public String informationsClient(@PathVariable("id") Long id, Model model) {
+        Client client = clientService.getClientByID(id);
         if (client == null) {
             return "redirect:/admin/liste-client";
         }
         
-        List<Commande> commandes = commandeService.getAllCommandesByClientWithProduits(id);
+        List<Commandes> commandes = commandeService.getAllCommandesByClientWithProduits(id.intValue());
         
-        for (Commande commande : commandes) {
+        for (Commandes commande : commandes) {
             String statut = commandeService.getDernierStatutCommande(commande.getId());
             commande.setDernierStatut(statut);
         }

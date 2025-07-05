@@ -6,40 +6,23 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "commande_status")
 public class CommandeStatus {
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/sarobidy-admin
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_commande_status")
     private Long id;
 
-<<<<<<< HEAD
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_commande", nullable = false)
     private Commandes commande;
 
-    @ManyToOne
-=======
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_commande", nullable = false)
-    private Commande commande;
-
-    @ManyToOne(fetch = FetchType.LAZY)
->>>>>>> origin/sarobidy-admin
     @JoinColumn(name = "id_status", nullable = false)
     private Status status;
 
     @Column(name = "date_changement", nullable = false)
     private LocalDate dateChangement;
 
-<<<<<<< HEAD
-    @ManyToOne
-    @JoinColumn(name = "id_client")
-    private Client client;
-
-=======
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client")
     private Client client;
@@ -55,14 +38,13 @@ public class CommandeStatus {
     public CommandeStatus() {
     }
 
-    public CommandeStatus(Commande commande, Status status, LocalDate dateChangement) {
+    public CommandeStatus(Commandes commande, Status status, LocalDate dateChangement) {
         this.commande = commande;
         this.status = status;
         this.dateChangement = dateChangement;
     }
 
     // Getters et Setters
->>>>>>> origin/sarobidy-admin
     public Long getId() {
         return id;
     }
@@ -71,19 +53,11 @@ public class CommandeStatus {
         this.id = id;
     }
 
-<<<<<<< HEAD
     public Commandes getCommande() {
         return commande;
     }
 
     public void setCommande(Commandes commande) {
-=======
-    public Commande getCommande() {
-        return commande;
-    }
-
-    public void setCommande(Commande commande) {
->>>>>>> origin/sarobidy-admin
         this.commande = commande;
     }
 
@@ -111,16 +85,6 @@ public class CommandeStatus {
         this.client = client;
     }
 
-<<<<<<< HEAD
-    // public String getCommentaireEmploye() {
-    //     return commentaireEmploye;
-    // }
-
-    // public void setCommentaireEmploye(String commentaireEmploye) {
-    //     this.commentaireEmploye = commentaireEmploye;
-    // }
-}
-=======
     public Employe getEmploye() {
         return employe;
     }
@@ -142,4 +106,3 @@ public class CommandeStatus {
         return status != null ? status.getLibelle() : null;
     }
 }
->>>>>>> origin/sarobidy-admin

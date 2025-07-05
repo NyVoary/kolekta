@@ -27,7 +27,7 @@ public class CategoriesController {
 
      @PostMapping("/admin/ajout-categorie")
     public String addCategory(@ModelAttribute("category") Categories category) {
-        categoriesService.saveCategory(category);
+        categoriesService.save(category);
         return "redirect:/admin/liste-categorie";
     }
 
@@ -52,7 +52,7 @@ public class CategoriesController {
         Categories categorie = new Categories();
         categorie.setId(id);
         categorie.setLibelle(libelle);
-        categoriesService.saveCategory(categorie);
+        categoriesService.save(categorie);
         return "redirect:/admin/liste-categorie";
     }
 

@@ -53,10 +53,10 @@ public class ProduitsControllerAdmin {
 
     @PostMapping("/admin/ajout-produit")
     public String saveProduct(
-            @RequestParam("fournisseur") int idFournisseur,
+            @RequestParam("fournisseur") Long idFournisseur,
             @RequestParam("nom") String nom,
             @RequestParam("description") String description,
-            @RequestParam("categorie") int idCategorie,
+            @RequestParam("categorie") Long idCategorie,
             @RequestParam("unite_mesure") String uniteMesure,
             @RequestParam("prix_achat") double prixAchat,
             @RequestParam("prix_vente") double prixVente,
@@ -158,10 +158,10 @@ public class ProduitsControllerAdmin {
     @PostMapping("/admin/modifier-produit")
     public String updateProduct(
             @RequestParam("id") Long id,
-            @RequestParam("fournisseur") int idFournisseur,
+            @RequestParam("fournisseur") Long idFournisseur,
             @RequestParam("nom") String nom,
             @RequestParam("description") String description,
-            @RequestParam("categorie") int idCategorie,
+            @RequestParam("categorie") Long idCategorie,
             @RequestParam("unite_mesure") String uniteMesure,
             @RequestParam("prix_achat") double prixAchat,
             @RequestParam("prix_vente") double prixVente,

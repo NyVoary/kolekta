@@ -80,7 +80,7 @@
       <%@ include file="../includes/sidebar.jsp" %>
       <!-- partial -->
       <div class="main-panel">
-        <div class="main-panel">
+        <%-- <div class="main-panel"> --%>
           <div class="content-wrapper">
             <h2>Liste des Clients</h2>
         
@@ -115,7 +115,7 @@
                     <td><%= client.getAdresse() %></td>
                     <td>
                       <% if (client.getImage() != null && !client.getImage().isEmpty()) { %>
-                        <img src="/images/uploads/<%= client.getImage() %>" alt="photo" width="50" height="50" class="rounded-circle" />
+                        <img src="${pageContext.request.contextPath}/images/uploads/<%= client.getImage() %>" alt="photo" width="50" height="50" class="rounded-circle" />
                       <% } else { %>
                         <span class="text-muted">Aucune</span>
                       <% } %>
@@ -141,7 +141,7 @@
         
             <a href="/admin/ajout-client" class="btn btn-primary mt-3">Ajouter un client</a>
           </div>
-        </div>
+        <%-- </div> --%>
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
       </div>
