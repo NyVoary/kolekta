@@ -35,9 +35,12 @@ public class ClientService {
         MultipartFile image = dto.getImage();
         String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
         File destinationFile = new File(staticUploads, fileName);
+        
+        if (fileName.endsWith("_")) {
+            throw new Exception("Veuillez entrez le photo de votre employe");
+        }
         image.transferTo(destinationFile);
                 
-
         Client client = new Client();
         client.setNom(dto.getNom());
         client.setPrenoms(dto.getPrenoms());
