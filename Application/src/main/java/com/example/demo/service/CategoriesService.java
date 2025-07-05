@@ -10,10 +10,19 @@ import com.example.demo.repository.CategoriesRepository;
 
 @Service
 public class CategoriesService {
-    @Autowired
-    private CategoriesRepository categoriesRepository;
 
-    public List<Categories> getAllCategories() {
-        return categoriesRepository.findAll();
+    private final CategoriesRepository repository;
+
+    @Autowired
+    public CategoriesService(CategoriesRepository categoriesRepository) {
+        this.repository = categoriesRepository;
+    }
+
+    public List<Categories> getAll() {
+        return repository.findAll();
+    }
+
+    public Categories getById(int id) {
+        return repository.findById(id).orElse(null);
     }
 }
