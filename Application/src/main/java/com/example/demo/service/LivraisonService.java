@@ -38,17 +38,16 @@ public class LivraisonService {
         Commandes commande = commandeRepository.findById(id).orElse(null);
 
         if (commande != null) {
+            // Update the existing commande
             commande.setAdresseLivraison(commandes.getAdresseLivraison());
             commande.setVilleLivraison(commandes.getVilleLivraison());
             commande.setTelephoneLivraison(commandes.getTelephoneLivraison());
             commande.setEmailLivraison(commandes.getEmailLivraison());
             commandeRepository.save(commande);
 
+            // Create new livraison and set BOTH required fields
             Livraison nouvelleLivraison = new Livraison();
-            // Assuming 'Commandes' is the correct type expected by setCommande
-            // and you have a way to convert or cast Commande to Commandes.
-            // Replace the following line with the correct conversion if needed.
-            // nouvelleLivraison.setCommande((Commandes) commande);
+            nouvelleLivraison.setCommande(commande); // THIS WAS MISSING!
             nouvelleLivraison.setDateLivraison(livraison.getDateLivraison());
             livraisonRepository.save(nouvelleLivraison);
         }

@@ -49,7 +49,7 @@ public class CommandeController {
 
     @PostMapping("/ajouter")
     public String ajouterAuPanier(
-            @RequestParam(required = false) Integer produitId,
+            @RequestParam(required = false) Long produitId,
             @RequestParam(required = false) Integer quantite,
             HttpSession session,
             RedirectAttributes redirectAttributes) {

@@ -31,7 +31,7 @@
     <h3>Information pour la livraison</h3>
 
     <%
-        Commande commande = (Commande) request.getAttribute("liste");
+        Commandes commande = (Commandes) request.getAttribute("liste");
 
         Long idCommande = null;
         String adresse = "";
@@ -79,7 +79,7 @@
             java.time.LocalDate dateLivraison = java.time.LocalDate.now().plusDays(3);
         %>
         <div class="form-group"> 
-            <label>Date de livraison :</label>
+            <label>Date de livraison prévu:</label>
             <input type="date" name="dateLivraison" class="form-control" required 
                   value="<%= dateLivraison.toString() %>" readonly>
         </div>

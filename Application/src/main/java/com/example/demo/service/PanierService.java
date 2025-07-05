@@ -14,7 +14,7 @@ import com.example.demo.entity.Produits;
 import com.example.demo.entity.PanierProduits;
 import com.example.demo.repository.PanierProduitRepository;
 import com.example.demo.repository.PanierRepository;
-import com.example.demo.repository.ProduitRepository;
+import com.example.demo.repository.ProduitsRepository;
 
 @Service
 @Transactional
@@ -27,7 +27,7 @@ public class PanierService {
     private PanierProduitRepository panierProduitRepository;
 
     @Autowired
-    private ProduitRepository produitRepository;
+    private ProduitsRepository produitRepository;
 
     private static final Double TAUX_TVA = 20.0;
     private static final Double FRAIS_LIVRAISON = 10000.0;

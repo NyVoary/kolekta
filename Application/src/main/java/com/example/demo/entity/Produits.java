@@ -12,7 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "Produits")
+@Table(name = "produits")
 public class Produits {
 
     @Id
@@ -24,9 +24,6 @@ public class Produits {
     private Long idFournisseur;
 
     private String nom;
-
-    @Column(name = "id_categorie")
-    private Long idCategorie;
 
     private String description;
 
@@ -50,7 +47,7 @@ public class Produits {
 
     // Relation avec Catégorie
     @ManyToOne
-    @JoinColumn(name = "id_categorie", insertable = false, updatable = false)
+    @JoinColumn(name = "id_categorie") // Enlevez insertable=false, updatable=false
     private Categories categorie;
 
     // ... getters et setters pour categorie
@@ -66,9 +63,6 @@ public class Produits {
     
     public String getNom() { return nom; }
     public void setNom(String nom) { this.nom = nom; }
-    
-    public Long getIdCategorie() { return idCategorie; }
-    public void setIdCategorie(Long idCategorie) { this.idCategorie = idCategorie; }
     
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
