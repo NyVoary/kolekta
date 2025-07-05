@@ -45,7 +45,7 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="/admin/ajout-client">Ajout client</a></li>
                 <li class="nav-item"><a class="nav-link" href="/admin/liste-client">Listes</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/stat-client">Statistiques</a></li>
+                <li class="nav-item"><a class="nav-link" href="/admin/statistiques-clients">Statistiques</a></li>
               </ul>
             </div>
           </li>
