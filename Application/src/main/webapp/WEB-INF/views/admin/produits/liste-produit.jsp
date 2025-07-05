@@ -100,9 +100,9 @@
               <h5 class="card-title">${produit.nom}</h5>
               <p class="card-text">
                 <strong>Fournisseur:</strong> ${produit.fournisseur.nom}<br>
-                <strong>Catégorie:</strong> ${produit.categories.libelle}<br>
-                <strong>Prix de vente:</strong> ${produit.prix_vente} €<br>
-                <strong>Unité:</strong> ${produit.unite_mesure}
+                <strong>Catégorie:</strong> ${produit.categorie.libelle}<br>
+                <strong>Prix de vente:</strong> ${produit.prixVente} €<br>
+                <strong>Unité:</strong> ${produit.uniteMesure}
               </p>
               <button type="button" class="btn btn-warning btn-modifier" 
                       data-toggle="modal" 
@@ -111,10 +111,10 @@
                       data-nom="${produit.nom}"
                       data-description="${produit.description}"
                       data-fournisseur="${produit.fournisseur.id}"
-                      data-categorie="${produit.categories.id}"
-                      data-unite="${produit.unite_mesure}"
-                      data-prix-achat="${produit.prix_achat}"
-                      data-prix-vente="${produit.prix_vente}">
+                      data-categorie="${produit.categorie.id}"
+                      data-unite="${produit.uniteMesure}"
+                      data-prix-achat="${produit.prixAchat}"
+                      data-prix-vente="${produit.prixVente}">
                 Modifier
               </button>
               <form method="post" action="/admin/supprimer-produit" style="display:inline;" 
