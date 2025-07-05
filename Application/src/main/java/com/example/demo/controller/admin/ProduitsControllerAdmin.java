@@ -69,14 +69,14 @@ public class ProduitsControllerAdmin {
             Fournisseurs fournisseur = fournisseursService.getById(idFournisseur);
             Categories categorie = categoriesService.getById(idCategorie);
             
-            produit.setFournisseurs(fournisseur);
+            produit.setFournisseur(fournisseur);
             produit.setNom(nom);
             produit.setDescription(description);
-            produit.setCategories(categorie);
-            produit.setUnite_mesure(uniteMesure);
-            produit.setPrix_achat(prixAchat);
-            produit.setPrix_vente(prixVente);
-            produit.setDate_ajout(LocalDate.now());
+            produit.setCategorie(categorie);
+            produit.setUniteMesure(uniteMesure);
+            produit.setPrixAchat(prixAchat);
+            produit.setPrixAchat(prixVente);
+            produit.setDateAjout(LocalDate.now());
             
             if (!image.isEmpty()) {
                 String imageName = saveImage(image);
@@ -124,7 +124,7 @@ public class ProduitsControllerAdmin {
 
     @PostMapping("/admin/ajout-produitMois")
     public String saveProductMois(
-            @RequestParam("produit") int idProduit,
+            @RequestParam("produit") Long idProduit,
             @RequestParam("mois") int mois,
             Model model) {
         
@@ -146,7 +146,7 @@ public class ProduitsControllerAdmin {
     }
     
     @PostMapping("/admin/supprimer-produit")
-    public String deleteProduct(@RequestParam("id") int id) {
+    public String deleteProduct(@RequestParam("id") Long id) {
         try {
             produitsService.delete(id);
             return "redirect:/admin/liste-produit";
@@ -157,7 +157,7 @@ public class ProduitsControllerAdmin {
 
     @PostMapping("/admin/modifier-produit")
     public String updateProduct(
-            @RequestParam("id") int id,
+            @RequestParam("id") Long id,
             @RequestParam("fournisseur") int idFournisseur,
             @RequestParam("nom") String nom,
             @RequestParam("description") String description,
@@ -174,13 +174,13 @@ public class ProduitsControllerAdmin {
             Fournisseurs fournisseur = fournisseursService.getById(idFournisseur);
             Categories categorie = categoriesService.getById(idCategorie);
             
-            produit.setFournisseurs(fournisseur);
+            produit.setFournisseur(fournisseur);
             produit.setNom(nom);
             produit.setDescription(description);
-            produit.setCategories(categorie);
-            produit.setUnite_mesure(uniteMesure);
-            produit.setPrix_achat(prixAchat);
-            produit.setPrix_vente(prixVente);
+            produit.setCategorie(categorie);
+            produit.setUniteMesure(uniteMesure);
+            produit.setPrixAchat(prixAchat);
+            produit.setPrixVente(prixVente);
             
             if (!image.isEmpty()) {
                 String imageName = saveImage(image);

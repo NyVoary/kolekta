@@ -99,7 +99,7 @@
               </c:choose>
               <h5 class="card-title">${produit.nom}</h5>
               <p class="card-text">
-                <strong>Fournisseur:</strong> ${produit.fournisseurs.nom}<br>
+                <strong>Fournisseur:</strong> ${produit.fournisseur.nom}<br>
                 <strong>Catégorie:</strong> ${produit.categories.libelle}<br>
                 <strong>Prix de vente:</strong> ${produit.prix_vente} €<br>
                 <strong>Unité:</strong> ${produit.unite_mesure}
@@ -110,7 +110,7 @@
                       data-id="${produit.id}"
                       data-nom="${produit.nom}"
                       data-description="${produit.description}"
-                      data-fournisseur="${produit.fournisseurs.id}"
+                      data-fournisseur="${produit.fournisseur.id}"
                       data-categorie="${produit.categories.id}"
                       data-unite="${produit.unite_mesure}"
                       data-prix-achat="${produit.prix_achat}"

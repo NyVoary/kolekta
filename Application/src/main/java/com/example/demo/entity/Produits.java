@@ -10,6 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import com.example.demo.entity.*;
 
 @Entity
 @Table(name = "produits")
@@ -20,8 +21,9 @@ public class Produits {
     @Column(name = "id_produit")
     private Long id;
 
-    @Column(name = "id_fournisseur")
-    private Long idFournisseur;
+    @ManyToOne
+    @JoinColumn(name = "id_fournisseur")
+    private Fournisseurs fournisseur;
 
     private String nom;
 
@@ -51,34 +53,84 @@ public class Produits {
     private Categories categorie;
 
     // ... getters et setters pour categorie
-    public Categories getCategorie() { return categorie; }
-    public void setCategorie(Categories categorie) { this.categorie = categorie; }
+    public Categories getCategorie() {
+        return categorie;
+    }
+
+    public void setCategorie(Categories categorie) {
+        this.categorie = categorie;
+    }
 
     // Getters et Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    
-    public Long getIdFournisseur() { return idFournisseur; }
-    public void setIdFournisseur(Long idFournisseur) { this.idFournisseur = idFournisseur; }
-    
-    public String getNom() { return nom; }
-    public void setNom(String nom) { this.nom = nom; }
-    
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
-    
-    public String getUniteMesure() { return uniteMesure; }
-    public void setUniteMesure(String uniteMesure) { this.uniteMesure = uniteMesure; }
-    
-    public double getPrixAchat() { return prixAchat; }
-    public void setPrixAchat(double prixAchat) { this.prixAchat = prixAchat; }
-    
-    public double getPrixVente() { return prixVente; }
-    public void setPrixVente(double prixVente) { this.prixVente = prixVente; }
-    
-    public LocalDate getDateAjout() { return dateAjout; }
-    public void setDateAjout(LocalDate dateAjout) { this.dateAjout = dateAjout; }
-    
-    public String getImage() { return image; }
-    public void setImage(String image) { this.image = image; }
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Fournisseurs getFournisseur() {
+        return fournisseur;
+    }
+
+    public void setFournisseur(Fournisseurs fournisseur) {
+        this.fournisseur = fournisseur;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getUniteMesure() {
+        return uniteMesure;
+    }
+
+    public void setUniteMesure(String uniteMesure) {
+        this.uniteMesure = uniteMesure;
+    }
+
+    public double getPrixAchat() {
+        return prixAchat;
+    }
+
+    public void setPrixAchat(double prixAchat) {
+        this.prixAchat = prixAchat;
+    }
+
+    public double getPrixVente() {
+        return prixVente;
+    }
+
+    public void setPrixVente(double prixVente) {
+        this.prixVente = prixVente;
+    }
+
+    public LocalDate getDateAjout() {
+        return dateAjout;
+    }
+
+    public void setDateAjout(LocalDate dateAjout) {
+        this.dateAjout = dateAjout;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

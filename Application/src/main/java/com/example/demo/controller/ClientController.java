@@ -86,6 +86,11 @@ public class ClientController {
         return "client/Login";
     }
 
+    @GetMapping("monprofil")
+    public String profil(){
+        return "client/profil";
+    }
+
     @GetMapping("/historique-achat")
     public String historiqueAchat(Model model,
             @RequestParam(value = "dateDebut", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateDebut,

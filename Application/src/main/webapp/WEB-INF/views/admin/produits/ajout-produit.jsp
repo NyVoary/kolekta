@@ -115,9 +115,9 @@
           <button type="submit" class="btn btn-primary">Ajouter</button>
         </form>
         <!-- partial:partials/_footer.html -->
-      <%@ include file="../includes/footer.jsp" %>
       </div>
     </div>   
+      <%@ include file="../includes/footer.jsp" %>
   </div>
 </body>
 

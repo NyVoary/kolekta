@@ -83,7 +83,7 @@
       <c:if test="${sessionScope['client-connected'] != null}">
         <li class="nav-item nav-profile dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" >
-            <form class="form-inline" action="/historiqueCommandes" method="get">
+            <form class="form-inline" action="/monprofil" method="get">
               <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
                   <i class="ti-user text-info"></i>
               </button>

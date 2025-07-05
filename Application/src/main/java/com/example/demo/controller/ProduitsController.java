@@ -53,7 +53,7 @@ public class ProduitsController {
         Model model) {
             List<Produits> produits;
 
-            List<Categories> categories = categorieService.getAllCategories();
+            List<Categories> categories = categorieService.getAll();
             
             if (search != null || categorie != null || prixMin != null || prixMax != null) {
                 produits = service.rechercherProduits(search, categorie, prixMin, prixMax);

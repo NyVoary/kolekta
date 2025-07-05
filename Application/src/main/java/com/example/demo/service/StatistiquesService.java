@@ -48,9 +48,9 @@ public class StatistiquesService {
         LocalDate finMois = LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth());
         
         long nouveauxProduits = produitsRepository.findAll().stream()
-            .filter(p -> p.getDate_ajout() != null && 
-                        !p.getDate_ajout().isBefore(debutMois) && 
-                        !p.getDate_ajout().isAfter(finMois))
+            .filter(p -> p.getDateAjout() != null && 
+                        !p.getDateAjout().isBefore(debutMois) && 
+                        !p.getDateAjout().isAfter(finMois))
             .count();
         stats.put("nouveauxProduits", nouveauxProduits);
         
