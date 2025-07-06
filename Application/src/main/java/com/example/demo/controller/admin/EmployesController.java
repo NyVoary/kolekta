@@ -5,12 +5,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dto.EmployesDTO;
+import com.example.demo.entity.Employes;
 import com.example.demo.service.EmployesService;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("/admin")
@@ -18,20 +22,21 @@ public class EmployesController {
 
     private final EmployesService service;
 
-    @Autowired
     public EmployesController(EmployesService service) {
         this.service = service;
     }
 
     @GetMapping("/ajout-employe")
-    public String formulaire() {
+    public String formulaire(HttpServletRequest request) {
+        request.setAttribute("payments", Employes.Mode_paiement.values());
+        request.setAttribute("sexes", Employes.Sexe.values());
         return "admin/employes/ajout";
     }
     
     @PostMapping("/ajout-employe")
     public String ajoutEmploye(@ModelAttribute EmployesDTO employesDTO, RedirectAttributes redirectAttributes) {
         try {
-            service.CreatOrUpdate(employesDTO);
+            service.Creat(employesDTO);
             redirectAttributes.addFlashAttribute("message", "Employes enregistré avec succes !");
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,17 +45,41 @@ public class EmployesController {
         return "redirect:/admin/ajout-employe";
     }
 
+    @GetMapping("/employes/remove/{id}")
+    public String removeEmploye(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
+        try {
+            service.remove(id);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
+        }
+        return "redirect:/admin/liste-employe";
+    }
+
+    @GetMapping("/employes/update/{id}")
+    public String updateEmploye(@PathVariable("id") long id, HttpServletRequest request) {
+        Employes employe = service.GetById(id);
+        request.setAttribute("employe", employe);
+        return "forward:/admin/ajout-employe";
+    }
+
+    @PostMapping("/employes/update/{id}")
+    public String updateEmploye(@PathVariable("id") long id, @ModelAttribute EmployesDTO employesDTO, RedirectAttributes redirectAttributes) {
+        try {
+            service.update(employesDTO);
+            redirectAttributes.addFlashAttribute("message", "Employes modifié avec succes !");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
+        }
+        return "redirect:/admin/employes/update/" + id;
+    }
+
     @GetMapping("/liste-employe")
     public String listeEmploye(Model model) {
         String source = "/";
         model.addAttribute("employes", service.getAll());
         model.addAttribute("src", source);
         return "admin/employes/liste";
-    }
-
-    @GetMapping("/paiement-employe")
-    public String paiementEmploye(Model model) {
-        return "admin/employes/paiement";
     }
 
     @GetMapping("/divers-employe")

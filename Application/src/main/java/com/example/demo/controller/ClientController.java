@@ -22,7 +22,6 @@ public class ClientController {
     private final  ProduitsService produitsService;
     private final ClientService clientService;
 
-    @Autowired
     public ClientController(ProduitsService produitsService, ClientService clientService) {
         this.produitsService = produitsService;
         this.clientService = clientService;

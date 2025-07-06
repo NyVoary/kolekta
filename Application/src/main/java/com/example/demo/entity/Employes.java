@@ -20,6 +20,10 @@ public class Employes {
         Espèces
     };
 
+    public enum Sexe {
+        M, F
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_employe;
@@ -30,7 +34,9 @@ public class Employes {
     private String prenoms;
     @Column(nullable = false)
     private LocalDate dtn;
-    private char sexe;
+
+    @Enumerated(value = EnumType.STRING)
+    private Sexe sexe;
     private String email;
     private String telephone;
     private String mdp;
@@ -77,14 +83,6 @@ public class Employes {
 
     public void setDtn(LocalDate dtn) {
         this.dtn = dtn;
-    }
-
-    public char getSexe() {
-        return sexe;
-    }
-
-    public void setSexe(char sexe) {
-        this.sexe = sexe;
     }
 
     public String getEmail() {
@@ -165,6 +163,14 @@ public class Employes {
 
     public String getImage() {
         return image;
+    }
+
+    public Sexe getSexe() {
+        return sexe;
+    }
+
+    public void setSexe(Sexe sexe) {
+        this.sexe = sexe;
     }
 
 }

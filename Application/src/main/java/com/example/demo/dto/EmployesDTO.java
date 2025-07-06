@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.entity.Employes.Mode_paiement;
+import com.example.demo.entity.Employes.Sexe;
 
 public class EmployesDTO {
 
@@ -13,7 +14,7 @@ public class EmployesDTO {
     private String nom;
     private String prenoms;
     private LocalDate dtn;
-    private char sexe;
+    private Sexe sexe;
     private String email;
     private String telephone;
     private String mdp;
@@ -25,7 +26,6 @@ public class EmployesDTO {
     private Mode_paiement mode_paiement;
 
     private MultipartFile image;
-
 
     public Long getId_employe() {
         return id_employe;
@@ -57,14 +57,6 @@ public class EmployesDTO {
 
     public void setDtn(LocalDate dtn) {
         this.dtn = dtn;
-    }
-
-    public char getSexe() {
-        return sexe;
-    }
-
-    public void setSexe(char sexe) {
-        this.sexe = sexe;
     }
 
     public String getEmail() {
@@ -146,4 +138,13 @@ public class EmployesDTO {
     public void setImage(MultipartFile image) {
         this.image = image;
     }
+
+    public Sexe getSexe() {
+        return sexe;
+    }
+
+    public void setSexe(Sexe sexe) {
+        this.sexe = sexe;
+    }
+
 }

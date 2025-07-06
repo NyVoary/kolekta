@@ -3,7 +3,6 @@ package com.example.demo.service;
 import java.io.File;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,30 +13,75 @@ import com.example.demo.repository.EmployesRepository;
 
 @Service
 public class EmployesService {
-    
+
     private final EmployesRepository repository;
 
-    @Autowired
     public EmployesService(EmployesRepository repository) {
         this.repository = repository;
     }
 
-    public void CreatOrUpdate(EmployesDTO employesDTO) throws Exception {
-        File staticUploads = ResourceUtils.getFile(new File("uploads/").getAbsolutePath());
-        if (!staticUploads.exists()) {
-            staticUploads.mkdirs();
-        }
-        MultipartFile image = employesDTO.getImage();
-        String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-        File destinationFile = new File(staticUploads, fileName);
-        image.transferTo(destinationFile);
+    public void update(EmployesDTO employesDTO) throws Exception {
+        Employes existing = repository.findById(employesDTO.getId_employe())
+                .orElseThrow(() -> new Exception("Employé introuvable"));
 
-        if (fileName.endsWith("_")) {
-            throw new Exception("L'emploie doit avoir du photo !");
+        MultipartFile image = employesDTO.getImage();
+        String imageName = existing.getImage();
+        File uploadDir;
+
+        if (image != null && !image.isEmpty() && !image.getOriginalFilename().isBlank()) {
+            imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+            uploadDir = ResourceUtils.getFile(new File("uploads/").getAbsolutePath());
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            File destinationFile = new File(uploadDir, imageName);
+            image.transferTo(destinationFile);
+
+            imageName = "uploads/" + imageName;
+        }
+
+        existing.setNom(employesDTO.getNom());
+        existing.setPrenoms(employesDTO.getPrenoms());
+        existing.setDtn(employesDTO.getDtn());
+        existing.setSexe(employesDTO.getSexe());
+        existing.setEmail(employesDTO.getEmail());
+        existing.setTelephone(employesDTO.getTelephone());
+        existing.setMdp(employesDTO.getMdp());
+        existing.setAdresse(employesDTO.getAdresse());
+        existing.setPost(employesDTO.getPost());
+        existing.setDate_embauche(employesDTO.getDate_embauche());
+        existing.setDate_fin_embauche(employesDTO.getDate_fin_embauche());
+        existing.setSalaire(employesDTO.getSalaire());
+        existing.setMode_paiement(employesDTO.getMode_paiement());
+        existing.setImage(imageName);
+
+        repository.save(existing);
+    }
+
+    public void Creat(EmployesDTO employesDTO) throws Exception {
+        MultipartFile image = employesDTO.getImage();
+        String imageName;
+        File uploadDir;
+
+        if (image == null || image.isEmpty() || image.getOriginalFilename().isBlank()) {
+            imageName = "images/default_emp.jpg";
+        } else {
+            imageName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+            uploadDir = ResourceUtils.getFile(new File("uploads/").getAbsolutePath());
+
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
+            File destinationFile = new File(uploadDir, imageName);
+            image.transferTo(destinationFile);
+
+            imageName = "uploads/" + imageName;
         }
 
         Employes temp = new Employes();
-
         temp.setNom(employesDTO.getNom());
         temp.setPrenoms(employesDTO.getPrenoms());
         temp.setDtn(employesDTO.getDtn());
@@ -51,7 +95,7 @@ public class EmployesService {
         temp.setDate_fin_embauche(employesDTO.getDate_fin_embauche());
         temp.setSalaire(employesDTO.getSalaire());
         temp.setMode_paiement(employesDTO.getMode_paiement());
-        temp.setImage(fileName);
+        temp.setImage(imageName);
 
         repository.save(temp);
     }

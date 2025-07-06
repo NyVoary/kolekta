@@ -36,15 +36,15 @@
                                 <c:forEach var="employe" items="${employes}">
                                     <tr>
                                       <td>
-                                        <img src="${pageContext.request.contextPath}/uploads/${employe.image}" alt="" width="20">
+                                        <img src="${pageContext.request.contextPath}/${employe.image}" alt="" width="20">
                                       </td>
                                       <td>${employe.nom}</td>
                                       <td>${employe.dtn}</td>
                                       <td>${employe.sexe}</td>
                                       <td>${employe.salaire}</td>
                                       <td>
-                                        <a style="margin-right: 20px" class="btn btn-success btn-rounded btn-fw" href="/admin/validation/employe?id=${employe.id_employe}">Update</a>
-                                        <a class="btn btn-danger btn-rounded btn-fw" href="/admin/refus/employe?id=${employe.id_employe}">Remove</a>
+                                        <a style="margin-right: 20px" class="btn btn-success btn-rounded btn-fw" href="/admin/employes/update/${employe.id_employe}">Update</a>
+                                        <a class="btn btn-danger btn-rounded btn-fw" href="/admin/employes/remove/${employe.id_employe}">Remove</a>
                                       </td>
                                     </tr>
                                 </c:forEach>
