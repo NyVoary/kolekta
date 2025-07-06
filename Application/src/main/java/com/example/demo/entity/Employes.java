@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +12,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Employes {
@@ -52,6 +55,9 @@ public class Employes {
     @Enumerated(value = EnumType.STRING)
     private Mode_paiement mode_paiement;
     private String image;
+
+    @OneToMany(mappedBy = "employes")
+    private List<AssignationTache> assignationTaches = new ArrayList<>();
 
     public Long getId_employe() {
         return id_employe;
@@ -171,6 +177,14 @@ public class Employes {
 
     public void setSexe(Sexe sexe) {
         this.sexe = sexe;
+    }
+
+    public List<AssignationTache> getAssignationTaches() {
+        return assignationTaches;
+    }
+
+    public void setAssignationTaches(List<AssignationTache> assignationTaches) {
+        this.assignationTaches = assignationTaches;
     }
 
 }
