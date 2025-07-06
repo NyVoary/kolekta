@@ -1,84 +1,61 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page pageEncoding="UTF-8" %>
+
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>
     <!-- partial -->
     <div class="container-fluid page-body-wrapper">
-      <div id="right-sidebar" class="settings-panel">
-        <i class="settings-close ti-close"></i>
-        <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="setting-content">
-          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-            <div class="add-items d-flex px-3 mb-0">
-              <form class="form w-100">
-                <div class="form-group d-flex">
-                  <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
-                  <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">Add</button>
-                </div>
-              </form>
-            </div>
-            <div class="list-wrapper px-3">
-              <ul class="d-flex flex-column-reverse todo-list">
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Team review meeting at 3.00 PM
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Prepare for presentation
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Resolve all the low priority tickets due today
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Schedule meeting for next week
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Project review
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!-- To do section tab ends -->
-        </div>
-      </div>
       <%@ include file="../includes/sidebar.jsp" %>
       <!-- partial -->
       <div class="main-panel">
-        <h1>Liste employe:</h1>
-        <!-- partial:partials/_footer.html -->
+
+      <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">List Employe</h4>
+                    <c:choose>
+                        <c:when test="${empty employes}">
+                          <h1 style="text-align: center; padding: 20px 0;">Aucun(s) employé(s)</h1>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="table-responsive">
+                            <table class="table table-hover">
+                              <thead>
+                                <tr>
+                                  <th>Image</th>
+                                  <th>Nom</th>
+                                  <th>Date De Naissance</th>
+                                  <th>Sexe</th>
+                                  <th>Salaire</th>
+                                  <th>Action</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <c:forEach var="employe" items="${employes}">
+                                    <tr>
+                                      <td>
+                                        <img src="${pageContext.request.contextPath}/${employe.image}" alt="" width="20">
+                                      </td>
+                                      <td>${employe.nom}</td>
+                                      <td>${employe.dtn}</td>
+                                      <td>${employe.sexe}</td>
+                                      <td>${employe.salaire}</td>
+                                      <td>
+                                        <a style="margin-right: 20px" class="btn btn-success btn-rounded btn-fw" href="/admin/employes/update/${employe.id_employe}">Update</a>
+                                        <a class="btn btn-danger btn-rounded btn-fw" href="/admin/employes/remove/${employe.id_employe}">Remove</a>
+                                      </td>
+                                    </tr>
+                                </c:forEach>
+                              </tbody>
+                            </table>
+                          </div>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
+              </div>
+            </div>
       <%@ include file="../includes/footer.jsp" %>
       </div>
     </div>   

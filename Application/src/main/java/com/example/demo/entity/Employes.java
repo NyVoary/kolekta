@@ -5,6 +5,8 @@ import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,9 +16,13 @@ public class Employes {
 
     public enum Mode_paiement {
         Virement,
-        Cheque,
-        Especes
+        Chèque,
+        Espèces
     };
+
+    public enum Sexe {
+        M, F
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +34,9 @@ public class Employes {
     private String prenoms;
     @Column(nullable = false)
     private LocalDate dtn;
-    private char sexe;
+
+    @Enumerated(value = EnumType.STRING)
+    private Sexe sexe;
     private String email;
     private String telephone;
     private String mdp;
@@ -41,6 +49,7 @@ public class Employes {
     @Column(nullable = false)
     private BigDecimal salaire;
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private Mode_paiement mode_paiement;
     private String image;
 
@@ -74,14 +83,6 @@ public class Employes {
 
     public void setDtn(LocalDate dtn) {
         this.dtn = dtn;
-    }
-
-    public char getSexe() {
-        return sexe;
-    }
-
-    public void setSexe(char sexe) {
-        this.sexe = sexe;
     }
 
     public String getEmail() {
@@ -162,6 +163,14 @@ public class Employes {
 
     public String getImage() {
         return image;
+    }
+
+    public Sexe getSexe() {
+        return sexe;
+    }
+
+    public void setSexe(Sexe sexe) {
+        this.sexe = sexe;
     }
 
 }
