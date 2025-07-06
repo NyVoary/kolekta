@@ -73,12 +73,11 @@
             </a>
             <div class="collapse" id="icons">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-employe">Ajout employe</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/liste-employe">Liste</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/paiement-employe">Paiments</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/divers-employe">Gestion divers</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/tache-employe">Assignations taches</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/stat-employe">Statistique</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-employe">Ajout employe</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/liste-employe">Liste</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/divers-employe">Gestion divers</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/tache-employe">Assignations taches</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/stat-employe">Statistique</a></li>
               </ul>
             </div>
           </li>

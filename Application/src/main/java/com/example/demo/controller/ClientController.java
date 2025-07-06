@@ -30,8 +30,7 @@ public class ClientController {
     private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
 
-    @Autowired
-    public ClientController(ProduitsService produitsService, ClientService clientService,HistoriqueAchatService historiqueAchatService) {
+    public ClientController(ProduitsService produitsService, ClientService clientService) {
         this.produitsService = produitsService;
         this.clientService = clientService;
         this.historiqueAchatService = historiqueAchatService;
