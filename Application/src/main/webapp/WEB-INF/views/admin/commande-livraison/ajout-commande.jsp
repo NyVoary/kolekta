@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.example.demo.entity.Client,com.example.demo.entity.Produit,java.util.List" %>
+<%@ page import="com.example.demo.entity.Client,com.example.demo.entity.Produits,java.util.List" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -111,12 +111,12 @@
                               <select class="form-control" name="produitIds" required>
                                 <option value="">Sélectionner un produit</option>
                                 <%
-                                  List<Produit> produits = (List<Produit>) request.getAttribute("produits");
+                                  List<Produits> produits = (List<Produits>) request.getAttribute("produits");
                                   if (produits != null) {
-                                    for (Produit produit : produits) {
+                                    for (Produits produit : produits) {
                                 %>
-                                <option value="<%= produit.getIdProduit() %>" data-prix="<%= produit.getPrixVente() %>">
-                                  <%= produit.getNom() %> (<%= produit.getPrixVente() %> €)
+                                <option value="<%= produit.getId() %>" data-prix="<%= produit.getPrixVente() %>">
+                                  <%= produit.getNom() %> (<%= produit.getPrixVente() %> Ar)
                                 </option>
                                 <%
                                     }
@@ -132,7 +132,7 @@
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="fraisLivraison">Frais de Livraison (€)</label>
+                      <label for="fraisLivraison">Frais de Livraison (Ar)</label>
                       <input type="number" step="0.01" class="form-control" id="fraisLivraison" name="fraisLivraison" required>
                     </div>
                     <div class="form-group">
@@ -152,7 +152,7 @@
                       <input type="email" class="form-control" id="emailLivraison" name="emailLivraison">
                     </div>
                     <div class="form-group">
-                      <label><strong>Montant Total: </strong><span id="montantTotal">0.00</span> €</label>
+                      <label><strong>Montant Total: </strong><span id="montantTotal">0.00</span> Ar</label>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Ajouter Commande</button>
                   </form>

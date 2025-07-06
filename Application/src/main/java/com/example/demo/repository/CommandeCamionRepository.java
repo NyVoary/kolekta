@@ -5,5 +5,5 @@ import com.example.demo.entity.CommandeCamion;
 import java.util.Optional;
 
 public interface CommandeCamionRepository extends JpaRepository<CommandeCamion, Long> {
-    Optional<CommandeCamion> findByCommandeIdCommande(Long idCommande);
+    Optional<CommandeCamion> findByCommande_Id(Long id);
 }

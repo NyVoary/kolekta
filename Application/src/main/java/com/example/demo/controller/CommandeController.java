@@ -34,7 +34,7 @@ public class CommandeController {
     private PanierProduitAddRepository panierProduitAddRepository;
 
     @Autowired
-    private ProduitRepository produitRepository;
+    private ProduitsRepository produitRepository;
 
     // @Autowired
     // private JdbcTemplate jdbcTemplate;
@@ -78,7 +78,7 @@ public class CommandeController {
                         return panierAddRepository.save(nouveau);
                     });
 
-            Optional<Produit> produitOpt = produitRepository.findById(produitId);
+            Optional<Produits> produitOpt = produitRepository.findById(produitId);
             if (produitOpt.isEmpty()) {
                 redirectAttributes.addFlashAttribute("erreur", "Produit introuvable.");
                 return "redirect:/produits_liste";

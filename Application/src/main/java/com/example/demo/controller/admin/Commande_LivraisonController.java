@@ -2,12 +2,8 @@ package com.example.demo.controller.admin;
 
 import com.example.demo.dto.CommandeDTO;
 import com.example.demo.dto.LivraisonDTO;
-import com.example.demo.entity.Client;
-import com.example.demo.entity.Produit;
-import com.example.demo.service.ClientService;
-import com.example.demo.service.CommandeService;
-import com.example.demo.service.LivraisonService;
-import com.example.demo.service.ProduitService;
+import com.example.demo.entity.*;
+import com.example.demo.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -31,7 +26,7 @@ public class Commande_LivraisonController {
     private ClientService clientService;
 
     @Autowired
-    private ProduitService produitService;
+    private ProduitsService produitService;
 
     @GetMapping("/admin/livraison")
     public String livraison(Model model) {
@@ -50,7 +45,7 @@ public class Commande_LivraisonController {
     @GetMapping("/admin/ajout-commande")
     public String showAjouterCommandeForm(Model model) {
         List<Client> clients = clientService.getAllClients();
-        List<Produit> produits = produitService.getTousLesProduits();
+        List<Produits> produits = produitService.getAll();
         model.addAttribute("clients", clients);
         model.addAttribute("produits", produits);
         return "admin/commande-livraison/ajout-commande";
@@ -59,7 +54,7 @@ public class Commande_LivraisonController {
     @PostMapping("/admin/ajout-commande/traitement")
     public String ajouterCommande(
             @RequestParam("idClient") Long idClient,
-            @RequestParam("fraisLivraison") BigDecimal fraisLivraison,
+            @RequestParam("fraisLivraison") Double fraisLivraison,
             @RequestParam("adresseLivraison") String adresseLivraison,
             @RequestParam("villeLivraison") String villeLivraison,
             @RequestParam("telephoneLivraison") String telephoneLivraison,

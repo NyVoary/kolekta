@@ -16,7 +16,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Details de commande</title>
+  <title>Library</title>
     <link rel="stylesheet" href="<%= request.getContextPath() %>/vendors/feather/feather.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="<%= request.getContextPath() %>/vendors/css/vendor.bundle.base.css">
@@ -233,7 +233,7 @@
                                         </thead>
                                         <tbody>
                                             <% if (produits != null) {
-                                                for (CommandeProduit item : produits) { %>
+                                                for (CommandeProduits item : produits) { %>
                                                     <tr>
                                                         <td class="py-1">
                                                             <% if (item.getProduit() != null && item.getProduit().getImage() != null && !item.getProduit().getImage().isEmpty()) { %>

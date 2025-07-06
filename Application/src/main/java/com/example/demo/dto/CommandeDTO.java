@@ -1,13 +1,12 @@
 package com.example.demo.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class CommandeDTO {
     private Long idCommande;
     private LocalDate dateCommande;
-    private BigDecimal fraisLivraison;
-    private BigDecimal montantTotal;
+    private Double fraisLivraison;
+    private Double montantTotal;
     private String adresseLivraison;
     private String villeLivraison;
     private String telephoneLivraison;
@@ -20,10 +19,10 @@ public class CommandeDTO {
     public void setIdCommande(Long idCommande) { this.idCommande = idCommande; }
     public LocalDate getDateCommande() { return dateCommande; }
     public void setDateCommande(LocalDate dateCommande) { this.dateCommande = dateCommande; }
-    public BigDecimal getFraisLivraison() { return fraisLivraison; }
-    public void setFraisLivraison(BigDecimal fraisLivraison) { this.fraisLivraison = fraisLivraison; }
-    public BigDecimal getMontantTotal() { return montantTotal; }
-    public void setMontantTotal(BigDecimal montantTotal) { this.montantTotal = montantTotal; }
+    public Double getFraisLivraison() { return fraisLivraison; }
+    public void setFraisLivraison(Double fraisLivraison) { this.fraisLivraison = fraisLivraison; }
+    public Double getMontantTotal() { return montantTotal; }
+    public void setMontantTotal(Double montantTotal) { this.montantTotal = montantTotal; }
     public String getAdresseLivraison() { return adresseLivraison; }
     public void setAdresseLivraison(String adresseLivraison) { this.adresseLivraison = adresseLivraison; }
     public String getVilleLivraison() { return villeLivraison; }

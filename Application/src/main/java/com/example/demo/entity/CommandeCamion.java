@@ -16,7 +16,7 @@ public class CommandeCamion {
 
     @ManyToOne
     @JoinColumn(name = "id_commande", nullable = false)
-    private Commande commande;
+    private Commandes commande;
 
     @Column(nullable = false)
     private LocalDateTime dateAssignation;
@@ -37,11 +37,11 @@ public class CommandeCamion {
         this.assignationCamion = assignationCamion;
     }
 
-    public Commande getCommande() {
+    public Commandes getCommande() {
         return commande;
     }
 
-    public void setCommande(Commande commande) {
+    public void setCommande(Commandes commande) {
         this.commande = commande;
     }
 

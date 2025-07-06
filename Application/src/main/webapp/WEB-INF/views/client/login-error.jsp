@@ -3,8 +3,8 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Connexion requise</title>
-    <style>
+  <title>Library</title>   
+ <style>
         body {
             font-family: Arial, sans-serif;
             padding: 40px;

@@ -1,23 +1,15 @@
 package com.example.demo.service;
 
+import com.example.demo.dto.CommandeDTO;
+import com.example.demo.dto.request.FilterCommandesRequest;
+import com.example.demo.dto.response.CommandeClientResponse;
 import com.example.demo.entity.*;
 import com.example.demo.repository.*;
-
-import java.time.LocalDate;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.example.demo.dto.request.FilterCommandesRequest;
-import com.example.demo.dto.response.CommandeClientResponse;
-import java.util.List;
 
-import com.example.demo.dto.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -28,10 +20,14 @@ public class CommandeService {
 
     @Autowired
     private CommandeRepository commandeRepository;
-    @Autowired private CommandeProduitRepository commandeProduitRepository;
-    @Autowired private PanierService panierService;
-    @Autowired private ClientService clientService;
-    @Autowired private CommandeStatusRepository commandeStatusRepository;
+    @Autowired
+    private CommandeProduitsRepository commandeProduitRepository;
+    @Autowired
+    private PanierService panierService;
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private CommandeStatusRepository commandeStatusRepository;
     @Autowired
     private ProduitsRepository produitRepository;
     @Autowired
@@ -39,11 +35,9 @@ public class CommandeService {
     @Autowired
     private StatusRepository statusRepository;
 
-
-
     public Commandes creerCommandeDepuisPanier(Long idClient) {
         Panier panier = panierService.getPanierAvecProduits(idClient).orElseThrow();
-        Client client = clientService.getClientById(idClient.longValue()).orElseThrow();
+        Client client = clientService.getClientById(idClient).orElseThrow();
 
         Double montantHT = panierService.calculerMontantHT(panier);
         Double montantTTC = panierService.calculerMontantTTC(montantHT);
@@ -53,8 +47,8 @@ public class CommandeService {
         Commandes commande = new Commandes();
         commande.setClient(client);
         commande.setDateCommande(LocalDate.now());
-        commande.setFraisLivraison(fraisLivraison.doubleValue());
-        commande.setMontantTotal(montantTotal.doubleValue());
+        commande.setFraisLivraison(fraisLivraison);
+        commande.setMontantTotal(montantTotal);
         commande.setAdresseLivraison(client.getAdresse());
         commande.setVilleLivraison("Antananarivo");
         commande.setTelephoneLivraison(client.getTelephone());
@@ -63,10 +57,11 @@ public class CommandeService {
         commande = commandeRepository.save(commande);
 
         for (PanierProduits pp : panier.getPanierProduits()) {
-            CommandeProduit cp = new CommandeProduit();
+            CommandeProduits cp = new CommandeProduits();
             cp.setCommande(commande);
             cp.setProduit(pp.getProduit());
-            cp.setQuantite(pp.getQuantite() != null ? pp.getQuantite().intValue() : null);
+            cp.setQuantite(pp.getQuantite().intValue());
+            // cp.setQuantite(pp.getQuantite().intValue() != null ? pp.getQuantite().intValue() : null);
             cp.setPrixUnitaire(pp.getPrixUnitaire());
             commandeProduitRepository.save(cp);
         }
@@ -79,7 +74,7 @@ public class CommandeService {
     public Commandes getCommandeWithProduits(Long id) {
         Commandes commande = commandeRepository.findById(id).orElse(null);
         if (commande != null) {
-            commande.getProduits().size();
+            commande.getCommandeProduits().size();
         }
         return commande;
     }
@@ -88,7 +83,6 @@ public class CommandeService {
         return commandeRepository.findByClientId(client);
     }
 
-    // ok 
     public List<Commandes> getCommandesByClient(Client client) {
         return commandeRepository.findByClientOrderByDateCommandeDesc(client);
     }
@@ -108,14 +102,14 @@ public class CommandeService {
     }
 
     public List<CommandeDTO> getAllCommandes() {
-        List<Commande> commandes = commandeRepository.findAll();
+        List<Commandes> commandes = commandeRepository.findAll();
         List<CommandeDTO> commandeDTOs = new ArrayList<>();
 
-        for (Commande commande : commandes) {
+        for (Commandes commande : commandes) {
             Client client = commande.getClient();
 
             String statut = "Non défini";
-            List<CommandeStatus> commandeStatuses = commandeStatusRepository.findByCommandeIdCommande(commande.getIdCommande());
+            List<CommandeStatus> commandeStatuses = commandeStatusRepository.findByCommandeId(commande.getId());
             if (!commandeStatuses.isEmpty()) {
                 CommandeStatus dernierStatus = commandeStatuses.stream()
                         .max(Comparator.comparing(CommandeStatus::getDateChangement))
@@ -126,7 +120,7 @@ public class CommandeService {
             }
 
             CommandeDTO dto = new CommandeDTO();
-            dto.setIdCommande(commande.getIdCommande());
+            dto.setIdCommande(commande.getId());
             dto.setDateCommande(commande.getDateCommande());
             dto.setFraisLivraison(commande.getFraisLivraison());
             dto.setMontantTotal(commande.getMontantTotal());
@@ -142,11 +136,11 @@ public class CommandeService {
         return commandeDTOs;
     }
 
-    public Commande ajouterCommande(Long idClient, BigDecimal fraisLivraison, String adresseLivraison,
+    @Transactional
+    public Commandes ajouterCommande(Long idClient, Double fraisLivraison, String adresseLivraison,
                                    String villeLivraison, String telephoneLivraison, String emailLivraison,
                                    List<Long> produitIds, List<Integer> quantites) {
-        // Créer la commande
-        Commande commande = new Commande();
+        Commandes commande = new Commandes();
         Client client = clientRepository.findById(idClient)
                 .orElseThrow(() -> new IllegalArgumentException("Client non trouvé"));
         commande.setClient(client);
@@ -157,30 +151,27 @@ public class CommandeService {
         commande.setTelephoneLivraison(telephoneLivraison);
         commande.setEmailLivraison(emailLivraison);
 
-        // Calculer le montant total
-        BigDecimal montantTotal = BigDecimal.ZERO;
-        List<CommandeProduit> commandeProduits = new ArrayList<>();
+        Double montantTotal = 0.0;
+        List<CommandeProduits> commandeProduits = new ArrayList<>();
         for (int i = 0; i < produitIds.size(); i++) {
-            final Long produitId = produitIds.get(i); // Capture produitId as final
-            Produit produit = produitRepository.findById(produitId)
+            Long produitId = produitIds.get(i);
+            Produits produit = produitRepository.findById(produitId)
                     .orElseThrow(() -> new IllegalArgumentException("Produit non trouvé: " + produitId));
             Integer quantite = quantites.get(i);
-            CommandeProduit commandeProduit = new CommandeProduit();
+            CommandeProduits commandeProduit = new CommandeProduits();
             commandeProduit.setCommande(commande);
             commandeProduit.setProduit(produit);
             commandeProduit.setQuantite(quantite);
             commandeProduit.setPrixUnitaire(produit.getPrixVente());
             commandeProduits.add(commandeProduit);
-            montantTotal = montantTotal.add(produit.getPrixVente().multiply(BigDecimal.valueOf(quantite)));
+            montantTotal += produit.getPrixVente() * quantite;
         }
-        montantTotal = montantTotal.add(fraisLivraison);
+        montantTotal += fraisLivraison;
         commande.setMontantTotal(montantTotal);
         commande.setCommandeProduits(commandeProduits);
 
-        // Enregistrer la commande
         commande = commandeRepository.save(commande);
 
-        // Ajouter un statut initial
         CommandeStatus commandeStatus = new CommandeStatus();
         commandeStatus.setCommande(commande);
         commandeStatus.setStatus(statusRepository.findByLibelle("En attente de validation")

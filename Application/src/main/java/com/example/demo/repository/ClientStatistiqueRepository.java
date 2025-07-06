@@ -61,7 +61,7 @@ public interface ClientStatistiqueRepository extends JpaRepository<Client, Integ
     // Top produits général
     @Query("SELECT new com.example.demo.entity.ClientStatistique(" +
            "p.nom, SUM(cp.quantite), SUM(cp.quantite * cp.prixUnitaire)) " +
-           "FROM CommandeProduit cp " +
+           "FROM CommandeProduits cp " +
            "JOIN cp.produit p " +
            "JOIN cp.commande c " +
            "GROUP BY p.nom " +
@@ -98,7 +98,7 @@ public interface ClientStatistiqueRepository extends JpaRepository<Client, Integ
 
     @Query("SELECT new com.example.demo.entity.ClientStatistique(" +
            "p.nom, SUM(cp.quantite), SUM(cp.quantite * cp.prixUnitaire)) " +
-           "FROM CommandeProduit cp " +
+           "FROM CommandeProduits cp " +
            "JOIN cp.produit p " +
            "JOIN cp.commande c " +
            "WHERE c.dateCommande BETWEEN :debut AND :fin " +

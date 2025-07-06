@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommandeStatusRepository extends JpaRepository<CommandeStatus, Long> {
-    
+
     Optional<CommandeStatus> findTopByCommandeIdOrderByDateChangementDesc(Long commandeId);
-    
+
     List<CommandeStatus> findByCommandeIdOrderByDateChangementDesc(Long commandeId);
-    List<CommandeStatus> findByCommandeIdCommande(Long idCommande);
+
+    List<CommandeStatus> findByCommandeId(Long commandeId);
 }

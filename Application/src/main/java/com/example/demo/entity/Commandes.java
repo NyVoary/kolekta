@@ -55,6 +55,9 @@ public class Commandes {
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
     private List<CommandePaiement> paiements;
 
+    @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL)
+    private List<CommandeProduits> commandeProduits;
+
     @Transient
     private String dernierStatut;
 
@@ -73,6 +76,7 @@ public class Commandes {
         this.telephoneLivraison = telephoneLivraison;
         this.emailLivraison = emailLivraison;
     }
+
     public List<CommandePaiement> getPaiements() {
         return paiements;
     }
@@ -221,7 +225,7 @@ public class Commandes {
     public void setCommandeStatusList(List<CommandeStatus> commandeStatusList) {
         this.status = commandeStatusList;
     }
-    
+
     public List<CommandeStatus> getStatuts() {
         return status;
     }
@@ -230,7 +234,7 @@ public class Commandes {
         this.status = statuts;
     }
 
-        // Méthodes utilitaires
+    // Méthodes utilitaires
     public void addProduit(CommandeProduits produit) {
         produits.add(produit);
         produit.setCommande(this);
@@ -244,16 +248,24 @@ public class Commandes {
     // Calcul du montant total en fonction des produits
     public void calculerMontantTotal() {
         this.montantTotal = produits.stream()
-                .mapToDouble(CommandeProduit::getMontantTotal)
+                .mapToDouble(CommandeProduits::getMontantTotal)
                 .sum() + fraisLivraison;
     }
 
     public String getDernierStatut() {
         return dernierStatut;
     }
-    
+
     public void setDernierStatut(String dernierStatut) {
         this.dernierStatut = dernierStatut;
+    }
+
+    public List<CommandeProduits> getCommandeProduits() {
+        return commandeProduits;
+    }
+
+    public void setCommandeProduits(List<CommandeProduits> commandeProduits) {
+        this.commandeProduits = commandeProduits;
     }
 
     // toString method

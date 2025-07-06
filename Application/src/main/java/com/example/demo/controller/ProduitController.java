@@ -7,18 +7,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.example.demo.entity.Produit;
-import com.example.demo.service.ProduitService;
+import com.example.demo.entity.*;
+import com.example.demo.service.*;
 
 @Controller
 public class ProduitController {
 
     @Autowired
-    private ProduitService produitService;
+    private ProduitsService produitService;
 
     @GetMapping("/produits")
     public String afficherProduits(Model model) {
-        List<Produit> produits = produitService.getTousLesProduits();
+        List<Produits> produits = produitService.getAll();
         model.addAttribute("produits", produits);
         return "client/produits";
     }
