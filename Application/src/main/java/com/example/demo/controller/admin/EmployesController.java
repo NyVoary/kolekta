@@ -1,6 +1,5 @@
 package com.example.demo.controller.admin;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dto.EmployesDTO;
+import com.example.demo.dto.AssignationTacheDTO;
+import com.example.demo.entity.AssignationTache;
 import com.example.demo.entity.Employes;
 import com.example.demo.service.EmployesService;
 
@@ -78,7 +79,6 @@ public class EmployesController {
     public String listeEmploye(Model model) {
         String source = "/";
         model.addAttribute("employes", service.getAll());
-        model.addAttribute("src", source);
         return "admin/employes/liste";
     }
 
@@ -89,7 +89,21 @@ public class EmployesController {
 
     @GetMapping("/tache-employe")
     public String tacheEmploye(Model model) {
+        model.addAttribute("status", AssignationTache.theStatus);
+        model.addAttribute("priorites", AssignationTache.Priorite.values());
+        model.addAttribute("employes", service.getAll());
         return "admin/employes/tache";
+    }
+
+    @PostMapping("/tache-employe")
+    public String tache(@ModelAttribute AssignationTacheDTO tacheDTO ,RedirectAttributes redirectAttributes) {
+        try {
+            service.addTache(tacheDTO);
+            redirectAttributes.addFlashAttribute("message", "Ajout d'un tache réussi");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
+        }
+        return "redirect:/admin/tache-employe";
     }
 
     @GetMapping("/stat-employe")

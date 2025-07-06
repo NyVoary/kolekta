@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.dto.AssignationTacheDTO;
 import com.example.demo.dto.EmployesDTO;
+import com.example.demo.entity.AssignationTache;
 import com.example.demo.entity.Employes;
 import com.example.demo.repository.EmployesRepository;
 
@@ -15,9 +17,13 @@ import com.example.demo.repository.EmployesRepository;
 public class EmployesService {
 
     private final EmployesRepository repository;
+    private final AssignationTacheService assignationTacheService;
 
-    public EmployesService(EmployesRepository repository) {
+    public EmployesService(EmployesRepository repository,
+                            AssignationTacheService assignationTacheService
+    ) {
         this.repository = repository;
+        this.assignationTacheService = assignationTacheService;
     }
 
     public void update(EmployesDTO employesDTO) throws Exception {
@@ -102,6 +108,19 @@ public class EmployesService {
 
     public List<Employes> getAll() {
         return repository.findAll();
+    }
+
+    public void addTache(AssignationTacheDTO assignationTacheDTO) {
+        AssignationTache temp = new AssignationTache();
+        temp.setTitre(assignationTacheDTO.getTitre());
+        temp.setDescription(assignationTacheDTO.getDescription());
+        temp.setEmployes(repository.findById(assignationTacheDTO.getId_employe()).get());
+        temp.setPriorite(assignationTacheDTO.getPriorite());
+        temp.setStatus(assignationTacheDTO.getStatus());
+        temp.setDate_debut(assignationTacheDTO.getDate_debut());
+        temp.setDate_fin(assignationTacheDTO.getDate_fin());
+
+        assignationTacheService.add(temp);
     }
 
     public Employes GetById(Long id) {
