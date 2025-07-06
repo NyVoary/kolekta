@@ -15,7 +15,7 @@
               <a href="/admin/clients/ajout-client" class="btn btn-primary mb-3">Ajouter un client</a>
             </div>
           </div>
-          <div class="row">
+          <%-- <div class="row">
             <div class="col-12">
               <div class="card shadow-sm">
                 <div class="card-body">
@@ -53,10 +53,13 @@
         </div>
         <%@ include file="../includes/footer.jsp" %>
       </div>
-      <%@ include file="../includes/sidebar.jsp" %>
+      <%@ include file="../includes/sidebar.jsp" %> --%>
       <!-- partial -->
       <div class="main-panel">
         <%-- <div class="main-panel"> --%>
+                        <c:if test="${not empty succes}">
+                    <div style="color: green;">${succes}</div>
+                </c:if>
           <div class="content-wrapper">
             <h2>Liste des Clients</h2>
         
@@ -85,7 +88,7 @@
                     <td><a href="/admin/informations-client/<%= client.getIdClient() %>" class="btn btn-sm btn-primary"><%= client.getIdClient() %></a></td>
                     <td><%= client.getNom() %> <%= client.getPrenoms() %></td>
                     <td><%= client.getDtn() %></td>
-                    <td><%= client.getSexe() == 'M' ? "Masculin" : "F&eacute;minin" %></td>
+                    <td><%= client.getSexe() %></td>
                     <td><%= client.getEmail() != null ? client.getEmail() : "-" %></td>
                     <td><%= client.getTelephone() %></td>
                     <td><%= client.getAdresse() %></td>

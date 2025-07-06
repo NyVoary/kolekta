@@ -12,6 +12,7 @@ import java.util.List;
 
 @Repository
 public interface FornisseursRepository extends JpaRepository<Fournisseurs, Long> {
+
     @Query("SELECT COUNT(f) FROM Fournisseurs f WHERE f.dateAjout BETWEEN :dateDebut AND :dateFin")
     long countByDateAjoutBetween(@Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin);
 

@@ -75,7 +75,7 @@ public class ProduitsControllerAdmin {
             produit.setCategorie(categorie);
             produit.setUniteMesure(uniteMesure);
             produit.setPrixAchat(prixAchat);
-            produit.setPrixAchat(prixVente);
+            produit.setPrixVente(prixVente);
             produit.setDateAjout(LocalDate.now());
             
             if (!image.isEmpty()) {

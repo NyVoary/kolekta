@@ -101,7 +101,7 @@
               <p class="card-text">
                 <strong>Fournisseur:</strong> ${produit.fournisseur.nom}<br>
                 <strong>Catégorie:</strong> ${produit.categorie.libelle}<br>
-                <strong>Prix de vente:</strong> ${produit.prixVente} €<br>
+                <strong>Prix de vente:</strong> ${produit.prixVente} Ar<br>
                 <strong>Unité:</strong> ${produit.uniteMesure}
               </p>
               <button type="button" class="btn btn-warning btn-modifier" 

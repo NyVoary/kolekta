@@ -104,7 +104,7 @@
           <label for="unite_mesure">Unité de mesure:</label>
           <select name="unite_mesure" id="unite_mesure" required>
             <option value="kg">Par kilo</option>
-            <option value="pc">Par piece</option>
+            <option value="piece">Par piece</option>
           </select>
           <label for="prix_achat">Prix d'achat:</label>
           <input type="number" step="0.01" name="prix_achat" id="prix_achat" placeholder="Prix d'achat" required>

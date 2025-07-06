@@ -44,8 +44,8 @@
                 <div class="form-group">
                   <select class="form-control form-control-lg" name="sexe" required>
                     <option value="">Sexe</option>
-                    <option value="M">Masculin</option>
-                    <option value="F">Feminin</option>
+                    <option value="Masculin">Masculin</option>
+                    <option value="Feminin">Feminin</option>
                     <option value="Autre">Autre</option>
                   </select>
                 </div>

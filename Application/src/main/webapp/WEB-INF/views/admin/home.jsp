@@ -14,8 +14,8 @@
         <div class="content-wrapper">
           <div class="row justify-content-center align-items-center" style="min-height:60vh;">
             <div class="col-md-8 text-center">
-              <h1 class="display-4 mb-4">Bienvenue sur le tableau de bord</h1>
-              <p class="lead mb-4">Bonjour, <strong>${acces.nomUtilisateur}</strong> (rôle : <strong>${acces.role}</strong>)</p>
+              <%-- <h1 class="display-4 mb-4">Bienvenue sur le tableau de bord</h1> --%>
+              <h1 class="lead mb-4">Bonjour, <strong>${acces.nomUtilisateur}</strong> (rôle : <strong>${acces.role}</strong>)</h1>
               <div class="row justify-content-center">
                 <div class="col-md-4 mb-3">
                   <a href="/admin/liste-client" class="btn btn-outline-primary btn-lg w-100">Gérer les clients</a>
@@ -40,12 +40,49 @@
               </div>
             </div>
           </div>
+          <div class="col-md-7 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <p class="card-title mb-0">Tâches à faire pour:  <strong>${acces.nomUtilisateur}</strong>/ date now()</p>
+                  <div class="table-responsive">
+                    <table class="table table-striped table-borderless">
+                      <thead>
+                        <tr>
+                          <th>Tâche et description</th>
+                          <th>Durée</th>
+                          <th>Date</th>
+                          <th>Importance</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <%
+                        for (int i = 0; i <= 3; i++) {
+                        %>
+                        <tr>
+                          <td>Tâche 1: blabla description</td>
+                          <td class="font-weight-bold">36min</td>
+                          <td>21min</td>
+                          <td>haute</td>
+                          <td class="font-weight-medium">
+                            <div class="badge badge-success">Completed</div>
+                          </td>
+                        </tr>
+                        <%
+                        }
+                        %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
         <%@ include file="includes/footer.jsp" %>
       </div>
-      <%@ include file="includes/sidebar.jsp" %>
+      <%-- <%@ include file="includes/sidebar.jsp" %> --%>
       <!-- partial -->
-      <div class="main-panel">
+      <%-- <div class="main-panel">
         <div class="content-wrapper">
           <h1>Statistiques des produits</h1>
           
@@ -76,9 +113,9 @@
             </div>
           </div>
         </div>
-        <!-- partial:partials/_footer.html -->
-      <%@ include file="includes/footer.jsp" %>
-      </div>
+        <!-- partial:partials/_footer.html --> --%>
+      <%-- <%@ include file="includes/footer.jsp" %> --%>
+      <%-- </div> --%>
     </div>   
   </div>
   <!-- Chart.js -->

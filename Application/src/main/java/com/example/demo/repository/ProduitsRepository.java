@@ -47,9 +47,9 @@ public interface ProduitsRepository extends JpaRepository<Produits, Long> { // C
                         @Param("prixMin") Double prixMin,
                         @Param("prixMax") Double prixMax);
 
-        List<Produits> findByFournisseurs_Id(Long idFournisseur);
+        List<Produits> findByFournisseur_Id(Long idFournisseur);
 
-        @Query("SELECT COUNT(p.id) FROM Produits p WHERE p.fournisseur.id = :fournisseurId AND p.date_ajout BETWEEN :dateDebut AND :dateFin")
+        @Query("SELECT COUNT(p.id) FROM Produits p WHERE p.fournisseur.id = :fournisseurId AND p.dateAjout BETWEEN :dateDebut AND :dateFin")
         Long countProduitsByFournisseurAndDate(@Param("fournisseurId") Long fournisseurId,
                         @Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin);
 

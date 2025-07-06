@@ -22,7 +22,7 @@ public class Client {
     private LocalDate dtn;
 
     @Column(nullable = false, length = 1)
-    private Character sexe;
+    private String sexe;
 
     @Column(length = 255)
     private String email;
@@ -76,11 +76,11 @@ public class Client {
         this.dtn = dtn;
     }
 
-    public char getSexe() {
+    public String getSexe() {
         return sexe;
     }
 
-    public void setSexe(char sexe) {
+    public void setSexe(String sexe) {
         this.sexe = sexe;
     }
 

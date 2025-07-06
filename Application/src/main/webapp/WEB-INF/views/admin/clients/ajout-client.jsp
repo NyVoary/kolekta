@@ -82,7 +82,10 @@
             <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">Ajouter une cat&eacute;gorie</h4>
+                <c:if test="${not empty erreur}">
+                    <div style="color: red;">${erreur}</div>
+                </c:if>
+                  <h4 class="card-title">Ajouter un client</h4>
                   <form action="/admin/ajout-client" method="post" enctype="multipart/form-data" class="forms-sample">
                     <div class="form-group">
                       <label for="nom">Nom</label>
@@ -102,8 +105,9 @@
                     <div class="form-group">
                       <label for="sexe">Sexe</label>
                       <select class="form-control" id="sexe" name="sexe">
-                        <option value="M">Masculin</option>
-                        <option value="F">F&eacute;minin</option>
+                        <option value="Masculin">Masculin</option>
+                        <option value="Feminin">F&eacute;minin</option>
+                        <option value="Autre">Autre</option>
                       </select>
                     </div>
                   

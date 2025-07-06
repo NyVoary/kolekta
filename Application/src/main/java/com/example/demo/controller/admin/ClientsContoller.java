@@ -1,6 +1,8 @@
 package com.example.demo.controller.admin;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +27,7 @@ import com.example.demo.service.CommandeService;
 public class ClientsContoller {
     private final ClientService clientService;
     private final CommandeService commandeService;
-    
+
     public ClientsContoller(ClientService clientService, CommandeService commandeService) {
         this.clientService = clientService;
         this.commandeService = commandeService;
@@ -38,20 +40,35 @@ public class ClientsContoller {
     }
 
     @PostMapping("/admin/ajout-client")
-    public String enregistrerClient(@ModelAttribute Client client, @RequestParam("imageFile") MultipartFile imageFile) throws Exception {
-        ClientDTO dto = new ClientDTO();
-        dto.setNom(client.getNom());
-        dto.setPrenoms(client.getPrenoms());
-        dto.setDtn(client.getDtn());
-        dto.setSexe(client.getSexe());
-        dto.setEmail(client.getEmail());
-        dto.setTelephone(client.getTelephone());
-        dto.setAdresse(client.getAdresse());
-        dto.setMdp(client.getMdp());
-        dto.setImage(imageFile);
+    public String enregistrerClient(@ModelAttribute Client client,
+            @RequestParam("imageFile") MultipartFile imageFile,
+            Model model) {
+        try {
+            LocalDate aujourdHui = LocalDate.now();
+            LocalDate dateNaissance = client.getDtn();
+            Period age = Period.between(dateNaissance, aujourdHui);
 
-        clientService.inscrire(dto);
-        return "redirect:/admin/liste-client";
+            if (age.getYears() < 18) {
+                model.addAttribute("erreur", "Vous devez avoir au moins 18 ans.");
+                return "admin/clients/ajout-client";
+            }
+            ClientDTO dto = new ClientDTO();
+            dto.setNom(client.getNom());
+            dto.setPrenoms(client.getPrenoms());
+            dto.setDtn(client.getDtn());
+            dto.setSexe(client.getSexe());
+            dto.setEmail(client.getEmail());
+            dto.setTelephone(client.getTelephone());
+            dto.setAdresse(client.getAdresse());
+            dto.setMdp(client.getMdp());
+            dto.setImage(imageFile);
+
+            clientService.inscrire(dto);
+            return "redirect:/admin/liste-client";
+        } catch (Exception e) {
+            model.addAttribute("erreur", e.getMessage());
+            return "admin/clients/ajout-client"; // Le JSP correspondant au formulaire
+        }
     }
 
     @GetMapping("/admin/liste-client")
@@ -73,18 +90,19 @@ public class ClientsContoller {
     }
 
     @PostMapping("/admin/update-client")
-    public String updateClient(@ModelAttribute Client client, 
-                             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) throws Exception {
+    public String updateClient(@ModelAttribute Client client,
+            @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) throws Exception {
         Client existingClient = clientService.getClientByID(client.getIdClient());
-        
+
         if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-            File staticUploads = ResourceUtils.getFile(new File("src/main/resources/static/images/uploads").getAbsolutePath());
+            File staticUploads = ResourceUtils
+                    .getFile(new File("src/main/resources/static/images/uploads").getAbsolutePath());
             File destinationFile = new File(staticUploads, fileName);
             imageFile.transferTo(destinationFile);
             existingClient.setImage(fileName);
         }
-        
+
         existingClient.setNom(client.getNom());
         existingClient.setPrenoms(client.getPrenoms());
         existingClient.setDtn(client.getDtn());
@@ -92,11 +110,11 @@ public class ClientsContoller {
         existingClient.setEmail(client.getEmail());
         existingClient.setTelephone(client.getTelephone());
         existingClient.setAdresse(client.getAdresse());
-        
+
         if (client.getMdp() != null && !client.getMdp().isEmpty()) {
             existingClient.setMdp(client.getMdp());
         }
-        
+
         clientService.updateClient(existingClient);
         return "redirect:/admin/liste-client";
     }
@@ -113,17 +131,17 @@ public class ClientsContoller {
         if (client == null) {
             return "redirect:/admin/liste-client";
         }
-        
+
         List<Commandes> commandes = commandeService.getAllCommandesByClientWithProduits(id.intValue());
-        
+
         for (Commandes commande : commandes) {
             String statut = commandeService.getDernierStatutCommande(commande.getId());
             commande.setDernierStatut(statut);
         }
-        
+
         model.addAttribute("client", client);
         model.addAttribute("commandes", commandes);
-        
+
         return "admin/clients/informations-client";
     }
 }

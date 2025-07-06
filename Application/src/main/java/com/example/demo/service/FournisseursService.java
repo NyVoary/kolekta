@@ -57,7 +57,7 @@ public class FournisseursService {
     }
 
     public List<Produits> getProduitsByFournisseur(Long fournisseurId) {
-        List<Produits> produits = produitsRepository.findByFournisseurs_Id(fournisseurId);
+        List<Produits> produits = produitsRepository.findByFournisseur_Id(fournisseurId);
         System.out.println("[DEBUG] Produits pour fournisseur " + fournisseurId + " : " + produits.size());
         for (Produits p : produits) {
             System.out.println("[DEBUG] Produit: id=" + p.getId() + ", nom=" + p.getNom());
@@ -70,7 +70,7 @@ public class FournisseursService {
     }
 
     public List<Map<String, Object>> getProduitsAvecQuantiteByFournisseur(Long fournisseurId) {
-        List<Produits> produits = produitsRepository.findByFournisseurs_Id(fournisseurId);
+        List<Produits> produits = produitsRepository.findByFournisseur_Id(fournisseurId);
         List<Disponibilite> dispos = disponibiliteRepository.findAll();
         List<Map<String, Object>> result = new ArrayList<>();
         for (Produits p : produits) {
