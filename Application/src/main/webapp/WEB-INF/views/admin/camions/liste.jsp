@@ -81,10 +81,10 @@
         <div class="content-wrapper">
           <div class="row">
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.demo.entity.Camion" %>
+<%@ page import="com.example.demo.view.VCamionEtat" %>
           
 <%
-    List<Camion> camions = (List<Camion>) request.getAttribute("camions");
+    List<VCamionEtat> camions = (List<VCamionEtat>) request.getAttribute("camions");
 %>
 <div class="col-lg-12 grid-margin stretch-card">
   <div class="card">
@@ -98,13 +98,15 @@
               <th>Capacite (t)</th>
               <th>Nom du chauffeur</th>
               <th>Telephone du chauffeur</th>
+              <th>Etat</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
             <%
               if (camions != null && !camions.isEmpty()) {
                 int index = 1;
-                for (Camion camion : camions) {
+                for (VCamionEtat camion : camions) {
             %>
               <tr>
                 <td><%= index++ %></td>
@@ -112,6 +114,16 @@
                 <td><%= camion.getCapacite() %></td>
                 <td><%= camion.getChauffeur_nom() %></td>
                 <td><%= camion.getChauffeur_telephone() %></td>
+                <% if("Disponnible".compareToIgnoreCase(camion.getEtatCamion()) == 0) { %>
+                  <td><label class="badge badge-success"><%= camion.getEtatCamion() %></label></td>
+                <% } else { %>
+                  <td><label class="badge badge-warning"><%= camion.getEtatCamion() %></label></td>
+                <% } %>
+                <% if("Disponnible".compareToIgnoreCase(camion.getEtatCamion()) == 0) { %>
+                  <td></td>
+                <% } else { %>
+                  <td><a href="/admin/finir-trajet?id=<%= camion.getId() %>" class="btn btn-outline-info btn-sm ">Fin du trajet <i class="ti-check"></i></a></td>
+                <% } %>
               </tr>
             <%
                 }

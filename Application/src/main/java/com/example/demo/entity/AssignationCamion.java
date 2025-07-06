@@ -1,34 +1,46 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+
+import jakarta.persistence.*;
+
 @Entity
-@Table(name = "Assignations_camions")
+@Table(name = "assignations_camions")
 public class AssignationCamion {
+    
+    public enum TypeAssignation {
+        Collecte,
+        Livraison
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idAssignationCamion;
+    @Column(name = "id_assignation_camion")
+    private int id;
 
     @ManyToOne
     @JoinColumn(name = "id_camion", nullable = false)
     private Camion camion;
 
-    @Column(nullable = false)
+    @Column(name = "depart", nullable = false)
     private LocalDateTime depart;
 
-    @Column(nullable = false)
+    @Column(name = "arrivee")
     private LocalDateTime arrivee;
 
-    @Column(nullable = false)
-    private String type;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    private TypeAssignation type;
 
-    public Long getIdAssignationCamion() {
-        return idAssignationCamion;
+    // Getters / Setters
+
+    public int getId() {
+        return id;
     }
 
-    public void setIdAssignationCamion(Long idAssignationCamion) {
-        this.idAssignationCamion = idAssignationCamion;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Camion getCamion() {
@@ -55,13 +67,11 @@ public class AssignationCamion {
         this.arrivee = arrivee;
     }
 
-    public String getType() {
+    public TypeAssignation getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(TypeAssignation type) {
         this.type = type;
     }
-
-    // Getters et Setters
 }
