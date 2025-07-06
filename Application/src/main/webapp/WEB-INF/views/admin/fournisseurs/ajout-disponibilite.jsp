@@ -34,7 +34,7 @@
                     <option value="${p.id}">${p.nom}</option>
                   </c:forEach>
                 </select>
-                <a href="/admin/produits/ajout" class="btn btn-link ml-2">Ajouter un produit</a>
+                <a href="/admin/ajout-produit" class="btn btn-link ml-2">Ajouter un produit</a>
               </div>
             </div>
             <div class="form-group mb-4 position-relative">
@@ -55,6 +55,7 @@
         </div>
       </div>
     </div>
+      <%@ include file="../includes/footer.jsp" %>
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
