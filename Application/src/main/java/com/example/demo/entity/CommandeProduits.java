@@ -9,7 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.*;
 
 @Entity
 @Table(name = "commande_produits")
@@ -35,6 +34,13 @@ public class CommandeProduits {
     private double prixUnitaire;
 
     public CommandeProduits() {
+    }
+
+    public CommandeProduits(Commandes commande, Produits produit, Integer quantite, double prixUnitaire) {
+        this.commande = commande;
+        this.produit = produit;
+        this.quantite = quantite;
+        this.prixUnitaire = prixUnitaire;
     }
 
     public int getId() {
@@ -75,5 +81,10 @@ public class CommandeProduits {
 
     public void setPrixUnitaire(double prixUnitaire) {
         this.prixUnitaire = prixUnitaire;
+    }
+
+     // Méthode utilitaire pour calculer le montant total de la ligne
+    public double getMontantTotal() {
+        return quantite * prixUnitaire;
     }
 }

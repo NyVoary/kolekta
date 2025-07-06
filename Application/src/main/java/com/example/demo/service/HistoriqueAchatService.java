@@ -1,9 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Commandes;
-import com.example.demo.entity.CommandeProduit;
-import com.example.demo.entity.CommandeStatus;
-import com.example.demo.entity.HistoriqueAchat;
+import com.example.demo.entity.*;
 import com.example.demo.repository.CommandeProduitRepository;
 import com.example.demo.repository.CommandeRepository;
 import org.slf4j.Logger;
@@ -82,7 +79,7 @@ public class HistoriqueAchatService {
                     String libelleNormalise = removeAccents(libelle != null ? libelle.trim().toLowerCase() : "");
                     return "validee".equals(libelleNormalise);
                 })) {
-                    List<CommandeProduit> produits = commandeProduitRepository.findByCommandeId(c.getId());
+                    List<CommandeProduits> produits = commandeProduitRepository.findByCommandeId(c.getId());
                     List<String> nomsProduits = produits.stream().map(cp -> cp.getProduit().getNom())
                             .collect(Collectors.toList());
                     historique.add(new HistoriqueAchat(
@@ -117,7 +114,7 @@ public class HistoriqueAchatService {
                     String libelleNormalise = removeAccents(libelle != null ? libelle.trim().toLowerCase() : "");
                     return "validee".equals(libelleNormalise);
                 })) {
-                    List<CommandeProduit> produits = commandeProduitRepository.findByCommandeId(c.getId());
+                    List<CommandeProduits> produits = commandeProduitRepository.findByCommandeId(c.getId());
                     List<String> nomsProduits = produits.stream().map(cp -> cp.getProduit().getNom())
                             .collect(Collectors.toList());
                     historique.add(new HistoriqueAchat(

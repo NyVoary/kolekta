@@ -10,4 +10,5 @@ public interface CommandeStatusRepository extends JpaRepository<CommandeStatus, 
     Optional<CommandeStatus> findTopByCommandeIdOrderByDateChangementDesc(Long commandeId);
     
     List<CommandeStatus> findByCommandeIdOrderByDateChangementDesc(Long commandeId);
+    List<CommandeStatus> findByCommandeIdCommande(Long idCommande);
 }

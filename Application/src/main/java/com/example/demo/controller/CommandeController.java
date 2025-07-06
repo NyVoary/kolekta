@@ -34,7 +34,7 @@ public class CommandeController {
     private PanierProduitAddRepository panierProduitAddRepository;
 
     @Autowired
-    private ProduitsRepository produitsRepository;
+    private ProduitRepository produitRepository;
 
     // @Autowired
     // private JdbcTemplate jdbcTemplate;
@@ -45,7 +45,7 @@ public class CommandeController {
     @GetMapping("/login-erreur")
     public String afficherLoginErreur() {
         return "client/login-client";
-    }
+    }  
 
     @PostMapping("/ajouter")
     public String ajouterAuPanier(
@@ -68,17 +68,17 @@ public class CommandeController {
             return "redirect:/produits_liste";
         }
 
-        Long idClient = Long.valueOf(utilisateur.getIdClient());
+        Long idClient = utilisateur.getIdClient();
 
         try {
             Panier panier = panierAddRepository.findByIdClient(idClient)
                     .orElseGet(() -> {
                         Panier nouveau = new Panier();
-                        nouveau.setIdClient(Long.valueOf(idClient));
+                        nouveau.setIdClient(idClient);
                         return panierAddRepository.save(nouveau);
                     });
 
-            Optional<Produits> produitOpt = produitsRepository.findById(produitId);
+            Optional<Produit> produitOpt = produitRepository.findById(produitId);
             if (produitOpt.isEmpty()) {
                 redirectAttributes.addFlashAttribute("erreur", "Produit introuvable.");
                 return "redirect:/produits_liste";

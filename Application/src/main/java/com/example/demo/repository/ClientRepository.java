@@ -9,7 +9,7 @@ import com.example.demo.entity.Client;
 
 @Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
-    Client findByEmail(String email);
-
     Optional<Client> findByEmailAndMdp(String email, String mdp);
+    Client findByEmail(String email);
 }
+

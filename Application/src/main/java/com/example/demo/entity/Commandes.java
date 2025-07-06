@@ -46,7 +46,7 @@ public class Commandes {
     private String emailLivraison;
 
     @OneToMany(mappedBy = "commande", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<CommandeProduit> produits;
+    private List<CommandeProduits> produits;
 
     @OneToMany(mappedBy = "commande", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("dateChangement DESC") // Pour avoir l'historique trié par date
@@ -206,11 +206,11 @@ public class Commandes {
         this.emailLivraison = emailLivraison;
     }
 
-    public List<CommandeProduit> getProduits() {
+    public List<CommandeProduits> getProduits() {
         return produits;
     }
 
-    public void setProduits(List<CommandeProduit> produits) {
+    public void setProduits(List<CommandeProduits> produits) {
         this.produits = produits;
     }
 
@@ -231,12 +231,12 @@ public class Commandes {
     }
 
         // Méthodes utilitaires
-    public void addProduit(CommandeProduit produit) {
+    public void addProduit(CommandeProduits produit) {
         produits.add(produit);
         produit.setCommande(this);
     }
 
-    public void removeProduit(CommandeProduit produit) {
+    public void removeProduit(CommandeProduits produit) {
         produits.remove(produit);
         produit.setCommande(null);
     }

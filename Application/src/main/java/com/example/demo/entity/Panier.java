@@ -11,6 +11,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,14 +37,12 @@ public class Panier {
     @OneToMany(mappedBy = "panier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<PanierProduits> panierProduits;
     
-   
     public Panier() {}
     
     public Panier(Long idClient, LocalDate dateCreation) {
         this.idClient = idClient;
         this.dateCreation = dateCreation;
     }
-    
    
     public Long getIdPanier() {
         return idPanier;
