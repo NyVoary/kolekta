@@ -1,0 +1,201 @@
+body {
+    background: #f4f6fb;
+    font-family: 'Nunito', 'Roboto', Arial, sans-serif;
+}
+.container {
+    max-width: 900px;
+    margin: 40px auto 0 auto;
+    background: #fff;
+    border-radius: 18px;
+    box-shadow: 0 8px 32px rgba(60,72,100,0.12);
+    padding: 40px 32px 32px 32px;
+}
+.page-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 32px;
+    border-bottom: 1px solid #e0e6ed;
+    padding-bottom: 16px;
+}
+.page-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #2d3748;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.page-title .icon {
+    font-size: 2.2rem;
+}
+.filter-form {
+    margin-bottom: 32px;
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 18px 24px 8px 24px;
+    box-shadow: 0 2px 8px rgba(60,72,100,0.04);
+}
+.filter-grid {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    align-items: flex-end;
+}
+.form-group {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 180px;
+}
+.form-group label {
+    font-weight: 600;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+.form-control {
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 1rem;
+    background: #fff;
+    color: #2d3748;
+    transition: border 0.2s;
+}
+.form-control:focus {
+    border: 1.5px solid #3182ce;
+    outline: none;
+}
+.btn-primary {
+    background: linear-gradient(90deg, #667eea 0%, #5a67d8 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 10px 24px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(60,72,100,0.08);
+    transition: background 0.2s;
+}
+.btn-primary:hover {
+    background: linear-gradient(90deg, #5a67d8 0%, #667eea 100%);
+}
+.alert-danger {
+    background: #ffe5e5;
+    color: #c53030;
+    border-radius: 6px;
+    padding: 12px 18px;
+    margin-bottom: 24px;
+    font-weight: 600;
+    border: 1px solid #feb2b2;
+}
+.empty-state {
+    text-align: center;
+    margin: 48px 0 32px 0;
+}
+.empty-state-icon {
+    font-size: 3.5rem;
+    color: #a0aec0;
+    margin-bottom: 12px;
+}
+.empty-state-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #4a5568;
+    margin-bottom: 6px;
+}
+.empty-state-text {
+    color: #718096;
+    font-size: 1rem;
+}
+.timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    margin-top: 24px;
+}
+.achat-card {
+    background: linear-gradient(90deg, #f8fafc 0%, #e9ecef 100%);
+    border-radius: 14px;
+    box-shadow: 0 2px 12px rgba(60,72,100,0.07);
+    padding: 24px 28px 18px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    border-left: 5px solid #667eea;
+    transition: box-shadow 0.2s;
+}
+.achat-card:hover {
+    box-shadow: 0 6px 24px rgba(60,72,100,0.13);
+}
+.timeline-dot {
+    position: absolute;
+    left: -18px;
+    top: 28px;
+    background: #fff;
+    border-radius: 50%;
+    border: 3px solid #667eea;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #667eea;
+    font-size: 1.3rem;
+    box-shadow: 0 2px 8px rgba(60,72,100,0.08);
+}
+.achat-header {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+.achat-date, .achat-montant {
+    font-size: 1.1rem;
+    color: #4a5568;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.badge-success {
+    background: #38a169;
+    color: #fff;
+    border-radius: 12px;
+    padding: 4px 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.produit-list {
+    margin: 0 0 0 18px;
+    padding: 0;
+    list-style: none;
+}
+.produit-list li {
+    color: #2d3748;
+    font-size: 1rem;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+@media (max-width: 700px) {
+    .container {
+        padding: 18px 4px 12px 4px;
+    }
+    .achat-card {
+        padding: 14px 8px 10px 12px;
+    }
+    .filter-form {
+        padding: 10px 6px 4px 6px;
+    }
+    .page-title {
+        font-size: 1.2rem;
+    }
+}

@@ -1,28 +1,51 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
+@Table(name = "Clients")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "id_client")
+    private Long idClient;
 
+    @Column(nullable = false)
     private String nom;
-    private String prenom;
+
+    @Column(nullable = false)
+    private String prenoms;
+
+    @Column(nullable = false)
+    private LocalDate dtn;
+
+    @Column(nullable = false, length = 1)
+    private String sexe;
+
     private String email;
 
-    @OneToMany(mappedBy = "client")
-    private List<Achat> achats;
+    @Column(nullable = false)
+    private String telephone;
 
-    // Getters et setters
-    public Long getId() {
-        return id;
+    @Column(nullable = false)
+    private String adresse;
+
+    private String mdp;
+
+    private String image;
+
+    @Column(name = "date_creation", nullable = false, updatable = false)
+    private LocalDate dateCreation = LocalDate.now(); // Valeur par défaut
+
+    // --- Getters et Setters ---
+
+    public Long getIdClient() {
+        return idClient;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdClient(Long idClient) {
+        this.idClient = idClient;
     }
 
     public String getNom() {
@@ -33,12 +56,28 @@ public class Client {
         this.nom = nom;
     }
 
-    public String getPrenom() {
-        return prenom;
+    public String getPrenoms() {
+        return prenoms;
     }
 
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
+    public void setPrenoms(String prenoms) {
+        this.prenoms = prenoms;
+    }
+
+    public LocalDate getDtn() {
+        return dtn;
+    }
+
+    public void setDtn(LocalDate dtn) {
+        this.dtn = dtn;
+    }
+
+    public String getSexe() {
+        return sexe;
+    }
+
+    public void setSexe(String sexe) {
+        this.sexe = sexe;
     }
 
     public String getEmail() {
@@ -49,11 +88,43 @@ public class Client {
         this.email = email;
     }
 
-    public List<Achat> getAchats() {
-        return achats;
+    public String getTelephone() {
+        return telephone;
     }
 
-    public void setAchats(List<Achat> achats) {
-        this.achats = achats;
+    public void setTelephone(String telephone) {
+        this.telephone = telephone;
+    }
+
+    public String getAdresse() {
+        return adresse;
+    }
+
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public LocalDate getDateCreation() {
+        return dateCreation;
+    }
+    
+    public void setDateCreation(LocalDate dateCreation) {
+        this.dateCreation = dateCreation;
     }
 }

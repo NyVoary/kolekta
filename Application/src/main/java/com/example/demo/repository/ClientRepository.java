@@ -1,11 +1,15 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Client;
-
-import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
+import com.example.demo.entity.Client;
+
+@Repository
 public interface ClientRepository extends JpaRepository<Client, Long> {
-    List<Client> findAll();
+    Optional<Client> findByEmailAndMdp(String email, String mdp);
+    Client findByEmail(String email);
 }
+

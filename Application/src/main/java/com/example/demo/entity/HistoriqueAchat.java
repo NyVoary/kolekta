@@ -1,68 +1,50 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.List;
 
-@Entity
 public class HistoriqueAchat {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idCommande;
+    private LocalDate dateCommande;
+    private Double montantTotal;
+    private List<String> produits;
 
-    private String produit;
-    private Double montant;
-    private LocalDateTime dateAchat;
-    private String status;
-
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
-
-    public Long getId() {
-        return id;
+    public HistoriqueAchat(Long idCommande, LocalDate dateCommande, Double montantTotal, List<String> produits) {
+        this.idCommande = idCommande;
+        this.dateCommande = dateCommande;
+        this.montantTotal = montantTotal;
+        this.produits = produits;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getIdCommande() {
+        return idCommande;
     }
 
-    public String getProduit() {
-        return produit;
+    public void setIdCommande(Long idCommande) {
+        this.idCommande = idCommande;
     }
 
-    public void setProduit(String produit) {
-        this.produit = produit;
+    public LocalDate getDateCommande() {
+        return dateCommande;
     }
 
-    public Double getMontant() {
-        return montant;
+    public void setDateCommande(LocalDate dateCommande) {
+        this.dateCommande = dateCommande;
     }
 
-    public void setMontant(Double montant) {
-        this.montant = montant;
+    public Double getMontantTotal() {
+        return montantTotal;
     }
 
-    public LocalDateTime getDateAchat() {
-        return dateAchat;
+    public void setMontantTotal(Double montantTotal) {
+        this.montantTotal = montantTotal;
     }
 
-    public void setDateAchat(LocalDateTime dateAchat) {
-        this.dateAchat = dateAchat;
+    public List<String> getProduits() {
+        return produits;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
+    public void setProduits(List<String> produits) {
+        this.produits = produits;
     }
 }
