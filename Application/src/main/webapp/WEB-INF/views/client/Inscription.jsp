@@ -27,7 +27,8 @@
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-                <a class="navbar-brand brand-logo mr-5" href="/produits_liste"><img src="images/lokaly.png" class="mr-2" alt="logo" /></a>
+                <a class="navbar-brand brand-logo mr-5" href="/produits_liste"><img src="images/lokaly.png" class="mr-2"
+                    alt="logo" /></a>
               </div>
               <h4>Votre lien direct avec le frais local commence ici.</h4>
               <h6 class="font-weight-light">Remplir ces informations pour l'inscription des clients</h6>
@@ -45,9 +46,9 @@
                 <div class="form-group">
                   <select class="form-control form-control-lg" name="sexe" required>
                     <option value="">Sexe</option>
-                    <option value="Masculin">Masculin</option>
-                    <option value="Feminin">Feminin</option>
-                    <option value="Autre">Autre</option>
+                    <option value="M">Masculin</option>
+                    <option value="F">Feminin</option>
+                    <option value="A">Autre</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -66,10 +67,12 @@
                 </div>
                 <div class="form-group">
                   <input type="file" name="image" class="file-upload-default">
-                  <div class="input-group col-xs-12">
+                  <div class="input-group">
+                    <input type="file" id="fileInput" style="display: none;">
                     <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
                     <span class="input-group-append">
-                      <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
+                      <button class="file-upload-browse btn btn-primary" type="button"
+                        onclick="document.getElementById('fileInput').click()">Upload</button>
                     </span>
                   </div>
                   <div class="my-2 d-flex justify-content-between align-items-center">
@@ -114,6 +117,7 @@
   <script src="${pageContext.request.contextPath}/js/template.js"></script>
   <script src="${pageContext.request.contextPath}/js/settings.js"></script>
   <script src="${pageContext.request.contextPath}/js/todolist.js"></script>
+  <script src="${pageContext.request.contextPath}/js/script.js"></script>
   <!-- endinject -->
 </body>
 

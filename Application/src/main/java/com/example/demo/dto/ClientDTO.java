@@ -13,7 +13,17 @@ public class ClientDTO {
     private String telephone;
     private String adresse;
     private String mdp;
+    private LocalDate dateCreation = LocalDate.now();
     private MultipartFile image;
+
+    public LocalDate getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setDateCreation(LocalDate dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
 
     public Long getId() {
         return id;

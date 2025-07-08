@@ -6,10 +6,13 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.List;
-// import java.nio.file.Paths;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import com.example.demo.dto.ClientDTO;
 import com.example.demo.dto.ClientLoginDTO;
@@ -24,22 +27,43 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     public Client inscrire(ClientDTO dto) throws Exception {
-        if ((clientRepository.findByEmail(dto.getEmail())) != null) {
+        // Vérification email existant
+        if (clientRepository.findByEmail(dto.getEmail()) != null) {
             throw new Exception("Email déjà utilisé");
         }
 
-        File staticUploads = ResourceUtils
-                .getFile(new File("src/main/resources/static/images/uploads").getAbsolutePath());
-
-        if (!staticUploads.exists()) {
-            staticUploads.mkdirs(); // juste au cas où
+        // Vérification de l'image
+        if (dto.getImage() == null || dto.getImage().isEmpty()) {
+            throw new Exception("Une image de profil est requise");
         }
-        MultipartFile image = dto.getImage();
-        String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
-        File destinationFile = new File(staticUploads, fileName);
-        image.transferTo(destinationFile);
 
-                
+        MultipartFile image = dto.getImage();
+        String originalFilename = image.getOriginalFilename();
+
+        if (originalFilename == null || originalFilename.isEmpty()) {
+            throw new Exception("Le nom du fichier image est invalide");
+        }
+
+        // Création du répertoire de stockage si inexistant
+        Path uploadDir = Paths.get("src/main/resources/static/images/uploads");
+        if (!Files.exists(uploadDir)) {
+            Files.createDirectories(uploadDir);
+        }
+
+        // Génération d'un nom de fichier unique
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String fileName = UUID.randomUUID().toString() + fileExtension;
+        Path destinationFile = uploadDir.resolve(fileName);
+
+        try {
+            // Sauvegarde du fichier
+            image.transferTo(destinationFile.toFile());
+            System.out.println("Image enregistrée à : " + destinationFile.toAbsolutePath());
+        } catch (IOException e) {
+            throw new Exception("Erreur lors de l'enregistrement de l'image", e);
+        }
+
+        // Création et sauvegarde du client
         Client client = new Client();
         client.setNom(dto.getNom());
         client.setPrenoms(dto.getPrenoms());
@@ -48,6 +72,7 @@ public class ClientService {
         client.setEmail(dto.getEmail());
         client.setTelephone(dto.getTelephone());
         client.setAdresse(dto.getAdresse());
+        client.setDateCreation(dto.getDateCreation());
         client.setMdp(dto.getMdp());
         client.setImage(fileName);
 
@@ -82,10 +107,11 @@ public class ClientService {
     public boolean existeClient(Long id) {
         return clientRepository.existsById(id);
     }
+
     public List<Client> getAllClients() {
         return clientRepository.findAll();
-    }    
-    
+    }
+
     public Client updateClient(Client client) {
         return clientRepository.save(client);
     }
