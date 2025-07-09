@@ -44,18 +44,18 @@ public class AssignationCamionController {
             e.printStackTrace(); // à remplacer par gestion d’erreur
             session.setAttribute("error-assignation", e.getMessage());
         }
-        List<CommandeStatus> enCours = commandeStatusRepository.findByStatusLibelle("En cours de traitement");
-        Status statusValidee = statusRepository.findByLibelle("Expediee".trim());
-        for (CommandeStatus cs : enCours) {
-            CommandeStatus nouveau = new CommandeStatus();
-            nouveau.setCommande(cs.getCommande());
-            nouveau.setClient(cs.getClient());
-            nouveau.setEmploye(cs.getEmploye());
-            nouveau.setCommentaireEmploye(cs.getCommentaireEmploye());
-            nouveau.setStatus(statusValidee);
-            nouveau.setDateChangement(LocalDate.now());
-            commandeStatusRepository.save(nouveau);
-        }
+        // List<CommandeStatus> enCours = commandeStatusRepository.findByStatusLibelle("En cours de traitement");
+        // Status statusValidee = statusRepository.findByLibelle("Expediee".trim());
+        // for (CommandeStatus cs : enCours) {
+        //     CommandeStatus nouveau = new CommandeStatus();
+        //     nouveau.setCommande(cs.getCommande());
+        //     nouveau.setClient(cs.getClient());
+        //     nouveau.setEmploye(cs.getEmploye());
+        //     nouveau.setCommentaireEmploye(cs.getCommentaireEmploye());
+        //     nouveau.setStatus(statusValidee);
+        //     nouveau.setDateChangement(LocalDate.now());
+        //     commandeStatusRepository.save(nouveau);
+        // }
 
         return "redirect:/admin/assignation-camion";
     }
