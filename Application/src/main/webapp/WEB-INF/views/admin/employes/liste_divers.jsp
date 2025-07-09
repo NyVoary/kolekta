@@ -14,7 +14,7 @@
       <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <h4 class="card-title">List Divers</h4>
+                  <h4 class="card-title">List Acces</h4>
                     <c:choose>
                         <c:when test="${empty accs}">
                           <h1 style="text-align: center; padding: 20px 0;">Aucun(s) diverss(s)</h1>
@@ -39,8 +39,8 @@
                                       <td>${acc.motDePasse}</td>
                                       <td>${acc.role}</td>
                                       <td>
-                                        <a style="margin-right: 20px" class="btn btn-success btn-rounded btn-fw" href="/admin/divers/update/${acc.idAcces}">Update</a>
-                                        <a class="btn btn-danger btn-rounded btn-fw" href="/admin/divers/remove/${acc.idAcces}">Remove</a>
+                                        <a style="margin-right: 20px" class="btn btn-success btn-rounded btn-fw" href="/admin/divers/update/${acc.idAcces}">Editer</a>
+                                        <a class="btn btn-danger btn-rounded btn-fw" href="/admin/divers/remove/${acc.idAcces}">Supprimer</a>
                                       </td>
                                     </tr>
                                 </c:forEach>

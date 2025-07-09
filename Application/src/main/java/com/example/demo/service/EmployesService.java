@@ -114,7 +114,7 @@ public class EmployesService {
         AssignationTache temp = new AssignationTache();
         temp.setTitre(assignationTacheDTO.getTitre());
         temp.setDescription(assignationTacheDTO.getDescription());
-        temp.setEmployes(repository.findById(assignationTacheDTO.getId_employe()).get());
+        temp.setEmployes(GetById(assignationTacheDTO.getId_employe()));
         temp.setPriorite(assignationTacheDTO.getPriorite());
         temp.setStatus(assignationTacheDTO.getStatus());
         temp.setDate_debut(assignationTacheDTO.getDate_debut());
@@ -124,7 +124,12 @@ public class EmployesService {
     }
 
     public Employes GetById(Long id) {
-        return repository.findById(id).get();
+        try {
+            Employes temp = repository.findById(id).get();
+            return temp;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void remove(Long id) {
