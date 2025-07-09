@@ -19,10 +19,10 @@ public class Employe {
     private String prenoms;
 
     @Column(nullable = false)
-    private LocalDate dtn;  // date de naissance
+    private LocalDate dtn; // date de naissance
 
-    @Column(nullable = false, length = 1)
-    private char sexe;  // 'M' ou 'F'
+    @Column(nullable = false, length = 100)
+    private String sexe; 
 
     @Column(length = 255)
     private String email;
@@ -31,7 +31,7 @@ public class Employe {
     private String telephone;
 
     @Column(length = 100)
-    private String mdp;  // mot de passe (devrait être hashé en pratique)
+    private String mdp; // mot de passe (devrait être hashé en pratique)
 
     @Column(length = 100)
     private String adresse;
@@ -49,7 +49,7 @@ public class Employe {
     private double salaire;
 
     @Column(name = "mode_paiement", nullable = false, length = 100)
-    private String modePaiement;  // 'Virement', 'Chèque', 'Espèces'
+    private String modePaiement; // 'Virement', 'Chèque', 'Espèces'
 
     @Column(length = 100)
     private String image;
@@ -58,10 +58,10 @@ public class Employe {
     public Employe() {
     }
 
-    public Employe(String nom, String prenoms, LocalDate dtn, char sexe, 
-                  String email, String telephone, String mdp, String adresse,
-                  String poste, LocalDate dateEmbauche, LocalDate dateFinEmbauche,
-                  double salaire, String modePaiement) {
+    public Employe(String nom, String prenoms, LocalDate dtn, String sexe,
+            String email, String telephone, String mdp, String adresse,
+            String poste, LocalDate dateEmbauche, LocalDate dateFinEmbauche,
+            double salaire, String modePaiement) {
         this.nom = nom;
         this.prenoms = prenoms;
         this.dtn = dtn;
@@ -110,13 +110,14 @@ public class Employe {
         this.dtn = dtn;
     }
 
-    public char getSexe() {
+    public String getSexe() {
         return sexe;
     }
 
-    public void setSexe(char sexe) {
-        if (sexe != 'M' && sexe != 'F') {
-            throw new IllegalArgumentException("Le sexe doit être 'M' ou 'F'");
+    public void setSexe(String sexe) {
+        if (!"masculin".equalsIgnoreCase(sexe) && !"feminin".equalsIgnoreCase(sexe)
+                && !"autre".equalsIgnoreCase(sexe)) {
+            throw new IllegalArgumentException("Le sexe doit être masculin, feminin ou autre");
         }
         this.sexe = sexe;
     }

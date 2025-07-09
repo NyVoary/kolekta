@@ -128,7 +128,6 @@
                       <label class="col-sm-3 col-form-label">Sexe</label>
                       <div class="col-sm-9">
                         <p class="form-control-plaintext">
-                          <%= client.getSexe() == 'M' ? "Masculin" : "F&eacute;minin" %>
                         </p>
                       </div>
                     </div>
