@@ -3,7 +3,7 @@ package com.example.demo.dto;
 public class CamionDTO {
 
     String immatriculation;
-    String capacite;
+    int capacite;
     String chauffeur_nom;
     String chauffeur_telephone;
     public String getImmatriculation() {
@@ -12,10 +12,10 @@ public class CamionDTO {
     public void setImmatriculation(String immatriculation) {
         this.immatriculation = immatriculation;
     }
-    public String getCapacite() {
+    public int getCapacite() {
         return capacite;
     }
-    public void setCapacite(String capacite) {
+    public void setCapacite(int capacite) {
         this.capacite = capacite;
     }
     

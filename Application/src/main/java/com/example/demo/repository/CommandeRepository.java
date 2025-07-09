@@ -49,7 +49,7 @@ public interface CommandeRepository extends JpaRepository<Commandes, Long> {
             @Param("dateFrom") LocalDate dateFrom,
             @Param("dateTo") LocalDate dateTo);
 
-    List<Commandes> findByClientOrderByDateCommandeDesc(Client client);
+    List<Commandes> findByClientOrderByDateCommandeDesc(Clients client);
 
     @Query("SELECT c FROM Commandes c JOIN FETCH c.produits WHERE c.client.idClient = :clientId ORDER BY c.dateCommande DESC")
     List<Commandes> findWithProduitsByClientId(@Param("clientId") int clientId);

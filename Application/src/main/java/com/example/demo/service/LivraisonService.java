@@ -67,7 +67,7 @@ public class LivraisonService {
 
             CommandeCamion commandeCamion = commandeCamionRepository
                     .findByCommande_Id(commande.getId()).orElse(null);
-            Camion camion = (commandeCamion != null) ? commandeCamion.getAssignationCamion().getCamion() : null;
+            Camions camion = (commandeCamion != null) ? commandeCamion.getAssignationCamion().getCamion() : null;
 
             String statut = "Non défini";
             List<CommandeStatus> commandeStatuses = commandeStatusRepository

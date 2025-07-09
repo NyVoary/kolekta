@@ -14,17 +14,17 @@ import java.util.Optional;
 import com.example.demo.dto.ClientDTO;
 import com.example.demo.dto.ClientLoginDTO;
 
-import com.example.demo.entity.Client;
+import com.example.demo.entity.Clients;
 import com.example.demo.repository.ClientRepository;
 
 @Service
 public class ClientService {
 
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientRepository clientsRepository;
 
-    public Client inscrire(ClientDTO dto) throws Exception {
-        if ((clientRepository.findByEmail(dto.getEmail())) != null) {
+    public Clients inscrire(ClientDTO dto) throws Exception {
+        if ((clientsRepository.findByEmail(dto.getEmail())) != null) {
             throw new Exception("Email déjà utilisé");
         }
 
@@ -43,22 +43,22 @@ public class ClientService {
         }
         image.transferTo(destinationFile);
                 
-        Client client = new Client();
-        client.setNom(dto.getNom());
-        client.setPrenoms(dto.getPrenoms());
-        client.setDtn(dto.getDtn());
-        client.setSexe(dto.getSexe());
-        client.setEmail(dto.getEmail());
-        client.setTelephone(dto.getTelephone());
-        client.setAdresse(dto.getAdresse());
-        client.setMdp(dto.getMdp());
-        client.setImage(fileName);
+        Clients clients = new Clients();
+        clients.setNom(dto.getNom());
+        clients.setPrenoms(dto.getPrenoms());
+        clients.setDtn(dto.getDtn());
+        clients.setSexe(dto.getSexe());
+        clients.setEmail(dto.getEmail());
+        clients.setTelephone(dto.getTelephone());
+        clients.setAdresse(dto.getAdresse());
+        clients.setMdp(dto.getMdp());
+        clients.setImage(fileName);
 
-        return clientRepository.save(client);
+        return clientsRepository.save(clients);
     }
 
-    public Client login(ClientLoginDTO dto) throws Exception {
-        Optional<Client> clientOpt = clientRepository.findByEmailAndMdp(dto.getEmail(), dto.getMdp());
+    public Clients login(ClientLoginDTO dto) throws Exception {
+        Optional<Clients> clientOpt = clientsRepository.findByEmailAndMdp(dto.getEmail(), dto.getMdp());
         if (clientOpt.isPresent()) {
             return clientOpt.get();
         } else {
@@ -66,34 +66,34 @@ public class ClientService {
         }
     }
 
-    public Optional<Client> getClientById(Long id) {
-        return clientRepository.findById(id);
+    public Optional<Clients> getClientById(Long id) {
+        return clientsRepository.findById(id);
     }
 
-    public Client getClientByID(Long id) {
-        return clientRepository.findById(id).orElse(null);
+    public Clients getClientByID(Long id) {
+        return clientsRepository.findById(id).orElse(null);
     }
 
-    public Client enregistrerClient(Client client) {
-        return clientRepository.save(client);
+    public Clients enregistrerClient(Clients client) {
+        return clientsRepository.save(client);
     }
 
     public void supprimerClient(Long id) {
-        clientRepository.deleteById(id);
+        clientsRepository.deleteById(id);
     }
 
     public boolean existeClient(Long id) {
-        return clientRepository.existsById(id);
+        return clientsRepository.existsById(id);
     }
     public List<Client> getAllClients() {
-        return clientRepository.findAll();
+        return clientsRepository.findAll();
     }    
     
-    public Client updateClient(Client client) {
-        return clientRepository.save(client);
+    public Clients updateClient(Clients client) {
+        return clientsRepository.save(client);
     }
 
     public void deleteClient(Long id) {
-        clientRepository.deleteById(id);
+        clientsRepository.deleteById(id);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.example.demo.dto.CamionDTO;
 import com.example.demo.dto.CamionDTO;
-import com.example.demo.entity.Camion;
+import com.example.demo.entity.Camions;
 import com.example.demo.service.CamionEtatService;
 import com.example.demo.service.CamionService;
 import com.example.demo.service.ProduitsService;
@@ -81,10 +81,8 @@ public class CamionsController {
             e.printStackTrace();
             session.setAttribute("error-camion", e.getMessage());
           
-        } finally {
-            return "redirect:/admin/ajout-camion";
         }
-        
+        return "redirect:/admin/ajout-camion";
     }
 }
 

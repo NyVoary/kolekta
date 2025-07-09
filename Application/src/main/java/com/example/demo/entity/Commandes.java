@@ -22,7 +22,7 @@ public class Commandes {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client", nullable = false)
-    private Client client;
+    private Clients client;
 
     @Column(name = "date_commande", nullable = false)
     private LocalDate dateCommande;
@@ -64,7 +64,7 @@ public class Commandes {
     public Commandes() {
     }
 
-    public Commandes(Client client, LocalDate dateCommande, Double fraisLivraison, Double montantTotal,
+    public Commandes(Clients client, LocalDate dateCommande, Double fraisLivraison, Double montantTotal,
             String adresseLivraison, String villeLivraison, String telephoneLivraison,
             String emailLivraison) {
         this.client = client;
@@ -146,11 +146,11 @@ public class Commandes {
         this.id = id;
     }
 
-    public Client getClient() {
+    public Clients getClient() {
         return client;
     }
 
-    public void setClient(Client client) {
+    public void setClient(Clients client) {
         this.client = client;
     }
 

@@ -1,6 +1,6 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Client;
+import com.example.demo.entity.Clients;
 import com.example.demo.entity.ClientStatistique;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-public interface ClientStatistiqueRepository extends JpaRepository<Client, Integer> {
+public interface ClientStatistiqueRepository extends JpaRepository<Clients, Integer> {
 
        // Statistiques générales (toutes dates)
        @Query("SELECT COUNT(c) FROM Client c")

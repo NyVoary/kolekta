@@ -21,7 +21,7 @@ public class AssignationCamion {
 
     @ManyToOne
     @JoinColumn(name = "id_camion", nullable = false)
-    private Camion camion;
+    private Camions camion;
 
     @Column(name = "depart", nullable = false)
     private LocalDateTime depart;
@@ -43,11 +43,11 @@ public class AssignationCamion {
         this.id = id;
     }
 
-    public Camion getCamion() {
+    public Camions getCamion() {
         return camion;
     }
 
-    public void setCamion(Camion camion) {
+    public void setCamion(Camions camion) {
         this.camion = camion;
     }
 

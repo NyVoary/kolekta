@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.AssignationCamionDTO;
 import com.example.demo.entity.AssignationCamion;
-import com.example.demo.entity.Camion;
+import com.example.demo.entity.Camions;
 import com.example.demo.repository.AssignationCamionRepository;
-import com.example.demo.repository.CamionRepository;
+import com.example.demo.repository.CamionsRepository;
 
 @Service
 public class AssignationCamionService {
@@ -18,12 +18,11 @@ public class AssignationCamionService {
     private AssignationCamionRepository assignationRepo;
 
     @Autowired
-    private CamionRepository camionRepo;
+    private CamionsRepository camionRepo;
 
     public void ajouterAssignation(AssignationCamionDTO dto) throws Exception {
-        Camion camion = camionRepo.findById(dto.getIdCamion())
-            .orElseThrow(() -> new Exception("Camion introuvable avec l'id : " + dto.getIdCamion()));
-
+        Camions camion = camionRepo.findById((long)dto.getIdCamion())
+                .orElseThrow(() -> new Exception("Camion introuvable avec l'id : " + dto.getIdCamion()));
         AssignationCamion ac = new AssignationCamion();
         ac.setCamion(camion);
         ac.setDepart(LocalDateTime.parse(dto.getDepart()));
@@ -35,11 +34,11 @@ public class AssignationCamionService {
         assignationRepo.save(ac);
     }
 
-    public AssignationCamion findById(int id) throws Exception{ 
-        return assignationRepo.findById(id).get(); 
+    public AssignationCamion findById(int id) throws Exception {
+        return assignationRepo.findById(id).get();
     }
 
-    public AssignationCamion save(AssignationCamion assignation) throws Exception{ 
-        return assignationRepo.save(assignation); 
+    public AssignationCamion save(AssignationCamion assignation) throws Exception {
+        return assignationRepo.save(assignation);
     }
 }
