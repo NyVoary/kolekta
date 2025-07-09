@@ -30,8 +30,8 @@ public class AssignationCamionController {
 
     @Autowired
     private AssignationCamionService assignationService;
-        @Autowired
-    private CommandeStatusRepository commandeStatusRepository;    
+    @Autowired
+    private CommandeStatusRepository commandeStatusRepository;
     @Autowired
     private StatusRepository statusRepository;
 
@@ -44,18 +44,24 @@ public class AssignationCamionController {
             e.printStackTrace(); // à remplacer par gestion d’erreur
             session.setAttribute("error-assignation", e.getMessage());
         }
-        // List<CommandeStatus> enCours = commandeStatusRepository.findByStatusLibelle("En cours de traitement");
-        // Status statusValidee = statusRepository.findByLibelle("Expediee".trim());
-        // for (CommandeStatus cs : enCours) {
-        //     CommandeStatus nouveau = new CommandeStatus();
-        //     nouveau.setCommande(cs.getCommande());
-        //     nouveau.setClient(cs.getClient());
-        //     nouveau.setEmploye(cs.getEmploye());
-        //     nouveau.setCommentaireEmploye(cs.getCommentaireEmploye());
-        //     nouveau.setStatus(statusValidee);
-        //     nouveau.setDateChangement(LocalDate.now());
-        //     commandeStatusRepository.save(nouveau);
-        // }
+        List<CommandeStatus> enCours = commandeStatusRepository.findByStatusLibelle("En cours de traitement");
+        Status statusValidee = statusRepository.findByLibelle("Expediee".trim());
+        if (statusValidee == null) {
+            System.out.println("❌ Le status 'Expediee' est introuvable !");
+            throw new RuntimeException("Status 'Expediee' introuvable !");
+        } else {
+            System.out.println("✅ Status trouvé : " + statusValidee.getLibelle());
+        }
+        for (CommandeStatus cs : enCours) {
+            CommandeStatus nouveau = new CommandeStatus();
+            nouveau.setCommande(cs.getCommande());
+            nouveau.setClient(cs.getClient());
+            nouveau.setEmploye(cs.getEmploye());
+            nouveau.setCommentaireEmploye(cs.getCommentaireEmploye());
+            nouveau.setStatus(statusValidee);
+            nouveau.setDateChangement(LocalDate.now());
+            commandeStatusRepository.save(nouveau);
+        }
 
         return "redirect:/admin/assignation-camion";
     }
@@ -82,6 +88,24 @@ public class AssignationCamionController {
             session.setAttribute("succes-assignation", "La voiture a fini son assignation");
         } catch (Exception e) {
             session.setAttribute("error-assignation", "Erreur : " + e.getMessage());
+        }
+        List<CommandeStatus> enCours = commandeStatusRepository.findByStatusLibelle("Expediee");
+        Status statusValidee = statusRepository.findByLibelle("Livree".trim());
+        if (statusValidee == null) {
+            System.out.println("❌ Le status est introuvable !");
+            throw new RuntimeException("Status introuvable !");
+        } else {
+            System.out.println("✅ Status trouvé : " + statusValidee.getLibelle());
+        }
+        for (CommandeStatus cs : enCours) {
+            CommandeStatus nouveau = new CommandeStatus();
+            nouveau.setCommande(cs.getCommande());
+            nouveau.setClient(cs.getClient());
+            nouveau.setEmploye(cs.getEmploye());
+            nouveau.setCommentaireEmploye(cs.getCommentaireEmploye());
+            nouveau.setStatus(statusValidee);
+            nouveau.setDateChangement(LocalDate.now());
+            commandeStatusRepository.save(nouveau);
         }
 
         return "redirect:/admin/liste-camion"; // rediriger vers la liste ou une autre page
