@@ -29,6 +29,10 @@ public class HistoriqueStatusService {
     @Autowired
     private StatusTachesRepository statusRepository;
 
+    public HistoriqueStatusTaches save(HistoriqueStatusTaches historique) {
+        return historiqueRepository.save(historique);
+    }
+
     public void enregistrerHistorique(Long tacheId, Long employeId, Long statusId) {
         // Récupérer les entités associées
         AssignationsTaches tache = tacheRepository.findById(tacheId)

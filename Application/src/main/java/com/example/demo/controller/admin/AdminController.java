@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Acces;
 import com.example.demo.entity.AssignationsTaches;
+import com.example.demo.entity.StatusTaches;
 import com.example.demo.service.AccesService;
 import com.example.demo.service.AssignationTacheService;
 import com.example.demo.service.StatistiquesService;
+import com.example.demo.service.StatusTachesService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -29,6 +31,9 @@ public class AdminController {
 
     @Autowired
     private AssignationTacheService assignationTacheService;
+
+    @Autowired
+    private StatusTachesService statusTachesService;
 
     @GetMapping("/admin")
     public String login() {
@@ -72,9 +77,11 @@ public class AdminController {
 
             Acces acces = (Acces) session.getAttribute("acces");
             if (acces != null && acces.getIdEmploye() != null) {
+                List<StatusTaches> status = statusTachesService.getAllStatusTaches();
                 List<AssignationsTaches> taches = assignationTacheService.getTachesAujourdhuiParEmploye(Long.valueOf(acces.getIdEmploye()));
                 System.out.println(Long.valueOf(acces.getIdEmploye()));
                 model.addAttribute("taches", taches);
+                model.addAttribute("status", status);
             }
 
             return "admin/home";
