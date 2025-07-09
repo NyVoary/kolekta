@@ -118,7 +118,7 @@ public class CommandeService {
             List<CommandeStatus> commandeStatuses = commandeStatusRepository.findByCommandeId(commande.getId());
             if (!commandeStatuses.isEmpty()) {
                 CommandeStatus dernierStatus = commandeStatuses.stream()
-                        .max(Comparator.comparing(CommandeStatus::getDateChangement))
+                        .max(Comparator.comparing(CommandeStatus::getId))
                         .orElse(null);
                 if (dernierStatus != null && dernierStatus.getStatus() != null) {
                     statut = dernierStatus.getStatus().getLibelle();
