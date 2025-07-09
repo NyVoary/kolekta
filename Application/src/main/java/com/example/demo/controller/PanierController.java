@@ -36,8 +36,8 @@ public class PanierController {
         if (session.getAttribute("client-connected") == null) {
             return "redirect:/login-client";
         }
-        Client client = (Client) session.getAttribute("client-connected");
-        idClient = client.getIdClient();
+        Clients client = (Clients) session.getAttribute("client-connected");
+        idClient = client.getId();
         Optional<Panier> panierOpt = panierService.getPanierAvecProduits(idClient);
 
         if (panierOpt.isPresent()) {

@@ -30,13 +30,13 @@ public class CommandeClientController {
     public String listCommandes(
             @ModelAttribute FilterCommandesRequest filters,
             Model model, HttpSession session) {
-        Client client = (Client) session.getAttribute("client-connected");
+        Clients client = (Clients) session.getAttribute("client-connected");
         if (client == null) {
             model.addAttribute("error", "Vous devez être connecté pour voir l'historique d'achat.");
             return "redirect:/login-client";
         }
         List<CommandeClientResponse> commandes = commandeService
-                .getCommandesByClientWithFilters(client.getIdClient(), filters);
+                .getCommandesByClientWithFilters(client.getId(), filters);
         List<Status> allStatus = statusRepository.findAll();
         model.addAttribute("commandes", commandes);
         model.addAttribute("filters", filters);

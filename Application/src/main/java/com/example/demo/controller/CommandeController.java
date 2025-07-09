@@ -54,7 +54,7 @@ public class CommandeController {
             HttpSession session,
             RedirectAttributes redirectAttributes) {
 
-        Client utilisateur = (Client) session.getAttribute("client-connected");
+        Clients utilisateur = (Clients) session.getAttribute("client-connected");
 
         if (utilisateur == null) {
             logger.warn("Utilisateur non connecté – redirection vers login.jsp");
@@ -68,7 +68,7 @@ public class CommandeController {
             return "redirect:/produits_liste";
         }
 
-        Long idClient = utilisateur.getIdClient();
+        Long idClient = utilisateur.getId();
 
         try {
             Panier panier = panierAddRepository.findByIdClient(idClient)
@@ -113,9 +113,9 @@ public class CommandeController {
         Commandes commande = commandeService.getCommandeWithProduits(id);
         model.addAttribute("commande", commande);
         model.addAttribute("progression", commande.getProgression());
-        Client client = (Client) session.getAttribute("client-connected");
+        Clients client = (Clients) session.getAttribute("client-connected");
         if (client != null) {
-            model.addAttribute("clientId", client.getIdClient());
+            model.addAttribute("clientId", client.getId());
         }
         return "client/detail-commande";
     }
