@@ -2,13 +2,13 @@ package com.example.demo.controller.admin;
 
 import com.example.demo.dto.AssignationCamionDTO;
 import com.example.demo.entity.AssignationCamion;
-import com.example.demo.entity.Camion;
+import com.example.demo.entity.Camions;
 import com.example.demo.service.AssignationCamionService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
-import com.example.demo.repository.CamionRepository;
+import com.example.demo.repository.CamionsRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ import com.example.demo.view.VCamionEtat;
 public class AssignationCamionController {
 
     @Autowired
-    private CamionRepository camionRepo;
+    private CamionsRepository camionRepo;
 
     @Autowired
     private AssignationCamionService assignationService;

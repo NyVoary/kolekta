@@ -3,7 +3,6 @@ package com.example.demo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,14 +10,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 import com.example.demo.dto.*;
 import com.example.demo.entity.*;
 import com.example.demo.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import jakarta.servlet.http.HttpSession;
-import jakarta.servlet.http.HttpSession;
-
 
 @Controller
 public class ClientController {
@@ -30,8 +29,10 @@ public class ClientController {
     private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
 
+    // public ClientController(ProduitsService produitsService, ClientService clientService, HistoriqueAchatService historiqueAchatService) {
     @Autowired
-    public ClientController(ProduitsService produitsService, ClientService clientService,HistoriqueAchatService historiqueAchatService) {
+    public ClientController(ProduitsService produitsService, ClientService clientService,
+            HistoriqueAchatService historiqueAchatService) {
         this.produitsService = produitsService;
         this.clientService = clientService;
         this.historiqueAchatService = historiqueAchatService;
@@ -47,12 +48,12 @@ public class ClientController {
         return "client/Inscription";
     }
 
-    @PostMapping("/inscription-client")
+     @PostMapping("/inscription-client")
     public String inscriptionClient(@ModelAttribute ClientDTO clientDTO,
             Model model,
             HttpSession session) {
         try {
-            Client client = clientService.inscrire(clientDTO);
+            Clients client = clientService.inscrire(clientDTO);
             session.setAttribute("client-connected", client);
             model.addAttribute("message", "Inscription réussie !");
             return "redirect:/"; // Page après succès
@@ -65,7 +66,7 @@ public class ClientController {
     @PostMapping("/login-client")
     public String loginClient(@ModelAttribute ClientLoginDTO loginDTO, HttpSession session) {
         try {
-            Client client = clientService.login(loginDTO);
+            Clients client = clientService.login(loginDTO);
             session.setAttribute("client-connected", client);
             return "redirect:/";
             // return "redirect:/produits";
@@ -86,9 +87,66 @@ public class ClientController {
         return "client/Login";
     }
 
-    @GetMapping("monprofil")
-    public String profil(){
+    @GetMapping("/monprofil")
+    public String profil(Model model, HttpSession session) {
+        // Client client = (Client) session.getAttribute("client-connected");
+        // if (client == null) {
+        //     model.addAttribute("error", "Vous devez être connecté pour voir votre profil.");
+        //     return "client/Login";
+        // }
+        model.addAttribute("client", (Clients)session.getAttribute("client-connected"));
         return "client/profil";
+    }
+
+    @PostMapping("/monprofil/update")
+    public String updateProfile(@RequestParam String prenoms, @RequestParam String nom,
+            @RequestParam String email, @RequestParam String telephone,
+            @RequestParam String adresse, @RequestParam String sexe,
+            @RequestParam String dtn, Model model, HttpSession session) {
+
+        Clients client = (Clients) session.getAttribute("client-connected"); // Même clé que dans profil()
+        if (client == null) {
+            model.addAttribute("error", "Vous devez être connecté pour modifier votre profil.");
+            return "client/Login";
+        }
+
+        // Mise à jour des informations du client
+        client.setPrenoms(prenoms);
+        client.setNom(nom);
+        client.setEmail(email);
+        client.setTelephone(telephone);
+        client.setAdresse(adresse);
+        client.setSexe(sexe);
+        client.setDtn(LocalDate.parse(dtn));
+
+        // Sauvegarde des modifications
+        clientService.updateClient(client);
+
+        // Mise à jour de la session et du modèle
+        session.setAttribute("client-connected", client);
+        model.addAttribute("client", client);
+
+        return "client/profil";
+    }
+
+    @PostMapping("/monprofil/update-password")
+    public String updatePassword(
+            @RequestParam("password") String newPassword,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+
+        // Récupérer le client connecté depuis la session
+        Clients client = (Clients) session.getAttribute("client-connected");
+        if (client == null) {
+            redirectAttributes.addFlashAttribute("error", "Vous devez être connecté pour modifier votre mot de passe.");
+            return "redirect:/login";
+        }
+
+        client.setMdp(newPassword); 
+        clientService.updateClient(client);
+
+        redirectAttributes.addFlashAttribute("success", "Mot de passe mis à jour avec succès !");
+        return "redirect:/monprofil";
     }
 
     @GetMapping("/historique-achat")
@@ -97,12 +155,12 @@ public class ClientController {
             @RequestParam(value = "dateFin", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFin,
             HttpSession session) {
         try {
-            Client client = (Client) session.getAttribute("client-connected");
+            Clients client = (Clients) session.getAttribute("client-connected");
             if (client == null) {
                 model.addAttribute("error", "Vous devez être connecté pour voir l'historique d'achat.");
                 return "client/HistoriqueAchat";
             }
-            Long clientId = client.getIdClient();
+            Long clientId = client.getId();
             model.addAttribute("dateDebut", dateDebut);
             model.addAttribute("dateFin", dateFin);
             model.addAttribute("historique",

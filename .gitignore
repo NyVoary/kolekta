@@ -54,3 +54,6 @@ Application/target/
 
 # Ignorer les fichiers de configuration sensibles
 Application/src/main/resources/application.properties
+/**/uploads
+
+.vscode/*

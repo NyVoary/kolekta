@@ -16,12 +16,13 @@ import java.util.List;
 
 @Repository
 public interface CommandeRepository extends JpaRepository<Commandes, Long> {
+
     @Query("SELECT c FROM Commandes c WHERE c.client.id = :clientId AND EXISTS (SELECT cs FROM CommandeStatus cs JOIN cs.status s WHERE cs.commande = c AND s.libelle = 'Validée') ORDER BY c.dateCommande DESC")
     List<Commandes> findValidatedCommandesByClient(@Param("clientId") Long clientId);
 
     @EntityGraph(attributePaths = { "paiements", "commandeStatusList" })
-    @Query("SELECT c FROM Commandes c WHERE c.client.idClient = :clientId")
-    List<Commandes> findByClientId(@Param("clientId") Long clientId);;
+    @Query("SELECT c FROM Commandes c WHERE c.client.id = :clientId")
+    List<Commandes> findByClientId(@Param("clientId") Long clientId);
 
     List<Commandes> findByDateCommande(Date dateCommande);
 
@@ -42,18 +43,17 @@ public interface CommandeRepository extends JpaRepository<Commandes, Long> {
             AND (CAST(:dateTo AS date) IS NULL OR c.date_commande <= :dateTo)
             ORDER BY c.date_commande DESC
             """, nativeQuery = true)
-
     List<Commandes> findByClientIdWithFilters(
             @Param("clientId") Long clientId,
             @Param("statut") String statut,
             @Param("dateFrom") LocalDate dateFrom,
             @Param("dateTo") LocalDate dateTo);
 
-    List<Commandes> findByClientOrderByDateCommandeDesc(Client client);
+    List<Commandes> findByClientOrderByDateCommandeDesc(Clients client);
 
-    @Query("SELECT c FROM Commandes c JOIN FETCH c.produits WHERE c.client.idClient = :clientId ORDER BY c.dateCommande DESC")
-    List<Commandes> findWithProduitsByClientId(@Param("clientId") int clientId);
+    @Query("SELECT c FROM Commandes c JOIN FETCH c.produits WHERE c.client.id = :clientId ORDER BY c.dateCommande DESC")
+    List<Commandes> findWithProduitsByClientId(@Param("clientId") Long clientId);
 
-    @Query("SELECT DISTINCT c FROM Commandes c LEFT JOIN FETCH c.produits WHERE c.client.idClient = :clientId ORDER BY c.dateCommande DESC")
-    List<Commandes> findAllByClientIdWithProduits(@Param("clientId") int clientId);
+    @Query("SELECT DISTINCT c FROM Commandes c LEFT JOIN FETCH c.produits WHERE c.client.id = :clientId ORDER BY c.dateCommande DESC")
+    List<Commandes> findAllByClientIdWithProduits(@Param("clientId") Long clientId);
 }

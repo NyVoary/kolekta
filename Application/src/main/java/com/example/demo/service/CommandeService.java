@@ -31,13 +31,13 @@ public class CommandeService {
     @Autowired
     private ProduitsRepository produitRepository;
     @Autowired
-    private ClientRepository clientRepository;
+    private ClientsRepository clientRepository;
     @Autowired
     private StatusRepository statusRepository;
 
     public Commandes creerCommandeDepuisPanier(Long idClient) {
         Panier panier = panierService.getPanierAvecProduits(idClient).orElseThrow();
-        Client client = clientService.getClientById(idClient).orElseThrow();
+        Clients client = clientService.getClientById(idClient).orElseThrow();
 
         Double montantHT = panierService.calculerMontantHT(panier);
         Double montantTTC = panierService.calculerMontantTTC(montantHT);
@@ -83,15 +83,15 @@ public class CommandeService {
         return commandeRepository.findByClientId(client);
     }
 
-    public List<Commandes> getCommandesByClient(Client client) {
+    public List<Commandes> getCommandesByClient(Clients client) {
         return commandeRepository.findByClientOrderByDateCommandeDesc(client);
     }
 
-    public List<Commandes> getCommandesWithProduitsByClientId(int clientId) {
+    public List<Commandes> getCommandesWithProduitsByClientId(Long clientId) {
         return commandeRepository.findWithProduitsByClientId(clientId);
     }
 
-    public List<Commandes> getAllCommandesByClientWithProduits(int clientId) {
+    public List<Commandes> getAllCommandesByClientWithProduits(Long clientId) {
         return commandeRepository.findAllByClientIdWithProduits(clientId);
     }
 
@@ -106,7 +106,7 @@ public class CommandeService {
         List<CommandeDTO> commandeDTOs = new ArrayList<>();
 
         for (Commandes commande : commandes) {
-            Client client = commande.getClient();
+            Clients client = commande.getClient();
 
             String statut = "Non défini";
             List<CommandeStatus> commandeStatuses = commandeStatusRepository.findByCommandeId(commande.getId());
@@ -141,7 +141,7 @@ public class CommandeService {
                                    String villeLivraison, String telephoneLivraison, String emailLivraison,
                                    List<Long> produitIds, List<Integer> quantites) {
         Commandes commande = new Commandes();
-        Client client = clientRepository.findById(idClient)
+        Clients client = clientRepository.findById(idClient)
                 .orElseThrow(() -> new IllegalArgumentException("Client non trouvé"));
         commande.setClient(client);
         commande.setDateCommande(LocalDate.now());

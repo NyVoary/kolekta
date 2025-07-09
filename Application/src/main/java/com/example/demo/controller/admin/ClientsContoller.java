@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.dto.ClientDTO;
-import com.example.demo.entity.Client;
+import com.example.demo.entity.Clients;
 import com.example.demo.entity.Commandes;
 import com.example.demo.service.ClientService;
 import com.example.demo.service.CommandeService;
@@ -35,12 +35,12 @@ public class ClientsContoller {
 
     @GetMapping("/admin/ajout-client")
     public String ajoutClient(Model model) {
-        model.addAttribute("client", new Client());
+        model.addAttribute("client", new Clients());
         return "admin/clients/ajout-client";
     }
 
     @PostMapping("/admin/ajout-client")
-    public String enregistrerClient(@ModelAttribute Client client,
+    public String enregistrerClient(@ModelAttribute Clients client,
             @RequestParam("imageFile") MultipartFile imageFile,
             Model model) {
         try {
@@ -84,15 +84,15 @@ public class ClientsContoller {
 
     @GetMapping("/admin/modifier-client/{id}")
     public String modifierClient(@PathVariable("id") Long id, Model model) {
-        Client client = clientService.getClientByID(id);
+        Clients client = clientService.getClientByID(id);
         model.addAttribute("client", client);
         return "admin/clients/modifier-client";
     }
 
     @PostMapping("/admin/update-client")
-    public String updateClient(@ModelAttribute Client client,
+    public String updateClient(@ModelAttribute Clients client,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) throws Exception {
-        Client existingClient = clientService.getClientByID(client.getIdClient());
+        Clients existingClient = clientService.getClientByID(client.getId());
 
         if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
@@ -127,12 +127,12 @@ public class ClientsContoller {
 
     @GetMapping("/admin/informations-client/{id}")
     public String informationsClient(@PathVariable("id") Long id, Model model) {
-        Client client = clientService.getClientByID(id);
+        Clients client = clientService.getClientByID(id);
         if (client == null) {
             return "redirect:/admin/liste-client";
         }
 
-        List<Commandes> commandes = commandeService.getAllCommandesByClientWithProduits(id.intValue());
+        List<Commandes> commandes = commandeService.getAllCommandesByClientWithProduits(id);
 
         for (Commandes commande : commandes) {
             String statut = commandeService.getDernierStatutCommande(commande.getId());

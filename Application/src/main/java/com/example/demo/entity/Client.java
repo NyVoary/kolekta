@@ -36,7 +36,7 @@ public class Client {
     private String image;
 
     @Column(name = "date_creation", nullable = false, updatable = false)
-    private LocalDate dateCreation = LocalDate.now(); // Valeur par défaut
+    private LocalDate dateCreation;
 
     // --- Getters et Setters ---
 

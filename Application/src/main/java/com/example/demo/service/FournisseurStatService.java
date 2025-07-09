@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Fournisseurs;
-import com.example.demo.repository.FornisseursRepository;
+import com.example.demo.repository.FournisseursRepository;
 import com.example.demo.repository.ProduitsRepository;
 import com.example.demo.repository.CommandeProduitsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import java.util.HashMap;
 public class FournisseurStatService {
     private static final Logger log = LoggerFactory.getLogger(FournisseurStatService.class);
     @Autowired
-    private FornisseursRepository fournisseursRepository;
+    private FournisseursRepository fournisseursRepository;
     @Autowired
     private ProduitsRepository produitsRepository;
     @Autowired

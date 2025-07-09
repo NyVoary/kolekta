@@ -1,10 +1,22 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "acces")
 public class Acces {
+
+    public static final String[] theRoles = new String[] {
+            "admin", "employe"
+    };
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,8 +32,9 @@ public class Acces {
     @Column(name = "role", nullable = false)
     private String role;
 
-    @Column(name = "id_employe")
-    private Integer idEmploye;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_employe")
+    private Employes employes;
 
     // Getters & Setters
     public Long getIdAcces() {
@@ -52,15 +65,25 @@ public class Acces {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setRole(String roles) {
+        for (String role : theRoles) {
+            if (role.equals(roles)) {
+                this.role = roles;
+                return;
+            }
+        }
     }
 
-    public Integer getIdEmploye() {
-        return idEmploye;
+    public static String[] getTheroles() {
+        return theRoles;
     }
 
-    public void setIdEmploye(Integer idEmploye) {
-        this.idEmploye = idEmploye;
+    public Employes getEmployes() {
+        return employes;
     }
+
+    public void setEmployes(Employes employes) {
+        this.employes = employes;
+    }
+
 }

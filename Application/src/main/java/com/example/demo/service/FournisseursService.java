@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,19 +13,24 @@ import com.example.demo.entity.Disponibilite;
 import com.example.demo.entity.Fournisseurs;
 import com.example.demo.entity.Produits;
 import com.example.demo.repository.*;
+import com.example.demo.repository.FournisseursRepository;
 
 @Service
 public class FournisseursService {
     @Autowired
-    private FornisseursRepository fournisseursRepository;
+    private FournisseursRepository fournisseursRepository;
     @Autowired
     private ProduitsRepository produitsRepository;
     @Autowired
     private DisponibiliteRepository disponibiliteRepository;
 
     @Autowired
-    public FournisseursService(FornisseursRepository fournisseursRepository) {
+    public FournisseursService(FournisseursRepository fournisseursRepository) {
         this.fournisseursRepository = fournisseursRepository;
+    }
+
+    public List<Fournisseurs> getAllFournisseurs() {
+        return fournisseursRepository.findAll();
     }
 
     public List<Fournisseurs> getAll() {

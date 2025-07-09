@@ -78,8 +78,8 @@
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
-          <div class="row">
-            <div class="col-md-6 grid-margin stretch-card">
+          <div class="row" style="display: flex; justify-content: center; align-items: center;">
+            <div class="col-6 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Ajouter une cat&eacute;gorie</h4>

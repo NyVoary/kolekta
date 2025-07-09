@@ -105,8 +105,8 @@
             <div class="form-group">
               <label for="sexe">Sexe</label>
               <select class="form-control" id="sexe" name="sexe">
-                <option value="M" <%= request.getAttribute("client") != null && ((Client)request.getAttribute("client")).getSexe() == 'M' ? "selected" : "" %>>Masculin</option>
-                <option value="F" <%= request.getAttribute("client") != null && ((Client)request.getAttribute("client")).getSexe() == 'F' ? "selected" : "" %>>F&eacute;minin</option>
+                  <option value="Masculin" <%= request.getAttribute("client") != null && ((Client)request.getAttribute("client")).getSexe().equals("Masculin") ? "selected" : "" %>>Masculin</option>
+                  <option value="Feminin" <%= request.getAttribute("client") != null && ((Client)request.getAttribute("client")).getSexe().equals("Feminin") ? "selected" : "" %>>F&eacute;minin</option>
               </select>
             </div>
 

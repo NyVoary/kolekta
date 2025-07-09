@@ -25,11 +25,11 @@ public class CommandeStatus {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client")
-    private Client client;
+    private Clients client;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_employe")
-    private Employe employe;
+    private Employes employe;
 
     @Column(name = "commentaire_employe", columnDefinition = "TEXT")
     private String commentaireEmploye;
@@ -77,19 +77,19 @@ public class CommandeStatus {
         this.dateChangement = dateChangement;
     }
 
-    public Client getClient() {
+    public Clients getClient() {
         return client;
     }
 
-    public void setClient(Client client) {
+    public void setClient(Clients client) {
         this.client = client;
     }
 
-    public Employe getEmploye() {
+    public Employes getEmploye() {
         return employe;
     }
 
-    public void setEmploye(Employe employe) {
+    public void setEmploye(Employes employe) {
         this.employe = employe;
     }
 

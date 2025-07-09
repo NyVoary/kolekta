@@ -39,7 +39,7 @@ public class HistoriqueAchatService {
         List<HistoriqueAchat> historique = new ArrayList<>();
 
         for (Commandes c : toutesCommandes) {
-            if (c.getClient() != null && clientId.equals(c.getClient().getIdClient())) {
+            if (c.getClient() != null && clientId.equals(c.getClient().getId())) {
                 if (c.getStatuts() != null && c.getStatuts().stream().anyMatch(cs -> {
                     String libelle = cs.getStatus() != null ? cs.getStatus().getLibelle() : null;
                     String libelleNormalise = removeAccents(libelle != null ? libelle.trim().toLowerCase() : "");
@@ -63,7 +63,7 @@ public class HistoriqueAchatService {
         List<HistoriqueAchat> historique = new ArrayList<>();
 
         for (Commandes c : toutesCommandes) {
-            if (c.getClient() != null && clientId.equals(c.getClient().getIdClient())) {
+            if (c.getClient() != null && clientId.equals(c.getClient().getId())) {
                 LocalDate dateCommande = c.getDateCommande();
                 boolean inRange = (dateDebut == null || !dateCommande.isBefore(dateDebut)) &&
                                   (dateFin == null || !dateCommande.isAfter(dateFin));

@@ -73,12 +73,12 @@
             </a>
             <div class="collapse" id="icons">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-employe">Ajout employe</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/liste-employe">Liste</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/paiement-employe">Paiments</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/divers-employe">Gestion divers</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/tache-employe">Assignations taches</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/stat-employe">Statistique</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-employe">Ajout employe</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/liste-employe">Liste Employes</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/divers-employe">Ajout Acces</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/list-acces">List Acces</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/tache-employe">Assignations taches</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/stat-employe">Statistique</a></li>
               </ul>
             </div>
           </li>
@@ -100,12 +100,12 @@
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
               <i class="ti-shopping-cart-full menu-icon"></i>
-              <span class="menu-title">Commandes&Livraisons</span>
+              <span class="menu-title">Commandes</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="error">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/livraison">Livraisons</a></li>
+                <%-- <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/livraison">Livraisons</a></li> --%>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/commande">Commandes</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-commande">Ajout commande</a></li>
               </ul>
