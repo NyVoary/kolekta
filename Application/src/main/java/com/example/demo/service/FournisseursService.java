@@ -13,7 +13,6 @@ import com.example.demo.entity.Disponibilite;
 import com.example.demo.entity.Fournisseurs;
 import com.example.demo.entity.Produits;
 import com.example.demo.repository.*;
-import com.example.demo.repository.FournisseursRepository;
 
 @Service
 public class FournisseursService {
@@ -88,10 +87,10 @@ public class FournisseursService {
             int quantite = 0;
             for (Disponibilite d : dispos) {
                 if (d.getFournisseur().getId().equals(fournisseurId) && d.getProduit().getId().equals(p.getId())) {
-                    quantite = d.getQuantite();
-                    break;
+                    quantite += d.getQuantite();
                 }
             }
+            map.put("quantite", quantite);
             map.put("quantite", quantite);
             result.add(map);
         }

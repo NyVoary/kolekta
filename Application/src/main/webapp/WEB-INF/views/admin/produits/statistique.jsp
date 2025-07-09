@@ -100,14 +100,14 @@
             </div>
           </div>
           
-          <div class="row">
+          <%-- <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Top des produits vendus</h4>
                   <canvas id="topProductsChart"></canvas>
                 </div>
-              </div>
+              </div> --%>
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@
       // ===========================================
       const ctx1 = document.getElementById('barChart').getContext('2d');
       
-      const generalLabels = ['Total Produits', 'Rupture Stock', 'Stock Bas', 'Nouveaux ce mois'];
+      const generalLabels = ['Produits aimés', 'Rupture Stock', 'Stock Bas', 'Nouveaux ce mois'];
       const generalData = [];
       
       <c:if test="${not empty statistics}">

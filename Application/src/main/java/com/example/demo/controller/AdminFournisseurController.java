@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -76,8 +77,13 @@ public class AdminFournisseurController {
     }
 
     @GetMapping("/admin/fournisseurs/delete")
-    public String deleteFournisseur(Long id) {
-        fournisseursService.deleteById(id);
+    public String deleteFournisseur(Long id, RedirectAttributes redirectAttributes) {
+        try {
+            fournisseursService.deleteById(id);
+            redirectAttributes.addFlashAttribute("success", "Fournisseur supprimé avec succès.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Erreur lors de la suppression");
+        }
         return "redirect:/admin/fournisseurs/liste";
     }
 

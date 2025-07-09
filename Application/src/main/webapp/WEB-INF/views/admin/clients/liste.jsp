@@ -59,7 +59,7 @@
                     <td>
                       <a href="/admin/modifier-client/<%= client.getIdClient() %>" class="btn btn-sm btn-primary">Modifier</a>
                       <form action="/admin/supprimer-client/<%= client.getIdClient() %>" method="get" style="display:inline;">
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce client ?')">Supprimer</button>
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce client ?')">Desactiver</button>
                       </form>
                     </td>
                   </tr>

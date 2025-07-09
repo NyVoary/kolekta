@@ -117,7 +117,7 @@
             </div>
             <div class="col-12 col-md-3 mb-3 p-0">
               <div class="card stat-card h-100 p-3" style="background: #fffaf0;">
-                <h6>Top fournisseurs (ventes)</h6>
+                <h6>Meilleures nombres de ventes:</h6>
                 <c:if test="${not empty topFournisseurs}">
                   <ol class="list-unstyled mt-2 center-list">
                     <c:forEach var="tf" items="${topFournisseurs}">

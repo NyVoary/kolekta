@@ -59,7 +59,7 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-fournisseur">Ajout fournisseur</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/fournisseurs/liste">Liste</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/paiement-fournisseur">Paiments</a></li>
+                <%-- <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/paiement-fournisseur">Paiments</a></li> --%>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/fournisseurs/ajout-disponibilite">Ajout disponibilite</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/fournisseurs/statistique">Statistique</a></li>
               </ul>
@@ -76,7 +76,7 @@
                 <li class="nav-item"> <a class="nav-link" href="/admin/ajout-employe">Ajout employe</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/liste-employe">Liste Employes</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/divers-employe">Ajout Acces</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/list-acces">List Acces</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/admin/list-acces">Liste Acces</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/tache-employe">Assignations taches</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/stat-employe">Statistique</a></li>
               </ul>
@@ -92,7 +92,7 @@
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-camion">Ajout camion</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/liste-camion">Liste</a></li>
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/paiement-camion">Paiments</a></li>
+                <%-- <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/paiement-camion">Paiments</a></li> --%>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/assignation-camion">Assignations camions</a></li>
               </ul>
             </div>
