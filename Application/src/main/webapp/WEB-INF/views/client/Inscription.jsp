@@ -45,9 +45,8 @@
                 <div class="form-group">
                   <select class="form-control form-control-lg" name="sexe" required>
                     <option value="">Sexe</option>
-                    <option value="Masculin">Masculin</option>
-                    <option value="Feminin">Feminin</option>
-                    <option value="Autre">Autre</option>
+                    <option value="M">Masculin</option>
+                    <option value="F">Feminin</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -64,14 +63,16 @@
                   <input type="password" class="form-control form-control-lg" name="mdp" placeholder="Mot de passe"
                     required>
                 </div>
+                <input type="file" name="image" class="file-upload-default">
+
                 <div class="form-group">
                   <input type="file" name="image" class="file-upload-default">
-                  <div class="input-group col-xs-12">
+                  <!--<div class="input-group col-xs-12">
                     <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
                     <span class="input-group-append">
                       <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                     </span>
-                  </div>
+                  </div>-->
                   <div class="my-2 d-flex justify-content-between align-items-center">
                     <p class="text-danger">
                       <% String erreur=(String) session.getAttribute("error-client"); if (erreur !=null) { %>
