@@ -1,4 +1,8 @@
 <%@ include file="../includes/head.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/ajout-produit.css">
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>
@@ -78,10 +82,35 @@
       <!-- partial -->
       <div class="main-panel">
         <h1>Ajout produit mois:</h1>
+        <form action="/admin/ajout-produitMois" method="post">
+          <label for="produit">Produit:</label>
+          <select name="produit" id="produit" required>
+            <option value="">-- Sélectionner un produit --</option>
+            <c:forEach var="produit" items="${produits}">
+              <option value="${produit.id}">${produit.nom}</option>
+            </c:forEach>
+          </select>
+          <label for="mois">Mois:</label>
+          <select name="mois" id="mois" required>
+            <option value="1">Janvier</option>
+            <option value="2">Février</option>
+            <option value="3">Mars</option>
+            <option value="4">Avril</option>
+            <option value="5">Mai</option>
+            <option value="6">Juin</option>
+            <option value="7">Juillet</option>
+            <option value="8">Août</option>
+            <option value="9">Septembre</option>
+            <option value="10">Octobre</option>
+            <option value="11">Novembre</option>
+            <option value="12">Décembre</option>
+          </select>
+          <button type="submit" class="btn btn-primary">Ajouter</button>
+        </form>
         <!-- partial:partials/_footer.html -->
-      <%@ include file="../includes/footer.jsp" %>
       </div>
     </div>   
+      <%@ include file="../includes/footer.jsp" %>
   </div>
 </body>
 

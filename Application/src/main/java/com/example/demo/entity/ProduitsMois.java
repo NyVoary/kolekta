@@ -9,8 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 
 @Entity
 @Table(name = "produit_mois")
@@ -23,10 +21,8 @@ public class ProduitsMois {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_produit", nullable = false)
-    private Produits produits;
+    private Produits produit;
 
-    @Min(1)
-    @Max(12)
     @Column(nullable = false)
     private int mois;
 
@@ -34,8 +30,8 @@ public class ProduitsMois {
     public ProduitsMois() {
     }
 
-    public ProduitsMois(Produits produits, int mois) {
-        this.produits = produits;
+    public ProduitsMois(Produits produit, int mois) {
+        this.produit = produit;
         this.mois = mois;
     }
 
@@ -48,11 +44,11 @@ public class ProduitsMois {
     }
 
     public Produits getProduits() {
-        return produits;
+        return produit;
     }
 
-    public void setProduits(Produits produits) {
-        this.produits = produits;
+    public void setProduits(Produits produit) {
+        this.produit = produit;
     }
 
     public int getMois() {

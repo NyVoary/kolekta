@@ -1,3 +1,10 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="../includes/head.jsp" %>
+<%@ page import="java.util.List, com.example.demo.entity.Categories" %>
+<%
+    List<Categories> categories = (List<Categories>) request.getAttribute("categories");
+%>
+
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -77,13 +84,75 @@
       <%@ include file="../includes/sidebar.jsp" %>
       <!-- partial -->
       <div class="main-panel">
-        <h1>Liste des categories:</h1>
+        <div class="col-lg-6 grid-margin stretch-card">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Liste des cat&eacute;gories :</h4>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>ID</th>
+                      <th>Libell&eacute;</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% if (categories != null && !categories.isEmpty()) { 
+                       for (Categories categorie : categories) { %>
+                        <tr>
+                          <td><%= categorie.getId() %></td>
+                          <td><%= categorie.getLibelle() %></td>
+                          <td>
+                            <a href="/admin/modifier-categorie?id=<%= categorie.getId() %>" 
+                               class="btn btn-sm btn-primary">Modifier</a>
+                            <form action="/admin/supprimer-categorie" method="post" style="display:inline;">
+                              <input type="hidden" name="id" value="<%= categorie.getId() %>">
+                              <button type="submit" class="btn btn-sm btn-danger" 
+                                      onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette cat&eacute;gorie ?')">
+                                Supprimer
+                              </button>
+                            </form>
+                          </td>
+                        </tr>
+                    <% } 
+                    } else { %>
+                        <tr>
+                          <td colspan="3" class="text-center">Aucune cat&eacute;gorie trouv&eacute;e</td>
+                        </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+              <a href="/admin/ajout-categorie" class="btn btn-primary mt-3">Ajouter une cat&eacute;gorie</a>
+            </div>
+          </div>
+        </div>
+
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
       </div>
     </div>   
   </div>
 </body>
+<script src="/vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <script src="/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+  <script src="/vendors/select2/select2.min.js"></script>
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="/js/off-canvas.js"></script>
+  <script src="/js/hoverable-collapse.js"></script>
+  <script src="/js/template.js"></script>
+  <script src="/js/settings.js"></script>
+  <script src="/js/todolist.js"></script>
+  <!-- endinject -->
+  <!-- Custom js for this page-->
+  <script src="/js/file-upload.js"></script>
+  <script src="/js/typeahead.js"></script>
+  <script src="/js/select2.js"></script>
+  <!-- End custom js for this page-->
 
 </html>
 

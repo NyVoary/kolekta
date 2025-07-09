@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>Library</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/feather/feather.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/ti-icons/css/themify-icons.css">
@@ -16,7 +16,7 @@
   <!-- inject:css -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
   <!-- endinject -->
-  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
 </head>
 
 <body>
@@ -35,7 +35,7 @@
                   </div>
                 <% } %>
               <div class="brand-logo">
-                <img src="${pageContext.request.contextPath}/images/logo.svg" alt="logo">
+                <img src="${pageContext.request.contextPath}/images/lokaly.png" alt="logo">
               </div>
                <h4 class="text-center font-weight-bold mb-2">
                 Admin Login

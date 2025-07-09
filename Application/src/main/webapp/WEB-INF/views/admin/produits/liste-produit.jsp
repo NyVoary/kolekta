@@ -1,4 +1,8 @@
 <%@ include file="../includes/head.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/liste-produit.css">
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>
@@ -78,11 +82,166 @@
       <!-- partial -->
       <div class="main-panel">
         <h1>Liste des produits:</h1>
+        <div class="scroll-container">
+          <button class="scroll-btn scroll-btn-left" onclick="scrollLeft()">&lt;</button>
+          <button class="scroll-btn scroll-btn-right" onclick="scrollRight()">&gt;</button>
+          <div class="card-deck" id="cardDeck">
+          <c:forEach var="produit" items="${produits}">
+          <div class="card">
+            <div class="card-body">
+              <c:choose>
+                <c:when test="${not empty produit.image}">
+                  <img src="/images/produits/${produit.image}" alt="${produit.nom}" class="card-img-top" style="height: 200px; object-fit: cover;">
+                </c:when>
+                <c:otherwise>
+                  <img src="/images/default-product.png" alt="Image par défaut" class="card-img-top" style="height: 200px; object-fit: cover;">
+                </c:otherwise>
+              </c:choose>
+              <h5 class="card-title">${produit.nom}</h5>
+              <p class="card-text">
+                <strong>Fournisseur:</strong> ${produit.fournisseur.nom}<br>
+                <strong>Catégorie:</strong> ${produit.categorie.libelle}<br>
+                <strong>Prix de vente:</strong> ${produit.prixVente} Ar<br>
+                <strong>Unité:</strong> ${produit.uniteMesure}
+              </p>
+              <button type="button" class="btn btn-warning btn-modifier" 
+                      data-toggle="modal" 
+                      data-target="#modalModifier"
+                      data-id="${produit.id}"
+                      data-nom="${produit.nom}"
+                      data-description="${produit.description}"
+                      data-fournisseur="${produit.fournisseur.id}"
+                      data-categorie="${produit.categorie.id}"
+                      data-unite="${produit.uniteMesure}"
+                      data-prix-achat="${produit.prixAchat}"
+                      data-prix-vente="${produit.prixVente}">
+                Modifier
+              </button>
+              <form method="post" action="/admin/supprimer-produit" style="display:inline;" 
+                    onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
+                <input type="hidden" name="id" value="${produit.id}">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+              </form>
+            </div>
+          </div>
+          </c:forEach>
+          </div>
+        </div>
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
       </div>
     </div>   
   </div>
+
+  <!-- Modal de modification -->
+  <div class="modal fade" id="modalModifier" tabindex="-1" role="dialog" aria-labelledby="modalModifierLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalModifierLabel">Modifier le produit</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" action="/admin/modifier-produit" enctype="multipart/form-data">
+          <div class="modal-body">
+            <input type="hidden" id="produitId" name="id">
+            <div class="form-group">
+              <label for="produitNom">Nom du produit:</label>
+              <input type="text" class="form-control" id="produitNom" name="nom" required>
+            </div>
+            <div class="form-group">
+              <label for="produitFournisseur">Fournisseur:</label>
+              <select class="form-control" id="produitFournisseur" name="fournisseur" required>
+                <option value="">-- Sélectionner un fournisseur --</option>
+                <c:forEach var="fournisseur" items="${fournisseurs}">
+                  <option value="${fournisseur.id}">${fournisseur.nom}</option>
+                </c:forEach>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="produitDescription">Description:</label>
+              <input type="text" class="form-control" id="produitDescription" name="description">
+            </div>
+            <div class="form-group">
+              <label for="produitCategorie">Catégorie:</label>
+              <select class="form-control" id="produitCategorie" name="categorie" required>
+                <option value="">-- Sélectionner une catégorie --</option>
+                <c:forEach var="categorie" items="${categories}">
+                  <option value="${categorie.id}">${categorie.libelle}</option>
+                </c:forEach>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="produitUnite">Unité de mesure:</label>
+              <select class="form-control" id="produitUnite" name="unite_mesure" required>
+                <option value="kg">Par kilo</option>
+                <option value="pc">Par pièce</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="produitPrixAchat">Prix d'achat:</label>
+              <input type="number" step="0.01" class="form-control" id="produitPrixAchat" name="prix_achat" required>
+            </div>
+            <div class="form-group">
+              <label for="produitPrixVente">Prix de vente:</label>
+              <input type="number" step="0.01" class="form-control" id="produitPrixVente" name="prix_vente" required>
+            </div>
+            <div class="form-group">
+              <label for="produitImage">Image:</label>
+              <input type="file" class="form-control-file" id="produitImage" name="image" accept="image/*">
+              <small class="form-text text-muted">Laissez vide pour conserver l'image actuelle</small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-primary">Modifier</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      $('.btn-modifier').click(function() {
+        var id = $(this).data('id');
+        var nom = $(this).data('nom');
+        var description = $(this).data('description');
+        var fournisseur = $(this).data('fournisseur');
+        var categorie = $(this).data('categorie');
+        var unite = $(this).data('unite');
+        var prixAchat = $(this).data('prix-achat');
+        var prixVente = $(this).data('prix-vente');
+        
+        $('#produitId').val(id);
+        $('#produitNom').val(nom);
+        $('#produitDescription').val(description);
+        $('#produitFournisseur').val(fournisseur);
+        $('#produitCategorie').val(categorie);
+        $('#produitUnite').val(unite);
+        $('#produitPrixAchat').val(prixAchat);
+        $('#produitPrixVente').val(prixVente);
+      });
+    });
+
+    // Fonctions de scroll horizontal
+    function scrollLeft() {
+      const cardDeck = document.getElementById('cardDeck');
+      cardDeck.scrollBy({
+        left: -320,
+        behavior: 'smooth'
+      });
+    }
+
+    function scrollRight() {
+      const cardDeck = document.getElementById('cardDeck');
+      cardDeck.scrollBy({
+        left: 320,
+        behavior: 'smooth'
+      });
+    }
+  </script>
 </body>
 
 </html>

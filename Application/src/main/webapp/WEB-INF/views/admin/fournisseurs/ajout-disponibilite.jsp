@@ -17,7 +17,13 @@
               <label>Fournisseur <span class="text-danger">*</span></label>
               <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="ti-user"></i></span></div>
-                <select name="fournisseur.id" class="form-control form-control-lg" style="width:100%;min-width:350px;max-width:700px;" required autofocus>
+                <%-- <select name="fournisseur.id" class="form-control form-control-lg" style="width:100%;min-width:350px;max-width:700px;" required autofocus>
+                  <option value="" disabled selected>Choisir un fournisseur</option>
+                  <c:forEach var="f" items="${fournisseurs}">
+                    <option value="${f.id}">${f.nom}</option>
+                  </c:forEach>
+                </select> --%>
+                <select name="fournisseur.id" id="fournisseurSelect" class="form-control form-control-lg" required>
                   <option value="" disabled selected>Choisir un fournisseur</option>
                   <c:forEach var="f" items="${fournisseurs}">
                     <option value="${f.id}">${f.nom}</option>
@@ -29,13 +35,19 @@
               <label>Produit <span class="text-danger">*</span></label>
               <div class="input-group">
                 <div class="input-group-prepend"><span class="input-group-text"><i class="ti-package"></i></span></div>
-                <select name="produit.id" class="form-control form-control-lg" style="width:100%;min-width:350px;max-width:700px;" required>
+                <%-- <select name="produit.id" class="form-control form-control-lg" style="width:100%;min-width:350px;max-width:700px;" required>
                   <option value="" disabled selected>Choisir un produit</option>
                   <c:forEach var="p" items="${produits}">
                     <option value="${p.id}">${p.nom}</option>
                   </c:forEach>
+                </select> --%>
+                <select name="produit.id" id="produitSelect" class="form-control form-control-lg" required>
+                  <option value="" disabled selected>Choisir un produit</option>
+                  <c:forEach var="p" items="${produits}">
+                    <option value="${p.id}" data-fournisseur="${p.fournisseur.id}">${p.nom}</option>
+                  </c:forEach>
                 </select>
-                <a href="/admin/produits/ajout" class="btn btn-link ml-2">Ajouter un produit</a>
+                <a href="/admin/ajout-produit" class="btn btn-link ml-2">Ajouter un produit</a>
               </div>
             </div>
             <div class="form-group mb-4 position-relative">
@@ -56,6 +68,7 @@
         </div>
       </div>
     </div>
+      <%@ include file="../includes/footer.jsp" %>
   </div>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -63,6 +76,23 @@
       if(selects.length) selects[0].focus();
     });
   </script>
+  <script>
+document.getElementById("fournisseurSelect").addEventListener("change", function () {
+    var selectedFournisseur = this.value;
+    var produitOptions = document.getElementById("produitSelect").options;
+    for (var i = 0; i < produitOptions.length; i++) {
+        var option = produitOptions[i];
+        var fournisseurId = option.getAttribute("data-fournisseur");
+        if (!fournisseurId || fournisseurId === selectedFournisseur) {
+            option.style.display = "block";
+        } else {
+            option.style.display = "none";
+        }
+    }
+    document.getElementById("produitSelect").value = ""; // reset produit sélectionné
+});
+</script>
+
 </body>
 </html>
 

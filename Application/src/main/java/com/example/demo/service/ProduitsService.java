@@ -1,7 +1,6 @@
 package com.example.demo.service;
 
 import java.time.LocalDate;
-// import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public class ProduitsService {
         this.repository = produitsRepository;
     }
 
-    public void delete(int id) {
+    public void delete(Long id) { // Changé de int à Long
         repository.deleteById(id);
     }
 
@@ -32,8 +31,8 @@ public class ProduitsService {
         return repository.findAll();
     }
 
-    public Produits getBYid(int id) {
-        return repository.findById(id).get();
+    public Produits getBYid(Long id) { // Changé de int à Long
+        return repository.findById(id).orElse(null);
     }
 
     public List<Produits> listsProduitsSaisonniers() {
@@ -41,4 +40,18 @@ public class ProduitsService {
         return repository.listProduitsSaisonniers(mois);
     }
 
+    public List<Produits> rechercherProduits(String search, String categorie, Double prixMin, Double prixMax) {
+        // Convertir les chaînes vides en null
+        String searchParam = (search != null && search.trim().isEmpty()) ? null : search;
+        String categorieParam = (categorie != null && categorie.trim().isEmpty()) ? null : categorie;
+
+        try {
+            // Essayer d'abord avec la requête JPQL
+            return repository.findProduitsByCritere(searchParam, categorieParam, prixMin, prixMax);
+        } catch (Exception e) {
+            // Si la requête JPQL échoue, utiliser la requête native
+            System.err.println("Erreur avec la requête JPQL, utilisation de la requête native: " + e.getMessage());
+            return repository.findProduitsByCritereNative(searchParam, categorieParam, prixMin, prixMax);
+        }
+    }
 }

@@ -5,19 +5,19 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
+// import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.example.demo.entity.Client;
-import com.example.demo.entity.Paniers;
-import com.example.demo.entity.Panier_Produits;
-import com.example.demo.entity.Produits;
+import com.example.demo.entity.*;
 import com.example.demo.repository.*;
+import com.example.demo.service.*;
+import org.springframework.ui.Model;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -34,19 +34,22 @@ public class CommandeController {
     private PanierProduitAddRepository panierProduitAddRepository;
 
     @Autowired
-    private ProduitsRepository produitsRepository;
+    private ProduitsRepository produitRepository;
+
+    // @Autowired
+    // private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    // private JdbcTemplate jdbcTemplate;
+    private CommandeService commandeService;
 
     @GetMapping("/login-erreur")
     public String afficherLoginErreur() {
         return "client/login-client";
-    }
+    }  
 
     @PostMapping("/ajouter")
     public String ajouterAuPanier(
-            @RequestParam(required = false) Integer produitId,
+            @RequestParam(required = false) Long produitId,
             @RequestParam(required = false) Integer quantite,
             HttpSession session,
             RedirectAttributes redirectAttributes) {
@@ -62,46 +65,67 @@ public class CommandeController {
         if (produitId == null || quantite == null || quantite <= 0) {
             logger.warn("Paramètres invalides - produitId={}, quantite={}", produitId, quantite);
             redirectAttributes.addFlashAttribute("erreur", "Paramètres invalides.");
-            return "redirect:/produits";
+            return "redirect:/produits_liste";
         }
 
-        int idClient = utilisateur.getIdClient();
+        Long idClient = utilisateur.getIdClient();
 
         try {
-            Paniers panier = panierAddRepository.findByIdClient(idClient)
+            Panier panier = panierAddRepository.findByIdClient(idClient)
                     .orElseGet(() -> {
-                        Paniers nouveau = new Paniers();
+                        Panier nouveau = new Panier();
                         nouveau.setIdClient(idClient);
                         return panierAddRepository.save(nouveau);
                     });
 
-            Optional<Produits> produitOpt = produitsRepository.findById(produitId);
+            Optional<Produits> produitOpt = produitRepository.findById(produitId);
             if (produitOpt.isEmpty()) {
                 redirectAttributes.addFlashAttribute("erreur", "Produit introuvable.");
-                return "redirect:/produits";
+                return "redirect:/produits_liste";
             }
 
-            Panier_Produits ligne = new Panier_Produits();
-            ligne.setIdPanier(panier.getId());
-            ligne.setIdProduit(produitId);
-            ligne.setQuantite(quantite);
-            ligne.setPrixUnitaire(produitOpt.get().getPrix_vente());
+            PanierProduits ligne = new PanierProduits();
+            ligne.setPanier(panier);
+            ligne.setProduit(produitOpt.get());
+            ligne.setQuantite(quantite.longValue());
+            ligne.setPrixUnitaire(produitOpt.get().getPrixVente());
 
             panierProduitAddRepository.save(ligne);
 
             String nomProduit = produitOpt.get().getNom();
-            redirectAttributes.addFlashAttribute("message", 
-                "Produit ajouté dans le panier avec succès ! (" + quantite + " x " + nomProduit + ")");
-            
-            logger.info("Produit ajouté au panier - Client: {}, Produit: {}, Quantité: {}", 
-                       idClient, produitId, quantite);
-            
-            return "redirect:/produits";
+            redirectAttributes.addFlashAttribute("message",
+                    "Produit ajouté dans le panier avec succès ! (" + quantite + " x " + nomProduit + ")");
+
+            logger.info("Produit ajouté au panier - Client: {}, Produit: {}, Quantité: {}",
+                    idClient, produitId, quantite);
+
+            return "redirect:/produits_liste";
 
         } catch (Exception e) {
             logger.error("Erreur technique : ", e);
             redirectAttributes.addFlashAttribute("erreur", "Erreur technique : " + e.getMessage());
-            return "redirect:/produits";
+            return "redirect:/produits_liste";
         }
     }
+
+    @GetMapping("/commandes/{id}")
+    public String detailCommande(@PathVariable Long id, Model model, HttpSession session) {
+        Commandes commande = commandeService.getCommandeWithProduits(id);
+        model.addAttribute("commande", commande);
+        model.addAttribute("progression", commande.getProgression());
+        Client client = (Client) session.getAttribute("client-connected");
+        if (client != null) {
+            model.addAttribute("clientId", client.getIdClient());
+        }
+        return "client/detail-commande";
+    }
+
+    // @GetMapping("/historique")
+    // public String historiqueCommandes(HttpSession session, Model model) {
+    // Client utilisateur = (Client) session.getAttribute("client-connected");
+    // Long idClient = Long.valueOf(utilisateur.getIdClient());
+    // model.addAttribute("commandes",
+    // commandeService.getCommandesByClientId(idClient));
+    // return "client/historique-commandes";
+    // }
 }

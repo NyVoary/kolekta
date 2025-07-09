@@ -1,31 +1,50 @@
 package com.example.demo.entity;
+
 import jakarta.persistence.*;
 import java.time.LocalDate;
-
 
 @Entity
 @Table(name = "commande_status")
 public class CommandeStatus {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_commande_status")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_commande", nullable = false)
-    private Commande commande;
+    private Commandes commande;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_status", nullable = false)
     private Status status;
 
     @Column(name = "date_changement", nullable = false)
     private LocalDate dateChangement;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_client")
     private Client client;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_employe")
+    private Employe employe;
+
+    @Column(name = "commentaire_employe", columnDefinition = "TEXT")
+    private String commentaireEmploye;
+
+    // Constructeurs
+    public CommandeStatus() {
+    }
+
+    public CommandeStatus(Commandes commande, Status status, LocalDate dateChangement) {
+        this.commande = commande;
+        this.status = status;
+        this.dateChangement = dateChangement;
+    }
+
+    // Getters et Setters
     public Long getId() {
         return id;
     }
@@ -34,11 +53,11 @@ public class CommandeStatus {
         this.id = id;
     }
 
-    public Commande getCommande() {
+    public Commandes getCommande() {
         return commande;
     }
 
-    public void setCommande(Commande commande) {
+    public void setCommande(Commandes commande) {
         this.commande = commande;
     }
 
@@ -66,4 +85,24 @@ public class CommandeStatus {
         this.client = client;
     }
 
+    public Employe getEmploye() {
+        return employe;
+    }
+
+    public void setEmploye(Employe employe) {
+        this.employe = employe;
+    }
+
+    public String getCommentaireEmploye() {
+        return commentaireEmploye;
+    }
+
+    public void setCommentaireEmploye(String commentaireEmploye) {
+        this.commentaireEmploye = commentaireEmploye;
+    }
+
+    // Méthode utilitaire pour obtenir le libellé du statut
+    public String getLibelleStatus() {
+        return status != null ? status.getLibelle() : null;
+    }
 }

@@ -2,7 +2,7 @@
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="/admin/dashboard">
+            <a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Dashboard</span>
             </a>
@@ -15,10 +15,10 @@
             </a>
             <div class="collapse" id="ui-basic">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-produit">Ajout produit</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-produitMois">Ajout produit du mois</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/liste-produit">Liste des produits</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/stat-produit">Statistiques</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-produit">Ajout produit</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-produitMois">Ajout produit du mois</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/liste-produit">Liste des produits</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/stat-produit">Statistiques</a></li>
               </ul>
             </div>
           </li>
@@ -30,8 +30,8 @@
             </a>
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-categorie">Ajout categorie</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/liste-categorie">Liste</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-categorie">Ajout categorie</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/liste-categorie">Liste</a></li>
                 </ul>
             </div>
           </li>
@@ -43,9 +43,9 @@
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="/admin/ajout-client">Ajout client</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/liste-client">Listes</a></li>
-                <li class="nav-item"><a class="nav-link" href="/admin/stat-client">Statistiques</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-client">Ajout client</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin/liste-client">Listes</a></li>
+                <li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/admin/statistiques-clients">Statistiques</a></li>
               </ul>
             </div>
           </li>
@@ -57,11 +57,11 @@
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-fournisseur">Ajout fournisseur</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/fournisseurs/liste">Liste</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/paiement-fournisseur">Paiments</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/fournisseurs/ajout-disponibilite">Ajout disponibilite</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/fournisseurs/statistique">Statistique</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-fournisseur">Ajout fournisseur</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/fournisseurs/liste">Liste</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/paiement-fournisseur">Paiments</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/fournisseurs/ajout-disponibilite">Ajout disponibilite</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/fournisseurs/statistique">Statistique</a></li>
               </ul>
             </div>
           </li>
@@ -73,12 +73,12 @@
             </a>
             <div class="collapse" id="icons">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-employe">Ajout employe</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/liste-employe">Liste</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/paiement-employe">Paiments</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/divers-employe">Gestion divers</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/tache-employe">Assignations taches</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/stat-employe">Statistique</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-employe">Ajout employe</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/liste-employe">Liste</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/paiement-employe">Paiments</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/divers-employe">Gestion divers</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/tache-employe">Assignations taches</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/stat-employe">Statistique</a></li>
               </ul>
             </div>
           </li>
@@ -90,10 +90,10 @@
             </a>
             <div class="collapse" id="auth">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-camion">Ajout camion</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/liste-camion">Liste</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/paiement-camion">Paiments</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/assignation-camion">Assignations camions</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-camion">Ajout camion</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/liste-camion">Liste</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/paiement-camion">Paiments</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/assignation-camion">Assignations camions</a></li>
               </ul>
             </div>
           </li>
@@ -105,9 +105,9 @@
             </a>
             <div class="collapse" id="error">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="/admin/livraison">Livraisons</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/commande">Commandes</a></li>
-                <li class="nav-item"> <a class="nav-link" href="/admin/ajout-commande">Ajout commande</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/livraison">Livraisons</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/commande">Commandes</a></li>
+                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-commande">Ajout commande</a></li>
               </ul>
             </div>
           </li>

@@ -1,3 +1,6 @@
+```jsp
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="com.example.demo.dto.CommandeDTO,java.util.List" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -77,13 +80,98 @@
       <%@ include file="../includes/sidebar.jsp" %>
       <!-- partial -->
       <div class="main-panel">
-        <h1>Commandes:</h1>
+        <div class="content-wrapper">
+          <div class="row">
+            <div class="col-12 grid-margin">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Liste des Commandes</h4>
+                  <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                      <thead>
+                        <tr>
+                          <th>ID Commande</th>
+                          <th>Date Commande</th>
+                          <th>Client</th>
+                          <th>Frais Livraison</th>
+                          <th>Montant Total</th>
+                          <th>Statut</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <%
+                          List<CommandeDTO> commandes = (List<CommandeDTO>) request.getAttribute("commandes");
+                          if (commandes != null && !commandes.isEmpty()) {
+                            for (CommandeDTO commande : commandes) {
+                        %>
+                        <tr>
+                          <td><%= commande.getIdCommande() %></td>
+                          <td><%= commande.getDateCommande() %></td>
+                          <td><%= commande.getClientNom() %></td>
+                          <td><%= commande.getFraisLivraison() %> Ar</td>
+                          <td><%= commande.getMontantTotal() %> Ar</td>
+                          <td><%= commande.getStatut() %></td>
+                          <td>
+                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#detailsModal<%= commande.getIdCommande() %>">
+                              Détails
+                            </button>
+                          </td>
+                        </tr>
+                        <!-- Modale pour les détails de la commande -->
+                        <div class="modal fade" id="detailsModal<%= commande.getIdCommande() %>" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel<%= commande.getIdCommande() %>" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h5 class="modal-title" id="detailsModalLabel<%= commande.getIdCommande() %>">Détails de la Commande #<%= commande.getIdCommande() %></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <p><strong>ID Commande:</strong> <%= commande.getIdCommande() %></p>
+                                <p><strong>Date Commande:</strong> <%= commande.getDateCommande() %></p>
+                                <p><strong>Client:</strong> <%= commande.getClientNom() %></p>
+                                <p><strong>Adresse Livraison:</strong> <%= commande.getAdresseLivraison() %></p>
+                                <p><strong>Ville:</strong> <%= commande.getVilleLivraison() %></p>
+                                <p><strong>Téléphone:</strong> <%= commande.getTelephoneLivraison() %></p>
+                                <p><strong>Email:</strong> <%= commande.getEmailLivraison() %></p>
+                                <p><strong>Frais Livraison:</strong> <%= commande.getFraisLivraison() %> Ar</p>
+                                <p><strong>Montant Total:</strong> <%= commande.getMontantTotal() %> Ar</p>
+                                <p><strong>Statut:</strong> <%= commande.getStatut() %></p>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <%
+                            }
+                          } else {
+                        %>
+                        <tr>
+                          <td colspan="7" class="text-center">Aucune commande trouvée</td>
+                        </tr>
+                        <%
+                          }
+                        %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- partial:partials/_footer.html -->
-      <%@ include file="../includes/footer.jsp" %>
+        <%@ include file="../includes/footer.jsp" %>
       </div>
     </div>   
   </div>
+  <!-- Inclure les scripts Bootstrap pour les modales -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
-
 </html>
-

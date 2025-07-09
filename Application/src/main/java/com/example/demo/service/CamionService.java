@@ -21,8 +21,8 @@ public class CamionService {
         Camion camion = new Camion();
         camion.setCapacite(camionDTO.getCapacite());
         camion.setImmatriculation(camionDTO.getImmatriculation());
-        camion.setChauffeur_nom(camionDTO.getChauffeur_nom());
-        camion.setChauffeur_telephone(camionDTO.getChauffeur_telephone());
+        camion.setChauffeurNom(camionDTO.getChauffeur_nom());
+        camion.setChauffeurTelephone(camionDTO.getChauffeur_telephone());
         camionRepository.save(camion);
     }
 

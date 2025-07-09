@@ -1,3 +1,5 @@
+<%@ page import="java.util.List" %>
+<%@ page import="com.example.demo.view.VCamionEtat" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -78,6 +80,77 @@
       <!-- partial -->
       <div class="main-panel">
         <h1>Assignation camion:</h1>
+        <div class="content-wrapper">
+          <div class="row">
+            <%
+                List<VCamionEtat> camions = (List<VCamionEtat>) request.getAttribute("camions");
+            %>
+
+            <div class="col-lg-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Nouvelle assignation de camion</h4>
+                  <form method="post" action="/admin/assignations/ajout">
+                    <div class="row">
+                      <div class="form-group col-md-6">
+                        <label>Camion</label>
+                        <select name="idCamion" class="form-control" required>
+                          <option value="">-- Choisir un camion --</option>
+                          <% for(VCamionEtat c : camions) { %>
+                            <option value="<%= c.getId() %>">
+                              <%= c.getImmatriculation() %> - <%= c.getChauffeur_nom() %>
+                            </option>
+                          <% } %>
+                        </select>
+                      </div>
+                        
+                    <div class="form-group col-md-6">
+                      <label>Type d'assignation</label>
+                      <select name="type" class="form-control" required>
+                        <option value="">-- Choisir un type --</option>
+                        <option value="Collecte">Collecte</option>
+                        <option value="Livraison">Livraison</option>
+                      </select>
+                    </div>
+                    </div>
+                    <div class="row">
+                         <div class="form-group col-md-6">
+                      <label>Date de depart</label>
+                      <input type="datetime-local" name="depart" class="form-control" required />
+                    </div>
+
+                    <div class="form-group col-md-6">
+                      <label>Date d'arrivee (facultatif)</label>
+                      <input type="datetime-local" name="arrivee" class="form-control" />
+                    </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  </form>
+                  <%
+                    String erreur = (String) session.getAttribute("error-assignation");
+                    if (erreur != null) {
+                  %>
+                    <div class="alert alert-danger mt-2"><%= erreur %></div>
+                  <%
+                      session.removeAttribute("error-assignation");
+                    }
+                  %>
+
+                  <%
+                    String succes = (String) session.getAttribute("succes-assignation");
+                    if (succes != null) {
+                  %>
+                    <div class="alert alert-success mt-2"><%= succes %></div>
+                  <%
+                      session.removeAttribute("succes-assignation");
+                    }
+                  %>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
       </div>

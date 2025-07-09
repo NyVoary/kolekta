@@ -1,28 +1,39 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Disponibilite;
-import com.example.demo.entity.Fournisseurs;
-import com.example.demo.entity.Produits;
-import com.example.demo.repository.DisponibiliteRepository;
-import com.example.demo.repository.FornisseursRepository;
-import com.example.demo.repository.ProduitsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.entity.Disponibilite;
+import com.example.demo.entity.Fournisseurs;
+import com.example.demo.entity.Produits;
+import com.example.demo.repository.*;
+
 @Service
 public class FournisseursService {
     @Autowired
     private FornisseursRepository fournisseursRepository;
-
     @Autowired
     private ProduitsRepository produitsRepository;
-
     @Autowired
     private DisponibiliteRepository disponibiliteRepository;
+
+    @Autowired
+    public FournisseursService(FornisseursRepository fournisseursRepository) {
+        this.fournisseursRepository = fournisseursRepository;
+    }
+
+    public List<Fournisseurs> getAll() {
+        return fournisseursRepository.findAll();
+    }
+
+    public Fournisseurs getById(Long id) {
+        return fournisseursRepository.findById(id).orElse(null);
+    }
 
     public Fournisseurs save(Fournisseurs fournisseur) {
         return fournisseursRepository.save(fournisseur);
@@ -46,7 +57,7 @@ public class FournisseursService {
     }
 
     public List<Produits> getProduitsByFournisseur(Long fournisseurId) {
-        List<Produits> produits = produitsRepository.findByFournisseurs_Id(fournisseurId);
+        List<Produits> produits = produitsRepository.findByFournisseur_Id(fournisseurId);
         System.out.println("[DEBUG] Produits pour fournisseur " + fournisseurId + " : " + produits.size());
         for (Produits p : produits) {
             System.out.println("[DEBUG] Produit: id=" + p.getId() + ", nom=" + p.getNom());
@@ -59,13 +70,13 @@ public class FournisseursService {
     }
 
     public List<Map<String, Object>> getProduitsAvecQuantiteByFournisseur(Long fournisseurId) {
-        List<Produits> produits = produitsRepository.findByFournisseurs_Id(fournisseurId);
+        List<Produits> produits = produitsRepository.findByFournisseur_Id(fournisseurId);
         List<Disponibilite> dispos = disponibiliteRepository.findAll();
         List<Map<String, Object>> result = new ArrayList<>();
         for (Produits p : produits) {
             Map<String, Object> map = new HashMap<>();
             map.put("nom", p.getNom());
-            map.put("uniteMesure", p.getUnite_mesure());
+            map.put("uniteMesure", p.getUniteMesure());
             map.put("id", p.getId());
             // Chercher la disponibilité correspondante
             int quantite = 0;

@@ -1,65 +1,90 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "commande_produits")
 public class CommandeProduits {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_commande_produit")
-    private Long id;
+    private int id;
 
-    @Column(name = "id_commande", nullable = false)
-    private Long idCommande;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_commande")
+    private Commandes commande;
 
-    @Column(name = "id_produit", nullable = false)
-    private Long idProduit;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_produit")
+    private Produits produit;
 
-    @Column(nullable = false)
-    private Integer quantite;
+    @Column(name = "quantite")
+    private int quantite;
 
-    @Column(name = "prix_unitaire", nullable = false)
-    private Double prixUnitaire;
+    @Column(name = "prix_unitaire")
+    private double prixUnitaire;
 
-    // Getters et setters
-    public Long getId() {
+    public CommandeProduits() {
+    }
+
+    public CommandeProduits(Commandes commande, Produits produit, Integer quantite, double prixUnitaire) {
+        this.commande = commande;
+        this.produit = produit;
+        this.quantite = quantite;
+        this.prixUnitaire = prixUnitaire;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Long getIdCommande() {
-        return idCommande;
+    public Commandes getCommande() {
+        return commande;
     }
 
-    public void setIdCommande(Long idCommande) {
-        this.idCommande = idCommande;
+    public void setCommande(Commandes commande) {
+        this.commande = commande;
     }
 
-    public Long getIdProduit() {
-        return idProduit;
+    public Produits getProduit() {
+        return produit;
     }
 
-    public void setIdProduit(Long idProduit) {
-        this.idProduit = idProduit;
+    public void setProduit(Produits produit) {
+        this.produit = produit;
     }
 
-    public Integer getQuantite() {
+    public int getQuantite() {
         return quantite;
     }
 
-    public void setQuantite(Integer quantite) {
+    public void setQuantite(int quantite) {
         this.quantite = quantite;
     }
 
-    public Double getPrixUnitaire() {
+    public double getPrixUnitaire() {
         return prixUnitaire;
     }
 
-    public void setPrixUnitaire(Double prixUnitaire) {
+    public void setPrixUnitaire(double prixUnitaire) {
         this.prixUnitaire = prixUnitaire;
+    }
+
+     // Méthode utilitaire pour calculer le montant total de la ligne
+    public double getMontantTotal() {
+        return quantite * prixUnitaire;
     }
 }

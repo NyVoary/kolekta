@@ -5,18 +5,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+  <title>Library</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/feather/feather.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.png" />
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/produits.css" />
 </head>
 
 <body>
+    <%-- <%@ include file="./inc/css.jsp"  %>
+    <%@ include file="./inc/header.jsp" %> --%>
+    <%@ include file="includes/navbar.jsp" %>
 <!-- Messages de notification -->
     <c:if test="${not empty message}">
         <div class="message-box success" id="messageBox">
@@ -32,9 +35,6 @@
         </div>
     </c:if>
 
-    <%-- <%@ include file="./inc/css.jsp"  %>
-    <%@ include file="./inc/header.jsp" %> --%>
-    <%@ include file="includes/navbar.jsp" %>
     <div class="section" style="margin-top: 10vh;background-color:rgb(86, 135, 185); padding: 20px;">
         <h1>Produits du moment:</h1>
         <ul>
@@ -64,7 +64,7 @@
                     <p>${produit.description}</p>
                 </div>
                 <div class="produit-prix">
-                    <p><strong>${produit.prix_vente}</strong> Ar / ${produit.unite_mesure}</p>
+                    <p><strong>${produit.prixVente}</strong> Ar / ${produit.uniteMesure}</p>
                 </div>
                 <div class="produit-formulaire">
                     <form method="post" action="/commande/ajouter">

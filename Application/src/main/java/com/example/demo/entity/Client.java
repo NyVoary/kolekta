@@ -4,47 +4,47 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "clients")
+@Table(name = "Clients")
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_client")
-    private int idClient;
+    private Long idClient;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String nom;
 
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String prenoms;
 
     @Column(nullable = false)
     private LocalDate dtn;
 
     @Column(nullable = false, length = 1)
-    private char sexe;
+    private String sexe;
 
-    @Column(length = 255)
     private String email;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String telephone;
 
-    @Column(nullable = false, length = 255)
+    @Column(nullable = false)
     private String adresse;
 
-    @Column(length = 100)
     private String mdp;
 
-    @Column(length = 100)
     private String image;
+
+    @Column(name = "date_creation", nullable = false, updatable = false)
+    private LocalDate dateCreation = LocalDate.now(); // Valeur par défaut
 
     // --- Getters et Setters ---
 
-    public int getIdClient() {
+    public Long getIdClient() {
         return idClient;
     }
 
-    public void setIdClient(int idClient) {
+    public void setIdClient(Long idClient) {
         this.idClient = idClient;
     }
 
@@ -72,11 +72,11 @@ public class Client {
         this.dtn = dtn;
     }
 
-    public char getSexe() {
+    public String getSexe() {
         return sexe;
     }
 
-    public void setSexe(char sexe) {
+    public void setSexe(String sexe) {
         this.sexe = sexe;
     }
 
@@ -118,5 +118,13 @@ public class Client {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public LocalDate getDateCreation() {
+        return dateCreation;
+    }
+    
+    public void setDateCreation(LocalDate dateCreation) {
+        this.dateCreation = dateCreation;
     }
 }

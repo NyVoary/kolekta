@@ -1,11 +1,11 @@
 package com.example.demo.dto;
 
-
 public class ClientLoginDTO {
     private String email;
     private String mdp;
 
     // Getters et setters
+    // Getters and setters
     public String getEmail() {
         return email;
     }

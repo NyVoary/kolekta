@@ -25,10 +25,10 @@ public class Camion {
     private double capacite;
 
     @Column(name = "chauffeur_nom", nullable = false)
-    private String chauffeur_nom;
+    private String chauffeurNom;
 
     @Column(name = "chauffeur_telephone", nullable = false)
-    private String chauffeur_telephone;
+    private String chauffeurTelephone;
 
     public int getId() {
         return id;
@@ -46,13 +46,7 @@ public class Camion {
         this.immatriculation = immatriculation;
     }
 
-    public double getCapacite() {
-        return capacite;
-    }
-
-    public void setCapacite(double capacite) {
-        this.capacite = capacite;
-    }
+  
     public void setCapacite(String capacite) throws Exception {
         try{
             double capaciteNombre = Double.parseDouble(capacite);
@@ -62,21 +56,28 @@ public class Camion {
         }
     }
 
-    public String getChauffeur_nom() {
-        return chauffeur_nom;
+    public double getCapacite() {
+        return capacite;
     }
 
-    public void setChauffeur_nom(String chauffeur_nom) {
-        this.chauffeur_nom = chauffeur_nom;
+    public void setCapacite(double capacite) {
+        this.capacite = capacite;
     }
 
-    public String getChauffeur_telephone() {
-        return chauffeur_telephone;
+    public String getChauffeurNom() {
+        return chauffeurNom;
     }
 
-    public void setChauffeur_telephone(String chauffeur_telephone) {
-        this.chauffeur_telephone = chauffeur_telephone;
+    public void setChauffeurNom(String chauffeurNom) {
+        this.chauffeurNom = chauffeurNom;
     }
 
+    public String getChauffeurTelephone() {
+        return chauffeurTelephone;
+    }
+
+    public void setChauffeurTelephone(String chauffeurTelephone) {
+        this.chauffeurTelephone = chauffeurTelephone;
+    }
 
 }
