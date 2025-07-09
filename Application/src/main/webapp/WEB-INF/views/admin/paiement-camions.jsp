@@ -30,13 +30,13 @@
                 <!-- Date de début -->
                 <div style="display: inline-block; margin-right: 10px;">
                     <label>Date début :</label>
-                    <input type="datetime-local" name="dateDebut" value="${dateDebut}">
+                    <input type="date" name="dateDebut" value="${dateDebut}">
                 </div>
 
                 <!-- Date de fin -->
                 <div style="display: inline-block; margin-right: 10px;">
                     <label>Date fin :</label>
-                    <input type="datetime-local" name="dateFin" value="${dateFin}">
+                    <input type="date" name="dateFin" value="${dateFin}">
                 </div>
 
                 <!-- Immatriculation -->

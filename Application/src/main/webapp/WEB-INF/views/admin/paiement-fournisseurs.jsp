@@ -9,133 +9,85 @@
     <title>Paiements Fournisseurs</title>
 </head>
 <body>
-    <div class="container-scroller">
+    <div>
         <!-- Messages de notification -->
         <c:if test="${not empty message}">
-            <div class="message-box success" id="messageBox">
-                <span class="message-text">${message}</span>
-                <button class="close-btn" onclick="fermerMessage()">&times;</button>
+            <div style="background-color: #d4edda; padding: 10px; margin: 10px 0; border: 1px solid #c3e6cb;">
+                <span>${message}</span>
+                <button onclick="fermerMessage()" style="float: right;">&times;</button>
             </div>
         </c:if>
 
         <c:if test="${not empty erreur}">
-            <div class="message-box error" id="messageBox">
-                <span class="message-text">${erreur}</span>
-                <button class="close-btn" onclick="fermerMessage()">&times;</button>
+            <div style="background-color: #f8d7da; padding: 10px; margin: 10px 0; border: 1px solid #f5c6cb;">
+                <span>${erreur}</span>
+                <button onclick="fermerMessage()" style="float: right;">&times;</button>
             </div>
         </c:if>
 
-        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-            <div class="navbar-menu-wrapper d-flex align-items-center">
-                <!-- Partie centrale -->
-                <div class="d-flex justify-content-center flex-grow-1">
-                    <form method="get" action="/admin/paiement-fournisseurs" class="form-inline">
-                        <!-- Date de début -->
-                        <ul class="navbar-nav mr-lg-2">
-                            <li class="nav-item nav-search d-none d-lg-block">
-                                <div class="input-group">
-                                    <input
-                                        type="date"
-                                        class="form-control"
-                                        id="dateDebut"
-                                        name="dateDebut"
-                                        value="${dateDebut != null ? dateDebut : ''}"
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-
-                        <!-- Date de fin -->
-                        <ul class="navbar-nav mr-lg-2">
-                            <li class="nav-item nav-search d-none d-lg-block">
-                                <div class="input-group">
-                                    <input
-                                        type="date"
-                                        class="form-control"
-                                        id="dateFin"
-                                        name="dateFin"
-                                        value="${dateFin != null ? dateFin : ''}"
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-
-                        <!-- Fournisseur avec dropdown -->
-                        <div class="input-group mr-2">
-                            <div class="dropdown">
-                                <input type="hidden" id="nomFournisseur" name="nomFournisseur" value="${nomFournisseur != null ? nomFournisseur : ''}">
-
-                                <button type="button" class="btn btn-outline-info dropdown-toggle" id="dropdownFournisseur" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    ${nomFournisseur != null && !nomFournisseur.isEmpty() ? nomFournisseur : "Fournisseur"}
-                                </button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownFournisseur">
-                                    <c:forEach var="fournisseur" items="${fournisseurs}">
-                                        <a class="dropdown-item" href="#" data-value="${fournisseur.nom}">
-                                            ${fournisseur.nom}
-                                        </a>
-                                    </c:forEach>
-                                </div>
-                            </div>
-                        </div>
-
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                var dropdownItems = document.querySelectorAll('.dropdown-item[data-value]');
-                                dropdownItems.forEach(function(item) {
-                                    item.addEventListener('click', function(e) {
-                                        e.preventDefault();
-                                        var value = this.getAttribute('data-value');
-                                        document.getElementById('nomFournisseur').value = value;
-                                        document.getElementById('dropdownFournisseur').textContent = value;
-                                    });
-                                });
-                            });
-                        </script>
-
-                        <!-- Bouton de recherche -->
-                        <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
-                            <i class="ti-search text-info"></i>                          
-                        </button>
-                    </form> 
+        <div style="padding: 20px; background-color: #f8f9fa;">
+            <form method="get" action="/admin/paiement-fournisseurs">
+                <!-- Date de début -->
+                <div style="display: inline-block; margin-right: 10px;">
+                    <label>Date début :</label>
+                    <input type="date" name="dateDebut" value="${dateDebut}">
                 </div>
-            </div>
-        </nav>  
 
-        <div class="container-fluid page-body-wrapper">
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <h1>Historique des paiements fournisseurs</h1>
-
-                    <c:if test="${empty paiements}">
-                        <p>Aucun paiement trouvé.</p>
-                    </c:if>
-
-                    <c:if test="${not empty paiements}">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Fournisseur</th>
-                                    <th>Date</th>
-                                    <th>Montant</th>
-                                    <th>Mode de paiement</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <c:forEach var="paiement" items="${paiements}">
-                                    <tr>
-                                        <td>${paiement.id}</td>
-                                        <td>${paiement.fournisseur.nom}</td>
-                                        <td>${paiement.datePaiementFormatted}</td>
-                                        <td><fmt:formatNumber value="${paiement.montant}" type="currency" currencyCode="MGA" /></td>
-                                        <td>${paiement.modePaiement}</td>
-                                    </tr>
-                                </c:forEach>
-                            </tbody>
-                        </table>
-                    </c:if>
+                <!-- Date de fin -->
+                <div style="display: inline-block; margin-right: 10px;">
+                    <label>Date fin :</label>
+                    <input type="date" name="dateFin" value="${dateFin}">
                 </div>
-            </div>
+
+                <!-- Fournisseur -->
+                <div style="display: inline-block; margin-right: 10px;">
+                    <label>Fournisseur :</label>
+                    <select name="nomFournisseur">
+                        <option value="">Tous les fournisseurs</option>
+                        <c:forEach var="fournisseur" items="${fournisseurs}">
+                            <option value="${fournisseur.nom}" 
+                                ${nomFournisseur == fournisseur.nom ? 'selected' : ''}>
+                                ${fournisseur.nom}
+                            </option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <button type="submit">Rechercher</button>
+            </form>
+        </div>
+
+        <div style="padding: 20px;">
+            <h1>Historique des paiements fournisseurs</h1>
+
+            <c:if test="${empty paiements}">
+                <p>Aucun paiement trouvé.</p>
+            </c:if>
+
+            <c:if test="${not empty paiements}">
+                <table border="1" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background-color: #e9ecef;">
+                            <th>ID</th>
+                            <th>Fournisseur</th>
+                            <th>Date paiement</th>
+                            <th>Montant</th>
+                            <th>Mode paiement</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="paiement" items="${paiements}">
+                            <tr>
+                                <td>${paiement.id}</td>
+                                <td>${paiement.fournisseur.nom}</td>
+                                <td>${paiement.datePaiementFormatted}</td>
+                                <td><fmt:formatNumber value="${paiement.montant}" type="currency" currencyCode="MGA"/></td>
+                                <td>${paiement.modePaiement}</td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:if>
         </div>
     </div>
 
@@ -149,15 +101,12 @@
 
         // Auto-fermeture du message après 5 secondes
         window.onload = function() {
-            const messageBox = document.getElementById('messageBox');
-            if (messageBox) {
-                setTimeout(function() {
-                    messageBox.style.opacity = '0';
-                    setTimeout(function() {
-                        messageBox.style.display = 'none';
-                    }, 300);
-                }, 5000);
-            }
+            setTimeout(function() {
+                const messageBox = document.getElementById('messageBox');
+                if (messageBox) {
+                    messageBox.style.display = 'none';
+                }
+            }, 5000);
         };
     </script>
 </body>

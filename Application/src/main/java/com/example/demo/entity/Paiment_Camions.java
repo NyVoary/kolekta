@@ -1,6 +1,6 @@
 package com.example.demo.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,7 +27,7 @@ public class Paiment_Camions {
     private double montant;
 
     @Column(name = "date_paiement")
-    private LocalDateTime datePaiement;
+    private LocalDate datePaiement;
 
     @Column(name = "mode_paiement")
     private String modePaiement;
@@ -38,7 +38,7 @@ public class Paiment_Camions {
 
     // Constructeur
     public Paiment_Camions() {
-        this.datePaiement = LocalDateTime.now();
+        this.datePaiement = LocalDate.now();
     }
 
     // Getters et Setters
@@ -51,8 +51,8 @@ public class Paiment_Camions {
     public double getMontant() { return montant; }
     public void setMontant(double montant) { this.montant = montant; }
 
-    public LocalDateTime getDatePaiement() { return datePaiement; }
-    public void setDatePaiement(LocalDateTime datePaiement) { this.datePaiement = datePaiement; }
+    public LocalDate getDatePaiement() { return datePaiement; }
+    public void setDatePaiement(LocalDate datePaiement) { this.datePaiement = datePaiement; }
 
     public String getModePaiement() { return modePaiement; }
     public void setModePaiement(String modePaiement) { this.modePaiement = modePaiement; }

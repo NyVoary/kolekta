@@ -12,10 +12,10 @@ import com.example.demo.entity.Paiment_Fournisseurs;
 
 @Repository
 public interface Paiment_FournisseursRepository extends JpaRepository<Paiment_Fournisseurs, Long> {
-    @Query("SELECT pf FROM Paiment_Fournisseur pf JOIN pf.fournisseur f WHERE "
+    @Query("SELECT pf FROM Paiment_Fournisseurs pf JOIN pf.fournisseur f WHERE "
         + "(cast(:dateDebut as date) IS NULL OR pf.datePaiement >= :dateDebut) "
         + "AND (cast(:dateFin as date) IS NULL OR pf.datePaiement <= :dateFin) "
-        + "AND (:nomFournisseur IS NULL OR LOWER(pf.fournisseur.nom) LIKE LOWER(concat('%', :nomFournisseur, '%')))")
+        + "AND (:nomFournisseur IS NULL OR f.nom ILIKE %:nomFournisseur%)")
     List<Paiment_Fournisseurs> findPaiementsByCriteria(
         @Param("dateDebut") LocalDate dateDebut,
         @Param("dateFin") LocalDate dateFin,

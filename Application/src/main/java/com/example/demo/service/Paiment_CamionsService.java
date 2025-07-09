@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
@@ -21,14 +21,14 @@ public class Paiment_CamionsService {
     }
 
     public List<Paiment_Camions> rechercherPaiements(String dateDebutStr, String dateFinStr, String immatriculation) {
-        LocalDateTime dateDebut = null;
-        LocalDateTime dateFin = null;
+        LocalDate dateDebut = null;
+        LocalDate dateFin = null;
         
         try {
             dateDebut = dateDebutStr != null && !dateDebutStr.isEmpty() ? 
-                LocalDateTime.parse(dateDebutStr) : null;
+                LocalDate.parse(dateDebutStr) : null;
             dateFin = dateFinStr != null && !dateFinStr.isEmpty() ? 
-                LocalDateTime.parse(dateFinStr) : null;
+                LocalDate.parse(dateFinStr) : null;
         } catch (DateTimeParseException e) {
             // Gérer l'erreur de format de date si nécessaire
             System.err.println("Erreur de parsing des dates: " + e.getMessage());
