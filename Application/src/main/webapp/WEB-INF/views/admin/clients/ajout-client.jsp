@@ -79,7 +79,7 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-md-6 grid-margin stretch-card">
+            <div class="col-md-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                 <c:if test="${not empty erreur}">
@@ -87,41 +87,50 @@
                 </c:if>
                   <h4 class="card-title">Ajouter un client</h4>
                   <form action="/admin/ajout-client" method="post" enctype="multipart/form-data" class="forms-sample">
-                    <div class="form-group">
-                      <label for="nom">Nom</label>
-                      <input type="text" class="form-control" id="nom" name="nom" placeholder="Ex: Rakoto" required>
+                    <div class="row mt-3">
+
+                      <div class="form-group col-md-6">
+                        <label for="nom">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" placeholder="Ex: Rakoto" required>
+                      </div>
+                    
+                      <div class="form-group col-md-6">
+                        <label for="prenoms">Pr&eacute;noms</label>
+                        <input type="text" class="form-control" id="prenoms" name="prenoms" placeholder="Ex: Hary" required>
+                      </div>
                     </div>
-                  
-                    <div class="form-group">
-                      <label for="prenoms">Pr&eacute;noms</label>
-                      <input type="text" class="form-control" id="prenoms" name="prenoms" placeholder="Ex: Hary" required>
-                    </div>
-                  
-                    <div class="form-group">
+                  <div class="row mt-3">
+
+                    <div class="form-group col-md-6">
                       <label for="dtn">Date de naissance</label>
                       <input type="date" class="form-control" id="dtn" name="dtn" required>
                     </div>
                   
-                    <div class="form-group">
-                      <label for="sexe">Genre</label>
+                    <div class="form-group col-md-6">
+                      <label for="sexe">Sexe</label>
                       <select class="form-control" id="sexe" name="sexe">
                         <option value="Masculin">Masculin</option>
                         <option value="Feminin">F&eacute;minin</option>
                         <option value="Autre">Autre</option>
                       </select>
                     </div>
-                  
-                    <div class="form-group">
+                  </div>
+                  <div class="row mt-3">
+
+                    <div class="form-group col-md-6">
                       <label for="email">Adresse email</label>
                       <input type="email" class="form-control" id="email" name="email" placeholder="Ex: haryrak@gmail.com">
                     </div>
                   
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                       <label for="telephone">T&eacute;l&eacute;phone</label>
                       <input type="text" class="form-control" id="telephone" name="telephone" placeholder="Ex: 0340340340" required>
                     </div>
-                  
-                    <div class="form-group">
+                  </div>
+
+                  <div class="row mt-3">
+
+                    <div class="form-group col-md-6">
                       <label for="adresse">Adresse</label>
                       <input type="text" class="form-control" id="adresse" name="adresse" placeholder="Ex: Lot 200 A" required>
                     </div>
@@ -131,7 +140,7 @@
                       <input type="password" class="form-control" id="mdp" name="mdp" placeholder="Mot de passe">
                     </div> -->
                   
-                    <div class="form-group">
+                    <div class="form-group col-md-6">
                       <label>Image</label>
                       <input type="file" name="imageFile" class="file-upload-default" id="imageFile">
                       <div class="input-group col-xs-12">
@@ -141,6 +150,8 @@
                         </span>
                       </div>
                     </div>
+                  </div>
+                  
                   
                     <button type="submit" class="btn btn-primary mr-2">Ajouter</button>
                     <a href="/admin/liste-client" class="btn btn-light">Annuler</a>
