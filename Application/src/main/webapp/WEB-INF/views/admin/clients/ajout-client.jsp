@@ -103,7 +103,7 @@
                     </div>
                   
                     <div class="form-group">
-                      <label for="sexe">Sexe</label>
+                      <label for="sexe">Genre</label>
                       <select class="form-control" id="sexe" name="sexe">
                         <option value="Masculin">Masculin</option>
                         <option value="Feminin">F&eacute;minin</option>

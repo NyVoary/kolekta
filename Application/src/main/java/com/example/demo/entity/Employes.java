@@ -24,7 +24,7 @@ public class Employes {
     };
 
     public enum Sexe {
-        M, F
+        Masculin, Feminin, Autre
     }
 
     @Id

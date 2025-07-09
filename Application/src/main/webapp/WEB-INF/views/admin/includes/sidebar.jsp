@@ -100,12 +100,12 @@
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#error" aria-expanded="false" aria-controls="error">
               <i class="ti-shopping-cart-full menu-icon"></i>
-              <span class="menu-title">Commandes&Livraisons</span>
+              <span class="menu-title">Commandes</span>
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="error">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/livraison">Livraisons</a></li>
+                <%-- <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/livraison">Livraisons</a></li> --%>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/commande">Commandes</a></li>
                 <li class="nav-item"> <a class="nav-link" href="${pageContext.request.contextPath}/admin/ajout-commande">Ajout commande</a></li>
               </ul>

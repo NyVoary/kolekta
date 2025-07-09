@@ -36,7 +36,16 @@
                                     <tr>
                                       <td>${acc.employes.nom}</td>
                                       <td>${acc.nomUtilisateur}</td>
-                                      <td>${acc.motDePasse}</td>
+                                      <td>
+                                          <c:choose>
+                                            <c:when test="${acces.role == 'admin'}">
+                                              ${acc.motDePasse}
+                                            </c:when>
+                                            <c:otherwise>
+                                              ****
+                                            </c:otherwise>
+                                          </c:choose>
+                                        </td>
                                       <td>${acc.role}</td>
                                       <td>
                                         <a style="margin-right: 20px" class="btn btn-success btn-rounded btn-fw" href="/admin/divers/update/${acc.idAcces}">Editer</a>
