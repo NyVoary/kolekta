@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -87,5 +88,11 @@ public class Paiment_Fournisseur {
 
     public void setFournisseur(Fournisseur fournisseur) {
         this.fournisseur = fournisseur;
+    }
+
+    // Ajoutez ce getter supplémentaire
+    public String getDatePaiementFormatted() {
+        return datePaiement != null ? 
+            datePaiement.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) : "";
     }
 }

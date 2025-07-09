@@ -126,7 +126,7 @@
                                     <tr>
                                         <td>${paiement.id}</td>
                                         <td>${paiement.fournisseur.nom}</td>
-                                        <td><fmt:formatDate value="${paiement.datePaiement}" pattern="dd/MM/yyyy" /></td>
+                                        <td>${paiement.datePaiementFormatted}</td>
                                         <td><fmt:formatNumber value="${paiement.montant}" type="currency" currencyCode="MGA" /></td>
                                         <td>${paiement.modePaiement}</td>
                                     </tr>
