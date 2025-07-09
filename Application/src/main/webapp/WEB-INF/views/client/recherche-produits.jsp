@@ -5,114 +5,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Library</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/feather/feather.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
-  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/produits.css" />
+    <title>Library</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
+    <link rel="stylesheet" href="../../static/css/style-home-search-client.css">
+    </head>
 </head>
 
 <body>
-
-    <%-- <%@ include file="./inc/css.jsp"  %>
-    <%@ include file="./inc/header.jsp" %> --%>
     <div class="container-scroller">
-    <%@ include file="includes/navbar.jsp" %>
-        <!-- Messages de notification -->
-        <c:if test="${not empty message}">
-            <div class="message-box success" id="messageBox">
-                <span class="message-text">${message}</span>
-                <button class="close-btn" onclick="fermerMessage()">&times;</button>
-            </div>
-        </c:if>
-
-        <c:if test="${not empty erreur}">
-            <div class="message-box error" id="messageBox">
-                <span class="message-text">${erreur}</span>
-                <button class="close-btn" onclick="fermerMessage()">&times;</button>
-            </div>
-        </c:if>
-
-            <div class="navbar-menu-wrapper d-flex align-items-center" style="margin-top: 10vh;">
-                <!-- Partie gauche -->
-                <div class="d-flex"></div>
-
-                <!-- Partie centrale -->
-                <div class="d-flex justify-content-center flex-grow-1">
-                    <form method="get" action="/recherche_produits" class="form-inline">
-                        <!-- Nom du produit -->
-                        <ul class="navbar-nav mr-lg-2">
-                            <li class="nav-item nav-search d-none d-lg-block">
-                                <div class="input-group">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="search"
-                                        name="search"
-                                        placeholder="Nom du produit"
-                                       value="${search != null ? search : ''}"
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-
-                        <div class="input-group mr-2">
-                            <select class="form-control" name="categorie" id="categorie">
-                                <option value="">Categorie</option>
-                                <c:forEach var="cat" items="${categories}">
-                                <option value="${cat.libelle}" ${categorie == cat.libelle ? 'selected' : ''}>
-                                    ${cat.libelle}
-                                </option>
-                                </c:forEach>
-                            </select>
-                        </div>
-
-                        <!-- Prix minimal -->
-                        <ul class="navbar-nav mr-lg-2">
-                            <li class="nav-item nav-search d-none d-lg-block">
-                                <div class="input-group">
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        name="prixMin"
-                                        placeholder="Prix minimal"
-                                        step="0.01"
-                                        value="${prixMin != null ? prixMin : ''}"
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-
-                        <!-- Prix maximal -->
-                        <ul class="navbar-nav mr-lg-2">
-                            <li class="nav-item nav-search d-none d-lg-block">
-                                <div class="input-group">
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        name="prixMax"
-                                        placeholder="Prix maximal"
-                                        step="0.01"
-                                        value="${prixMax != null ? prixMax : ''}"
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-
-                        <!-- Bouton de recherche -->
-                        <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
-                            <i class="ti-search text-info"></i>                          
-                        </button>
-                    </form> 
-                </div>
-
-                <!-- Partie droite -->
-                <div class="d-flex"></div>
-            </div>
+        <%@ include file="includes/navbar.jsp" %>
 
         <div class="" style="margin-top:2vh">
             <!-- partial:partials/_sidebar.html -->
@@ -120,8 +21,13 @@
                 <div class="">
                     <h1>Liste des produits</h1>
 
-                    <c:if test="${empty produits}">
-                        <p>Aucun produit disponible.</p>
+                    <!-- Skydash style notifications -->
+                    <c:if test="${not empty message}">
+                        <div class="alert alert-success alert-dismissible" role="alert" id="messageBox">
+                            <i class="ti-check-box"></i>
+                            ${message}
+                            <button type="button" class="btn-close" onclick="fermerMessage()">×</button>
+                        </div>
                     </c:if>
 
                     <div class="produits-container">
@@ -154,6 +60,15 @@
                         </c:forEach>
                     </div>
                 </div>
+
+                <!-- Skydash style footer -->
+                <footer class="footer">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                            Copyright © 2023. Tous droits réservés.
+                        </span>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
@@ -162,7 +77,8 @@
         function changerQuantite(btn, delta) {
             const input = btn.parentElement.querySelector('input[name="quantite"]');
             let val = parseInt(input.value) || 1;
-            input.value = Math.max(1, val + delta);
+            val = Math.max(1, val + delta);
+            input.value = val;
         }
 
         function fermerMessage() {
@@ -172,13 +88,13 @@
             }
         }
 
-        // Auto-fermeture du message après 5 secondes
-        window.onload = function() {
+        // Auto-hide messages after 5 seconds
+        window.onload = function () {
             const messageBox = document.getElementById('messageBox');
             if (messageBox) {
-                setTimeout(function() {
+                setTimeout(function () {
                     messageBox.style.opacity = '0';
-                    setTimeout(function() {
+                    setTimeout(function () {
                         messageBox.style.display = 'none';
                     }, 300);
                 }, 5000);
