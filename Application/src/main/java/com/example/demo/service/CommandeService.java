@@ -34,6 +34,12 @@ public class CommandeService {
     private ClientsRepository clientRepository;
     @Autowired
     private StatusRepository statusRepository;
+    @Autowired 
+    private CommandeProduitsRepository commandeProduitsRepository ;
+
+    public Commandes getCommandeById(Long id) {
+    return commandeRepository.findById(id).orElse(null);
+}
 
     public Commandes creerCommandeDepuisPanier(Long idClient) {
         Panier panier = panierService.getPanierAvecProduits(idClient).orElseThrow();
@@ -174,8 +180,7 @@ public class CommandeService {
 
         CommandeStatus commandeStatus = new CommandeStatus();
         commandeStatus.setCommande(commande);
-        commandeStatus.setStatus(statusRepository.findByLibelle("En attente de validation")
-                .orElseThrow(() -> new IllegalArgumentException("Statut 'En attente de validation' non trouvé")));
+        commandeStatus.setStatus(statusRepository.findByLibelle("En attente de validation"));
         commandeStatus.setDateChangement(LocalDate.now());
         commandeStatus.setClient(client);
         commandeStatusRepository.save(commandeStatus);

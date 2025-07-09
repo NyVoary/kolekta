@@ -1,6 +1,6 @@
 ```jsp
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.example.demo.dto.CommandeDTO,java.util.List" %>
+<%@ page import="com.example.demo.dto.CommandeDTO,java.util.*,com.example.demo.entity.CommandeProduits" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -113,14 +113,23 @@
                           <td><%= commande.getMontantTotal() %> Ar</td>
                           <td><%= commande.getStatut() %></td>
                           <td>
-                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#detailsModal<%= commande.getIdCommande() %>">
+                            <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#detailsModal<%= commande.getIdCommande() %>">
                               Détails
                             </button>
                           </td>
+                          <form method="get" action="/admin/validationCommande">
+                          <input type="hidden" name="idCommande" value="<%= commande.getIdCommande() %>">
+                          <td>
+                              <button type="submit" class="btn btn-primary btn-sm"
+                                  <%= !"En attente de validation".equals(commande.getStatut()) ? "disabled" : "" %>>
+                                  Valider
+                              </button>
+                          </td>
+                            </form>
                         </tr>
                         <!-- Modale pour les détails de la commande -->
                         <div class="modal fade" id="detailsModal<%= commande.getIdCommande() %>" tabindex="-1" role="dialog" aria-labelledby="detailsModalLabel<%= commande.getIdCommande() %>" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
+                          <div class="modal-dialog modal-lg" role="document"> <!-- modal-lg pour plus de largeur -->
                             <div class="modal-content">
                               <div class="modal-header">
                                 <h5 class="modal-title" id="detailsModalLabel<%= commande.getIdCommande() %>">Détails de la Commande #<%= commande.getIdCommande() %></h5>
@@ -129,16 +138,44 @@
                                 </button>
                               </div>
                               <div class="modal-body">
-                                <p><strong>ID Commande:</strong> <%= commande.getIdCommande() %></p>
-                                <p><strong>Date Commande:</strong> <%= commande.getDateCommande() %></p>
-                                <p><strong>Client:</strong> <%= commande.getClientNom() %></p>
-                                <p><strong>Adresse Livraison:</strong> <%= commande.getAdresseLivraison() %></p>
-                                <p><strong>Ville:</strong> <%= commande.getVilleLivraison() %></p>
-                                <p><strong>Téléphone:</strong> <%= commande.getTelephoneLivraison() %></p>
-                                <p><strong>Email:</strong> <%= commande.getEmailLivraison() %></p>
-                                <p><strong>Frais Livraison:</strong> <%= commande.getFraisLivraison() %> Ar</p>
-                                <p><strong>Montant Total:</strong> <%= commande.getMontantTotal() %> Ar</p>
-                                <p><strong>Statut:</strong> <%= commande.getStatut() %></p>
+                                <div class="row">
+                                  <!-- Colonne infos livraison -->
+                                  <div class="col-md-6">
+                                    <p><strong>ID Commande:</strong> <%= commande.getIdCommande() %></p>
+                                    <p><strong>Date Commande:</strong> <%= commande.getDateCommande() %></p>
+                                    <p><strong>Client:</strong> <%= commande.getClientNom() %></p>
+                                    <p><strong>Adresse Livraison:</strong> <%= commande.getAdresseLivraison() %></p>
+                                    <p><strong>Ville:</strong> <%= commande.getVilleLivraison() %></p>
+                                    <p><strong>Téléphone:</strong> <%= commande.getTelephoneLivraison() %></p>
+                                    <p><strong>Email:</strong> <%= commande.getEmailLivraison() %></p>
+                                    <p><strong>Frais Livraison:</strong> <%= commande.getFraisLivraison() %> Ar</p>
+                                    <p><strong>Montant Total:</strong> <%= commande.getMontantTotal() %> Ar</p>
+                                  </div>
+                                  <!-- Colonne liste des produits -->
+                                  <div class="col-md-6">
+                                    <p><strong>Produits :</strong></p>
+                                    <% 
+    List<CommandeProduits> commandesProduits = commande.getCommandeProduits(); 
+    if (commandesProduits != null) {
+%>
+    <ul>
+        <% for (CommandeProduits cp : commandesProduits) { %>
+            <li>
+                <strong><%= cp.getProduit().getNom() %></strong> – 
+                Quantité : <%= cp.getQuantite() %>
+            </li>
+        <% } %>
+    </ul>
+<% 
+    } else { 
+%>
+    <p>Aucun produit dans cette commande.</p>
+<% 
+    } 
+%>
+
+                                  </div>
+                                </div>
                               </div>
                               <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
@@ -146,6 +183,7 @@
                             </div>
                           </div>
                         </div>
+
                         <%
                             }
                           } else {
@@ -173,5 +211,16 @@
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- plugins:js -->
+  <script src="../../vendors/js/vendor.bundle.base.js"></script>
+  <!-- endinject -->
+  <!-- Plugin js for this page -->
+  <!-- End plugin js for this page -->
+  <!-- inject:js -->
+  <script src="../../js/off-canvas.js"></script>
+  <script src="../../js/hoverable-collapse.js"></script>
+  <script src="../../js/template.js"></script>
+  <script src="../../js/settings.js"></script>
+  <script src="../../js/todolist.js"></script>
 </body>
 </html>
