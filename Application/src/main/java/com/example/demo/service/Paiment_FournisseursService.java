@@ -7,20 +7,20 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.entity.Paiment_Fournisseur;
-import com.example.demo.repository.Paiment_FournisseurRepository;
+import com.example.demo.entity.Paiment_Fournisseurs;
+import com.example.demo.repository.Paiment_FournisseursRepository;
 
 @Service
-public class Paiment_FournisseurService {
+public class Paiment_FournisseursService {
 
     @Autowired
-    private Paiment_FournisseurRepository paiementRepository;
+    private Paiment_FournisseursRepository paiementRepository;
 
-    public List<Paiment_Fournisseur> getTousLesPaiements() {
+    public List<Paiment_Fournisseurs> getTousLesPaiements() {
         return paiementRepository.findAll();
     }
 
-    public List<Paiment_Fournisseur> rechercherPaiements(String dateDebutStr, String dateFinStr, String nomFournisseur) {
+    public List<Paiment_Fournisseurs> rechercherPaiements(String dateDebutStr, String dateFinStr, String nomFournisseur) {
         LocalDate dateDebut = null;
         LocalDate dateFin = null;
         
@@ -32,9 +32,9 @@ public class Paiment_FournisseurService {
         } catch (DateTimeParseException e) {
             // Gérer l'erreur de format de date si nécessaire
         }
-        
+
         String nom = nomFournisseur != null && nomFournisseur.isEmpty() ? null : nomFournisseur;
-        
+
         return paiementRepository.findPaiementsByCriteria(dateDebut, dateFin, nom);
     }
 }

@@ -8,15 +8,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.demo.entity.Paiment_Fournisseur;
+import com.example.demo.entity.Paiment_Fournisseurs;
 import com.example.demo.service.FournisseursService;
-import com.example.demo.service.Paiment_FournisseurService;
+import com.example.demo.service.Paiment_FournisseursService;
 
 @Controller
-public class Paiment_FournisseurController {
+public class Paiment_FournisseursController {
 
     @Autowired
-    private Paiment_FournisseurService paiementService;
+    private Paiment_FournisseursService paiementService;
 
     @Autowired
     private FournisseursService fournisseurService;
@@ -28,7 +28,7 @@ public class Paiment_FournisseurController {
         @RequestParam(required = false) String nomFournisseur,
         Model model) {
 
-        List<Paiment_Fournisseur> paiements = paiementService.rechercherPaiements(
+        List<Paiment_Fournisseurs> paiements = paiementService.rechercherPaiements(
             dateDebut, dateFin, nomFournisseur);
         
         model.addAttribute("paiements", paiements);

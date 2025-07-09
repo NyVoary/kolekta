@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Paiment_Fournisseur")
-public class Paiment_Fournisseur {
+public class Paiment_Fournisseurs {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class Paiment_Fournisseur {
     @JoinColumn(name = "id_fournisseur", insertable = false, updatable = false)
     private Fournisseur fournisseur;
 
-    public Paiment_Fournisseur() {
+    public Paiment_Fournisseurs() {
     }
 
     // Getters et Setters
