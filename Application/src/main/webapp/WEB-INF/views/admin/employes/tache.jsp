@@ -28,11 +28,11 @@
                 <form class="forms-sample" method="post">
                     <div class="form-group">
                       <label for="titre">Titre</label>
-                      <input type="text" name="titre" value="Le titre" class="form-control" id="titre" placeholder="Titre">
+                      <input type="text" name="titre" class="form-control" id="titre" placeholder="Titre">
                     </div>
                     <div class="form-group">
                       <label for="description">Description</label>
-                      <textarea name="description" class="form-control" id="description" placeholder="Desciption">La description</textarea>
+                      <textarea name="description" class="form-control" id="description" placeholder="Desciption"></textarea>
                     </div>
                     <div class="form-group">
                       <label for="employe">Employe</label>
@@ -60,11 +60,11 @@
                     </div>
                     <div class="form-group">
                       <label for="date-debut">Date Debut</label>
-                      <input type="datetime-local" class="form-control" value="2025-10-10 12:03" name="date_debut" id="date-debut">
+                      <input type="datetime-local" class="form-control" name="date_debut" id="date-debut">
                     </div>
                     <div class="form-group">
                       <label for="date-fin">Date Fin</label>
-                      <input type="datetime-local" class="form-control" value="2025-10-10 12:03" name="date_fin" id="date-fin">
+                      <input type="datetime-local" class="form-control" name="date_fin" id="date-fin">
                     </div>
                     <button type="submit" class="btn btn-primary btn-rounded mr-2">Submit</button>
                   </form>
