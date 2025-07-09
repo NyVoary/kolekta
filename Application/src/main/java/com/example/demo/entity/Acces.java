@@ -21,7 +21,7 @@ public class Acces {
     private String role;
 
     @Column(name = "id_employe")
-    private Integer idEmploye;
+    private Long idEmploye;
 
     // Getters & Setters
     public Long getIdAcces() {
@@ -56,11 +56,11 @@ public class Acces {
         this.role = role;
     }
 
-    public Integer getIdEmploye() {
+    public Long getIdEmploye() {
         return idEmploye;
     }
 
-    public void setIdEmploye(Integer idEmploye) {
+    public void setIdEmploye(Long idEmploye) {
         this.idEmploye = idEmploye;
     }
 }
