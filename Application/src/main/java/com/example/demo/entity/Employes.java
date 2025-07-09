@@ -59,6 +59,9 @@ public class Employes {
     @OneToMany(mappedBy = "employes")
     private List<AssignationTache> assignationTaches = new ArrayList<>();
 
+    @OneToMany(mappedBy = "employes")
+    private List<Acces> acces = new ArrayList<>();
+
     public Long getId_employe() {
         return id_employe;
     }

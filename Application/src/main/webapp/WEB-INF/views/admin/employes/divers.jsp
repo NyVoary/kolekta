@@ -1,87 +1,100 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page pageEncoding="UTF-8" %>
 <%@ include file="../includes/head.jsp" %>
+
 <body>
   <div class="container-scroller">
     <%@ include file="../includes/navbar.jsp" %>
-    <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-      <div id="right-sidebar" class="settings-panel">
-        <i class="settings-close ti-close"></i>
-        <ul class="nav nav-tabs border-top" id="setting-panel" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="todo-tab" data-toggle="tab" href="#todo-section" role="tab" aria-controls="todo-section" aria-expanded="true">TO DO LIST</a>
-          </li>
-        </ul>
-        <div class="tab-content" id="setting-content">
-          <div class="tab-pane fade show active scroll-wrapper" id="todo-section" role="tabpanel" aria-labelledby="todo-section">
-            <div class="add-items d-flex px-3 mb-0">
-              <form class="form w-100">
-                <div class="form-group d-flex">
-                  <input type="text" class="form-control todo-list-input" placeholder="Add To-do">
-                  <button type="submit" class="add btn btn-primary todo-list-add-btn" id="add-task">Add</button>
+      <div class="container-fluid page-body-wrapper">
+        <%@ include file="../includes/sidebar.jsp" %>
+          <div class="main-panel">
+            <div class="content-wrapper">
+              <div class="row">
+              <div class="col-6 mx-auto grid-margin">
+              <div class="card">
+                <div class="card-body">
+              <%-- Affiche le message s'il existe --%>
+                <c:if test="${not empty message}">
+                    <div class="alert alert-success mt-2">${message}</div>
+                </c:if>
+                  <h4 class="card-title">Formulaire Acces</h4>
+
+                <c:if test="${not empty erreur}">
+                    <div class="alert alert-danger mt-2">${erreur}</div>
+                </c:if>
+                  <c:choose>
+                      <c:when test="${empty acc}">
+                        <form class="forms-sample" method="post">
+                          <div class="form-group">
+                            <%-- <input type="hidden" name="idAcces" value="${acces.idAcces}"> --%>
+                            <label for="employe">Employe</label>
+                            <select class="form-control" name="idEmp" id="employe">
+                              <option value="">Employes</option>
+                                <c:forEach var="employe" items="${employes}">
+                                  <option value="${employe.id_employe}">${employe.nom}</option>
+                                </c:forEach>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="username">Nom D'utilisateur</label>
+                            <input type="text" name="nom" value="Jhon Doe" class="form-control" id="username" placeholder="Ex. Jhon Doe">
+                          </div>
+                          <div class="form-group">
+                            <label for="mdp">Mot de Passe</label>
+                            <input name="mdp" class="form-control" id="mdp" placeholder="Ex. mpd123" value="mdp123">
+                          </div>
+                          <div class="form-group">
+                            <label for="role">Role</label>
+                            <select class="form-control" name="role" id="role">
+                                <c:forEach var="role" items="${roles}">
+                                  <option value="${role}">${role}</option>
+                                </c:forEach>
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary btn-rounded mr-2">Submit</button>
+                        </form>
+                      </c:when>
+                      <c:otherwise>
+                        <form class="forms-sample" method="post">
+                          <input type="hidden" name="id" value="${acc.idAcces}">
+                          <div class="form-group">
+                            <label for="employe">Employe</label>
+                            <select class="form-control" name="idEmp" id="employe">
+                              <option value="">Employes</option>
+                                <c:forEach var="employe" items="${employes}">
+                                  <option value="${employe.id_employe}" <c:if test="${employe.id_employe == acc.employes.id_employe}">selected</c:if>>${employe.nom}</option>
+                                </c:forEach>
+                            </select>
+                          </div>
+                          <div class="form-group">
+                            <label for="username">Nom D'utilisateur</label>
+                            <input type="text" name="nom" value="${acc.nomUtilisateur}" class="form-control" id="username" placeholder="Ex. Jhon Doe">
+                          </div>
+                          <div class="form-group">
+                            <label for="mdp">Mot de Passe</label>
+                            <input name="mdp" class="form-control" id="${acc.motDePasse}" placeholder="Ex. mpd123" value="mdp123">
+                          </div>
+                          <div class="form-group">
+                            <label for="role">Role</label>
+                            <select class="form-control" name="role" id="role">
+                                <c:forEach var="role" items="${roles}">
+                                  <option value="${role}" <c:if test="${role == acc.role}">selected</c:if>>${role}</option>
+                                </c:forEach>
+                            </select>
+                          </div>
+                          <button type="submit" class="btn btn-primary btn-rounded mr-2">Submit</button>
+                        </form>
+                      </c:otherwise>
+                  </c:choose>
+
                 </div>
-              </form>
+              </div>
             </div>
-            <div class="list-wrapper px-3">
-              <ul class="d-flex flex-column-reverse todo-list">
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Team review meeting at 3.00 PM
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Prepare for presentation
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li>
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox">
-                      Resolve all the low priority tickets due today
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Schedule meeting for next week
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-                <li class="completed">
-                  <div class="form-check">
-                    <label class="form-check-label">
-                      <input class="checkbox" type="checkbox" checked>
-                      Project review
-                    </label>
-                  </div>
-                  <i class="remove ti-close"></i>
-                </li>
-              </ul>
+              </div>
             </div>
+          <%@ include file="../includes/footer.jsp" %>
           </div>
-          <!-- To do section tab ends -->
-        </div>
       </div>
-      <%@ include file="../includes/sidebar.jsp" %>
-      <!-- partial -->
-      <div class="main-panel">
-        <h1>Divers:</h1>
-        <!-- partial:partials/_footer.html -->
-      <%@ include file="../includes/footer.jsp" %>
-      </div>
-    </div>   
   </div>
 </body>
 
