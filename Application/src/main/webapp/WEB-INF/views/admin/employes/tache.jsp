@@ -19,7 +19,7 @@
                 <c:if test="${not empty message}">
                     <div class="alert alert-success mt-2">${message}</div>
                 </c:if>
-                  <h4 class="card-title">Formulaire Employes</h4>
+                  <h4 class="card-title">Formulaire Tache</h4>
 
                 <c:if test="${not empty erreur}">
                     <div class="alert alert-danger mt-2">${erreur}</div>

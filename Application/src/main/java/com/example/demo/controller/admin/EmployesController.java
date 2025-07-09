@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.dto.EmployesDTO;
+import com.example.demo.dto.AccesDTO;
 import com.example.demo.dto.AssignationTacheDTO;
+import com.example.demo.entity.Acces;
 import com.example.demo.entity.AssignationTache;
 import com.example.demo.entity.Employes;
+import com.example.demo.service.AccesService;
 import com.example.demo.service.EmployesService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,9 +25,13 @@ import jakarta.servlet.http.HttpServletRequest;
 public class EmployesController {
 
     private final EmployesService service;
+    private final AccesService accesService;
 
-    public EmployesController(EmployesService service) {
+    public EmployesController(EmployesService service,
+                            AccesService accesService
+    ) {
         this.service = service;
+        this.accesService = accesService;
     }
 
     @GetMapping("/ajout-employe")
@@ -77,14 +84,62 @@ public class EmployesController {
 
     @GetMapping("/liste-employe")
     public String listeEmploye(Model model) {
-        String source = "/";
         model.addAttribute("employes", service.getAll());
         return "admin/employes/liste";
     }
 
     @GetMapping("/divers-employe")
     public String diversEmploye(Model model) {
+        model.addAttribute("employes", service.getAll());
+        model.addAttribute("roles", Acces.theRoles);
         return "admin/employes/divers";
+    }
+
+    @PostMapping("/divers-employe")
+    public String diversEmploye(@ModelAttribute AccesDTO accesDTO, RedirectAttributes redirectAttributes) {
+        try {
+            accesService.addOrUpdate(accesDTO);
+            redirectAttributes.addFlashAttribute("message", "Action réussi");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
+        }
+        return "redirect:/admin/divers-employe";
+    }
+
+    @GetMapping("/list-acces")
+    public String listDivers(Model model) {
+        model.addAttribute("accs", accesService.getAll());
+        return "admin/employes/liste_divers";
+    }
+
+    @GetMapping("/divers/remove/{id}")
+    public String removeAcces(@PathVariable("id") long id, RedirectAttributes redirectAttributes) {
+        try {
+            accesService.removeByid(id);
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
+        }
+        return "redirect:/admin/list-acces";
+    }
+
+    @GetMapping("/divers/update/{id}")
+    public String updateAcces(@PathVariable("id") long id, HttpServletRequest request) {
+        Acces acc = accesService.getByid(id);
+        request.setAttribute("acc", acc);
+        return "forward:/admin/divers-employe";
+    }
+
+    @PostMapping("/divers/update/{id}")
+    public String updateAcces(@PathVariable("id") long id, @ModelAttribute AccesDTO accesDto, RedirectAttributes redirectAttributes) {
+        try {
+            accesService.addOrUpdate(accesDto);
+            // service.update(employesDTO);
+            redirectAttributes.addFlashAttribute("message", "Acces modifié avec succes !");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("erreur", e.getMessage());
+        }
+        return "redirect:/admin/divers/update/" + id;
     }
 
     @GetMapping("/tache-employe")
