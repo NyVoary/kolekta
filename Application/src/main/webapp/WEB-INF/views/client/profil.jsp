@@ -13,7 +13,7 @@
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <title>Library</title>
+            <title>Lokaly</title>
             <link rel="stylesheet" href="../../vendors/feather/feather.css">
             <link rel="stylesheet" href="../../vendors/ti-icons/css/themify-icons.css">
             <link rel="stylesheet" href="../../vendors/css/vendor.bundle.base.css">
@@ -31,10 +31,10 @@
                     <!-- Navbar -->
                     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
                         <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                            <a class="navbar-brand brand-logo mr-5" href="/produits_liste"><img src="images/lokaly.png"
+                            <a class="navbar-brand brand-logo mr-5" href="/produits_liste"><img src="/images/lokaly.png"
                                     class="mr-2" alt="logo" /></a>
                             <a class="navbar-brand brand-logo-mini" href="/produits_liste"><img
-                                    src="images/logo-mini.svg" alt="logo" /></a>
+                                    src="/images/logo-mini.svg" alt="logo" /></a>
                         </div>
                         <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
                             <ul class="navbar-nav navbar-nav-right">
@@ -106,7 +106,7 @@
                                 <div class="col-md-4 col-lg-3 mb-4">
                                     <div class="bg-white rounded shadow-sm p-4 text-center">
                                         <div class="position-relative d-inline-block mb-3" width="200" height="200">
-                                            <img src="" class="rounded-circle mb-2" alt="Photo de profil" width="200"
+                                            <img src="/images/uploads/${client.image}" class="rounded-circle mb-2" alt="Photo de profil" width="200"
                                                 height="200">
                                             <a href="#"
                                                 class="position-absolute bottom-0 end-0 bg-white rounded-circle p-1 border shadow-sm">
@@ -187,17 +187,12 @@
                                                         ${client.sexe=='F' ? 'checked' : '' }>
                                                     <label class="form-check-label">Feminin</label>
                                                 </div>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="sexe" value="A"
-                                                        ${client.sexe=='A' ? 'checked' : '' }>
-                                                    <label class="form-check-label">Autre</label>
-                                                </div>
                                             </div>
 
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <label class="form-label">Prenoms</label>
-                                                    <input type="text" class="form-control" name="prenom"
+                                                    <input type="text" class="form-control" name="prenoms"
                                                         value="${client.prenoms}" required>
                                                 </div>
                                                 <div class="col-md-6">

@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Library</title>
+  <title>Lokaly</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/feather/feather.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/ti-icons/css/themify-icons.css">
@@ -34,7 +34,7 @@
               <h6 class="font-weight-light">Remplir ces informations pour l'inscription des clients</h6>
               <form class="pt-3" method="post" action="/inscription-client" enctype="multipart/form-data">
                 <div class="form-group">
-                  <input type="text" class="form-control form-control-lg" name="nom" placeholder="Nom" required>
+                  <input type="text" class="form-control form-control-lg" name="nom"  placeholder="Nom" required>
                 </div>
                 <div class="form-group">
                   <input type="text" class="form-control form-control-lg" name="prenoms" placeholder="Prenoms" required>

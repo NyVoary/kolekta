@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Library</title>
+  <title>Lokaly</title>
     <link rel="stylesheet" href="/static/css/historique-achat.css"/>
   <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
 </head>
