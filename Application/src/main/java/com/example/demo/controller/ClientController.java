@@ -24,6 +24,7 @@ import jakarta.servlet.http.HttpSession;
 public class ClientController {
 
     private final ProduitsService produitsService;
+    private final PanierService panierService;
     private final ClientService clientService;
     private final HistoriqueAchatService historiqueAchatService;
 
@@ -31,10 +32,11 @@ public class ClientController {
 
 
     @Autowired
-    public ClientController(ProduitsService produitsService, ClientService clientService,HistoriqueAchatService historiqueAchatService) {
+    public ClientController(ProduitsService produitsService, ClientService clientService,HistoriqueAchatService historiqueAchatService,PanierService panierService) {
         this.produitsService = produitsService;
         this.clientService = clientService;
         this.historiqueAchatService = historiqueAchatService;
+        this.panierService = panierService;
     }
 
     @GetMapping("/login-client")
@@ -47,15 +49,16 @@ public class ClientController {
         return "client/Inscription";
     }
 
-    @PostMapping("/inscription-client")
+     @PostMapping("/inscription-client")
     public String inscriptionClient(@ModelAttribute ClientDTO clientDTO,
             Model model,
             HttpSession session) {
         try {
             Client client = clientService.inscrire(clientDTO);
             session.setAttribute("client-connected", client);
+            panierService.creerPanierPourClient(client.getIdClient());
             model.addAttribute("message", "Inscription réussie !");
-            return "redirect:/"; // Page après succès
+            return "redirect:/login-client"; // Page après succès
         } catch (Exception e) {
             session.setAttribute("error-client", e.getMessage());
             return "redirect:/inscription-client";

@@ -11,7 +11,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.*;
 import com.example.demo.service.*;
-
+import com.example.demo.repository.*;
+import java.time.LocalDate;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -22,10 +23,19 @@ public class PanierController {
     private PanierService panierService;
 
     @Autowired
+    private StatusRepository statusRepository;
+
+    @Autowired
+    private CommandeStatusRepository commandeStatusRepository;
+
+    @Autowired
     private CommandeService commandeService;
 
     @Autowired
     private Partage partage;
+
+    @Autowired
+    private CommandePaiementService commandePaiementService;
 
     // idClient fixé ici
     private Long idClient = 1L;
@@ -115,11 +125,15 @@ public class PanierController {
 
         Commandes commandeCree = commandeService.creerCommandeDepuisPanier(idClient);
         redirectAttributes.addFlashAttribute("successMessage", "Commande enregistrée avec succès !");
-
+        Status status = statusRepository.findByLibelle("En attente de validation");
+        CommandeStatus commandeStatus = new CommandeStatus(commandeCree, status, LocalDate.now());      
+        commandeStatusRepository.save(commandeStatus);
+        // Ajout apres validation commande
+        CommandePaiement commandePaiement = new CommandePaiement(commandeCree,LocalDate.now(),commandeCree.getMontantTotal(),"Mobile Money");
+        commandePaiementService.save(commandePaiement);
         System.out.println(
                 "idCommande-------------------------------------------------------------:" + commandeCree.getId());
         partage.setIdCommande(commandeCree.getId());
-
         return "redirect:/Livraison-client";
     }
 }

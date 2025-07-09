@@ -34,6 +34,12 @@ public class CommandeService {
     private ClientRepository clientRepository;
     @Autowired
     private StatusRepository statusRepository;
+    @Autowired 
+    private CommandeProduitsRepository commandeProduitsRepository ;
+
+    public Commandes getCommandeById(Long id) {
+    return commandeRepository.findById(id).orElse(null);
+}
 
     public Commandes creerCommandeDepuisPanier(Long idClient) {
         Panier panier = panierService.getPanierAvecProduits(idClient).orElseThrow();
@@ -48,7 +54,7 @@ public class CommandeService {
         commande.setClient(client);
         commande.setDateCommande(LocalDate.now());
         commande.setFraisLivraison(fraisLivraison);
-        commande.setMontantTotal(montantTotal);
+        commande.setMontantTotal(montantTTC);
         commande.setAdresseLivraison(client.getAdresse());
         commande.setVilleLivraison("Antananarivo");
         commande.setTelephoneLivraison(client.getTelephone());
@@ -112,7 +118,7 @@ public class CommandeService {
             List<CommandeStatus> commandeStatuses = commandeStatusRepository.findByCommandeId(commande.getId());
             if (!commandeStatuses.isEmpty()) {
                 CommandeStatus dernierStatus = commandeStatuses.stream()
-                        .max(Comparator.comparing(CommandeStatus::getDateChangement))
+                        .max(Comparator.comparing(CommandeStatus::getId))
                         .orElse(null);
                 if (dernierStatus != null && dernierStatus.getStatus() != null) {
                     statut = dernierStatus.getStatus().getLibelle();
@@ -130,7 +136,7 @@ public class CommandeService {
             dto.setEmailLivraison(commande.getEmailLivraison());
             dto.setClientNom(client.getNom() + " " + client.getPrenoms());
             dto.setStatut(statut);
-
+            dto.setCommandeProduits(commandeProduitsRepository.findByCommandeId(dto.getIdCommande()));
             commandeDTOs.add(dto);
         }
         return commandeDTOs;
@@ -174,8 +180,7 @@ public class CommandeService {
 
         CommandeStatus commandeStatus = new CommandeStatus();
         commandeStatus.setCommande(commande);
-        commandeStatus.setStatus(statusRepository.findByLibelle("En attente de validation")
-                .orElseThrow(() -> new IllegalArgumentException("Statut 'En attente de validation' non trouvé")));
+        commandeStatus.setStatus(statusRepository.findByLibelle("En attente de validation"));
         commandeStatus.setDateChangement(LocalDate.now());
         commandeStatus.setClient(client);
         commandeStatusRepository.save(commandeStatus);
