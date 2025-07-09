@@ -4,7 +4,6 @@ import com.example.demo.dto.AccesDTO;
 import com.example.demo.entity.Acces;
 import com.example.demo.entity.Employes;
 import com.example.demo.repository.AccesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
