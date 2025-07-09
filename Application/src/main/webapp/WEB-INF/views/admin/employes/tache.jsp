@@ -45,9 +45,10 @@
                     <div class="form-group">
                       <label for="priorite">Priorite</label>
                       <select class="form-control" name="priorite" id="priorite">
-                          <c:forEach var="priorite" items="${priorites}">
-                            <option value="${priorite}">${priorite}</option>
-                          </c:forEach>
+                          <option value="Basse">Basse</option>
+                          <option value="Moyenne">Moyenne</option>
+                          <option value="Haute">Haute</option>
+                          <option value="Urgente">Urgente</option>
                       </select>
                     </div>
                     <div class="form-group">

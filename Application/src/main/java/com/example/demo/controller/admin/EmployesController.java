@@ -1,8 +1,12 @@
 package com.example.demo.controller.admin;
 
+import java.beans.PropertyEditorSupport;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +18,7 @@ import com.example.demo.dto.AccesDTO;
 import com.example.demo.dto.AssignationTacheDTO;
 import com.example.demo.entity.Acces;
 import com.example.demo.entity.AssignationTache;
+import com.example.demo.entity.AssignationTache.Priorite;
 import com.example.demo.entity.Employes;
 import com.example.demo.service.AccesService;
 import com.example.demo.service.EmployesService;
@@ -28,10 +33,20 @@ public class EmployesController {
     private final AccesService accesService;
 
     public EmployesController(EmployesService service,
-                            AccesService accesService    
-    ) {
+                              AccesService accesService) {
         this.service = service;
         this.accesService = accesService;
+    }
+
+    // ✅ Pour convertir automatiquement les strings vers l'enum Priorite
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(Priorite.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                setValue(Priorite.valueOf(text));
+            }
+        });
     }
 
     @GetMapping("/ajout-employe")
@@ -40,7 +55,7 @@ public class EmployesController {
         request.setAttribute("sexes", Employes.Sexe.values());
         return "admin/employes/ajout";
     }
-    
+
     @PostMapping("/ajout-employe")
     public String ajoutEmploye(@ModelAttribute EmployesDTO employesDTO, RedirectAttributes redirectAttributes) {
         try {
@@ -134,7 +149,6 @@ public class EmployesController {
     public String updateAcces(@PathVariable("id") long id, @ModelAttribute AccesDTO accesDto, RedirectAttributes redirectAttributes) {
         try {
             accesService.addOrUpdate(accesDto);
-            // service.update(employesDTO);
             redirectAttributes.addFlashAttribute("message", "Acces modifié avec succes !");
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,7 +160,7 @@ public class EmployesController {
     @GetMapping("/tache-employe")
     public String tacheEmploye(Model model) {
         model.addAttribute("status", AssignationTache.theStatus);
-        model.addAttribute("priorites", AssignationTache.Priorite.values());
+        model.addAttribute("priorites", Priorite.values());
         model.addAttribute("employes", service.getAll());
         return "admin/employes/tache";
     }
