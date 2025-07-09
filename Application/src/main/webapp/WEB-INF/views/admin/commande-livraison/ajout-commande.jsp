@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="com.example.demo.entity.Client,com.example.demo.entity.Produits,java.util.List" %>
+<%@ page import="com.example.demo.entity.Clients,com.example.demo.entity.Produits,java.util.List" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -89,13 +89,13 @@
                     <div class="form-group">
                       <label for="idClient">Client</label>
                       <select class="form-control" id="idClient" name="idClient" required>
-                        <option value="">Sélectionner un client</option>
+                        <option value="">Selectionner un client</option>
                         <%
-                          List<Client> clients = (List<Client>) request.getAttribute("clients");
+                          List<Clients> clients = (List<Clients>) request.getAttribute("clients");
                           if (clients != null) {
-                            for (Client client : clients) {
+                            for (Clients client : clients) {
                         %>
-                        <option value="<%= client.getIdClient() %>"><%= client.getNom() %> <%= client.getPrenoms() %></option>
+                        <option value="<%= client.getId() %>"><%= client.getNom() %> <%= client.getPrenoms() %></option>
                         <%
                             }
                           }

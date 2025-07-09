@@ -1,6 +1,6 @@
 <%@ include file="../includes/head.jsp" %>
 <%@ page import="java.util.List" %>
-<%@ page import="com.example.demo.entity.Client" %>
+<%@ page import="com.example.demo.entity.Clients" %>
 
 <body>
   <div class="container-scroller">
@@ -37,12 +37,12 @@
                 </thead>
                 <tbody>
                   <%
-                    List<Client> clients = (List<Client>) request.getAttribute("clients");
+                    List<Clients> clients = (List<Clients>) request.getAttribute("clients");
                     if (clients != null && !clients.isEmpty()) {
-                      for (Client client : clients) {
+                      for (Clients client : clients) {
                   %>
                   <tr>
-                    <td><a href="/admin/informations-client/<%= client.getIdClient() %>" class="btn btn-sm btn-primary"><%= client.getIdClient() %></a></td>
+                    <td><a href="/admin/informations-client/<%= client.getId() %>" class="btn btn-sm btn-primary"><%= client.getId() %></a></td>
                     <td><%= client.getNom() %> <%= client.getPrenoms() %></td>
                     <td><%= client.getDtn() %></td>
                     <td><%= client.getSexe() %></td>
@@ -57,8 +57,8 @@
                       <% } %>
                     </td>
                     <td>
-                      <a href="/admin/modifier-client/<%= client.getIdClient() %>" class="btn btn-sm btn-primary">Modifier</a>
-                      <form action="/admin/supprimer-client/<%= client.getIdClient() %>" method="get" style="display:inline;">
+                      <a href="/admin/modifier-client/<%= client.getId() %>" class="btn btn-sm btn-primary">Modifier</a>
+                      <form action="/admin/supprimer-client/<%= client.getId() %>" method="get" style="display:inline;">
                         <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Supprimer ce client ?')">Desactiver</button>
                       </form>
                     </td>

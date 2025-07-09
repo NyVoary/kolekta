@@ -1,4 +1,4 @@
-<%@ page import="com.example.demo.entity.Client" %>
+<%@ page import="com.example.demo.entity.Clients" %>
 <%@ include file="../includes/head.jsp" %>
 <body>
   <div class="container-scroller">
@@ -82,62 +82,62 @@
           <h2>Modifier un client</h2>
 
           <form action="/admin/update-client" method="post" enctype="multipart/form-data" class="forms-sample">
-            <input type="hidden" name="idClient" value="<%= request.getAttribute("client") != null ? ((Client)request.getAttribute("client")).getIdClient() : "" %>" />
+            <input type="hidden" name="idClient" value="<%= request.getAttribute("client") != null ? ((Clients)request.getAttribute("client")).getId() : "" %>" />
 
             <div class="form-group">
               <label for="nom">Nom</label>
               <input type="text" class="form-control" id="nom" name="nom" 
-                     value="<%= request.getAttribute("client") != null ? ((Client)request.getAttribute("client")).getNom() : "" %>" required>
+                     value="<%= request.getAttribute("client") != null ? ((Clients)request.getAttribute("client")).getNom() : "" %>" required>
             </div>
 
             <div class="form-group">
               <label for="prenoms">Pr&eacute;noms</label>
               <input type="text" class="form-control" id="prenoms" name="prenoms" 
-                     value="<%= request.getAttribute("client") != null ? ((Client)request.getAttribute("client")).getPrenoms() : "" %>" required>
+                     value="<%= request.getAttribute("client") != null ? ((Clients)request.getAttribute("client")).getPrenoms() : "" %>" required>
             </div>
 
             <div class="form-group">
               <label for="dtn">Date de naissance</label>
               <input type="date" class="form-control" id="dtn" name="dtn" 
-                     value="<%= request.getAttribute("client") != null ? ((Client)request.getAttribute("client")).getDtn() : "" %>" required>
+                     value="<%= request.getAttribute("client") != null ? ((Clients)request.getAttribute("client")).getDtn() : "" %>" required>
             </div>
 
             <div class="form-group">
               <label for="sexe">Sexe</label>
               <select class="form-control" id="sexe" name="sexe">
-                  <option value="Masculin" <%= request.getAttribute("client") != null && ((Client)request.getAttribute("client")).getSexe().equals("Masculin") ? "selected" : "" %>>Masculin</option>
-                  <option value="Feminin" <%= request.getAttribute("client") != null && ((Client)request.getAttribute("client")).getSexe().equals("Feminin") ? "selected" : "" %>>F&eacute;minin</option>
+                  <option value="Masculin" <%= request.getAttribute("client") != null && ((Clients)request.getAttribute("client")).getSexe().equals("Masculin") ? "selected" : "" %>>Masculin</option>
+                  <option value="Feminin" <%= request.getAttribute("client") != null && ((Clients)request.getAttribute("client")).getSexe().equals("Feminin") ? "selected" : "" %>>F&eacute;minin</option>
               </select>
             </div>
 
             <div class="form-group">
               <label for="email">Adresse email</label>
               <input type="email" class="form-control" id="email" name="email" 
-                     value="<%= request.getAttribute("client") != null ? ((Client)request.getAttribute("client")).getEmail() : "" %>">
+                     value="<%= request.getAttribute("client") != null ? ((Clients)request.getAttribute("client")).getEmail() : "" %>">
             </div>
 
             <div class="form-group">
               <label for="telephone">T&eacute;l&eacute;phone</label>
               <input type="text" class="form-control" id="telephone" name="telephone" 
-                     value="<%= request.getAttribute("client") != null ? ((Client)request.getAttribute("client")).getTelephone() : "" %>" required>
+                     value="<%= request.getAttribute("client") != null ? ((Clients)request.getAttribute("client")).getTelephone() : "" %>" required>
             </div>
 
             <div class="form-group">
               <label for="adresse">Adresse</label>
               <input type="text" class="form-control" id="adresse" name="adresse" 
-                     value="<%= request.getAttribute("client") != null ? ((Client)request.getAttribute("client")).getAdresse() : "" %>" required>
+                     value="<%= request.getAttribute("client") != null ? ((Clients)request.getAttribute("client")).getAdresse() : "" %>" required>
             </div>
 
             <!-- <div class="form-group">
               <label for="mdp">Mot de passe</label>
               <input type="password" class="form-control" id="mdp" name="mdp" 
-                     value="<%= request.getAttribute("client") != null ? ((Client)request.getAttribute("client")).getMdp() : "" %>">
+                     value="<%= request.getAttribute("client") != null ? ((Clients)request.getAttribute("client")).getMdp() : "" %>">
             </div>  -->
 
             <div class="form-group">
               <label>Image actuelle</label><br/>
-              <% if (request.getAttribute("client") != null && ((Client)request.getAttribute("client")).getImage() != null && !((Client)request.getAttribute("client")).getImage().isEmpty()) { %>
-                <img src="/images/uploads/<%= ((Client)request.getAttribute("client")).getImage() %>" alt="Image" width="80" height="80" class="rounded-circle mb-2">
+              <% if (request.getAttribute("client") != null && ((Clients)request.getAttribute("client")).getImage() != null && !((Clients)request.getAttribute("client")).getImage().isEmpty()) { %>
+                <img src="/images/uploads/<%= ((Clients)request.getAttribute("client")).getImage() %>" alt="Image" width="80" height="80" class="rounded-circle mb-2">
               <% } %>
             </div>
 
