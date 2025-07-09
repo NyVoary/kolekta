@@ -15,13 +15,13 @@ import com.example.demo.dto.ClientDTO;
 import com.example.demo.dto.ClientLoginDTO;
 
 import com.example.demo.entity.Clients;
-import com.example.demo.repository.ClientRepository;
+import com.example.demo.repository.ClientsRepository;
 
 @Service
 public class ClientService {
 
     @Autowired
-    private ClientRepository clientsRepository;
+    private ClientsRepository clientsRepository;
 
     public Clients inscrire(ClientDTO dto) throws Exception {
         if ((clientsRepository.findByEmail(dto.getEmail())) != null) {
@@ -85,7 +85,7 @@ public class ClientService {
     public boolean existeClient(Long id) {
         return clientsRepository.existsById(id);
     }
-    public List<Client> getAllClients() {
+    public List<Clients> getAllClients() {
         return clientsRepository.findAll();
     }    
     

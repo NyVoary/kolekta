@@ -63,7 +63,7 @@ public class LivraisonService {
 
         for (Livraison livraison : livraisons) {
             Commandes commande = livraison.getCommande();
-            Client client = commande.getClient();
+            Clients client = commande.getClient();
 
             CommandeCamion commandeCamion = commandeCamionRepository
                     .findByCommande_Id(commande.getId()).orElse(null);

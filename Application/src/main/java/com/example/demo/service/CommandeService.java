@@ -87,11 +87,11 @@ public class CommandeService {
         return commandeRepository.findByClientOrderByDateCommandeDesc(client);
     }
 
-    public List<Commandes> getCommandesWithProduitsByClientId(int clientId) {
+    public List<Commandes> getCommandesWithProduitsByClientId(Long clientId) {
         return commandeRepository.findWithProduitsByClientId(clientId);
     }
 
-    public List<Commandes> getAllCommandesByClientWithProduits(int clientId) {
+    public List<Commandes> getAllCommandesByClientWithProduits(Long clientId) {
         return commandeRepository.findAllByClientIdWithProduits(clientId);
     }
 

@@ -51,7 +51,7 @@ public class ClientController {
             Model model,
             HttpSession session) {
         try {
-            Client client = clientService.inscrire(clientDTO);
+            Clients client = clientService.inscrire(clientDTO);
             session.setAttribute("client-connected", client);
             model.addAttribute("message", "Inscription réussie !");
             return "redirect:/"; // Page après succès
@@ -64,7 +64,7 @@ public class ClientController {
     @PostMapping("/login-client")
     public String loginClient(@ModelAttribute ClientLoginDTO loginDTO, HttpSession session) {
         try {
-            Client client = clientService.login(loginDTO);
+            Clients client = clientService.login(loginDTO);
             session.setAttribute("client-connected", client);
             return "redirect:/";
             // return "redirect:/produits";
@@ -96,12 +96,12 @@ public class ClientController {
             @RequestParam(value = "dateFin", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFin,
             HttpSession session) {
         try {
-            Client client = (Client) session.getAttribute("client-connected");
+            Clients client = (Clients) session.getAttribute("client-connected");
             if (client == null) {
                 model.addAttribute("error", "Vous devez être connecté pour voir l'historique d'achat.");
                 return "client/HistoriqueAchat";
             }
-            Long clientId = client.getIdClient();
+            Long clientId = client.getId();
             model.addAttribute("dateDebut", dateDebut);
             model.addAttribute("dateFin", dateFin);
             model.addAttribute("historique",

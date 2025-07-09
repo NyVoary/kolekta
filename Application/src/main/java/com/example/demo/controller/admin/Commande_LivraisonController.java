@@ -44,7 +44,7 @@ public class Commande_LivraisonController {
 
     @GetMapping("/admin/ajout-commande")
     public String showAjouterCommandeForm(Model model) {
-        List<Client> clients = clientService.getAllClients();
+        List<Clients> clients = clientService.getAllClients();
         List<Produits> produits = produitService.getAll();
         model.addAttribute("clients", clients);
         model.addAttribute("produits", produits);
