@@ -6,9 +6,11 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.util.List;
-// import java.nio.file.Paths;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Optional;
 
 import com.example.demo.dto.ClientDTO;
@@ -92,6 +94,13 @@ public class ClientService {
     public Clients updateClient(Clients client) {
         return clientsRepository.save(client);
     }
+    // public List<Client> getAllClients() {
+    //     return clientRepository.findAll();
+    // }
+
+    // public Client updateClient(Client client) {
+    //     return clientRepository.save(client);
+    // }
 
     public void deleteClient(Long id) {
         clientsRepository.deleteById(id);

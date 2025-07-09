@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.demo.entity.Panier;
 import com.example.demo.entity.*;
-import com.example.demo.entity.Produits;
-import com.example.demo.entity.PanierProduits;
 import com.example.demo.repository.PanierProduitRepository;
 import com.example.demo.repository.PanierRepository;
 import com.example.demo.repository.ProduitsRepository;

@@ -3,7 +3,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-  <title>Library</title>   
+  <title>Lokaly</title>   
  <style>
         body {
             font-family: Arial, sans-serif;
