@@ -28,7 +28,7 @@ public class EmployesController {
     private final AccesService accesService;
 
     public EmployesController(EmployesService service,
-                            AccesService accesService
+                            AccesService accesService    
     ) {
         this.service = service;
         this.accesService = accesService;
@@ -101,6 +101,7 @@ public class EmployesController {
             accesService.addOrUpdate(accesDTO);
             redirectAttributes.addFlashAttribute("message", "Action réussi");
         } catch (Exception e) {
+            e.printStackTrace();
             redirectAttributes.addFlashAttribute("erreur", e.getMessage());
         }
         return "redirect:/admin/divers-employe";
