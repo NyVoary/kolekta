@@ -84,7 +84,9 @@
       <%@ include file="../includes/sidebar.jsp" %>
       <!-- partial -->
       <div class="main-panel">
-        <div class="col-lg-6 grid-margin stretch-card">
+        <div class="content-wrapper">
+          <div class="row">
+             <div class="col-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">Liste des cat&eacute;gories :</h4>
@@ -128,6 +130,9 @@
             </div>
           </div>
         </div>
+          </div>
+        </div>
+       
 
         <!-- partial:partials/_footer.html -->
       <%@ include file="../includes/footer.jsp" %>
