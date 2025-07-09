@@ -30,7 +30,7 @@ public class ClientController {
     private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
 
-    public ClientController(ProduitsService produitsService, ClientService clientService) {
+    public ClientController(ProduitsService produitsService, ClientService clientService, HistoriqueAchatService historiqueAchatService) {
         this.produitsService = produitsService;
         this.clientService = clientService;
         this.historiqueAchatService = historiqueAchatService;
