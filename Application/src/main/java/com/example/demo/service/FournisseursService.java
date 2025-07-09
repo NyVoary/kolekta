@@ -78,12 +78,11 @@ public class FournisseursService {
             map.put("nom", p.getNom());
             map.put("uniteMesure", p.getUniteMesure());
             map.put("id", p.getId());
-            // Chercher la disponibilité correspondante
+            // Somme des quantités pour ce produit et ce fournisseur
             int quantite = 0;
             for (Disponibilite d : dispos) {
                 if (d.getFournisseur().getId().equals(fournisseurId) && d.getProduit().getId().equals(p.getId())) {
-                    quantite = d.getQuantite();
-                    break;
+                    quantite += d.getQuantite();
                 }
             }
             map.put("quantite", quantite);
