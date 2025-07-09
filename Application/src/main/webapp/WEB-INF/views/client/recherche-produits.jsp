@@ -114,10 +114,10 @@
                 <div class="d-flex"></div>
             </div>
 
-        <div class="container-fluid page-body-wrapper">
+        <div class="" style="margin-top:2vh">
             <!-- partial:partials/_sidebar.html -->
-            <div class="main-panel">
-                <div class="content-wrapper">
+            <div class="">
+                <div class="">
                     <h1>Liste des produits</h1>
 
                     <c:if test="${empty produits}">
@@ -126,31 +126,31 @@
 
                     <div class="produits-container">
                         <c:forEach var="produit" items="${produits}">
-                            <div class="produit">
-                                <div class="produit-image">
-                                    <img src="${produit.image}" alt="${produit.nom}" />
-                                </div>
-                                <div class="produit-nom">
-                                    <h2>${produit.nom}</h2>
-                                </div>
-                                <div class="produit-description">
-                                    <p>${produit.description}</p>
-                                </div>
-                                <div class="produit-prix">
-                                    <p><strong>${produit.prixVente}</strong> Ar / ${produit.uniteMesure}</p>
-                                </div>
-                                <div class="produit-formulaire">
-                                    <form method="post" action="/commande/ajouter">
-                                        <input type="hidden" name="produitId" value="${produit.id}" />
-                                        <div class="quantite-controls">
-                                            <button type="button" onclick="changerQuantite(this, -1)">−</button>
-                                            <input type="number" name="quantite" value="1" min="1" />
-                                            <button type="button" onclick="changerQuantite(this, 1)">+</button>
-                                        </div>
-                                        <button type="submit" class="btn btn-success btn-sm">Ajouter au panier</button>
-                                    </form>
-                                </div>
+                            <div class="card product-card">
+                        <%-- <c:if test="${produit.enPromotion}">
+                            <span class="product-badge">PROMO</span>
+                        </c:if> --%>
+                        <img src="${pageContext.request.contextPath}/uploads/carottes.png" alt="${produit.nom}" class="product-img">
+                        <div class="card-body">
+                            <h4 class="card-title">${produit.nom}</h4>
+                            <p class="card-text text-muted mb-3">${produit.description}</p>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="text-primary mb-0">${produit.prixVente} Ar</h5>
+                                <small class="text-muted">/${produit.uniteMesure}</small>
                             </div>
+                            <form method="post" action="/commande/ajouter">
+                                <input type="hidden" name="produitId" value="${produit.id}" />
+                                <div class="d-flex align-items-center quantity-controls mb-3">
+                                    <button type="button" class="btn" onclick="changerQuantite(this, -1)">-</button>
+                                    <input type="number" name="quantite" value="1" min="1" class="form-control mx-2">
+                                    <button type="button" class="btn" onclick="changerQuantite(this, 1)">+</button>
+                                </div>
+                                <button type="submit" class="btn btn-primary btn-block">
+                                    <i class="ti-shopping-cart mr-2"></i> Ajouter au panier
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                         </c:forEach>
                     </div>
                 </div>

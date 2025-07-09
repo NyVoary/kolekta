@@ -19,11 +19,11 @@
       <%@ include file="includes/head.jsp" %>
 </head>
 <body>
-<div class="container-scroller">
+<div class="container-scroller" style="text-align:center">
     <!-- partial:partials/_navbar.html -->
     <%@ include file="includes/navbar.jsp" %>
     <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
+    <div class="container-fluid page-body-wrapper" >
       <!-- partial:partials/_settings-panel.html -->
       <!-- partial -->
       <!-- partial:partials/_sidebar.html -->
