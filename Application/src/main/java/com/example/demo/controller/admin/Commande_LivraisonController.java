@@ -58,9 +58,10 @@ public class Commande_LivraisonController {
         status = statusRepository.findByLibelle("Validee");
         commandeStatus = new CommandeStatus(commande, status, LocalDate.now());
         commandeStatusRepository.save(commandeStatus);
-        CommandePaiement commandePaiement = new CommandePaiement(
-            commande, LocalDate.now(), commande.getMontantTotal(), "Mobile Money"
-        );
+        // manampy paiement 
+        // CommandePaiement commandePaiement = new CommandePaiement(
+        //     commande, LocalDate.now(), commande.getMontantTotal(), "Mobile Money"
+        // );
         redirectAttributes.addFlashAttribute("success", "Commande validée avec succès");
         return "redirect:/admin/commande";
     }
