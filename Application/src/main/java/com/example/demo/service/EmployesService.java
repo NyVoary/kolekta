@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -24,6 +25,10 @@ public class EmployesService {
     ) {
         this.repository = repository;
         this.assignationTacheService = assignationTacheService;
+    }
+
+    public Optional<Employes> findById(Long id) {
+        return repository.findById(id);
     }
 
     public void update(EmployesDTO employesDTO) throws Exception {

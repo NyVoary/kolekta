@@ -77,6 +77,7 @@
                 <li class="nav-item"> <a class="nav-link" href="/admin/liste-employe">Liste Employes</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/divers-employe">Ajout Acces</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/list-acces">Liste Acces</a></li>
+                <li class="nav-item"> <a class="nav-link" href="/parametres">Parametres</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/tache-employe">Assignations taches</a></li>
                 <li class="nav-item"> <a class="nav-link" href="/admin/stat-employe">Statistique</a></li>
               </ul>
@@ -111,6 +112,7 @@
               </ul>
             </div>
           </li>
+          <li class="nav-item"> <a class="nav-link" href="/parametres">Parametres</a></li>
         </ul>
       </nav>
       <script>

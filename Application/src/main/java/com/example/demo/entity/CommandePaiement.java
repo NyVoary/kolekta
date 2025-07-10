@@ -48,6 +48,13 @@ public class CommandePaiement {
         return idPaiement;
     }
 
+    public CommandePaiement(Commandes commande, LocalDate datePaiement, Double montant, String modePaiement) {
+        this.commande = commande;
+        this.datePaiement = datePaiement;
+        this.montant = montant;
+        this.modePaiement = modePaiement;
+    }
+
     public void setIdPaiement(Integer idPaiement) {
         this.idPaiement = idPaiement;
     }

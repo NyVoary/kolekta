@@ -14,7 +14,6 @@ import com.example.demo.entity.*;
 import com.example.demo.service.*;
 import com.example.demo.repository.*;
 
-
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -32,16 +31,17 @@ public class PanierController {
 
     @Autowired
     private StatusRepository statusRepository;
-    
-    @Autowired
-    private StatusRepository commandeStatusRepository;
 
-    // idClient fixé ici
+    @Autowired
+    private CommandeStatusRepository commandeStatusRepository; // ✅ corrigé le type ici
+
+    @Autowired
+    private CommandePaiementService commandePaiementService;
+
     private Long idClient = 1L;
 
     @GetMapping("/monpanier")
     public String afficherPanier(Model model, RedirectAttributes redirectAttributes, HttpSession session) {
-
         if (session.getAttribute("client-connected") == null) {
             return "redirect:/login-client";
         }
@@ -87,8 +87,7 @@ public class PanierController {
             panierService.ajouterProduitAuPanier(idClient, idProduit, quantite);
             redirectAttributes.addFlashAttribute("successMessage", "Produit ajouté au panier avec succès !");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "Erreur lors de l'ajout du produit : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de l'ajout du produit : " + e.getMessage());
         }
 
         return "redirect:/panier";
@@ -124,15 +123,19 @@ public class PanierController {
 
         Commandes commandeCree = commandeService.creerCommandeDepuisPanier(idClient);
         redirectAttributes.addFlashAttribute("successMessage", "Commande enregistrée avec succès !");
+        
         Status status = statusRepository.findByLibelle("En attente de validation");
-        CommandeStatus commandeStatus = new CommandeStatus(commandeCree, status, LocalDate.now());      
-        commandeStatusRepository.save(commandeStatus);
-        // Ajout apres validation commande
-        CommandePaiement commandePaiement = new CommandePaiement(commandeCree,LocalDate.now(),commandeCree.getMontantTotal(),"Mobile Money");
+        CommandeStatus commandeStatus = new CommandeStatus(commandeCree, status, LocalDate.now());
+        commandeStatusRepository.save(commandeStatus); // ✅ ligne corrigée
+        
+        CommandePaiement commandePaiement = new CommandePaiement(
+            commandeCree, LocalDate.now(), commandeCree.getMontantTotal(), "Mobile Money"
+        );
         commandePaiementService.save(commandePaiement);
-        System.out.println(
-                "idCommande-------------------------------------------------------------:" + commandeCree.getId());
+        
+        System.out.println("idCommande-------------------------------------------------------------:" + commandeCree.getId());
         partage.setIdCommande(commandeCree.getId());
+        
         return "redirect:/Livraison-client";
     }
 }
