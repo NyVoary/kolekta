@@ -122,7 +122,7 @@
                 <% if("Disponnible".compareToIgnoreCase(camion.getEtatCamion()) == 0) { %>
                   <td></td>
                 <% } else { %>
-                  <td><a href="/admin/finir-trajet?id=<%= camion.getId_assignation_camion() %>" class="btn btn-outline-info btn-sm ">Fin du trajet <i class="ti-check"></i></a></td>
+                  <td><a href="/admin/finir-trajet?id=<%= camion.getId() %>" class="btn btn-outline-info btn-sm ">Fin du trajet <i class="ti-check"></i></a></td>
                 <% } %>
               </tr>
             <%

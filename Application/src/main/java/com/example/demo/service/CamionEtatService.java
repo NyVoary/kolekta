@@ -20,4 +20,8 @@ public class CamionEtatService {
     public List<VCamionEtat> getAllCamionsDisponibles() {
         return camionEtatRepository.findByEtatCamion("Disponnible");
     }
+
+    public VCamionEtat findById(int id) {
+         return camionEtatRepository.getById(id);
+    }
 }

@@ -18,7 +18,7 @@ public class VCamionEtat {
     @Id
     @Column(name = "id_camion")
     private int id;
-
+    
     @Column(name = "id_assignation_camion")
     private int id_assignation_camion;
 

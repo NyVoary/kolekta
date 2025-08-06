@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface VCamionEtatRepository extends JpaRepository<VCamionEtat, Long> {
-        List<VCamionEtat> findByEtatCamion(String etatCamion);
+public interface VCamionEtatRepository extends JpaRepository<VCamionEtat, Integer> {
+        List<VCamionEtat> findByEtatCamion(String etatCamion); 
 }
  

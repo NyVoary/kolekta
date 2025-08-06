@@ -63,17 +63,17 @@ public class CamionsController {
     }
 
     @GetMapping("/admin/finir-trajet")
-    public String finirAssignationCamion(@RequestParam("id") String id,Model model) throws Exception { 
-        VCamionEtat camions = camionEtatService.findById(Integer.parseInt(id)); // ou repository.findAll() 
-        model.addAttribute("camions", camions);
-        return "admin/camions/assignation";
+    public String finirAssignationCamion(@RequestParam("id") String id,Model model, HttpSession session) throws Exception { 
+        VCamionEtat camion = camionEtatService.findById(Integer.parseInt(id)); // ou repository.findAll()
+        session.setAttribute("camion-assigned", camion); 
+        model.addAttribute("camion", camion);
+        return "admin/camions/fin-assignation";
     } 
 
     @PostMapping("/admin/ajout-camion")
     public String addCamionTraitement(@ModelAttribute CamionDTO camionDTO,
                                     Model model,
                                     HttpSession session) {
-        System.out.println("wawa");
         try {
             camionService.ajouterCamion(camionDTO);
             session.setAttribute("succes-camion", "Ajout du camion reussi"); 

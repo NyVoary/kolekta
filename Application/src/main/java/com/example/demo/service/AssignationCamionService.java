@@ -38,4 +38,8 @@ public class AssignationCamionService {
     public AssignationCamion findById(int id) throws Exception{ 
         return assignationRepo.findById(id).get(); 
     }
+
+    public AssignationCamion save(AssignationCamion assignation) throws Exception{ 
+        return assignationRepo.save(assignation); 
+    }
 }
