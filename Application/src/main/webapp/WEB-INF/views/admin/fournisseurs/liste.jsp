@@ -40,6 +40,12 @@
       <%@ include file="../includes/sidebar.jsp" %>
       <div class="main-panel">
         <div class="d-flex justify-content-between align-items-center mb-4">
+        <c:if test="${not empty success}">
+          <div class="alert alert-success">${success}</div>
+      </c:if>
+      <c:if test="${not empty error}">
+          <div class="alert alert-danger">${error}</div>
+      </c:if>
           <h1 class="h3">Liste des fournisseurs</h1>
         </div>
         <div class="row">
@@ -74,7 +80,7 @@
                 <div class="px-4 pb-4 pt-2 mt-auto">
                   <div class="btn-group w-100" role="group">
                     <a href="/admin/fournisseurs/edit?id=${fournisseur.id}" class="btn btn-warning btn-sm" title="Modifier"><i class="ti-pencil"></i></a>
-                    <a href="/admin/fournisseurs/delete?id=${fournisseur.id}" class="btn btn-danger btn-sm" title="Supprimer" onclick="return confirm('Supprimer ce fournisseur ?');"><i class="ti-trash"></i></a>
+                    <a href="/admin/fournisseurs/delete?id=${fournisseur.id}" class="btn btn-danger btn-sm" title="Desactiver" onclick="return confirm('Desactiver ce fournisseur ?');"><i class="ti-trash"></i></a>
                     <a href="/admin/fournisseurs/ajout-disponibilite" class="btn btn-info btn-sm" title="Ajouter disponibilité"><i class="ti-package"></i></a>
                   </div>
                 </div>

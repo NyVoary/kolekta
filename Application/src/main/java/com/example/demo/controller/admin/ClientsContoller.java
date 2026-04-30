@@ -89,15 +89,50 @@ public class ClientsContoller {
         return "admin/clients/modifier-client";
     }
 
+    // @PostMapping("/admin/update-client")
+    // public String updateClient(@ModelAttribute Clients client,
+    // @RequestParam(value = "imageFile", required = false) MultipartFile imageFile)
+    // throws Exception {
+    // // Clients existingClient = clientService.getClientByID(client.getId());
+    // Clients existingClient = clientService.getClientByID(client.getId());
+
+    // if (imageFile != null && !imageFile.isEmpty()) {
+    // String fileName = System.currentTimeMillis() + "_" +
+    // imageFile.getOriginalFilename();
+    // File staticUploads = ResourceUtils
+    // .getFile(new
+    // File("src/main/resources/static/images/uploads").getAbsolutePath());
+    // File destinationFile = new File(staticUploads, fileName);
+    // imageFile.transferTo(destinationFile);
+    // existingClient.setImage(fileName);
+    // }
+
+    // existingClient.setNom(client.getNom());
+    // existingClient.setPrenoms(client.getPrenoms());
+    // existingClient.setDtn(client.getDtn());
+    // existingClient.setSexe(client.getSexe());
+    // existingClient.setEmail(client.getEmail());
+    // existingClient.setTelephone(client.getTelephone());
+    // existingClient.setAdresse(client.getAdresse());
+
+    // if (client.getMdp() != null && !client.getMdp().isEmpty()) {
+    // existingClient.setMdp(client.getMdp());
+    // }
+
+    // clientService.updateClient(existingClient);
+    // return "redirect:/admin/liste-client";
+    // }
+
     @PostMapping("/admin/update-client")
-    public String updateClient(@ModelAttribute Clients client,
+    public String updateClient(
+            @RequestParam("idClient") Long idClient,
+            @ModelAttribute Clients client,
             @RequestParam(value = "imageFile", required = false) MultipartFile imageFile) throws Exception {
-        Clients existingClient = clientService.getClientByID(client.getId());
+        Clients existingClient = clientService.getClientByID(idClient);
 
         if (imageFile != null && !imageFile.isEmpty()) {
             String fileName = System.currentTimeMillis() + "_" + imageFile.getOriginalFilename();
-            File staticUploads = ResourceUtils
-                    .getFile(new File("src/main/resources/static/images/uploads").getAbsolutePath());
+            File staticUploads = ResourceUtils.getFile("src/main/resources/static/images/uploads");
             File destinationFile = new File(staticUploads, fileName);
             imageFile.transferTo(destinationFile);
             existingClient.setImage(fileName);

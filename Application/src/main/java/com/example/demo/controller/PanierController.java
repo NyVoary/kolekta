@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.entity.*;
 import com.example.demo.service.*;
+import com.example.demo.repository.*;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -27,17 +29,24 @@ public class PanierController {
     @Autowired
     private Partage partage;
 
-    // idClient fixé ici
+    @Autowired
+    private StatusRepository statusRepository;
+
+    @Autowired
+    private CommandeStatusRepository commandeStatusRepository; // ✅ corrigé le type ici
+
+    @Autowired
+    private CommandePaiementService commandePaiementService;
+
     private Long idClient = 1L;
 
     @GetMapping("/monpanier")
     public String afficherPanier(Model model, RedirectAttributes redirectAttributes, HttpSession session) {
-
         if (session.getAttribute("client-connected") == null) {
             return "redirect:/login-client";
         }
-        Client client = (Client) session.getAttribute("client-connected");
-        idClient = client.getIdClient();
+        Clients client = (Clients) session.getAttribute("client-connected");
+        idClient = client.getId();
         Optional<Panier> panierOpt = panierService.getPanierAvecProduits(idClient);
 
         if (panierOpt.isPresent()) {
@@ -78,8 +87,7 @@ public class PanierController {
             panierService.ajouterProduitAuPanier(idClient, idProduit, quantite);
             redirectAttributes.addFlashAttribute("successMessage", "Produit ajouté au panier avec succès !");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage",
-                    "Erreur lors de l'ajout du produit : " + e.getMessage());
+            redirectAttributes.addFlashAttribute("errorMessage", "Erreur lors de l'ajout du produit : " + e.getMessage());
         }
 
         return "redirect:/panier";
@@ -115,11 +123,19 @@ public class PanierController {
 
         Commandes commandeCree = commandeService.creerCommandeDepuisPanier(idClient);
         redirectAttributes.addFlashAttribute("successMessage", "Commande enregistrée avec succès !");
-
-        System.out.println(
-                "idCommande-------------------------------------------------------------:" + commandeCree.getId());
+        
+        Status status = statusRepository.findByLibelle("En attente de validation");
+        CommandeStatus commandeStatus = new CommandeStatus(commandeCree, status, LocalDate.now());
+        commandeStatusRepository.save(commandeStatus); // ✅ ligne corrigée
+        
+        CommandePaiement commandePaiement = new CommandePaiement(
+            commandeCree, LocalDate.now(), commandeCree.getMontantTotal(), "Mobile Money"
+        );
+        commandePaiementService.save(commandePaiement);
+        
+        System.out.println("idCommande-------------------------------------------------------------:" + commandeCree.getId());
         partage.setIdCommande(commandeCree.getId());
-
+        
         return "redirect:/Livraison-client";
     }
 }

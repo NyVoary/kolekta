@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.entity.*;
-import com.example.demo.repository.PanierProduitRepository;
-import com.example.demo.repository.PanierRepository;
-import com.example.demo.repository.ProduitsRepository;
+import com.example.demo.repository.*;
 
 @Service
 @Transactional
@@ -21,13 +19,15 @@ public class PanierService {
     private PanierRepository panierRepository;
 
     @Autowired
+    private ParametreRepository paraRepository;
+
+    @Autowired
     private PanierProduitRepository panierProduitRepository;
 
     @Autowired
     private ProduitsRepository produitRepository;
 
     private static final Double TAUX_TVA = 20.0;
-    private static final Double FRAIS_LIVRAISON = 10000.0;
 
     public Panier creerPanierPourClient(Long idClient) {
         if (panierRepository.existsByIdClient(idClient)) {
@@ -105,15 +105,19 @@ public class PanierService {
     }
 
     public Double calculerTVA(Double montantHT) {
-        return montantHT * 0.20;
-    }
+    Parametre tva = paraRepository.findByLibelle("TVA");
+    // Si tva est null, on applique 20% par défaut (0.20 en décimal)
+    double tva_val = tva != null ? tva.getValeur() / 100.0 : 0.20;
+    return montantHT * tva_val;
+}
+
 
     public Double calculerMontantTTC(Double montantHT) {
         return montantHT + calculerTVA(montantHT);
     }
 
     public Double calculerMontantTotal(Double montantHT) {
-        return calculerMontantTTC(montantHT)+ getFraisLivraison(montantHT);
+        return calculerMontantTTC(montantHT) + getFraisLivraison(montantHT);
     }
 
     public void viderPanier(Long idClient) {
@@ -132,10 +136,22 @@ public class PanierService {
         return 0L;
     }
 
+    // public Double getFraisLivraison(Double montantHT) {
+    // if (montantHT*0.10 < 5000) {
+    // return (double)5000;
+    // }
+    // return montantHT*0.10;
+    // }
     public Double getFraisLivraison(Double montantHT) {
-        if (montantHT*0.10 < 5000) {
-            return (double)5000;
+        Parametre minParam = paraRepository.findByLibelle("min_livraison");
+        Parametre livraisonParam = paraRepository.findByLibelle("livraison");
+        double min = minParam != null ? minParam.getValeur() : 5000; // valeur par défaut 5000
+        double livraisonPourcentage = livraisonParam != null ? livraisonParam.getValeur() / 100.0 : 0.10; // valeur par
+                                                                                                          // défaut 0.10
+        double frais = montantHT * livraisonPourcentage;
+        if (frais < min) {
+            return min;
         }
-        return montantHT*0.10;
+        return frais;
     }
 }

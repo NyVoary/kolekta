@@ -42,7 +42,7 @@ public class AssignationTache {
     private Employes employes;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(nullable = false, name="priorité")
+    @Column(nullable = false, name="priorite")
     private Priorite priorite;
 
     @Column(nullable = false, name = "statusactuelle")

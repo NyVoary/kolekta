@@ -13,7 +13,6 @@ import com.example.demo.entity.Disponibilite;
 import com.example.demo.entity.Fournisseurs;
 import com.example.demo.entity.Produits;
 import com.example.demo.repository.*;
-import com.example.demo.repository.FournisseursRepository;
 
 @Service
 public class FournisseursService {
@@ -91,6 +90,7 @@ public class FournisseursService {
                     quantite += d.getQuantite();
                 }
             }
+            map.put("quantite", quantite);
             map.put("quantite", quantite);
             result.add(map);
         }

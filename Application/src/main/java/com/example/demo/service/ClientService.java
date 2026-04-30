@@ -94,6 +94,7 @@ public class ClientService {
     public Clients updateClient(Clients client) {
         return clientsRepository.save(client);
     }
+    
     // public List<Client> getAllClients() {
     //     return clientRepository.findAll();
     // }

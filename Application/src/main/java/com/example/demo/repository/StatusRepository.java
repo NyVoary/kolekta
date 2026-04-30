@@ -7,5 +7,7 @@ import java.util.Optional;
 
 @Repository
 public interface StatusRepository extends JpaRepository<Status, Long> {
-    Optional<Status> findByLibelle(String libelle);
+    // Optional<Status> findByLibelle(String libelle);
+
+    Status findByLibelle(String libelle);
 }

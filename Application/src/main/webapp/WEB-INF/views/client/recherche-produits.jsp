@@ -5,182 +5,156 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library</title>
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
-    <link rel="stylesheet" href="../../static/css/style-home-search-client.css">
-    </head>
+  <title>Lokaly</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/feather/feather.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
+  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/produits.css" />
 </head>
 
 <body>
+
+    <%-- <%@ include file="./inc/css.jsp"  %>
+    <%@ include file="./inc/header.jsp" %> --%>
     <div class="container-scroller">
-        <%@ include file="includes/navbar.jsp" %>
+    <%@ include file="includes/navbar.jsp" %>
+        <!-- Messages de notification -->
+        <c:if test="${not empty message}">
+            <div class="message-box success" id="messageBox">
+                <span class="message-text">${message}</span>
+                <button class="close-btn" onclick="fermerMessage()">&times;</button>
+            </div>
+        </c:if>
 
-        <div class="container-fluid page-body-wrapper">
-            <div class="main-panel">
-                <div class="content-wrapper">
-                    <!-- Skydash style page header -->
-                    <div class="page-header">
-                        <div>
-                            <h3 class="page-title">
-                                <span class="page-title-icon bg-gradient-primary text-white">
-                                    <i class="ti-package"></i>
-                                </span>
-                                Liste des produits
-                            </h3>
-                        </div>
-                    </div>
+        <c:if test="${not empty erreur}">
+            <div class="message-box error" id="messageBox">
+                <span class="message-text">${erreur}</span>
+                <button class="close-btn" onclick="fermerMessage()">&times;</button>
+            </div>
+        </c:if>
 
-                    <!-- Skydash style notifications -->
-                    <c:if test="${not empty message}">
-                        <div class="alert alert-success alert-dismissible" role="alert" id="messageBox">
-                            <i class="ti-check-box"></i>
-                            ${message}
-                            <button type="button" class="btn-close" onclick="fermerMessage()">×</button>
-                        </div>
-                    </c:if>
+            <div class="navbar-menu-wrapper d-flex align-items-center" style="margin-top: 10vh;">
+                <!-- Partie gauche -->
+                <div class="d-flex"></div>
 
-                    <c:if test="${not empty erreur}">
-                        <div class="alert alert-danger alert-dismissible" role="alert" id="messageBox">
-                            <i class="ti-alert"></i>
-                            ${erreur}
-                            <button type="button" class="btn-close" onclick="fermerMessage()">×</button>
-                        </div>
-                    </c:if>
-
-                    <!-- Search bar - Skydash style -->
-                    <div class="search-wrapper">
-                        <form method="get" action="/recherche_produits" class="form-inline">
-                            <!-- Nom du produit -->
-                            <div class="input-group">
-                                <input
-                                    type="text"
-                                    class="form-control"
-                                    id="search"
-                                    name="search"
-                                    placeholder="Nom du produit"
-                                    value="${search != null ? search : ''}"
-                                >
-                            </div>
-
-                            <div class="input-group">
-                                <select class="form-control" name="categorie" id="categorie">
-                                    <option value="">Catégorie</option>
-                                    <c:forEach var="cat" items="${categories}">
-                                    <option value="${cat.libelle}" ${categorie == cat.libelle ? 'selected' : ''}>
-                                        ${cat.libelle}
-                                    </option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-
-                            <!-- Prix minimal -->
-                            <div class="input-group">
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="prixMin"
-                                    placeholder="Prix minimal"
-                                    step="0.01"
-                                    value="${prixMin != null ? prixMin : ''}"
-                                >
-                            </div>
-
-                            <!-- Prix maximal -->
-                            <div class="input-group">
-                                <input
-                                    type="number"
-                                    class="form-control"
-                                    name="prixMax"
-                                    placeholder="Prix maximal"
-                                    step="0.01"
-                                    value="${prixMax != null ? prixMax : ''}"
-                                >
-                            </div>
-
-                            <!-- Bouton de recherche -->
-                            <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
-                                <i class="ti-search text-info"></i>                          
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Products section - Skydash style -->
-                    <div class="row">
-                        <div class="col-lg-12 grid-margin stretch-card">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h4 class="card-title">
-                                        <i class="ti-shopping-cart"></i>
-                                        Tous les produits
-                                    </h4>
-                                    <p class="card-description">
-                                        Gérer votre inventaire de produits
-                                    </p>
-
-                                    <c:choose>
-                                        <c:when test="${empty produits}">
-                                            <div class="empty-state">
-                                                <i class="ti-package"></i>
-                                                <h5>Aucun produit disponible</h5>
-                                                <p>Ajoutez des produits pour commencer.</p>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="products-grid">
-                                                <c:forEach var="produit" items="${produits}">
-                                                    <div class="product-card">
-                                                        <div class="product-image">
-                                                            <img src="${produit.image}" alt="${produit.nom}" />
-                                                        </div>
-                                                        <div class="product-content">
-                                                            <h5 class="product-name">${produit.nom}</h5>
-                                                            <p class="product-description">
-                                                                ${produit.description}</p>
-                                                            <div class="product-price">
-                                                                ${produit.prixVente} Ar / ${produit.uniteMesure}
-                                                            </div>
-                                                            <form method="post" action="/commande/ajouter">
-                                                                <input type="hidden" name="produitId"
-                                                                    value="${produit.id}" />
-                                                                <div class="quantity-controls">
-                                                                    <button type="button" class="quantity-btn"
-                                                                        onclick="changerQuantite(this, -1)">
-                                                                        <i class="ti-minus"></i>
-                                                                    </button>
-                                                                    <input type="number" name="quantite"
-                                                                        value="1" min="1"
-                                                                        class="form-control quantity-input" />
-                                                                    <button type="button" class="quantity-btn"
-                                                                        onclick="changerQuantite(this, 1)">
-                                                                        <i class="ti-plus"></i>
-                                                                    </button>
-                                                                </div>
-                                                                <button type="submit"
-                                                                    class="btn btn-success btn-sm w-100">
-                                                                    <i class="ti-shopping-cart"></i>
-                                                                    Ajouter au panier
-                                                                </button>
-                                                            </form>
-                                                        </div>
-                                                    </div>
-                                                </c:forEach>
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
+                <!-- Partie centrale -->
+                <div class="d-flex justify-content-center flex-grow-1">
+                    <form method="get" action="/recherche_produits" class="form-inline">
+                        <!-- Nom du produit -->
+                        <ul class="navbar-nav mr-lg-2">
+                            <li class="nav-item nav-search d-none d-lg-block">
+                                <div class="input-group">
+                                    <input
+                                        type="text"
+                                        class="form-control"
+                                        id="search"
+                                        name="search"
+                                        placeholder="Nom du produit"
+                                       value="${search != null ? search : ''}"
+                                    >
                                 </div>
-                            </div>
+                            </li>
+                        </ul>
+
+                        <div class="input-group mr-2">
+                            <select class="form-control" name="categorie" id="categorie">
+                                <option value="">Categorie</option>
+                                <c:forEach var="cat" items="${categories}">
+                                <option value="${cat.libelle}" ${categorie == cat.libelle ? 'selected' : ''}>
+                                    ${cat.libelle}
+                                </option>
+                                </c:forEach>
+                            </select>
                         </div>
-                    </div>
+
+                        <!-- Prix minimal -->
+                        <ul class="navbar-nav mr-lg-2">
+                            <li class="nav-item nav-search d-none d-lg-block">
+                                <div class="input-group">
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="prixMin"
+                                        placeholder="Prix minimal"
+                                        step="0.01"
+                                        value="${prixMin != null ? prixMin : ''}"
+                                    >
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- Prix maximal -->
+                        <ul class="navbar-nav mr-lg-2">
+                            <li class="nav-item nav-search d-none d-lg-block">
+                                <div class="input-group">
+                                    <input
+                                        type="number"
+                                        class="form-control"
+                                        name="prixMax"
+                                        placeholder="Prix maximal"
+                                        step="0.01"
+                                        value="${prixMax != null ? prixMax : ''}"
+                                    >
+                                </div>
+                            </li>
+                        </ul>
+
+                        <!-- Bouton de recherche -->
+                        <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
+                            <i class="ti-search text-info"></i>                          
+                        </button>
+                    </form> 
                 </div>
 
-                <!-- Skydash style footer -->
-                <footer class="footer">
-                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
-                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
-                            Copyright © 2023. Tous droits réservés.
-                        </span>
+                <!-- Partie droite -->
+                <div class="d-flex"></div>
+            </div>
+
+        <div class="" style="margin-top:3vh;">
+            <!-- partial:partials/_sidebar.html -->
+            <div class="">
+                <div class="content-wrapper">
+                    <h1>Liste des produits</h1>
+
+                    <c:if test="${empty produits}">
+                        <p>Aucun produit disponible.</p>
+                    </c:if>
+
+                    <div class="produits-container">
+                        <c:forEach var="produit" items="${produits}">
+                            <div class="produit" style="width:40vh">
+                <div class="produit-image">
+                    <img src="${pageContext.request.contextPath}${produit.image}" alt="${produit.nom}" />
+                </div>
+                <div class="produit-content">
+                    <div class="produit-nom">
+                        <h2>${produit.nom}</h2>
                     </div>
-                </footer>
+                    <div class="produit-description">
+                        <p>${produit.description}</p>
+                    </div>
+                    <div class="produit-prix">
+                        <p><strong>${produit.prixVente}</strong></strong> Ar /${produit.uniteMesure}</p>
+                    </div>
+                    <div class="produit-formulaire">
+                    <form method="post" action="/commande/ajouter">
+                    <input type="hidden" name="produitId" value="${produit.id}" />
+                        <div class="quantite-controls">
+                            <button type="button" onclick="changerQuantite(this, -1)">-</button>
+                            <input type="number" name="quantite" value="1" min="1" />
+                            <button type="button" onclick="changerQuantite(this, 1)">+</button>
+                        </div>
+                        <button type="submit" class="btn-ajouter"> <i class="fas fa-cart-plus"></i>Ajouter au panier</button>
+                    </div>
+                </div>
+            </div>
+                        </c:forEach>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -189,8 +163,7 @@
         function changerQuantite(btn, delta) {
             const input = btn.parentElement.querySelector('input[name="quantite"]');
             let val = parseInt(input.value) || 1;
-            val = Math.max(1, val + delta);
-            input.value = val;
+            input.value = Math.max(1, val + delta);
         }
 
         function fermerMessage() {
@@ -200,13 +173,13 @@
             }
         }
 
-        // Auto-hide messages after 5 seconds
-        window.onload = function () {
+        // Auto-fermeture du message après 5 secondes
+        window.onload = function() {
             const messageBox = document.getElementById('messageBox');
             if (messageBox) {
-                setTimeout(function () {
+                setTimeout(function() {
                     messageBox.style.opacity = '0';
-                    setTimeout(function () {
+                    setTimeout(function() {
                         messageBox.style.display = 'none';
                     }, 300);
                 }, 5000);
@@ -236,4 +209,294 @@
     <script src="js/Chart.roundedBarCharts.js"></script>
     <!-- End custom js for this page-->
 </body>
+<style>
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        /* Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #667eea;
+        }
+
+        /* Messages de notification */
+        .message-box {
+            position: fixed;
+            top: 80px;
+            right: 20px;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 400px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .message-box.success {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+        }
+
+        .message-box.error {
+            background: linear-gradient(135deg, #f44336, #d32f2f);
+            color: white;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: inherit;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Section produits du moment */
+        .section-saison {
+            margin-top: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 3rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .section-saison h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .produits-saison {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .produit-saison-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .produit-saison-item:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Section principale */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .main-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            padding: 3rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Grille de produits */
+        .produits-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .produit {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .produit:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .produit-image {
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .produit-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .produit:hover .produit-image img {
+            transform: scale(1.05);
+        }
+
+        .produit-content {
+            padding: 1.5rem;
+        }
+
+        .produit-nom h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .produit-description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .produit-prix {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 1.5rem;
+        }
+
+        .produit-formulaire {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .quantite-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .quantite-controls button {
+            background: #667eea;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quantite-controls button:hover {
+            background: #5a6fd8;
+            transform: scale(1.1);
+        }
+
+        .quantite-controls input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .btn-ajouter {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-ajouter:hover {
+            background: linear-gradient(135deg, #45a049, #4CAF50);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+</style>
 </html>

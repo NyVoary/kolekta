@@ -11,12 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.entity.Acces;
-import com.example.demo.entity.AssignationsTaches;
-import com.example.demo.entity.StatusTaches;
+import com.example.demo.entity.AssignationTache;
+import com.example.demo.repository.AssignationTacheRepository;
 import com.example.demo.service.AccesService;
-import com.example.demo.service.AssignationTacheService;
 import com.example.demo.service.StatistiquesService;
-import com.example.demo.service.StatusTachesService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -27,13 +25,10 @@ public class AdminController {
     private AccesService accesService;
 
     @Autowired
+    private AssignationTacheRepository assignationTacheRepository;
+
+    @Autowired
     private StatistiquesService statistiquesService;
-
-    @Autowired
-    private AssignationTacheService assignationTacheService;
-
-    @Autowired
-    private StatusTachesService statusTachesService;
 
     @GetMapping("/admin")
     public String login() {
@@ -41,7 +36,8 @@ public class AdminController {
     }
 
     @PostMapping("/admin/connexion")
-    public String welcomePage(@RequestParam String username,
+    public String welcomePage(
+            @RequestParam String username,
             @RequestParam String password,
             HttpSession session,
             Model model) {
@@ -60,33 +56,32 @@ public class AdminController {
 
     @GetMapping("/admin/logout")
     public String logout(HttpSession session) {
-        session.invalidate(); 
+        session.invalidate();
         return "redirect:/admin";
     }
-    //Modifier par Fenitra pour afficher les statistiques
-    
-    /*@GetMapping("/admin/dashboard")
-    public String dashboard(Model model) {
-        return "admin/home";
-    }*/
+
     @GetMapping("/admin/dashboard")
     public String statProduct(Model model, HttpSession session) {
         try {
-            Map<String, Object> stats = statistiquesService.getToutesLesStatistiques();
-            model.addAttribute("statistics", stats);
-
-            Acces acces = (Acces) session.getAttribute("acces");
-            if (acces != null && acces.getIdEmploye() != null) {
-                List<StatusTaches> status = statusTachesService.getAllStatusTaches();
-                List<AssignationsTaches> taches = assignationTacheService.getTachesAujourdhuiParEmploye(Long.valueOf(acces.getIdEmploye()));
-                System.out.println(Long.valueOf(acces.getIdEmploye()));
-                model.addAttribute("taches", taches);
-                model.addAttribute("status", status);
+            Acces acc = (Acces) session.getAttribute("acces");
+            if (acc == null || acc.getEmployes() == null) {
+                model.addAttribute("error", "Session expirée ou accès invalide.");
+                return "admin/login";
             }
 
+            Map<String, Object> stats = statistiquesService.getToutesLesStatistiques();
+            List<AssignationTache> taches = assignationTacheRepository.findByEmployes(acc.getEmployes());
+
+            model.addAttribute("statistics", stats);
+            model.addAttribute("taches", taches);
+            model.addAttribute("assignationTacheStatuses", 
+    new String[] {"En attente", "En cours", "Terminée", "Annulée"});
+            // Ajoute aussi la liste des statuts pour la modal
+            model.addAttribute("status", AssignationTache.theStatus);
             return "admin/home";
+
         } catch (Exception e) {
-            model.addAttribute("error", "Erreur lors du chargement des données: " + e.getMessage());
+            model.addAttribute("error", "Erreur lors du chargement des statistiques : " + e.getMessage());
             return "admin/home";
         }
     }
