@@ -24,7 +24,7 @@ public class Employes {
     };
 
     public enum Sexe {
-        Masculin, Feminin, Autre
+        M, F
     }
 
     @Id
@@ -44,10 +44,7 @@ public class Employes {
     private String telephone;
     private String mdp;
     private String adresse;
-
-    @Column(name = "poste")  // Correction ici
     private String post;
-
     @Column(nullable = false)
     private LocalDate date_embauche;
     @Column(nullable = false)
@@ -61,11 +58,6 @@ public class Employes {
 
     @OneToMany(mappedBy = "employes")
     private List<AssignationTache> assignationTaches = new ArrayList<>();
-
-    @OneToMany(mappedBy = "employes")
-    private List<Acces> acces = new ArrayList<>();
-
-    // getters et setters...
 
     public Long getId_employe() {
         return id_employe;
@@ -139,44 +131,44 @@ public class Employes {
         this.post = post;
     }
 
-    public LocalDate getDate_embauche() {
-        return date_embauche;
-    }
-
     public void setDate_embauche(LocalDate date_embauche) {
         this.date_embauche = date_embauche;
-    }
-
-    public LocalDate getDate_fin_embauche() {
-        return date_fin_embauche;
     }
 
     public void setDate_fin_embauche(LocalDate date_fin_embauche) {
         this.date_fin_embauche = date_fin_embauche;
     }
 
-    public BigDecimal getSalaire() {
-        return salaire;
-    }
-
     public void setSalaire(BigDecimal salaire) {
         this.salaire = salaire;
-    }
-
-    public Mode_paiement getMode_paiement() {
-        return mode_paiement;
     }
 
     public void setMode_paiement(Mode_paiement mode_paiement) {
         this.mode_paiement = mode_paiement;
     }
 
-    public String getImage() {
-        return image;
-    }
-
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public LocalDate getDate_embauche() {
+        return date_embauche;
+    }
+
+    public LocalDate getDate_fin_embauche() {
+        return date_fin_embauche;
+    }
+
+    public BigDecimal getSalaire() {
+        return salaire;
+    }
+
+    public Mode_paiement getMode_paiement() {
+        return mode_paiement;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public Sexe getSexe() {
@@ -194,4 +186,5 @@ public class Employes {
     public void setAssignationTaches(List<AssignationTache> assignationTaches) {
         this.assignationTaches = assignationTaches;
     }
+
 }
