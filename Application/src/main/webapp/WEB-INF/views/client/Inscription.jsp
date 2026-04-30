@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Lokaly</title>
+  <title>Library</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/feather/feather.css">
   <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/ti-icons/css/themify-icons.css">
@@ -27,14 +27,13 @@
           <div class="col-lg-4 mx-auto">
             <div class="auth-form-light text-left py-5 px-4 px-sm-5">
               <div class="brand-logo">
-                <a class="navbar-brand brand-logo mr-5" href="/produits_liste"><img src="images/lokaly.png" class="mr-2"
-                    alt="logo" /></a>
+                <a class="navbar-brand brand-logo mr-5" href="/produits_liste"><img src="images/lokaly.png" class="mr-2" alt="logo" /></a>
               </div>
               <h4>Votre lien direct avec le frais local commence ici.</h4>
               <h6 class="font-weight-light">Remplir ces informations pour l'inscription des clients</h6>
               <form class="pt-3" method="post" action="/inscription-client" enctype="multipart/form-data">
                 <div class="form-group">
-                  <input type="text" class="form-control form-control-lg" name="nom"  placeholder="Nom" required>
+                  <input type="text" class="form-control form-control-lg" name="nom" placeholder="Nom" required>
                 </div>
                 <div class="form-group">
                   <input type="text" class="form-control form-control-lg" name="prenoms" placeholder="Prenoms" required>
@@ -48,7 +47,6 @@
                     <option value="">Sexe</option>
                     <option value="M">Masculin</option>
                     <option value="F">Feminin</option>
-                    <option value="A">Autre</option>
                   </select>
                 </div>
                 <div class="form-group">
@@ -65,16 +63,16 @@
                   <input type="password" class="form-control form-control-lg" name="mdp" placeholder="Mot de passe"
                     required>
                 </div>
+                <input type="file" name="image" class="file-upload-default">
+
                 <div class="form-group">
                   <input type="file" name="image" class="file-upload-default">
-                  <div class="input-group">
-                    <input type="file" id="fileInput" style="display: none;">
+                  <!--<div class="input-group col-xs-12">
                     <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
                     <span class="input-group-append">
-                      <button class="file-upload-browse btn btn-primary" type="button"
-                        onclick="document.getElementById('fileInput').click()">Upload</button>
+                      <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
                     </span>
-                  </div>
+                  </div>-->
                   <div class="my-2 d-flex justify-content-between align-items-center">
                     <p class="text-danger">
                       <% String erreur=(String) session.getAttribute("error-client"); if (erreur !=null) { %>
@@ -117,7 +115,6 @@
   <script src="${pageContext.request.contextPath}/js/template.js"></script>
   <script src="${pageContext.request.contextPath}/js/settings.js"></script>
   <script src="${pageContext.request.contextPath}/js/todolist.js"></script>
-  <script src="${pageContext.request.contextPath}/js/script.js"></script>
   <!-- endinject -->
 </body>
 
