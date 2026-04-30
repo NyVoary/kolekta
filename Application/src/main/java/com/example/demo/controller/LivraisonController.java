@@ -64,11 +64,11 @@ public class LivraisonController {
         commande.setEmailLivraison(emailLivraison);
 
         // Create livraison and set the commande relationship
-        Livraison livraison = new Livraison();
-        livraison.setDateLivraison(dateLivraison);
-        livraison.setCommande(commande); // This line was missing!
+        // Livraison livraison = new Livraison();
+        // livraison.setDateLivraison(dateLivraison);
+        // livraison.setCommande(commande); // This line was missing!
 
-        livraisonService.update(id, livraison, commande);
+        // livraisonService.update(id, livraison, commande);
 
         model.addAttribute("message", "Livraison enregistrée avec succès !");
         return "client/panier";

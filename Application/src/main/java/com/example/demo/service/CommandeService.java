@@ -54,7 +54,7 @@ public class CommandeService {
         commande.setClient(client);
         commande.setDateCommande(LocalDate.now());
         commande.setFraisLivraison(fraisLivraison);
-        commande.setMontantTotal(montantTotal);
+        commande.setMontantTotal(montantTTC);
         commande.setAdresseLivraison(client.getAdresse());
         commande.setVilleLivraison("Antananarivo");
         commande.setTelephoneLivraison(client.getTelephone());
@@ -136,7 +136,7 @@ public class CommandeService {
             dto.setEmailLivraison(commande.getEmailLivraison());
             dto.setClientNom(client.getNom() + " " + client.getPrenoms());
             dto.setStatut(statut);
-
+            dto.setCommandeProduits(commandeProduitsRepository.findByCommandeId(dto.getIdCommande()));
             commandeDTOs.add(dto);
         }
         return commandeDTOs;

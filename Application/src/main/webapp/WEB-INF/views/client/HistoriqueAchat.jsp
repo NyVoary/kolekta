@@ -1,5 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+  java.time.LocalDate now = java.time.LocalDate.now();
+  java.time.LocalDate nextMonth = now.plusMonths(1);
+  request.setAttribute("dateDebut", now.toString());
+  request.setAttribute("dateFin", nextMonth.toString());
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,13 +106,13 @@
     <form method="get" action="/historique-achat" class="filter-form">
         <div class="filter-grid">
             <div class="form-group">
-                <label for="dateDebut">Date début</label>
-                <input type="date" id="dateDebut" name="dateDebut" class="form-control" value="${dateDebut}" />
-            </div>
-            <div class="form-group">
-                <label for="dateFin">Date fin</label>
-                <input type="date" id="dateFin" name="dateFin" class="form-control" value="${dateFin}" />
-            </div>
+            <label for="dateDebut">Date début</label>
+            <input type="date" id="dateDebut" name="dateDebut" class="form-control" value="${dateDebut}" />
+          </div>
+          <div class="form-group">
+            <label for="dateFin">Date fin</label>
+            <input type="date" id="dateFin" name="dateFin" class="form-control" value="${dateFin}" />
+          </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">
                     <i class="mdi mdi-filter-variant"></i> Filtrer
