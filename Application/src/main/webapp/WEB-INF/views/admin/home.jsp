@@ -2,6 +2,11 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="includes/head.jsp" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page import="java.util.List"%>
+<%@page import="com.example.demo.entity.AssignationsTaches"%>
+<%@page import="com.example.demo.entity.StatusTaches"%>
+<%@page import="java.time.LocalDate"%>
+<%@page import="java.time.format.DateTimeFormatter"%>
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
 <link rel="stylesheet" href="/css/barChart.css">
 
@@ -43,37 +48,162 @@
           <div class="col-md-7 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
-                  <p class="card-title mb-0">Tâches à faire pour:  <strong>${acces.nomUtilisateur}</strong>/ date now()</p>
+                  <p class="card-title mb-0">Tâches à faire pour: <strong>${acces.nomUtilisateur}</strong> / <%= LocalDate.now() %></p>
                   <div class="table-responsive">
                     <table class="table table-striped table-borderless">
                       <thead>
-                        <tr>
-                          <th>Tâche et description</th>
-                          <th>Durée</th>
-                          <th>Date</th>
-                          <th>Importance</th>
-                          <th>Status</th>
-                        </tr>
+                          <tr>
+                              <th>Tâche et description</th>
+                              <th>Durée</th>
+                              <th>Date</th>
+                              <th>Importance</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                          </tr>
                       </thead>
                       <tbody>
-                      <%
-                        for (int i = 0; i <= 3; i++) {
-                        %>
-                        <tr>
-                          <td>Tâche 1: blabla description</td>
-                          <td class="font-weight-bold">36min</td>
-                          <td>21min</td>
-                          <td>haute</td>
-                          <td class="font-weight-medium">
-                            <div class="badge badge-success">Completed</div>
-                          </td>
-                        </tr>
-                        <%
-                        }
-                        %>
+                          <%
+                          List<AssignationsTaches> taches = (List<AssignationsTaches>) request.getAttribute("taches");
+                          if (taches != null && !taches.isEmpty()) {
+                              for (AssignationsTaches tache : taches) {
+                          %>
+                          <tr>
+                              <td>
+                                  <strong><%= tache.getTitre() %></strong><br>
+                                  <small class="text-muted"><%= tache.getDescription() != null ? tache.getDescription() : "" %></small>
+                              </td>
+                              <td class="font-weight-bold">
+                                  <%= tache.getDateDebut().toLocalTime() %> - <%= tache.getDateFin().toLocalTime() %>
+                              </td>
+                              <td>
+                                  <%= tache.getDateDebut().toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) %>
+                              </td>
+                              <td>
+                                  <%
+                                  String prioriteLibelle = tache.getPriorite() != null ? tache.getPriorite().getLibelle() : "";
+                                  String prioriteBadgeClass = "";
+                                  if (prioriteLibelle != null) {
+                                      switch(prioriteLibelle.toLowerCase()) {
+                                          case "urgente": 
+                                              prioriteBadgeClass = "badge-danger"; 
+                                              break;
+                                          case "haute": 
+                                              prioriteBadgeClass = "badge-warning"; 
+                                              break;
+                                          case "moyenne": 
+                                              prioriteBadgeClass = "badge-info"; 
+                                              break;
+                                          case "basse": 
+                                              prioriteBadgeClass = "badge-secondary"; 
+                                              break;
+                                          default:
+                                              prioriteBadgeClass = "badge-light";
+                                      }
+                                  }
+                                  %>
+                                  <span class="badge <%= prioriteBadgeClass %>">
+                                      <%= prioriteLibelle %>
+                                  </span>
+                              </td>
+                              <td class="font-weight-medium">
+                                  <%
+                                  String statutLibelle = tache.getStatus() != null ? tache.getStatus().getLibelle() : "";
+                                  String statutBadgeClass = "";
+                                  if (statutLibelle != null) {
+                                      switch(statutLibelle.toLowerCase()) {
+                                          case "en cours": 
+                                              statutBadgeClass = "badge-primary";
+                                              break;
+                                          case "en attente": 
+                                              statutBadgeClass = "badge-light";
+                                              break;
+                                          case "terminée": 
+                                          case "termine": 
+                                              statutBadgeClass = "badge-success";
+                                              break;
+                                          case "annulée": 
+                                          case "annule": 
+                                              statutBadgeClass = "badge-dark";
+                                              break;
+                                          default:
+                                              statutBadgeClass = "badge-secondary";
+                                      }
+                                  }
+                                  %>
+                                  <span class="badge <%= statutBadgeClass %>">
+                                      <%= statutLibelle %>
+                                  </span>
+                              </td>
+                              <td>
+                                  <button class="btn btn-sm btn-outline-primary" 
+                                          data-toggle="modal" 
+                                          data-target="#statusModal"
+                                          data-tache-id="<%= tache.getIdTache() %>"
+                                          data-current-status="<%= tache.getStatus() != null ? tache.getStatus().getIdStatus() : "" %>">
+                                      Modifier
+                                  </button>
+                              </td>
+                          </tr>
+                          <%
+                              }
+                          } else {
+                          %>
+                          <tr>
+                              <td colspan="6" class="text-center text-muted">Aucune tâche prévue pour aujourd'hui</td>
+                          </tr>
+                          <%
+                          }
+                          %>
                       </tbody>
-                    </table>
+                  </table>
                   </div>
+              </div>
+              
+              <!-- Modal pour changer le statut -->
+              <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="statusModalLabel">Modifier le statut</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/admin/changer-statut" method="POST" id="changerStatutForm">
+                            <div class="modal-body">
+                                <input type="hidden" id="tacheId" name="tacheId">
+                                <input type="hidden" id="ancienStatusId" name="ancienStatusId">
+                                <input type="hidden" name="modifieParId" value="${acces.idEmploye}">
+                                
+                                <div class="form-group">
+                                    <label for="nouveauStatutId">Nouveau statut:</label>
+                                    <select class="form-control" id="nouveauStatutId" name="nouveauStatutId" required>
+                                        <% 
+                                        List<StatusTaches> statusList = (List<StatusTaches>) request.getAttribute("status");
+                                        if (statusList != null && !statusList.isEmpty()) {
+                                            for (StatusTaches status : statusList) { 
+                                        %>
+                                            <option value="<%= status.getIdStatus() %>"><%= status.getLibelle() %></option>
+                                        <% 
+                                            }
+                                        } else { 
+                                        %>
+                                            <option value="">Aucun statut disponible</option>
+                                        <% 
+                                        } 
+                                        %>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+              </div>
                 </div>
               </div>
             </div>
@@ -120,6 +250,33 @@
   </div>
   <!-- Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+              
+  <script>
+    // Initialisation du modal de changement de statut
+    $('#statusModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var tacheId = button.data('tache-id');
+        var currentStatusId = button.data('current-status');
+        
+        $('#tacheId').val(tacheId);
+        $('#ancienStatusId').val(currentStatusId);
+        $('#nouveauStatutId').val(currentStatusId);
+    });
+
+    // Affichage des notifications
+    <c:if test="${not empty success}">
+        toastr.success('${success}');
+    </c:if>
+    <c:if test="${not empty error}">
+        toastr.error('${error}');
+    </c:if>
+
+    // Scripts existants pour les graphiques...
+    document.addEventListener('DOMContentLoaded', function() {
+      // Vos scripts de graphiques existants...
+    });
+  </script>
   
   <script>
     document.addEventListener('DOMContentLoaded', function() {
