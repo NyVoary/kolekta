@@ -43,8 +43,8 @@
                                       <td>${employe.sexe}</td>
                                       <td>${employe.salaire}</td>
                                       <td>
-                                        <a style="margin-right: 20px" class="btn btn-success btn-rounded btn-fw" href="/admin/employes/update/${employe.id_employe}">Update</a>
-                                        <a class="btn btn-danger btn-rounded btn-fw" href="/admin/employes/remove/${employe.id_employe}">Remove</a>
+                                        <a style="margin-right: 20px" class="btn btn-success btn-rounded btn-fw" href="/admin/employes/update/${employe.id_employe}">Editer</a>
+                                        <a class="btn btn-danger btn-rounded btn-fw" href="/admin/employes/remove/${employe.id_employe}">Supprimer</a>
                                       </td>
                                     </tr>
                                 </c:forEach>

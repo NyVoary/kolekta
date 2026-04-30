@@ -30,7 +30,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Nom</label>
                                 <div class="col-sm-9">
-                                  <input type="text" name="nom" placeholder="Ex. Jhon" value="Jean" class="form-control">
+                                  <input type="text" name="nom" placeholder="Ex. Jhon" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -38,7 +38,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Prénom</label>
                                 <div class="col-sm-9">
-                                  <input type="text" name="prenoms" placeholder="Ex. Doe" value="Bapdiste" class="form-control">
+                                  <input type="text" name="prenoms" placeholder="Ex. Doe" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -62,7 +62,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Date Naissance</label>
                                 <div class="col-sm-9">
-                                  <input class="form-control" name="dtn" value="2025-10-10" type="date">
+                                  <input class="form-control" name="dtn" type="date">
                                 </div>
                               </div>
                             </div>
@@ -72,7 +72,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Email</label>
                                 <div class="col-sm-9">
-                                  <input class="form-control" name="email" value="example@gmail.com" placeholder="Ex. JhonDoe@gmail.com" type="mail">
+                                  <input class="form-control" name="email" placeholder="Ex. JhonDoe@gmail.com" type="mail">
                                 </div>
                               </div>
                             </div>
@@ -80,7 +80,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Téléphone</label>
                                 <div class="col-sm-9">
-                                  <input class="form-control" name="telephone" value="0349012020" placeholder="Ex. +261340000000">
+                                  <input class="form-control" name="telephone" placeholder="Ex. +261340000000">
                                 </div>
                               </div>
                             </div>
@@ -90,7 +90,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Mot de Passe</label>
                                 <div class="col-sm-9">
-                                  <input type="text" name="mdp" value="mdp123" placeholder="Ex. mpd180" class="form-control">
+                                  <input type="text" name="mdp" placeholder="Ex. mpd180" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -98,7 +98,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Adresse</label>
                                 <div class="col-sm-9">
-                                  <input type="text" name="adresse" value="LOT FA 61 Tananarivo" placeholder="Ex. Lot IA 10 Analakely" class="form-control">
+                                  <input type="text" name="adresse" placeholder="Ex. Lot IA 10 Analakely" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -108,7 +108,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Post</label>
                                 <div class="col-sm-9">
-                                  <input type="text" name="post" value="Baba" placeholder="Ex. PostMalone" class="form-control">
+                                  <input type="text" name="post" placeholder="Ex. PostMalone" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -116,7 +116,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Salaire</label>
                                 <div class="col-sm-9">
-                                  <input type="number" name="salaire" value="1000" placeholder="Ex. 5000" class="form-control">
+                                  <input type="number" name="salaire" placeholder="Ex. 5000" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -126,7 +126,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Date Embauche</label>
                                 <div class="col-sm-9">
-                                  <input type="date" name="date_embauche" value="2025-10-10" class="form-control">
+                                  <input type="date" name="date_embauche" class="form-control">
                                 </div>
                               </div>
                             </div>
@@ -134,7 +134,7 @@
                               <div class="form-group row">
                                 <label class="col-sm-3 col-form-label">Date Fin Embauche</label>
                                 <div class="col-sm-9">
-                                  <input type="date" name="date_fin_embauche" value="2025-10-10" class="form-control">
+                                  <input type="date" name="date_fin_embauche" class="form-control">
                                 </div>
                               </div>
                             </div>
