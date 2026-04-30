@@ -52,6 +52,10 @@ Thumbs.db
 # Ignorer les fichiers compilés
 Application/target/
 
+# Schéma et données SQL générés (consolidés depuis db/)
+db/schema.sql
+db/data.sql
+
 # Ignorer les fichiers de configuration sensibles
 Application/src/main/resources/application.properties
 /**/uploads
