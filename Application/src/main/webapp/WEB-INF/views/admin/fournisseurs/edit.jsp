@@ -9,6 +9,7 @@
       <div class="main-panel">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h1 class="h3">Modifier un fournisseur</h1>
+          <a href="/admin/fournisseurs/liste" class="btn btn-outline-secondary rounded-pill shadow">Retour à la liste</a>
         </div>
         <div class="card p-4 shadow-lg bg-light" style="max-width:900px;width:95vw;margin:auto;border-radius:2rem;">
           <form action="/admin/fournisseurs/update" method="post" autocomplete="off" aria-label="Formulaire de modification fournisseur">

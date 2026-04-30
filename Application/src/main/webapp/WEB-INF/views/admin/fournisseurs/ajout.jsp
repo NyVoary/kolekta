@@ -9,6 +9,7 @@
       <div class="main-panel">
         <div class="d-flex justify-content-between align-items-center mb-4">
           <h1 class="h3">Ajouter un fournisseur</h1>
+          <a href="/admin/fournisseurs/liste" class="btn btn-outline-secondary rounded-pill shadow">Retour à la liste</a>
         </div>
         <div class="card p-4 shadow-lg bg-light" style="max-width:900px;width:95vw;margin:auto;border-radius:2rem;">
           <form action="/admin/fournisseurs/ajout" method="post" autocomplete="off" aria-label="Formulaire d'ajout fournisseur">
@@ -52,7 +53,7 @@
               </div>
               <small id="imgHelp" class="form-text text-muted">Nom du fichier (ex : logo.png)</small>
             </div>
-            <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill py-3 shadow">Ajouter le fournisseur</button>
+            <button type="submit" class="btn btn-gradient-primary btn-lg w-100 rounded-pill py-3 shadow">Ajouter le fournisseur</button>
             <c:if test="${not empty success}">
               <div class="alert alert-success mt-3 text-center" role="alert">${success}</div>
             </c:if>

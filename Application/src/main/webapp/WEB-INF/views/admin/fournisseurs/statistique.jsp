@@ -69,11 +69,6 @@
               text-align: left;
               display: block;
             }
-            .stat-card .center-list {
-              text-align: center;
-              padding-left: 0;
-              margin-left: 0;
-            }
             .stat-row {
               margin-left: 0;
               margin-right: 0;
@@ -95,19 +90,11 @@
               </div>
             </div>
             <div class="col-12 col-md-3 mb-3 p-0">
-              <div class="card stat-card h-100 p-3" style="background: #f0f7fa;">
-                <h6>Moyenne produits/fournisseur</h6>
-                <h2 class="text-info">
-                  <fmt:formatNumber value="${moyenneProduits}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
-                </h2>
-              </div>
-            </div>
-            <div class="col-12 col-md-3 mb-3 p-0">
               <div class="card stat-card h-100 p-3" style="background: #f6fff8;">
                 <h6>Nouveaux fournisseurs</h6>
                 <h2 class="text-success">${nouveauxFournisseurs.size()}</h2>
                 <c:if test="${not empty nouveauxFournisseurs}">
-                  <ul class="list-unstyled small mt-2 center-list">
+                  <ul class="list-unstyled small mt-2">
                     <c:forEach var="f" items="${nouveauxFournisseurs}">
                       <li><i class="ti-user"></i> ${f.nom}</li>
                     </c:forEach>
@@ -116,10 +103,18 @@
               </div>
             </div>
             <div class="col-12 col-md-3 mb-3 p-0">
+              <div class="card stat-card h-100 p-3" style="background: #f0f7fa;">
+                <h6>Moyenne produits/fournisseur</h6>
+                <h2 class="text-info">
+                  <fmt:formatNumber value="${moyenneProduits}" type="number" minFractionDigits="2" maxFractionDigits="2"/>
+                </h2>
+              </div>
+            </div>
+            <div class="col-12 col-md-3 mb-3 p-0">
               <div class="card stat-card h-100 p-3" style="background: #fffaf0;">
                 <h6>Top fournisseurs (ventes)</h6>
                 <c:if test="${not empty topFournisseurs}">
-                  <ol class="list-unstyled mt-2 center-list">
+                  <ol class="list-unstyled mt-2">
                     <c:forEach var="tf" items="${topFournisseurs}">
                       <li><i class="ti-crown text-warning"></i> Fournisseur #${tf.idFournisseur} - ${tf.totalVendus} ventes</li>
                     </c:forEach>
