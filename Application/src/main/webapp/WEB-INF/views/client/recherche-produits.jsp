@@ -5,155 +5,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lokaly</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/feather/feather.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/ti-icons/css/themify-icons.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/vertical-layout-light/style.css">
-  <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/produits.css" />
+    <title>Library</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/lo.png" />
+    <link rel="stylesheet" href="../../static/css/style-home-search-client.css">
+    </head>
 </head>
 
 <body>
-
-    <%-- <%@ include file="./inc/css.jsp"  %>
-    <%@ include file="./inc/header.jsp" %> --%>
     <div class="container-scroller">
-    <%@ include file="includes/navbar.jsp" %>
-        <!-- Messages de notification -->
-        <c:if test="${not empty message}">
-            <div class="message-box success" id="messageBox">
-                <span class="message-text">${message}</span>
-                <button class="close-btn" onclick="fermerMessage()">&times;</button>
-            </div>
-        </c:if>
-
-        <c:if test="${not empty erreur}">
-            <div class="message-box error" id="messageBox">
-                <span class="message-text">${erreur}</span>
-                <button class="close-btn" onclick="fermerMessage()">&times;</button>
-            </div>
-        </c:if>
-
-            <div class="navbar-menu-wrapper d-flex align-items-center" style="margin-top: 10vh;">
-                <!-- Partie gauche -->
-                <div class="d-flex"></div>
-
-                <!-- Partie centrale -->
-                <div class="d-flex justify-content-center flex-grow-1">
-                    <form method="get" action="/recherche_produits" class="form-inline">
-                        <!-- Nom du produit -->
-                        <ul class="navbar-nav mr-lg-2">
-                            <li class="nav-item nav-search d-none d-lg-block">
-                                <div class="input-group">
-                                    <input
-                                        type="text"
-                                        class="form-control"
-                                        id="search"
-                                        name="search"
-                                        placeholder="Nom du produit"
-                                       value="${search != null ? search : ''}"
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-
-                        <div class="input-group mr-2">
-                            <select class="form-control" name="categorie" id="categorie">
-                                <option value="">Categorie</option>
-                                <c:forEach var="cat" items="${categories}">
-                                <option value="${cat.libelle}" ${categorie == cat.libelle ? 'selected' : ''}>
-                                    ${cat.libelle}
-                                </option>
-                                </c:forEach>
-                            </select>
-                        </div>
-
-                        <!-- Prix minimal -->
-                        <ul class="navbar-nav mr-lg-2">
-                            <li class="nav-item nav-search d-none d-lg-block">
-                                <div class="input-group">
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        name="prixMin"
-                                        placeholder="Prix minimal"
-                                        step="0.01"
-                                        value="${prixMin != null ? prixMin : ''}"
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-
-                        <!-- Prix maximal -->
-                        <ul class="navbar-nav mr-lg-2">
-                            <li class="nav-item nav-search d-none d-lg-block">
-                                <div class="input-group">
-                                    <input
-                                        type="number"
-                                        class="form-control"
-                                        name="prixMax"
-                                        placeholder="Prix maximal"
-                                        step="0.01"
-                                        value="${prixMax != null ? prixMax : ''}"
-                                    >
-                                </div>
-                            </li>
-                        </ul>
-
-                        <!-- Bouton de recherche -->
-                        <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
-                            <i class="ti-search text-info"></i>                          
-                        </button>
-                    </form> 
-                </div>
-
-                <!-- Partie droite -->
-                <div class="d-flex"></div>
-            </div>
+        <%@ include file="includes/navbar.jsp" %>
 
         <div class="container-fluid page-body-wrapper">
-            <!-- partial:partials/_sidebar.html -->
             <div class="main-panel">
                 <div class="content-wrapper">
-                    <h1>Liste des produits</h1>
+                    <!-- Skydash style page header -->
+                    <div class="page-header">
+                        <div>
+                            <h3 class="page-title">
+                                <span class="page-title-icon bg-gradient-primary text-white">
+                                    <i class="ti-package"></i>
+                                </span>
+                                Liste des produits
+                            </h3>
+                        </div>
+                    </div>
 
-                    <c:if test="${empty produits}">
-                        <p>Aucun produit disponible.</p>
+                    <!-- Skydash style notifications -->
+                    <c:if test="${not empty message}">
+                        <div class="alert alert-success alert-dismissible" role="alert" id="messageBox">
+                            <i class="ti-check-box"></i>
+                            ${message}
+                            <button type="button" class="btn-close" onclick="fermerMessage()">×</button>
+                        </div>
                     </c:if>
 
-                    <div class="produits-container">
-                        <c:forEach var="produit" items="${produits}">
-                            <div class="produit">
-                                <div class="produit-image">
-                                    <img src="${produit.image}" alt="${produit.nom}" />
-                                </div>
-                                <div class="produit-nom">
-                                    <h2>${produit.nom}</h2>
-                                </div>
-                                <div class="produit-description">
-                                    <p>${produit.description}</p>
-                                </div>
-                                <div class="produit-prix">
-                                    <p><strong>${produit.prixVente}</strong> Ar / ${produit.uniteMesure}</p>
-                                </div>
-                                <div class="produit-formulaire">
-                                    <form method="post" action="/commande/ajouter">
-                                        <input type="hidden" name="produitId" value="${produit.id}" />
-                                        <div class="quantite-controls">
-                                            <button type="button" onclick="changerQuantite(this, -1)">−</button>
-                                            <input type="number" name="quantite" value="1" min="1" />
-                                            <button type="button" onclick="changerQuantite(this, 1)">+</button>
-                                        </div>
-                                        <button type="submit" class="btn btn-success btn-sm">Ajouter au panier</button>
-                                    </form>
+                    <c:if test="${not empty erreur}">
+                        <div class="alert alert-danger alert-dismissible" role="alert" id="messageBox">
+                            <i class="ti-alert"></i>
+                            ${erreur}
+                            <button type="button" class="btn-close" onclick="fermerMessage()">×</button>
+                        </div>
+                    </c:if>
+
+                    <!-- Search bar - Skydash style -->
+                    <div class="search-wrapper">
+                        <form method="get" action="/recherche_produits" class="form-inline">
+                            <!-- Nom du produit -->
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="search"
+                                    name="search"
+                                    placeholder="Nom du produit"
+                                    value="${search != null ? search : ''}"
+                                >
+                            </div>
+
+                            <div class="input-group">
+                                <select class="form-control" name="categorie" id="categorie">
+                                    <option value="">Catégorie</option>
+                                    <c:forEach var="cat" items="${categories}">
+                                    <option value="${cat.libelle}" ${categorie == cat.libelle ? 'selected' : ''}>
+                                        ${cat.libelle}
+                                    </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <!-- Prix minimal -->
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="prixMin"
+                                    placeholder="Prix minimal"
+                                    step="0.01"
+                                    value="${prixMin != null ? prixMin : ''}"
+                                >
+                            </div>
+
+                            <!-- Prix maximal -->
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    name="prixMax"
+                                    placeholder="Prix maximal"
+                                    step="0.01"
+                                    value="${prixMax != null ? prixMax : ''}"
+                                >
+                            </div>
+
+                            <!-- Bouton de recherche -->
+                            <button type="submit" class="btn btn-outline-secondary btn-rounded btn-icon">
+                                <i class="ti-search text-info"></i>                          
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Products section - Skydash style -->
+                    <div class="row">
+                        <div class="col-lg-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                        <i class="ti-shopping-cart"></i>
+                                        Tous les produits
+                                    </h4>
+                                    <p class="card-description">
+                                        Gérer votre inventaire de produits
+                                    </p>
+
+                                    <c:choose>
+                                        <c:when test="${empty produits}">
+                                            <div class="empty-state">
+                                                <i class="ti-package"></i>
+                                                <h5>Aucun produit disponible</h5>
+                                                <p>Ajoutez des produits pour commencer.</p>
+                                            </div>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div class="products-grid">
+                                                <c:forEach var="produit" items="${produits}">
+                                                    <div class="product-card">
+                                                        <div class="product-image">
+                                                            <img src="${produit.image}" alt="${produit.nom}" />
+                                                        </div>
+                                                        <div class="product-content">
+                                                            <h5 class="product-name">${produit.nom}</h5>
+                                                            <p class="product-description">
+                                                                ${produit.description}</p>
+                                                            <div class="product-price">
+                                                                ${produit.prixVente} Ar / ${produit.uniteMesure}
+                                                            </div>
+                                                            <form method="post" action="/commande/ajouter">
+                                                                <input type="hidden" name="produitId"
+                                                                    value="${produit.id}" />
+                                                                <div class="quantity-controls">
+                                                                    <button type="button" class="quantity-btn"
+                                                                        onclick="changerQuantite(this, -1)">
+                                                                        <i class="ti-minus"></i>
+                                                                    </button>
+                                                                    <input type="number" name="quantite"
+                                                                        value="1" min="1"
+                                                                        class="form-control quantity-input" />
+                                                                    <button type="button" class="quantity-btn"
+                                                                        onclick="changerQuantite(this, 1)">
+                                                                        <i class="ti-plus"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <button type="submit"
+                                                                    class="btn btn-success btn-sm w-100">
+                                                                    <i class="ti-shopping-cart"></i>
+                                                                    Ajouter au panier
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </c:forEach>
+                                            </div>
+                                        </c:otherwise>
+                                    </c:choose>
                                 </div>
                             </div>
-                        </c:forEach>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Skydash style footer -->
+                <footer class="footer">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                            Copyright © 2023. Tous droits réservés.
+                        </span>
+                    </div>
+                </footer>
             </div>
         </div>
     </div>
@@ -162,7 +189,8 @@
         function changerQuantite(btn, delta) {
             const input = btn.parentElement.querySelector('input[name="quantite"]');
             let val = parseInt(input.value) || 1;
-            input.value = Math.max(1, val + delta);
+            val = Math.max(1, val + delta);
+            input.value = val;
         }
 
         function fermerMessage() {
@@ -172,13 +200,13 @@
             }
         }
 
-        // Auto-fermeture du message après 5 secondes
-        window.onload = function() {
+        // Auto-hide messages after 5 seconds
+        window.onload = function () {
             const messageBox = document.getElementById('messageBox');
             if (messageBox) {
-                setTimeout(function() {
+                setTimeout(function () {
                     messageBox.style.opacity = '0';
-                    setTimeout(function() {
+                    setTimeout(function () {
                         messageBox.style.display = 'none';
                     }, 300);
                 }, 5000);
