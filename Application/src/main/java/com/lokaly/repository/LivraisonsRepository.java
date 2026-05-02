@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface LivraisonsRepository extends JpaRepository<Livraisons, Long> {
     List<Livraisons> findByCommandeIdCommande(Long idCommande);
-    List<Livraisons> findByStatusCode(String code);
+    List<Livraisons> findByStatusLibelle(String libelle);
 }

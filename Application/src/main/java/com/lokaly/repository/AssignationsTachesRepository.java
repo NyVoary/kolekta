@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface AssignationsTachesRepository extends JpaRepository<AssignationsTaches, Long> {
     List<AssignationsTaches> findByEmployeIdEmploye(Long idEmploye);
-    List<AssignationsTaches> findByStatusTacheCode(String code);
-    List<AssignationsTaches> findByPrioriteCode(String code);
+    List<AssignationsTaches> findByStatusTacheLibelle(String libelle);
+    List<AssignationsTaches> findByPrioriteLibelle(String libelle);
 }

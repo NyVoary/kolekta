@@ -9,5 +9,5 @@ import java.util.Optional;
 public interface CamionsRepository extends JpaRepository<Camions, Long> {
     Optional<Camions> findByImmatriculation(String immatriculation);
     boolean existsByImmatriculation(String immatriculation);
-    List<Camions> findByStatusCode(String code);
+    List<Camions> findByStatusLibelle(String libelle);
 }

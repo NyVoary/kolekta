@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CommandesRepository extends JpaRepository<Commandes, Long> {
     List<Commandes> findByClientIdClient(Long idClient);
-    List<Commandes> findByStatusCode(String code);
+    List<Commandes> findByStatusLibelle(String libelle);
     List<Commandes> findByEmployeIdEmploye(Long idEmploye);
 }

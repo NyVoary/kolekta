@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface AccesRepository extends JpaRepository<Acces, Long> {
-    Optional<Acces> findByLogin(String login);
-    boolean existsByLogin(String login);
+    Optional<Acces> findByNomUtilisateur(String nomUtilisateur);
+    boolean existsByNomUtilisateur(String nomUtilisateur);
 }
