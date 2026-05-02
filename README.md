@@ -2,6 +2,12 @@
 
 Plateforme de gestion pour une entreprise de distribution de produits agricoles malgaches. Elle couvre l'ensemble de la chaîne opérationnelle : gestion des fournisseurs et des stocks, traitement des commandes clients, suivi des livraisons, et supervision des employés.
 
+## Contexte
+
+Ce projet a été développé en groupe dans le cadre du cours de **Gestion de Projet (S4)**, et a fait l'objet d'une mini-soutenance de fin de module.
+
+Après la soutenance, j'ai repris le code pour le restructurer et le nettoyer à ma façon — meilleure organisation des fichiers, schéma de base de données consolidé, assets au bon endroit — afin d'en avoir une version propre qui me ressemble.
+
 ## Fonctionnalités principales
 
 - **Catalogue produits** — fruits et légumes par catégorie, avec disponibilités fournisseur
