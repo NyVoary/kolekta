@@ -64,7 +64,7 @@ public class CamionsController {
 
     @GetMapping("/admin/finir-trajet")
     public String finirAssignationCamion(@RequestParam("id") String id,Model model) throws Exception { 
-       List<VCamionEtat> camions = camionEtatService.getAllCamionsDisponibles(); // ou repository.findAll() 
+        VCamionEtat camions = camionEtatService.findById(Integer.parseInt(id)); // ou repository.findAll() 
         model.addAttribute("camions", camions);
         return "admin/camions/assignation";
     } 

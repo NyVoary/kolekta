@@ -34,4 +34,8 @@ public class AssignationCamionService {
 
         assignationRepo.save(ac);
     }
+
+    public AssignationCamion findById(int id) throws Exception{ 
+        return assignationRepo.findById(id).get(); 
+    }
 }
