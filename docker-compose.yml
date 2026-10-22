@@ -1,0 +1,43 @@
+# Lancement local : cp .env.example .env && docker compose up --build
+# Les variables ${...} sont lues dans le fichier .env à la racine.
+
+name: kolekta
+
+services:
+  db:
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-kolekta}
+      POSTGRES_USER: ${DB_USER:-kolekta}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD est obligatoire (voir .env.example)}
+    volumes:
+      # PostgreSQL 18+ : le volume se monte sur /var/lib/postgresql (et non plus /data)
+      - kolekta-pgdata:/var/lib/postgresql
+    ports:
+      # Exposé seulement sur ta machine, sur 5433 par défaut pour éviter un PostgreSQL local sur 5432
+      - "127.0.0.1:${DB_PORT:-5433}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  backend:
+    build: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Profil "dev" : applique aussi les données de démonstration fictives
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:postgresql://db:5432/${DB_NAME:-kolekta}
+      DB_USER: ${DB_USER:-kolekta}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET est obligatoire (voir .env.example)}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-3600000}
+    ports:
+      - "8080:8080"
+
+volumes:
+  kolekta-pgdata:
