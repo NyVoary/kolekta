@@ -12,11 +12,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.lokaly</groupId>
-    <artifactId>lokaly</artifactId>
+    <groupId>com.kolekta</groupId>
+    <artifactId>kolekta</artifactId>
     <version>1.0.0</version>
-    <name>lokaly</name>
-    <description>Plateforme de distribution de produits agricoles malgaches</description>
+    <name>kolekta</name>
+    <description>Kolekta - API REST de distribution de produits agricoles malgaches</description>
 
     <properties>
         <java.version>17</java.version>
