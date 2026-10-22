@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -31,7 +33,9 @@ public class AuthServiceImpl implements AuthService {
             throw new UnauthorizedException("Identifiants invalides");
         }
 
-        if (acces.getEmploye().getDateFinEmbauche() != null) {
+        // Un employé n'est désactivé que si sa date de fin d'embauche est renseignée ET déjà atteinte
+        LocalDate dateFin = acces.getEmploye().getDateFinEmbauche();
+        if (dateFin != null && !dateFin.isAfter(LocalDate.now())) {
             throw new UnauthorizedException("Compte désactivé");
         }
 
