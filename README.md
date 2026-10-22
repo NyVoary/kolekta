@@ -1,6 +1,6 @@
 # Kolekta
 
-API REST de gestion pour une entreprise de distribution de produits agricoles malgaches. Un frontend Vue est prévu.
+API REST de gestion pour une entreprise de distribution de produits agricoles malgaches, et son frontend Vue (une seule application : espace client sous `/`, espace équipe sous `/admin`).
 
 ## Stack
 
@@ -14,7 +14,7 @@ API REST de gestion pour une entreprise de distribution de produits agricoles ma
 | Validation | Bean Validation |
 | Build | Maven (wrapper inclus) |
 | Conteneurs | Docker, Docker Compose |
-| Frontend | Vue (à venir) |
+| Frontend | Vue 3, TypeScript, Vite, Tailwind CSS 4, Pinia, Vue Router |
 
 ## Modules présents
 
@@ -51,7 +51,11 @@ git show legacy-avant-kolekta:backend/src/main/java/com/kolekta/service/impl/Com
 │       └── db/
 │           ├── migration/           # V1 schéma, V2 données de référence (Flyway)
 │           └── dev-seed/            # données de démonstration fictives (profil dev)
-├── docker-compose.yml               # PostgreSQL + API
+├── frontend/                        # application Vue (Vite + TypeScript + Tailwind)
+│   ├── Dockerfile                   # build Vite puis nginx
+│   ├── nginx.conf
+│   └── src/                         # api/, stores/, router/, layouts/, views/, components/
+├── docker-compose.yml               # PostgreSQL + API + frontend
 ├── .env.example                     # modèle de configuration (à copier en .env)
 └── README.md
 ```
@@ -66,11 +70,11 @@ Prérequis : Docker et Docker Compose.
 # 1. Créer ta configuration locale, puis remplacer DB_PASSWORD et JWT_SECRET
 cp .env.example .env
 
-# 2. Construire et démarrer PostgreSQL + l'API
+# 2. Construire et démarrer PostgreSQL, l'API et le site
 docker compose up --build
 ```
 
-L'API est disponible sur `http://localhost:8080`. Au premier démarrage, Flyway crée le schéma, insère les données de référence, puis (profil `dev`, activé par le compose) les données de démonstration.
+Le site est disponible sur `http://localhost:3000` (port réglable avec `FRONTEND_PORT`) et relaie `/api` vers le backend. L'API est aussi directement disponible sur `http://localhost:8080`. Au premier démarrage, Flyway crée le schéma, insère les données de référence, puis (profil `dev`, activé par le compose) les données de démonstration.
 
 Pour tout arrêter : `docker compose down`. Pour repartir d'une base vide : `docker compose down -v` (supprime aussi le volume de la base). C'est nécessaire si une migration a changé depuis le dernier démarrage.
 
@@ -125,6 +129,39 @@ curl -X POST http://localhost:8080/api/auth/client/login \
 # Appel protégé : sans jeton -> 403, avec le jeton d'un admin/gerant/rh -> 200
 curl http://localhost:8080/api/employes -H "Authorization: Bearer <token>"
 ```
+
+## Frontend
+
+Une seule application Vue 3 (Composition API, `<script setup lang="ts">`) : l'espace client est servi sous `/`, l'espace équipe sous `/admin`. Pour l'instant ce n'est qu'un squelette : pages provisoires, layouts, routeur avec garde de navigation par rôle, store d'authentification et client HTTP.
+
+Stack : Vite, TypeScript, Vue Router, Pinia, Tailwind CSS 4 (charte graphique dans `src/assets/main.css`), Axios, Vitest + Vue Test Utils, ESLint + Prettier. Prérequis : Node 22.13 ou plus récent (Node 24 LTS recommandé).
+
+```bash
+cd frontend
+npm install        # installer les dépendances
+npm run dev        # serveur de développement sur http://localhost:5173
+npm run test       # tests unitaires (Vitest)
+npm run lint       # ESLint
+npm run format     # Prettier
+npm run build      # vérification des types puis build de production dans dist/
+```
+
+En développement, Vite relaie `/api` vers `http://localhost:8080` : lance donc le backend (par exemple avec `docker compose up db backend`) pour que la connexion fonctionne, sans aucun problème de CORS. En Docker, c'est nginx qui joue ce rôle.
+
+### Charte graphique
+
+| Token | Couleur | Usage |
+| --- | --- | --- |
+| `vert` | `#2F7D46` | boutons (texte blanc), logo |
+| `foret` | `#1E5A31` | titres, liens |
+| `terracotta` | `#D97B4F` | fonds d'accent (texte encre) |
+| `ocre` | `#E3A857` | fonds d'accent (texte encre) |
+| `creme` | `#F3EEE1` | fond de page |
+| `encre` | `#16281D` | texte |
+| `rouge` | `#E24B4A` | erreurs (liseré, icône) |
+| `gris` | `#55645A` | texte secondaire |
+
+Polices : Manrope (titres) et Inter (texte), installées avec les paquets `@fontsource` (aucun CDN). Le vert sur crème n'atteint pas 4,5:1 (4,4:1) : il n'est donc pas utilisé pour du texte courant ; terracotta, ocre et rouge ne servent jamais de couleur de texte sur fond crème.
 
 ## Base de données
 

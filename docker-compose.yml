@@ -39,5 +39,13 @@ services:
     ports:
       - "8080:8080"
 
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      # Le site (et /api, relayé vers le backend par nginx) : http://localhost:3000 par défaut
+      - "${FRONTEND_PORT:-3000}:8080"
+
 volumes:
   kolekta-pgdata:

@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+.env
+.env.*
+*.log
+.eslintcache
+*.tsbuildinfo
+Dockerfile
+.dockerignore
+.git
+.vscode
+.idea
