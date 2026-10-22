@@ -1,0 +1,28 @@
+# Dépendances et sorties de build
+node_modules
+dist
+dist-ssr
+coverage
+
+# Configuration locale (jamais versionnée)
+.env.local
+.env.*.local
+*.local
+
+# Journaux
+logs
+*.log
+npm-debug.log*
+
+# Caches et fichiers générés
+.eslintcache
+*.tsbuildinfo
+*.timestamp-*-*.mjs
+
+# Éditeurs
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.sw?
+.DS_Store
