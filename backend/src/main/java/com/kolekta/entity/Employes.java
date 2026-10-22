@@ -43,7 +43,7 @@ public class Employes {
     @Column(name = "date_embauche", nullable = false)
     private LocalDate dateEmbauche;
 
-    @Column(name = "date_fin_embauche", nullable = false)
+    @Column(name = "date_fin_embauche")
     private LocalDate dateFinEmbauche;
 
     @Column(nullable = false, precision = 10, scale = 2)
