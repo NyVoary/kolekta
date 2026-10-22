@@ -52,12 +52,8 @@ Thumbs.db
 # Ignorer les fichiers compilés
 Application/target/
 
-# Schéma et données SQL générés (consolidés depuis db/)
-db/schema.sql
 db/data.sql
 
-# Ignorer les fichiers de configuration sensibles
-Application/src/main/resources/application.properties
 /**/uploads
 
 .vscode/*
@@ -65,10 +61,6 @@ Application/src/main/resources/application.properties
 .env
 .env.*
 !.env.example
-
-# Local Spring configuration (keep the example)
-application.properties
-!application-example.properties
 
 # Keep the Maven wrapper
 !maven-wrapper.jar
