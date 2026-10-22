@@ -1,0 +1,61 @@
+/* Polices servies par le paquet npm (aucun CDN) */
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/manrope/700.css';
+@import '@fontsource/manrope/800.css';
+
+@import 'tailwindcss';
+
+/*
+ * Charte graphique Kolekta : tokens Tailwind (v4 : la configuration vit dans le CSS).
+ * Génère les classes bg-vert, text-foret, border-terracotta, font-heading, etc.
+ *
+ * Contrastes mesurés (WCAG, minimum 4,5:1 pour le texte courant) :
+ *   encre sur crème 13,4:1 · gris sur crème 5,4:1 · forêt sur crème 7,1:1
+ *   blanc sur vert 5,1:1 · blanc sur forêt 8,2:1 · encre sur ocre 7,4:1 · encre sur terracotta 5,1:1
+ * À ne PAS utiliser pour du texte courant :
+ *   vert sur crème 4,4:1 (titres et liens : utiliser forêt), terracotta/ocre sur crème (< 3:1),
+ *   rouge sur crème 3,4:1 (erreurs : texte encre avec liseré ou icône rouge).
+ */
+@theme {
+  --color-vert: #2f7d46;
+  --color-foret: #1e5a31;
+  --color-terracotta: #d97b4f;
+  --color-ocre: #e3a857;
+  --color-creme: #f3eee1;
+  --color-encre: #16281d;
+  --color-rouge: #e24b4a;
+  --color-gris: #55645a;
+
+  --font-heading: 'Manrope', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    background-color: var(--color-creme);
+    color: var(--color-encre);
+    font-family: var(--font-sans);
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--color-creme);
+    color: var(--color-encre);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+  }
+
+  /* Focus visible pour la navigation au clavier */
+  :focus-visible {
+    outline: 3px solid var(--color-foret);
+    outline-offset: 2px;
+  }
+}

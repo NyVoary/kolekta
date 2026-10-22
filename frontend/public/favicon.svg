@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" role="img" aria-label="Kolekta">
+  <rect width="28" height="28" rx="6" fill="#F3EEE1" />
+  <g transform="translate(2 1)">
+    <path d="M5 23C5 11 12 5 24 4C24 16 18 23 5 23Z" fill="#2F7D46" />
+    <path d="M5 23C10 17 15 12 20 9" fill="none" stroke="#F3EEE1" stroke-width="1.6" stroke-linecap="round" />
+  </g>
+</svg>
