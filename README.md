@@ -1,71 +1,43 @@
-# Lokaly
+# Kolekta
 
-Plateforme de gestion pour une entreprise de distribution de produits agricoles malgaches. Elle couvre l'ensemble de la chaîne opérationnelle : gestion des fournisseurs et des stocks, traitement des commandes clients, suivi des livraisons, et supervision des employés.
+API REST de gestion pour une entreprise de distribution de produits agricoles malgaches : fournisseurs, produits, commandes, paniers, livraisons (camions) et tâches internes. Un frontend Vue est prévu.
 
-## Contexte
-
-Ce projet a été développé en groupe dans le cadre du cours de **Gestion de Projet (S4)**, et a fait l'objet d'une mini-soutenance de fin de module.
-
-Après la soutenance, j'ai repris le code pour le restructurer et le nettoyer à ma façon — meilleure organisation des fichiers, schéma de base de données consolidé, assets au bon endroit — afin d'en avoir une version propre qui me ressemble.
-
-## Fonctionnalités principales
-
-- **Catalogue produits** — fruits et légumes par catégorie, avec disponibilités fournisseur
-- **Commandes clients** — panier, validation, suivi de statut (en attente → livrée)
-- **Livraisons** — assignation de camions, traçage des tournées (collecte / livraison)
-- **Paiements** — commandes, fournisseurs et transport, avec modes multiples (virement, espèces, mobile money…)
-- **Gestion des employés** — fiches, accès rôlés (admin / employé), historique, salaires
-- **Tâches** — assignation, priorités, suivi de statut pour l'équipe interne
-- **Statistiques** — tableaux de bord pour le directeur
-
-## Stack technique
+## Stack
 
 | Couche | Technologie |
 | --- | --- |
 | Langage | Java 17 |
-| Framework backend | Spring Boot 3.2 (Spring MVC, Spring Data JPA) |
+| Framework | Spring Boot 3.2 (Spring MVC, Spring Data JPA) |
 | Base de données | PostgreSQL |
-| ORM | Hibernate (via JPA) |
-| Mapping DTO | MapStruct |
-| Réduction du boilerplate | Lombok |
-| Validation | Spring Validation (Bean Validation 3) |
-| Vues serveur | JSP (Tomcat Embed Jasper) |
-| Frontend | HTML / CSS / JavaScript (template Skydash) |
-| Build | Maven |
+| Authentification | JWT |
+| Mapping / boilerplate | MapStruct, Lombok |
+| Validation | Bean Validation |
+| Build | Maven (wrapper inclus) |
+| Frontend | Vue (à venir) |
 
-## Structure du projet
+## Structure
 
 ```text
-Lokaly/
-├── Application/          # Code source Spring Boot
-│   └── src/
-│       └── main/
-│           ├── java/     # Controllers, Services, Repositories, Entities, DTOs
-│           └── resources/
-│               ├── static/      # CSS, JS, images (produits & fournisseurs)
-│               └── templates/   # Page d'accueil HTML
-├── db/
-│   ├── schema.sql        # Schéma complet de la base de données
-│   └── data.sql          # Données de référence et seed data
+.
+├── backend/   # API Spring Boot (controllers, services, repositories, entities, DTOs)
+├── db/        # Schéma SQL et données de référence
 └── README.md
 ```
 
-## Mise en place
+## Démarrage
 
-**Prérequis** : Java 17, Maven, PostgreSQL
+Prérequis : Java 17, PostgreSQL.
 
 ```bash
-# 1. Créer la base de données
+# 1. Base de données
 psql -U postgres -f db/schema.sql
-psql -U postgres -d agro2 -f db/data.sql
 
-# 2. Configurer la connexion
-# Copier et remplir Application/src/main/resources/application.properties
-# (spring.datasource.url, username, password)
+# 2. Configuration : copier puis renseigner la connexion et le secret JWT
+cd backend
+cp src/main/resources/application-example.properties src/main/resources/application.properties
 
-# 3. Lancer l'application
-cd Application
-mvn spring-boot:run
+# 3. Lancer l'API
+./mvnw spring-boot:run
 ```
 
-L'application est accessible sur `http://localhost:8080`.
+L'API est disponible sur `http://localhost:8080`.

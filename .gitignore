@@ -61,3 +61,14 @@ Application/src/main/resources/application.properties
 /**/uploads
 
 .vscode/*
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local Spring configuration (keep the example)
+application.properties
+!application-example.properties
+
+# Keep the Maven wrapper
+!maven-wrapper.jar
