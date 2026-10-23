@@ -24,7 +24,8 @@ L'ancien code est conservé sous le tag Git `legacy-avant-kolekta`.
   `methode-projet.md`.
 - Variables d'environnement (`.env.example`) : `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_URL` (hors
   Docker seulement), `DB_PORT` (5433 par défaut), `JWT_SECRET` (obligatoire), `JWT_EXPIRATION`
-  (3600000 ms), `FRONTEND_PORT` (3000). Le frontend est servi sur `localhost:3000`, l'API sur `8080`.
+  (3600000 ms), `CORS_ALLOWED_ORIGINS` (origines autorisées, `http://localhost:5173` par défaut),
+  `FRONTEND_PORT` (3000). Le frontend est servi sur `localhost:3000`, l'API sur `8080`.
 
 ## Règles de travail (obligatoires)
 1. Un ticket = une branche (`feat/...`, `chore/...`) = une pull request. Commits par thème, atomiques.
@@ -71,14 +72,17 @@ L'ancien code est conservé sous le tag Git `legacy-avant-kolekta`.
   États à prévoir sur chaque écran : chargement, succès, erreur, vide.
 
 ## Avancement
-Sprints S0 à S10 : voir `docs/06-plan-sprints.html`. S0 (socle), fusionné dans `main` : S0-1 à S0-6
-(dépôt nettoyé, package `com.kolekta`, versions à jour, Flyway + Docker, squelette frontend, docs).
+Sprints S0 à S10 : voir `docs/06-plan-sprints.html`. S0 (socle) est terminé : S0-1 à S0-7 sont
+fusionnés dans `main`, S0-8 est en cours de PR (branche `feat/s0-8-api-foundation`). Prochain : S1.
 Noyau existant : authentification, employés, clients (module « Accès » seulement ; les autres
-modules seront reconstruits). Comportement actuel de l'API : sans jeton ou sans le bon rôle → 403
-(le 401 est prévu en S0-8) ; la longueur minimale du secret JWT n'est pas vérifiée par le code.
+modules seront reconstruits).
+Socle API (S0-8) : erreurs au format RFC 9457 (`ProblemDetail`) via `GlobalExceptionHandler` et
+`RestSecurityErrorHandlers` (jamais de trace ni de message interne côté client) ; 401 sans jeton ou
+avec jeton invalide, 403 si le rôle ne suffit pas ; `JWT_SECRET` de 32 octets minimum (sinon l'appli
+ne démarre pas) ; CORS via `CORS_ALLOWED_ORIGINS` ; `open-in-view=false` : toute lecture de relation
+LAZY doit se faire dans un service `@Transactional(readOnly = true)`. Swagger UI sur
+`/swagger-ui.html`, profil `dev` seulement.
 Tests backend : `backend/src/test` (classe de base `AbstractIntegrationTest` : PostgreSQL 18 via
 Testcontainers, Docker requis ; tests nommés `*Test`, lancés par `./mvnw verify`). CI :
-`.github/workflows/ci.yml` (jobs backend et frontend) ; Dependabot hebdomadaire (S0-7, en cours de PR).
-Reste en S0 : S0-8 socle API (Swagger, erreurs JSON cohérentes, revue de sécurité, 401 au lieu de 403
-sans jeton, longueur du secret JWT, CORS pour le front). Mets cette section à jour à la fin de chaque
-ticket.
+`.github/workflows/ci.yml` (jobs backend et frontend) ; Dependabot hebdomadaire, mises à jour
+mineures groupées. Mets cette section à jour à la fin de chaque ticket.

@@ -34,7 +34,7 @@ Le projet repart d'un socle volontairement réduit. Les autres modules (produits
 | Clients | autres routes `/api/clients/**` | admin, gerant |
 | Tout le reste | | jeton valide |
 
-Rôles des employés : `admin`, `gerant`, `rh`, `collecteur`. Sans jeton ou sans le bon rôle, l'API répond 403 (401 pour des identifiants de connexion invalides).
+Rôles des employés : `admin`, `gerant`, `rh`, `collecteur`. Sans jeton (ou avec un jeton invalide) l'API répond 401 ; avec un jeton mais sans le bon rôle, 403. Toutes les erreurs ont le même format JSON (RFC 9457, `application/problem+json`) : `status`, `title`, `detail`, `instance`, et pour une validation la liste `errors` des champs fautifs.
 
 ### Ancien code
 
@@ -85,7 +85,7 @@ Le site est disponible sur `http://localhost:3000` (port réglable avec `FRONTEN
 
 Pour tout arrêter : `docker compose down`. Pour repartir d'une base vide : `docker compose down -v` (supprime aussi le volume de la base). C'est nécessaire si une migration a changé depuis le dernier démarrage.
 
-Le fichier `.env` n'est jamais versionné. `JWT_SECRET` est obligatoire : l'application refuse de démarrer sans lui. Prévois 32 caractères au moins (cette longueur n'est pas encore vérifiée par le code, ticket S0-8). Pour en générer un : `openssl rand -base64 48`.
+Le fichier `.env` n'est jamais versionné. `JWT_SECRET` est obligatoire : l'application refuse de démarrer sans lui. Il doit faire 32 octets au moins, sinon l'application refuse aussi de démarrer. Pour en générer un : `openssl rand -base64 48`.
 
 ### Sans Docker
 
@@ -133,9 +133,13 @@ curl -X POST http://localhost:8080/api/auth/client/login \
   -H "Content-Type: application/json" \
   -d '{"login":"alice.demo@example.com","motDePasse":"Client-Demo-2026"}'
 
-# Appel protégé : sans jeton -> 403, avec le jeton d'un admin/gerant/rh -> 200
+# Appel protégé : sans jeton -> 401, avec le jeton d'un admin/gerant/rh -> 200
 curl http://localhost:8080/api/employes -H "Authorization: Bearer <token>"
 ```
+
+## Documentation de l'API (Swagger)
+
+Avec le profil `dev` (activé par Docker Compose), Swagger UI est disponible sur `http://localhost:8080/swagger-ui.html` et la description OpenAPI sur `/v3/api-docs`. Pour tester un endpoint protégé : appelle d'abord `POST /api/auth/employe/login` depuis Swagger, copie le `token` de la réponse, clique sur **Authorize** (en haut à droite) et colle-le. Sans le profil `dev` (production), la documentation est désactivée.
 
 ## Frontend
 
