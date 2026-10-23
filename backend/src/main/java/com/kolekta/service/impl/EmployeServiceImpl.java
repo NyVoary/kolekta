@@ -78,17 +78,20 @@ public class EmployeServiceImpl implements EmployeService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public EmployeResponse trouverParId(Long id) {
         return toResponse(employesRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Employe", id)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EmployeResponse> listerActifs() {
         return employesRepository.findByDateFinEmbaucheIsNull().stream().map(this::toResponse).toList();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<EmployeResponse> listerTous() {
         return employesRepository.findAll().stream().map(this::toResponse).toList();
     }

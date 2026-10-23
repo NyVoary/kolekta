@@ -71,12 +71,14 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ClientResponse trouverParId(Long id) {
         return toResponse(clientsRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Client", id)));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ClientResponse> listerActifs() {
         return clientsRepository.findAll().stream()
                 .filter(c -> Boolean.TRUE.equals(c.getEstActif()))

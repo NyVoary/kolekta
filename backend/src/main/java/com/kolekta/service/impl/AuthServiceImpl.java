@@ -12,6 +12,7 @@ import com.kolekta.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 
@@ -25,6 +26,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtUtil jwtUtil;
 
     @Override
+    @Transactional(readOnly = true)
     public LoginResponse loginEmploye(LoginRequest request) {
         Acces acces = accesRepository.findByNomUtilisateur(request.getLogin())
                 .orElseThrow(() -> new UnauthorizedException("Identifiants invalides"));
