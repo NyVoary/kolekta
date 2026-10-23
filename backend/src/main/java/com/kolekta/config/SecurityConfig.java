@@ -29,6 +29,8 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                // Documentation : n'existe que si elle est activée (profil dev), sinon ces routes répondent 404
+                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/clients/inscription").permitAll()
                 .requestMatchers("/api/employes/**").hasAnyRole("ADMIN", "GERANT", "RH")
