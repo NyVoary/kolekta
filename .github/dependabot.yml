@@ -4,13 +4,30 @@ updates:
     directory: /backend
     schedule:
       interval: weekly
+    # Une seule PR par semaine pour toutes les mises à jour mineures et correctifs
+    # (les versions majeures restent des PR séparées)
+    groups:
+      maven-minor-patch:
+        update-types: [minor, patch]
 
   - package-ecosystem: npm
     directory: /frontend
     schedule:
       interval: weekly
+    groups:
+      npm-minor-patch:
+        update-types: [minor, patch]
+    ignore:
+      # TypeScript 7 et @types/node 26 : migration à faire plus tard, ticket dédié
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    groups:
+      actions-minor-patch:
+        update-types: [minor, patch]
