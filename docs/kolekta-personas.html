@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kolekta — Personas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #F7F5F0;
+    --bg-card: #FFFFFF;
+    --text-ink: #16281D;
+    --text-sub: #55645A;
+    --border: #E4E0D6;
+    --brand-green: #2F7D46;
+    --brand-green-dark: #1E5A31;
+    --brand-terracotta: #D97B4F;
+    --brand-ochre: #E3A857;
+    --brand-cream: #F3EEE1;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg-page: #14181A; --bg-card: #1D2321; --text-ink: #F2F0E9;
+      --text-sub: #A9B2A9; --border: #333B36;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-page: #14181A; --bg-card: #1D2321; --text-ink: #F2F0E9;
+    --text-sub: #A9B2A9; --border: #333B36;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg-page); color: var(--text-ink);
+    font-family: 'Inter', -apple-system, sans-serif; line-height: 1.6; }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 48px 24px 96px; }
+  h1, h2, h3 { font-family: 'Manrope', 'Inter', sans-serif; font-weight: 800; margin: 0; }
+  h1 { font-size: 32px; letter-spacing: -0.5px; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--brand-green); margin-bottom: 8px; }
+  .lede { color: var(--text-sub); font-size: 15px; max-width: 620px; margin-top: 10px; }
+  .persona { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px;
+    padding: 32px; margin-top: 40px; }
+  .p-head { display: flex; align-items: center; gap: 18px; }
+  .avatar { width: 68px; height: 68px; border-radius: 50%; flex-shrink: 0;
+    background: var(--brand-green); display: flex; align-items: center; justify-content: center;
+    color: #fff; font-family: 'Manrope'; font-weight: 800; font-size: 24px; }
+  .p-name { font-family: 'Manrope'; font-weight: 800; font-size: 22px; }
+  .p-role { color: var(--brand-terracotta); font-weight: 600; font-size: 13px; margin-top: 2px; }
+  .quote { font-family: 'Manrope'; font-weight: 700; font-size: 18px; font-style: italic;
+    color: var(--brand-green-dark); border-left: 3px solid var(--brand-green);
+    padding: 4px 0 4px 16px; margin: 24px 0; }
+  :root[data-theme="dark"] .quote, :root:not([data-theme="light"]) .quote {
+    @media (prefers-color-scheme: dark) { color: #9BD6A8; }
+  }
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--text-sub); margin: 22px 0 8px; }
+  .p-body { font-size: 14px; }
+  ul.plain { margin: 4px 0; padding-left: 18px; }
+  ul.plain li { margin: 4px 0; font-size: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+  .tag { font-size: 12px; font-weight: 600; padding: 5px 12px; border-radius: 999px;
+    background: var(--brand-cream); color: var(--brand-green-dark); }
+  :root[data-theme="dark"] .tag, :root:not([data-theme="light"]) .tag {
+    @media (prefers-color-scheme: dark) { background: #23301F; color: #9BD6A8; }
+  }
+  .scenario { background: var(--brand-cream); border-radius: 12px; padding: 16px 18px; font-size: 14px; }
+  :root[data-theme="dark"] .scenario, :root:not([data-theme="light"]) .scenario {
+    @media (prefers-color-scheme: dark) { background: #202A21; }
+  }
+  .impl { border: 1px dashed var(--border); border-radius: 12px; padding: 14px 18px; font-size: 13px;
+    color: var(--text-sub); margin-top: 10px; }
+  .pending { text-align: center; padding: 40px 0; color: var(--text-sub); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Personas — v1</div>
+  <h1>Kolekta</h1>
+  <p class="lede">Quatre profils construits pour cadrer les décisions produit — complets. Chaque scénario clé est ancré dans le modèle métier réel (collecte interne, livraison externalisée, cycle court).</p>
+
+  <div class="persona">
+    <div class="p-head">
+      <div class="avatar">T</div>
+      <div>
+        <div class="p-name">Tojo, 24 ans</div>
+        <div class="p-role">Collecteur terrain — interne Kolekta</div>
+      </div>
+    </div>
+
+    <div class="quote">« Je veux partir avec une liste claire, et repartir sans me demander si j'ai pris trop ou pas assez. »</div>
+
+    <div class="section-title">Contexte</div>
+    <p class="p-body">Jeune, débrouillard avec un smartphone, recruté pour couvrir une zone de collecte autour d'Antsirabe. Sort chaque jour selon un cycle de collecte planifié, avec une liste qui mélange des commandes confirmées et quelques suggestions de collecte anticipée sur les produits qui partent vite.</p>
+
+    <div class="section-title">Objectifs</div>
+    <ul class="plain">
+      <li>Collecter exactement la bonne quantité, ni trop ni trop peu par rapport à ce qui est attendu</li>
+      <li>Vérifier la qualité de chaque produit sur place, avant de le charger</li>
+      <li>Être à l'heure au point de rendez-vous avec le camion du prestataire de livraison</li>
+    </ul>
+
+    <div class="section-title">Frustrations (avant Kolekta / sans le système)</div>
+    <ul class="plain">
+      <li>Notait tout sur un carnet, appelait le gérant pour dire ce qu'il avait collecté — source d'erreurs et de double saisie</li>
+      <li>Pas de vision claire des quantités exactes commandées → collecte au jugé</li>
+      <li>Sa plus grosse angoisse : ramener un produit de mauvaise qualité sans s'en rendre compte, ou se tromper de quantité</li>
+    </ul>
+
+    <div class="section-title">Comportement & niveau tech</div>
+    <div class="tags">
+      <span class="tag">Smartphone Android entrée de gamme (fourni)</span>
+      <span class="tag">Connexion faible en zone de collecte</span>
+      <span class="tag">À l'aise appli/WhatsApp</span>
+      <span class="tag">Peu de saisie texte souhaitable</span>
+    </div>
+
+    <div class="section-title">Scénario clé</div>
+    <div class="scenario">7h : Tojo ouvre l'app, sa tournée du jour s'est chargée la veille au soir (connexion stable au dépôt). La liste mélange commandes confirmées et suggestions de volume additionnel. Chez chaque agriculteur, il coche une checklist qualité produit par produit et confirme la quantité collectée — même en zone sans réseau, l'app garde ses saisies en local. En fin de tournée, il rejoint le camion du prestataire de livraison au point de rendez-vous ; dès que le réseau revient, ses saisies se synchronisent et il confirme le transfert des produits sur l'app.</div>
+
+    <div class="impl">Implications produit à retenir pour plus tard : fonctionnement en mode dégradé/hors-ligne avec synchronisation différée, interface à interaction minimale (cocher/valider plutôt que taper), checklist qualité structurée plutôt qu'un champ libre, alerte horaire pour le point de rendez-vous.</div>
+  </div>
+
+  <div class="persona">
+    <div class="p-head">
+      <div class="avatar">H</div>
+      <div>
+        <div class="p-name">Hanta, 43 ans</div>
+        <div class="p-role">Gérante d'un petit café — Client B2B, petit établissement</div>
+      </div>
+    </div>
+
+    <div class="quote">« Je n'ai pas le temps de comparer dix fournisseurs chaque matin. Je veux une commande fiable en deux minutes, avec un bon rapport qualité-prix. »</div>
+
+    <div class="section-title">Contexte</div>
+    <p class="p-body">Gère seule (ou avec une petite équipe) un café à Antsirabe. S'occupe elle-même des achats la plupart du temps, entre deux services — mais délègue parfois à un employé de confiance le matin quand elle ne peut pas se libérer. Marges serrées, chaque décision d'achat compte.</p>
+
+    <div class="section-title">Objectifs</div>
+    <ul class="plain">
+      <li>Passer commande vite, sans y perdre du temps qu'elle n'a pas</li>
+      <li>Ne jamais être en rupture un jour de forte affluence</li>
+      <li>Un bon rapport qualité-prix — pas juste le moins cher, le mieux équilibré</li>
+      <li>Pouvoir ajuster la commande au dernier moment selon l'affluence prévue</li>
+    </ul>
+
+    <div class="section-title">Frustrations (avant Kolekta)</div>
+    <ul class="plain">
+      <li>Devait soit aller elle-même au marché tôt le matin (au détriment du service), soit faire confiance à un employé pour bien choisir sans elle</li>
+      <li>Aucune garantie de régularité — dépendante de ce qui était disponible ce jour-là</li>
+      <li>Impossible de vraiment comparer qualité et prix sans être physiquement sur place</li>
+    </ul>
+
+    <div class="section-title">Comportement & niveau tech</div>
+    <div class="tags">
+      <span class="tag">Smartphone au quotidien, à l'aise</span>
+      <span class="tag">Très peu de temps disponible</span>
+      <span class="tag">Veut re-commander vite (pas ressaisir)</span>
+      <span class="tag">Sensible au prix affiché, pas juste au total</span>
+    </div>
+
+    <div class="section-title">Scénario clé</div>
+    <div class="scenario">6h30, entre deux clients : Hanta ouvre l'app, retrouve sa dernière commande type et la duplique en deux clics. Elle ajuste juste les quantités de légumes du jour vu qu'elle attend plus de monde ce midi (un match de foot en ville). Elle valide avant la coupure des commandes du matin. Certains jours, c'est son employé de confiance qui fait ça à sa place depuis son propre téléphone.</div>
+
+    <div class="impl">Implications produit à retenir : fonction "recommander la dernière commande" en un geste, modification de quantité jusqu'à une heure limite claire (cutoff), affichage explicite qualité/prix par produit (pas juste le prix). Question de l'accès délégué tranchée en phase backlog : un seul compte par établissement pour cette v1 — quand elle délègue, c'est Hanta qui reste responsable du compte.</div>
+  </div>
+
+  <div class="persona">
+    <div class="p-head">
+      <div class="avatar">F</div>
+      <div>
+        <div class="p-name">Fetra, 35 ans</div>
+        <div class="p-role">Responsable achats d'un hôtel — Client B2B, gros compte</div>
+      </div>
+    </div>
+
+    <div class="quote">« Je ne veux plus jongler entre trois fournisseurs pour être sûr d'avoir exactement ce qu'il me faut. Je veux que la quantité et la qualité livrées correspondent à ce qui a été commandé, point. »</div>
+
+    <div class="section-title">Contexte</div>
+    <p class="p-body">Poste dédié aux achats dans un hôtel, pas le propriétaire — approvisionnement à volume régulier et important (cuisine, restaurant de l'hôtel, événements). Rend des comptes en interne : besoin de traçabilité et de documents formels, pas juste d'une livraison qui arrive.</p>
+
+    <div class="section-title">Objectifs</div>
+    <ul class="plain">
+      <li>Recevoir exactement la quantité et la qualité commandées, sans écart à gérer après coup</li>
+      <li>Un prix stable dans le temps, pas de surprise d'une commande à l'autre</li>
+      <li>Ne plus avoir à multiplier les fournisseurs pour couvrir tous ses besoins</li>
+      <li>Disposer de documents formels (bon de commande, facture) pour la compta interne</li>
+    </ul>
+
+    <div class="section-title">Frustrations (avant Kolekta)</div>
+    <ul class="plain">
+      <li>Avec son ancien fournisseur, prix instables d'une commande à l'autre</li>
+      <li>Quantité ou qualité livrées ne correspondaient pas à ce qui était demandé</li>
+      <li>Devait appeler plusieurs fournisseurs différents pour être satisfait à 100%, perte de temps et de lisibilité</li>
+    </ul>
+
+    <div class="section-title">Comportement & niveau tech</div>
+    <div class="tags">
+      <span class="tag">Usage professionnel, ordinateur + mobile</span>
+      <span class="tag">Attend un historique détaillé des commandes</span>
+      <span class="tag">Sensible aux écarts commande/livraison</span>
+      <span class="tag">Veut des documents exploitables (facture, bon de livraison)</span>
+    </div>
+
+    <div class="section-title">Scénario clé</div>
+    <div class="scenario">Fetra planifie les besoins de la semaine pour la cuisine de l'hôtel, en anticipant un événement le week-end. Il passe une commande volumineuse en précisant les quantités et le niveau de qualité attendu par produit. Il choisit l'option abonnement pour les produits récurrents (livraison chaque mardi et vendredi), avec la possibilité d'ajuster panier et quantités à chaque occurrence. À réception, il vérifie ce qui est livré face au bon de commande dans l'app, et peut signaler un écart directement s'il y en a un.</div>
+
+    <div class="impl">Implications produit à retenir : commande avec spécification de quantité et de niveau de qualité par produit, tarification stable/négociée pour les gros comptes (à distinguer du tarif standard), génération de bon de commande et facture téléchargeables, et un rapprochement commande/livraison à la réception — qui vient directement compléter la checklist qualité que fait Tojo à la collecte : ce que le collecteur valide en amont, le client le confirme en aval.</div>
+  </div>
+
+  <div class="persona">
+    <div class="p-head">
+      <div class="avatar">N</div>
+      <div>
+        <div class="p-name">Nirina, 29 ans</div>
+        <div class="p-role">Jeune parent actif — Client particulier</div>
+      </div>
+    </div>
+
+    <div class="quote">« Je veux savoir que ce que je donne à manger à ma famille est frais et vient de quelque part de fiable — sans y passer mon samedi matin. »</div>
+
+    <div class="section-title">Contexte</div>
+    <p class="p-body">Travaille à temps plein, vit avec son/sa conjoint(e) et un jeune enfant à Antsirabe. Fait les courses du foyer en plus de son travail — le temps est une ressource rare. S'approvisionnait avant par un mélange de marché local le matin et de vendeurs de quartier, selon ce qui était possible dans sa journée.</p>
+
+    <div class="section-title">Objectifs</div>
+    <ul class="plain">
+      <li>Gagner le temps qu'aurait pris un passage au marché</li>
+      <li>Avoir confiance dans l'origine et la fraîcheur des produits</li>
+      <li>Un prix raisonnable pour le budget du foyer</li>
+    </ul>
+
+    <div class="section-title">Frustrations (avant Kolekta)</div>
+    <ul class="plain">
+      <li>Devait caler ses achats entre le travail et la famille, souvent au détriment de l'un ou de l'autre</li>
+      <li>Qualité variable selon le vendeur du jour, sans vraie garantie</li>
+      <li>Pas de visibilité sur d'où venaient réellement les produits</li>
+    </ul>
+
+    <div class="section-title">Comportement & niveau tech</div>
+    <div class="tags">
+      <span class="tag">Smartphone, usage quotidien aisé</span>
+      <span class="tag">Commande probablement le soir, après le travail</span>
+      <span class="tag">Sensible au budget familial</span>
+      <span class="tag">Apprécie une commande récurrente simple</span>
+    </div>
+
+    <div class="section-title">Scénario clé</div>
+    <div class="scenario">Nirina commande le dimanche soir pour la semaine, après avoir couché son enfant — pas le temps ni l'envie de le faire en pleine journée de travail. L'app lui indique clairement le délai de livraison attendu (elle habite en périphérie d'Antsirabe, donc pas le délai le plus rapide) avant qu'elle ne valide. Elle active un abonnement pour les produits de base qu'elle prend chaque semaine, et ajoute ponctuellement ce dont elle a besoin en plus.</div>
+
+    <div class="impl">Implications produit à retenir : le délai de livraison doit être affiché clairement avant validation (pas après), pas seulement pour les gros comptes — l'abonnement doit rester simple d'accès pour ce profil, pas juste pensé pour le B2B. Un indicateur de fraîcheur/origine (ex: "récolté le...", nom de la région) répondrait directement à son besoin de confiance.</div>
+  </div>
+
+  <div class="persona">
+    <div class="p-head">
+      <div class="avatar">R</div>
+      <div>
+        <div class="p-name">Rado, 34 ans</div>
+        <div class="p-role">Fondateur — Gérant</div>
+      </div>
+    </div>
+
+    <div class="quote">« Je ne veux plus être le seul point de vérité entre le terrain et les clients. Je veux voir en un coup d'œil ce qui va bien, ce qui casse, et ce qu'on doit à qui. »</div>
+
+    <div class="section-title">Contexte</div>
+    <p class="p-body">A fondé Kolekta après avoir constaté à quel point le circuit d'approvisionnement classique était fragmenté. Pilote les opérations au quotidien, souvent seul ou avec une petite équipe — une partie de son temps en stratégie, une autre à éteindre des feux. Avant l'outil, tout se gérait à l'instinct, entre tableurs et coups de fil.</p>
+
+    <div class="section-title">Objectifs</div>
+    <ul class="plain">
+      <li>Une vue d'ensemble en temps réel de toute l'activité, sans avoir à appeler chacun</li>
+      <li>Repérer un problème (collecte en retard, client mécontent) avant qu'il ne dégénère</li>
+      <li>Savoir à tout moment qui doit quoi à qui — fournisseurs, prestataire de livraison, salaires</li>
+    </ul>
+
+    <div class="section-title">Frustrations (avant Kolekta)</div>
+    <ul class="plain">
+      <li>Tout vivait dans sa tête et dans des cahiers/tableurs éparpillés — pas de source de vérité unique</li>
+      <li>Découvrait souvent les problèmes après coup, une fois que le client s'était déjà plaint</li>
+      <li>Impossible de savoir, au jour le jour, si l'activité était vraiment rentable sans tout recompter à la main</li>
+    </ul>
+
+    <div class="section-title">Comportement & niveau tech</div>
+    <div class="tags">
+      <span class="tag">À l'aise en tech, travaille desktop + mobile</span>
+      <span class="tag">Consulte l'app plusieurs fois par jour</span>
+      <span class="tag">Veut une vue synthèse ET pouvoir zoomer dans le détail</span>
+      <span class="tag">Réagit vite quand quelque chose sort du cadre</span>
+    </div>
+
+    <div class="section-title">Scénario clé</div>
+    <div class="scenario">Le matin, Rado ouvre le tableau de bord avant même d'être au bureau : collectes du jour, commandes en attente, alertes en cours. Il repère qu'une collecte accuse du retard chez un fournisseur et qu'un paiement fournisseur arrive à échéance — il intervient directement depuis l'app plutôt que d'appeler pour vérifier. En fin de journée, il consulte le CA et les marges du jour au lieu de tout recompter à la main.</div>
+
+    <div class="impl">Implications produit à retenir : le tableau de bord doit remonter des <em>alertes</em>, pas juste des chiffres bruts (ce qui sort du cadre doit sauter aux yeux), permettre de zoomer d'une vue de synthèse vers le détail d'une commande/collecte pour intervenir directement, et centraliser la visibilité financière sur les trois flux de paiement (clients, fournisseurs, prestataire). Ce persona rend le module Statistiques nettement plus central que prévu — actuellement en priorité "Should" dans le CDC, à rediscuter.</div>
+  </div>
+
+
+</div>
+</body>
+</html>

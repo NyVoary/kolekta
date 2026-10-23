@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kolekta — Backlog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #F7F5F0; --bg-card: #FFFFFF; --text-ink: #16281D; --text-sub: #55645A;
+    --border: #E4E0D6; --brand-green: #2F7D46; --brand-green-dark: #1E5A31;
+    --brand-terracotta: #D97B4F; --brand-ochre: #E3A857; --brand-cream: #F3EEE1;
+    --must: #2F7D46; --should: #E3A857; --could: #A9B2A9;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg-page: #14181A; --bg-card: #1D2321; --text-ink: #F2F0E9;
+      --text-sub: #A9B2A9; --border: #333B36;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-page: #14181A; --bg-card: #1D2321; --text-ink: #F2F0E9;
+    --text-sub: #A9B2A9; --border: #333B36;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg-page); color: var(--text-ink);
+    font-family: 'Inter', -apple-system, sans-serif; line-height: 1.6; }
+  .wrap { max-width: 860px; margin: 0 auto; padding: 48px 24px 96px; }
+  h1, h2, h3 { font-family: 'Manrope', 'Inter', sans-serif; font-weight: 800; margin: 0; }
+  h1 { font-size: 32px; letter-spacing: -0.5px; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--brand-green); margin-bottom: 8px; }
+  .lede { color: var(--text-sub); font-size: 15px; max-width: 620px; margin-top: 10px; }
+  .epic { margin-top: 56px; }
+  .epic-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 18px; }
+  .epic-num { font-family: 'Manrope'; font-weight: 800; font-size: 13px; color: var(--brand-terracotta); }
+  .epic h2 { font-size: 22px; }
+  .story { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px 26px; margin-top: 14px; }
+  .story-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+  .story-id { font-family: 'Manrope'; font-weight: 800; font-size: 13px; color: var(--text-sub); }
+  .prio { font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px; color: #fff; }
+  .prio-must { background: var(--must); }
+  .prio-should { background: var(--should); }
+  .prio-could { background: var(--could); }
+  .story-title { font-family: 'Manrope'; font-weight: 700; font-size: 16px; margin-top: 8px; }
+  .story-text { font-size: 14px; margin-top: 6px; }
+  .persona-chip { display: inline-block; font-size: 12px; font-weight: 600; padding: 3px 10px;
+    border-radius: 999px; background: var(--brand-cream); color: var(--brand-green-dark); margin-top: 8px; }
+  :root[data-theme="dark"] .persona-chip, :root:not([data-theme="light"]) .persona-chip {
+    @media (prefers-color-scheme: dark) { background: #23301F; color: #9BD6A8; }
+  }
+  .ac-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+    color: var(--text-sub); margin: 16px 0 8px; }
+  .gherkin { font-size: 13.5px; margin: 0; padding-left: 0; list-style: none; }
+  .gherkin li { margin: 6px 0; padding-left: 18px; position: relative; }
+  .gherkin li::before { content: "—"; position: absolute; left: 0; color: var(--border); }
+  .kw { font-weight: 700; color: var(--brand-green-dark); }
+  :root[data-theme="dark"] .kw, :root:not([data-theme="light"]) .kw {
+    @media (prefers-color-scheme: dark) { color: #9BD6A8; }
+  }
+  .pending { text-align: center; padding: 40px 0; color: var(--text-sub); font-size: 14px; }
+  .legend { display: flex; gap: 14px; margin-top: 16px; flex-wrap: wrap; }
+  .legend span { font-size: 12px; color: var(--text-sub); display: flex; align-items: center; gap: 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Backlog — v1</div>
+  <h1>Kolekta</h1>
+  <p class="lede">User stories organisées par epic, dérivées des personas et du cahier des charges. Chaque story suit le format standard (rôle / action / bénéfice) avec des critères d'acceptation en Given/When/Then.</p>
+  <div class="legend">
+    <span><span class="dot" style="background:var(--must)"></span>Must</span>
+    <span><span class="dot" style="background:var(--should)"></span>Should</span>
+    <span><span class="dot" style="background:var(--could)"></span>Could</span>
+  </div>
+
+  <div class="epic">
+    <div class="epic-head">
+      <div class="epic-num">EPIC 01</div>
+      <h2>Accès & Authentification</h2>
+    </div>
+    <p class="lede">Concerne tous les personas — c'est la porte d'entrée du système, elle passe avant tout le reste.</p>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-001</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Connexion d'un employé interne</div>
+      <p class="story-text">En tant qu'<strong>employé interne</strong> (Admin, Gérant, RH, Collecteur), je veux me connecter avec mon compte à rôle, afin d'accéder uniquement aux fonctionnalités qui me concernent.</p>
+      <span class="persona-chip">Rado · Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un employé actif avec des identifiants valides, <span class="kw">when</span> il se connecte, <span class="kw">then</span> il accède à l'interface correspondant à son rôle : Admin et Gérant arrivent sur le tableau de bord, RH sur la liste des employés, Collecteur sur sa tournée du jour</li>
+        <li><span class="kw">Given</span> des identifiants invalides, <span class="kw">when</span> il tente de se connecter, <span class="kw">then</span> un message d'erreur générique s'affiche, sans préciser si c'est l'identifiant ou le mot de passe qui est faux</li>
+        <li><span class="kw">Given</span> un employé désactivé, <span class="kw">when</span> il tente de se connecter, <span class="kw">then</span> l'accès est refusé avec un message explicite</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-002</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Inscription d'un client (B2B ou particulier)</div>
+      <p class="story-text">En tant que <strong>client</strong> (Hanta, Fetra ou Nirina), je veux créer un compte en précisant si je suis un établissement ou un particulier, afin de pouvoir commander sur Kolekta avec les bonnes options disponibles.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un nouveau visiteur, <span class="kw">when</span> il s'inscrit avec email ou téléphone + mot de passe, <span class="kw">then</span> un compte client est créé</li>
+        <li><span class="kw">Given</span> une inscription en tant qu'établissement, <span class="kw">when</span> il valide, <span class="kw">then</span> le nom et le type d'établissement sont demandés en plus des informations de base</li>
+        <li><span class="kw">Given</span> un email ou numéro déjà utilisé, <span class="kw">when</span> il valide l'inscription, <span class="kw">then</span> un message d'erreur explicite s'affiche sans révéler si le compte existant est actif ou non</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-003</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Connexion client</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux me connecter à mon compte, afin de retrouver mon historique et passer une nouvelle commande rapidement.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un compte client actif, <span class="kw">when</span> il se connecte avec les bons identifiants, <span class="kw">then</span> il accède à son espace avec son historique et son panier précédent s'il en avait un</li>
+        <li><span class="kw">Given</span> un compte désactivé (ex: litige non résolu), <span class="kw">when</span> il tente de se connecter, <span class="kw">then</span> l'accès est refusé avec une indication pour contacter Kolekta</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-004</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Réinitialisation du mot de passe</div>
+      <p class="story-text">En tant qu'<strong>utilisateur</strong> (employé ou client), je veux réinitialiser mon mot de passe oublié, afin de retrouver l'accès à mon compte sans dépendre d'un admin.</p>
+      <span class="persona-chip">Tous</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un utilisateur qui a oublié son mot de passe, <span class="kw">when</span> il demande une réinitialisation, <span class="kw">then</span> il reçoit un lien à usage unique, valide un temps limité (ex: 30 minutes)</li>
+        <li><span class="kw">Given</span> un lien expiré ou déjà utilisé, <span class="kw">when</span> il tente de s'en servir, <span class="kw">then</span> le système refuse et propose d'en redemander un nouveau</li>
+        <li><span class="kw">Given</span> un client inscrit avec un téléphone seulement, <span class="kw">when</span> il contacte Kolekta, <span class="kw">then</span> un employé autorisé peut lui réinitialiser son mot de passe depuis le back-office (mot de passe provisoire à changer à la première connexion)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-005</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Accès unique par établissement (B2B)</div>
+      <p class="story-text">En tant que <strong>gérante d'un petit établissement</strong> (Hanta), je veux qu'un seul compte existe pour mon établissement, afin de garder la responsabilité de mes commandes même quand je délègue oralement à un employé.</p>
+      <span class="persona-chip">Hanta</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un compte établissement existant, <span class="kw">when</span> quelqu'un tente de créer un deuxième compte pour le même établissement, <span class="kw">then</span> le système empêche la création et invite à utiliser le compte existant</li>
+        <li><span class="kw">Given</span> une v1 sans accès délégué, <span class="kw">when</span> un établissement s'inscrit, <span class="kw">then</span> aucune option de compte secondaire/employé n'est proposée <em>(hors périmètre v1, décidé en phase backlog)</em></li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-082</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Se déconnecter</div>
+      <p class="story-text">En tant qu'<strong>utilisateur</strong> (employé ou client), je veux me déconnecter, afin de protéger mon compte sur un appareil partagé.</p>
+      <span class="persona-chip">Tous</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un utilisateur connecté, <span class="kw">when</span> il choisit « Se déconnecter », <span class="kw">then</span> sa session est fermée et il revient à l'écran de connexion</li>
+        <li><span class="kw">Given</span> une session fermée, <span class="kw">when</span> il utilise le bouton « retour » du navigateur, <span class="kw">then</span> aucune donnée protégée ne s'affiche et l'API refuse l'ancien jeton</li>
+        <li><span class="kw">Given</span> une session inactive trop longtemps, <span class="kw">when</span> le jeton expire, <span class="kw">then</span> l'utilisateur est renvoyé à la connexion avec un message clair, sans perdre un panier en cours</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-head">
+      <div class="epic-num">EPIC 02</div>
+      <h2>Catalogue</h2>
+    </div>
+    <p class="lede">Le socle sur lequel repose tout le reste — pas de commande possible sans catalogue consultable.</p>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-006</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Consulter le catalogue de produits</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux consulter la liste des produits disponibles, afin de composer ma commande.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des produits actifs en base, <span class="kw">when</span> un client ouvre le catalogue, <span class="kw">then</span> il voit la liste avec nom, catégorie, prix et indicateur de disponibilité</li>
+        <li><span class="kw">Given</span> un produit temporairement indisponible, <span class="kw">when</span> le client le consulte, <span class="kw">then</span> il est visible mais clairement marqué "indisponible", non ajoutable au panier</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-007</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Filtrer et rechercher les produits</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux filtrer les produits par catégorie et rechercher par nom, afin de trouver rapidement ce dont j'ai besoin.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> le catalogue affiché, <span class="kw">when</span> le client sélectionne une catégorie, <span class="kw">then</span> seuls les produits de cette catégorie s'affichent</li>
+        <li><span class="kw">Given</span> une recherche par nom, <span class="kw">when</span> le client tape un terme, <span class="kw">then</span> les résultats se filtrent en direct, sans rechargement de page</li>
+        <li><span class="kw">Given</span> une recherche sans résultat, <span class="kw">when</span> le client valide, <span class="kw">then</span> un état "aucun produit trouvé" s'affiche plutôt qu'une liste vide silencieuse</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-008</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Gérer les catégories</div>
+      <p class="story-text">En tant qu'<strong>Admin ou Gérant</strong>, je veux créer, modifier et supprimer des catégories de produits, afin de garder le catalogue organisé.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un nom de catégorie déjà existant, <span class="kw">when</span> l'admin tente d'en créer une identique, <span class="kw">then</span> le système refuse avec un message explicite</li>
+        <li><span class="kw">Given</span> une catégorie encore utilisée par des produits actifs, <span class="kw">when</span> l'admin tente de la supprimer, <span class="kw">then</span> la suppression est bloquée et les produits concernés sont listés</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-009</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Gérer les produits</div>
+      <p class="story-text">En tant qu'<strong>Admin ou Gérant</strong>, je veux créer, modifier, désactiver et supprimer des produits, afin de maintenir le catalogue à jour.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un nouveau produit, <span class="kw">when</span> l'admin le crée, <span class="kw">then</span> une catégorie est obligatoire, le prix ne peut pas être négatif ou nul</li>
+        <li><span class="kw">Given</span> un produit en cours de commande par un client, <span class="kw">when</span> l'admin le désactive, <span class="kw">then</span> les commandes en cours ne sont pas affectées, seules les nouvelles commandes ne peuvent plus l'inclure</li>
+        <li><span class="kw">Given</span> un produit, <span class="kw">when</span> l'admin le crée ou le modifie, <span class="kw">then</span> il renseigne aussi l'unité de vente (kg, pièce, botte…) et peut ajouter une photo ; l'unité est obligatoire</li>
+        <li><span class="kw">Given</span> un produit déjà présent dans des commandes passées, <span class="kw">when</span> l'admin tente de le supprimer, <span class="kw">then</span> la suppression est refusée et la désactivation est proposée à la place, pour conserver l'historique</li>
+        <li><span class="kw">Given</span> un produit désactivé, <span class="kw">when</span> l'admin le réactive, <span class="kw">then</span> il redevient visible au catalogue</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-010</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Voir la fraîcheur et l'origine d'un produit</div>
+      <p class="story-text">En tant que <strong>client particulier</strong>, je veux voir la date de récolte et la région d'origine d'un produit, afin d'avoir confiance dans ce que j'achète.</p>
+      <span class="persona-chip">Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un produit collecté et enregistré, <span class="kw">when</span> le client consulte sa fiche, <span class="kw">then</span> la date de collecte et la région du fournisseur sont affichées</li>
+        <li><span class="kw">Given</span> une information de collecte manquante (cas limite), <span class="kw">when</span> le client consulte la fiche, <span class="kw">then</span> la mention n'apparaît simplement pas, plutôt qu'une erreur ou un champ vide visible</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-083</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Accorder une faveur de remise à un B2B</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux pouvoir accorder à un B2B une remise supérieure à celle du barème quand il m'appelle pour la négocier, afin de fidéliser un gros client sans changer les prix du catalogue.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande, <span class="kw">when</span> Rado applique une remise (pourcentage ou montant) avec un motif obligatoire, <span class="kw">then</span> le total est recalculé et la remise apparaît sur le bon de commande et la facture</li>
+        <li><span class="kw">Given</span> un plafond de remise paramétrable (ex : 10 %), <span class="kw">when</span> Rado dépasse ce plafond, <span class="kw">then</span> la remise est refusée avec un message expliquant la limite</li>
+        <li><span class="kw">Given</span> une remise accordée, <span class="kw">when</span> elle est enregistrée, <span class="kw">then</span> elle est tracée (qui, quand, motif) et le prix du catalogue reste inchangé pour tous les clients</li>
+        <li><span class="kw">Given</span> un B2B que la remise du barème (US-089) ne satisfait pas, <span class="kw">when</span> il appelle Kolekta et propose un taux sur sa facturation totale, <span class="kw">then</span> Rado décide : il accorde et enregistre la remise, ou refuse ; le refus est noté avec son motif</li>
+        <li><span class="kw">Given</span> un client particulier, <span class="kw">when</span> Rado tente d'accorder une faveur au-delà du barème, <span class="kw">then</span> c'est refusé : les particuliers éligibles n'ont que le barème</li>
+        <li><span class="kw">Given</span> une remise du barème déjà appliquée à la commande, <span class="kw">when</span> Rado accorde une faveur, <span class="kw">then</span> le taux final (barème + faveur) reste sous le plafond de remise</li>
+        <li><span class="kw">Given</span> un B2B en facture mensuelle (US-050), <span class="kw">when</span> Rado accorde une remise sur la facturation totale, <span class="kw">then</span> le taux s'applique au total de la facture du mois et apparaît sur celle-ci</li>
+        <li><span class="kw">Given</span> un employé qui n'est ni Gérant ni Admin, <span class="kw">when</span> il tente d'accorder une remise, <span class="kw">then</span> l'API répond 403</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-089</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Demander la remise du barème sur ma commande</div>
+      <p class="story-text">En tant que <strong>client éligible</strong> (B2B, ou particulier abonné depuis plus d'un mois), je veux demander une remise à la fin de ma commande quand elle atteint un certain montant, afin de profiter du barème de Kolekta sans avoir à appeler.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un client éligible dont le total atteint le montant minimal du barème, <span class="kw">when</span> il arrive à la validation, <span class="kw">then</span> un bouton "Demander une remise" apparaît</li>
+        <li><span class="kw">Given</span> un client non éligible ou un total sous le montant minimal, <span class="kw">when</span> il arrive à la validation, <span class="kw">then</span> le bouton n'apparaît pas</li>
+        <li><span class="kw">Given</span> un client qui clique sur "Demander une remise", <span class="kw">when</span> le système applique le barème, <span class="kw">then</span> le taux correspondant à son total est appliqué immédiatement et le nouveau total s'affiche avant validation</li>
+        <li><span class="kw">Given</span> une remise du barème appliquée, <span class="kw">when</span> la commande est validée, <span class="kw">then</span> la remise figure sur le bon de commande et la facture, et le client peut la retirer avant de valider</li>
+        <li><span class="kw">Given</span> un B2B insatisfait du taux du barème, <span class="kw">when</span> il appelle Kolekta, <span class="kw">then</span> Rado peut accorder une faveur supplémentaire (US-083)</li>
+        <li><span class="kw">Given</span> un panier modifié après application de la remise, <span class="kw">when</span> le total change de palier ou passe sous le minimum, <span class="kw">then</span> le taux est recalculé ou retiré automatiquement</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-head">
+      <div class="epic-num">EPIC 03</div>
+      <h2>Fournisseurs & Disponibilités</h2>
+    </div>
+    <p class="lede">Le fournisseur n'a pas d'accès au système (voir CDC) — tout passe par le collecteur sur le terrain. Cet epic couvre la fiche fournisseur et la déclaration de ce qui est disponible chez lui.</p>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-011</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Gérer les fournisseurs</div>
+      <p class="story-text">En tant qu'<strong>Admin ou Gérant</strong>, je veux créer, modifier et désactiver une fiche fournisseur, afin de garder à jour la liste des agriculteurs avec qui Kolekta travaille.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un nouveau fournisseur, <span class="kw">when</span> l'admin le crée, <span class="kw">then</span> la localisation (pour le calcul de zone/distance de collecte) est obligatoire</li>
+        <li><span class="kw">Given</span> un fournisseur désactivé, <span class="kw">when</span> un collecteur consulte sa tournée, <span class="kw">then</span> ce fournisseur n'apparaît plus dans les suggestions de collecte</li>
+        <li><span class="kw">Given</span> une fiche fournisseur, <span class="kw">when</span> l'admin la renseigne, <span class="kw">then</span> elle contient aussi un nom de contact, un téléphone et la liste des produits qu'il fournit habituellement</li>
+        <li><span class="kw">Given</span> un fournisseur, <span class="kw">when</span> l'admin choisit son mode de paiement, <span class="kw">then</span> il indique "espèces sur place" (par défaut) ou "mobile money" avec l'opérateur et le numéro de réception, après discussion avec le fournisseur</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-012</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Déclarer la disponibilité d'un fournisseur</div>
+      <p class="story-text">En tant que <strong>collecteur</strong>, je veux déclarer ce qu'un fournisseur a de disponible lors de mon passage, afin que cette information alimente les prochaines collectes et le catalogue.</p>
+      <span class="persona-chip">Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> Tojo chez un fournisseur, <span class="kw">when</span> il déclare une disponibilité (produit + quantité approximative), <span class="kw">then</span> l'information est associée à ce fournisseur avec la date du jour</li>
+        <li><span class="kw">Given</span> une connexion faible sur le lieu de collecte, <span class="kw">when</span> Tojo déclare une disponibilité, <span class="kw">then</span> la saisie est conservée localement et synchronisée dès que le réseau revient</li>
+        <li><span class="kw">Given</span> une déclaration faite par erreur le jour même, <span class="kw">when</span> Tojo la corrige ou l'annule, <span class="kw">then</span> la correction remplace la valeur et reste tracée dans l'historique</li>
+        <li><span class="kw">Given</span> un produit avec au moins une disponibilité déclarée depuis moins de 7 jours, <span class="kw">when</span> un client consulte le catalogue, <span class="kw">then</span> le produit est marqué disponible ; sinon "indisponible" <em>(règle validée : pour tenir compte des produits hors saison)</em></li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-013</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Consulter les disponibilités pour planifier une collecte</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux consulter les disponibilités déclarées par fournisseur, afin de planifier les prochaines tournées de collecte.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des disponibilités déclarées cette semaine, <span class="kw">when</span> Rado ouvre la vue disponibilités, <span class="kw">then</span> elles sont regroupées par fournisseur avec la date de déclaration</li>
+        <li><span class="kw">Given</span> une disponibilité de plus de 7 jours, <span class="kw">when</span> Rado la consulte, <span class="kw">then</span> elle est marquée "à vérifier" plutôt que présentée comme fiable indéfiniment</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-014</span>
+        <span class="prio prio-could">Could</span>
+      </div>
+      <div class="story-title">Historique des disponibilités par fournisseur</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux consulter l'historique des disponibilités d'un fournisseur, afin d'identifier les produits à forte rotation et alimenter la règle simple de collecte anticipée.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un fournisseur avec plusieurs déclarations passées, <span class="kw">when</span> Rado consulte son historique, <span class="kw">then</span> les disponibilités s'affichent triées par date, avec le produit et la quantité</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-head">
+      <div class="epic-num">EPIC 04</div>
+      <h2>Commandes & Abonnements</h2>
+    </div>
+    <p class="lede">Le plus gros epic — il porte presque toutes les découvertes faites avec Hanta, Fetra et Nirina. Découpé en trois blocs : panier/commande de base, abonnements, spécificités gros compte.</p>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-015</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Ajouter un produit au panier</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux ajouter un produit à mon panier avec une quantité, afin de préparer ma commande.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un produit disponible, <span class="kw">when</span> le client l'ajoute au panier, <span class="kw">then</span> il apparaît avec la quantité choisie, modifiable directement depuis le panier</li>
+        <li><span class="kw">Given</span> un produit devenu indisponible entre-temps, <span class="kw">when</span> le client ouvre son panier, <span class="kw">then</span> il est signalé clairement, sans bloquer le reste de la commande</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-016</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Passer une commande</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux valider mon panier pour passer commande, afin que Kolekta prépare la collecte et la livraison.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un panier non vide, <span class="kw">when</span> le client valide, <span class="kw">then</span> une commande est créée avec le statut "en attente de collecte", une adresse de livraison est choisie parmi celles du client (US-086) et un email de confirmation est envoyé</li>
+        <li><span class="kw">Given</span> un panier vide, <span class="kw">when</span> le client tente de valider, <span class="kw">then</span> la validation est bloquée avec un message explicite</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-017</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Suivre le statut de ma commande</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux voir l'état d'avancement de ma commande, afin de savoir quand elle sera livrée.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande en cours, <span class="kw">when</span> le client la consulte, <span class="kw">then</span> le statut actuel s'affiche (en attente de collecte, collectée, en livraison, livrée)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-018</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Voir le délai de livraison estimé avant validation</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux voir le délai de livraison estimé avant de valider ma commande, afin de savoir à quoi m'attendre selon ma zone.</p>
+      <span class="persona-chip">Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une adresse de livraison dans Antsirabe ville, <span class="kw">when</span> le client arrive à l'étape de validation, <span class="kw">then</span> le délai court s'affiche avant qu'il ne valide</li>
+        <li><span class="kw">Given</span> une adresse hors d'Antsirabe, <span class="kw">when</span> le client arrive à la validation, <span class="kw">then</span> un délai indicatif (~2 jours, selon distance) s'affiche avant validation, pas après</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-019</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Souscrire à un abonnement</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux activer un abonnement avec un jour de livraison fixe, afin de ne plus avoir à commander manuellement chaque semaine.</p>
+      <span class="persona-chip">Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un panier type, <span class="kw">when</span> le client active un abonnement, <span class="kw">then</span> il choisit un jour de livraison récurrent, disponible aussi bien en un clic pour un particulier qu'un gros compte</li>
+        <li><span class="kw">Given</span> un client qui souscrit, <span class="kw">when</span> il valide, <span class="kw">then</span> il choisit explicitement entre le renouvellement automatique chaque mois (jusqu'à pause ou résiliation) et le renouvellement manuel à confirmer à chaque échéance (US-055)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-020</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Modifier le panier d'un abonnement avant une occurrence</div>
+      <p class="story-text">En tant que <strong>client abonné</strong>, je veux modifier le contenu ou la quantité de mon panier avant une occurrence donnée, afin d'ajuster sans annuler tout l'abonnement.</p>
+      <span class="persona-chip">Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une occurrence d'abonnement à venir, <span class="kw">when</span> le client modifie le panier avant l'heure limite, <span class="kw">then</span> seule cette occurrence est affectée, les suivantes gardent le panier type</li>
+        <li><span class="kw">Given</span> l'heure limite dépassée, <span class="kw">when</span> le client tente de modifier, <span class="kw">then</span> la modification est refusée avec la prochaine date modifiable indiquée</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-021</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Spécifier quantité et qualité par ligne de commande</div>
+      <p class="story-text">En tant que <strong>responsable achats d'un gros compte</strong>, je veux préciser le niveau de qualité attendu par produit commandé, afin de recevoir exactement ce qui correspond à mes besoins.</p>
+      <span class="persona-chip">Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un produit ajouté au panier par un compte gros volume, <span class="kw">when</span> il précise un niveau de qualité attendu, <span class="kw">then</span> cette exigence est visible par le collecteur au moment de la collecte</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-022</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Remise permanente pour compte à volume</div>
+      <p class="story-text">En tant qu'<strong>Admin ou Gérant</strong>, je veux définir une remise permanente pour un gros compte, afin de lui proposer des conditions stables tout en gardant un prix de catalogue identique pour tous.</p>
+      <span class="persona-chip">Fetra · Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une remise permanente (pourcentage) définie pour un compte, <span class="kw">when</span> ce compte commande, <span class="kw">then</span> elle s'applique automatiquement à chaque commande, sans ressaisie, et apparaît sur le bon de commande et la facture</li>
+        <li><span class="kw">Given</span> la règle "prix de catalogue identiques pour tous", <span class="kw">when</span> une remise permanente est définie, <span class="kw">then</span> le prix du catalogue ne change pas : seule la remise du compte s'ajoute</li>
+        <li><span class="kw">Given</span> le plafond de remise paramétrable (US-088), <span class="kw">when</span> le Gérant définit une remise permanente supérieure, <span class="kw">then</span> elle est refusée ; plafond et remise permanente s'appliquent ensemble avec la remise ponctuelle</li>
+        <li><span class="kw">Given</span> un B2B qui souhaite une remise permanente, <span class="kw">when</span> il appelle Kolekta et propose un taux sur sa facturation totale, <span class="kw">then</span> Rado décide et l'enregistre sur la fiche client, ou refuse avec un motif ; elle est réservée aux B2B</li>
+        <li><span class="kw">Given</span> une remise permanente modifiée ou supprimée, <span class="kw">when</span> la modification est enregistrée, <span class="kw">then</span> elle ne touche que les commandes futures et reste tracée (qui, quand)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-023</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Rapprocher commande et livraison à réception</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux vérifier ce qui est livré face à ce que j'ai commandé, afin de signaler un écart s'il y en a un.</p>
+      <span class="persona-chip">Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande livrée, <span class="kw">when</span> le client la consulte, <span class="kw">then</span> il peut comparer quantités commandées vs reçues et signaler un écart par ligne</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-024</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Recommander ma dernière commande</div>
+      <p class="story-text">En tant que <strong>gérante d'un petit établissement</strong>, je veux dupliquer ma dernière commande en un geste, afin de commander vite entre deux services.</p>
+      <span class="persona-chip">Hanta</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande passée précédemment, <span class="kw">when</span> le client choisit "recommander", <span class="kw">then</span> un panier identique se recrée, modifiable avant validation</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-084</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Annuler une commande avant sa collecte</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux annuler une commande tant qu'elle n'est pas collectée, afin de corriger une erreur ou un changement de besoin.</p>
+      <span class="persona-chip">Hanta · Nirina · Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande "en attente de collecte", <span class="kw">when</span> le client l'annule après confirmation, <span class="kw">then</span> elle passe "annulée", elle sort des listes de collecte et le client reçoit un email</li>
+        <li><span class="kw">Given</span> une commande dont la collecte a commencé, <span class="kw">when</span> le client tente de l'annuler, <span class="kw">then</span> l'annulation est refusée et un message l'invite à contacter Kolekta</li>
+        <li><span class="kw">Given</span> une commande dont le montant était réservé sur le voucher, <span class="kw">when</span> elle est annulée, <span class="kw">then</span> la réservation est libérée et le solde redevient entièrement disponible</li>
+        <li><span class="kw">Given</span> une commande déjà payée (espèces ou mobile money), <span class="kw">when</span> le client tente de l'annuler en ligne, <span class="kw">then</span> c'est refusé : Kolekta ne rembourse pas, le cas est traité par un employé</li>
+        <li><span class="kw">Given</span> une commande annulée, <span class="kw">when</span> le client la consulte, <span class="kw">then</span> elle reste visible dans son historique, marquée annulée</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-085</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Suivre et traiter les commandes (back-office)</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir toutes les commandes, les filtrer et agir dessus, afin d'arbitrer, prioriser et suivre chaque commande sans repasser par des tableurs.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des commandes de tous statuts, <span class="kw">when</span> Rado ouvre la liste, <span class="kw">then</span> il peut filtrer par statut, client, date, zone et type (commande ou occurrence d'abonnement)</li>
+        <li><span class="kw">Given</span> une commande, <span class="kw">when</span> Rado l'ouvre, <span class="kw">then</span> il voit les lignes (avec exigences de qualité), l'adresse, le statut de paiement, l'historique des changements de statut et peut accorder une remise (US-083)</li>
+        <li><span class="kw">Given</span> une commande urgente, <span class="kw">when</span> Rado la marque prioritaire, <span class="kw">then</span> elle remonte en tête des listes de collecte</li>
+        <li><span class="kw">Given</span> une commande, <span class="kw">when</span> Rado l'annule pour un client (appel, erreur), <span class="kw">then</span> les mêmes règles que US-084 s'appliquent et le motif est enregistré</li>
+        <li><span class="kw">Given</span> un utilisateur qui n'est ni Gérant ni Admin, <span class="kw">when</span> il appelle la liste complète des commandes, <span class="kw">then</span> l'API répond 403</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-086</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Gérer mon profil et mes adresses de livraison</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux gérer mes coordonnées et mes adresses de livraison, afin de ne pas les ressaisir à chaque commande et d'obtenir le bon délai selon ma zone.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un client connecté, <span class="kw">when</span> il ajoute une adresse, <span class="kw">then</span> il choisit sa zone parmi les zones de livraison configurées (US-031), avec des repères et un téléphone de contact</li>
+        <li><span class="kw">Given</span> plusieurs adresses, <span class="kw">when</span> il en choisit une par défaut, <span class="kw">then</span> elle est présélectionnée à la validation d'une commande</li>
+        <li><span class="kw">Given</span> une adresse utilisée par une commande ou un abonnement en cours, <span class="kw">when</span> le client la supprime, <span class="kw">then</span> la suppression est refusée avec explication</li>
+        <li><span class="kw">Given</span> son profil, <span class="kw">when</span> le client modifie son nom, son email ou son téléphone, <span class="kw">then</span> les changements sont enregistrés, avec les mêmes contrôles de doublon qu'à l'inscription</li>
+        <li><span class="kw">Given</span> son espace, <span class="kw">when</span> le client change son mot de passe, <span class="kw">then</span> il doit saisir l'ancien</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-087</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Gérer les comptes clients</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux consulter les comptes clients et agir dessus, afin de les accompagner, de bloquer un compte en litige et de régler leurs conditions.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des comptes clients, <span class="kw">when</span> Rado ouvre la liste, <span class="kw">then</span> il peut chercher par nom, téléphone ou email et filtrer par type (particulier, établissement), statut et abonnement</li>
+        <li><span class="kw">Given</span> une fiche client, <span class="kw">when</span> Rado l'ouvre, <span class="kw">then</span> il voit ses coordonnées, adresses, commandes, abonnement, solde de voucher, conditions de paiement et encours</li>
+        <li><span class="kw">Given</span> un litige, <span class="kw">when</span> Rado désactive un compte avec un motif obligatoire, <span class="kw">then</span> le client ne peut plus se connecter (US-003) ; ses données et son historique restent conservés et le compte peut être réactivé</li>
+        <li><span class="kw">Given</span> un client sans email, <span class="kw">when</span> Rado réinitialise son mot de passe, <span class="kw">then</span> un mot de passe provisoire est généré, à changer à la première connexion (US-004)</li>
+        <li><span class="kw">Given</span> un gros compte, <span class="kw">when</span> Rado règle sa remise permanente (US-022) ou ses conditions de paiement (US-048), <span class="kw">then</span> ils sont enregistrés sur la fiche et tracés</li>
+        <li><span class="kw">Given</span> un utilisateur sans rôle Gérant ou Admin, <span class="kw">when</span> il appelle la liste des clients, <span class="kw">then</span> l'API répond 403</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-088</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Configurer les paramètres de l'application</div>
+      <p class="story-text">En tant que <strong>Gérant ou Admin</strong>, je veux régler les seuils et délais de Kolekta, afin de les adapter à la réalité sans modifier le code.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> l'écran des paramètres, <span class="kw">when</span> Rado l'ouvre, <span class="kw">then</span> il peut régler : plafond de remise, délai de paiement des fournisseurs (7 jours par défaut), numéros de réception mobile money de Kolekta par opérateur (affichés au client lors d'un paiement), seuil d'alerte d'écart de quantité collectée (-20 %), délai de contestation d'un prestataire après un paiement déclaré, délai d'alerte des espèces détenues par un prestataire, règle de collecte anticipée (+15 % sur les produits à forte rotation), barème de remise (paliers de montant et taux associés, montant minimal pour y avoir droit), ancienneté d'abonnement requise pour un particulier (1 mois), délai d'impayé des particuliers, délai de 10 jours des B2B non abonnés, alerte des mobile money en attente (24 h), alerte des espèces détenues (2 jours), validité d'une disponibilité (7 jours), heure limite de modification d'une occurrence d'abonnement</li>
+        <li><span class="kw">Given</span> une valeur modifiée, <span class="kw">when</span> elle est enregistrée, <span class="kw">then</span> elle ne s'applique qu'aux situations futures, et la modification est tracée (qui, quand, ancienne valeur)</li>
+        <li><span class="kw">Given</span> une valeur invalide (négative, vide, absurde), <span class="kw">when</span> Rado enregistre, <span class="kw">then</span> elle est refusée avec un message explicite</li>
+        <li><span class="kw">Given</span> un utilisateur sans rôle Gérant ou Admin, <span class="kw">when</span> il appelle les paramètres, <span class="kw">then</span> l'API répond 403</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-054</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Résilier son abonnement en connaissance de cause</div>
+      <p class="story-text">En tant que <strong>client abonné</strong>, je veux résilier mon abonnement en étant clairement averti de ce que je perds, afin de ne pas abandonner une somme par inadvertance.</p>
+      <span class="persona-chip">Nirina · Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un abonnement actif sans solde de voucher, <span class="kw">when</span> le client le résilie, <span class="kw">then</span> les occurrences futures sont annulées</li>
+        <li><span class="kw">Given</span> une occurrence déjà confirmée (heure limite dépassée, US-020), <span class="kw">when</span> le client résilie, <span class="kw">then</span> cette occurrence est honorée et seules les suivantes sont annulées</li>
+        <li><span class="kw">Given</span> un solde de voucher supérieur à zéro, <span class="kw">when</span> le client appuie sur "Résilier", <span class="kw">then</span> un avertissement affiche le montant exact qu'il laisse à Kolekta, précise qu'aucun remboursement n'est possible, et exige une confirmation explicite distincte</li>
+        <li><span class="kw">Given</span> une résiliation confirmée avec un solde restant, <span class="kw">when</span> elle prend effet, <span class="kw">then</span> le solde passe à zéro par un mouvement "solde abandonné" visible dans l'historique (rien n'est supprimé, US-047)</li>
+        <li><span class="kw">Given</span> un B2B avec un encours de paiement mensuel non réglé, <span class="kw">when</span> il résilie, <span class="kw">then</span> cet encours reste dû à son échéance</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-055</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Être prévenu avant la fin de l'abonnement et le renouveler</div>
+      <p class="story-text">En tant que <strong>client abonné</strong>, je veux être prévenu 5 jours avant la fin de mon abonnement en cours, afin de confirmer son renouvellement sans surprise.</p>
+      <span class="persona-chip">Nirina · Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un abonnement en renouvellement manuel qui arrive à échéance dans 5 jours, <span class="kw">when</span> le délai est atteint, <span class="kw">then</span> le client reçoit un email et voit une notification dans son espace lui demandant de confirmer le renouvellement, avec le solde de voucher restant s'il en a un</li>
+        <li><span class="kw">Given</span> un client qui confirme le renouvellement, <span class="kw">when</span> l'échéance arrive, <span class="kw">then</span> une nouvelle période démarre sans interruption des livraisons</li>
+        <li><span class="kw">Given</span> un client en renouvellement manuel qui n'a ni confirmé ni résilié à l'échéance, <span class="kw">when</span> l'échéance arrive, <span class="kw">then</span> les livraisons s'arrêtent, l'abonnement passe "expiré", aucune nouvelle occurrence n'est générée, le solde de voucher est conservé et les recharges sont suspendues</li>
+        <li><span class="kw">Given</span> un abonnement expiré, <span class="kw">when</span> le client le réactive en confirmant, <span class="kw">then</span> les livraisons reprennent à la prochaine occurrence et le solde est de nouveau disponible</li>
+        <li><span class="kw">Given</span> un abonnement en renouvellement automatique, <span class="kw">when</span> l'échéance mensuelle arrive, <span class="kw">then</span> il se renouvelle pour un mois sans aucune action du client, tant qu'il n'est ni en pause ni résilié</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-056</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Mettre son abonnement en pause</div>
+      <p class="story-text">En tant que <strong>client abonné</strong>, je veux mettre mon abonnement en pause, afin d'arrêter les livraisons un moment sans perdre l'argent qui me reste.</p>
+      <span class="persona-chip">Nirina · Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un abonnement actif, <span class="kw">when</span> le client le met en pause, <span class="kw">then</span> aucune nouvelle occurrence n'est générée, le solde de voucher n'est pas débité et les recharges sont suspendues</li>
+        <li><span class="kw">Given</span> une pause en cours, <span class="kw">when</span> le client la met en place, <span class="kw">then</span> la date limite de la pause (un an maximum) lui est affichée clairement</li>
+        <li><span class="kw">Given</span> une pause en cours, <span class="kw">when</span> le client demande la reprise, <span class="kw">then</span> l'abonnement redevient actif, les livraisons reprennent à la prochaine occurrence et le solde est intact</li>
+        <li><span class="kw">Given</span> un B2B en paiement mensuel qui se met en pause, <span class="kw">when</span> la pause démarre, <span class="kw">then</span> l'encours existant reste dû à son échéance</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-057</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Fin automatique après un an de pause ou d'inactivité</div>
+      <p class="story-text">En tant que <strong>client en pause ou dont l'abonnement a expiré</strong>, je veux être prévenu avant que ma situation ne devienne une résiliation, afin de reprendre mon abonnement avant de perdre mon solde.</p>
+      <span class="persona-chip">Nirina · Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une pause ou un abonnement expiré qui approche d'un an sans action, <span class="kw">when</span> il reste 30 jours puis 5 jours, <span class="kw">then</span> le client est prévenu par email que son abonnement sera considéré résilié avec perte du solde, en précisant le montant</li>
+        <li><span class="kw">Given</span> une pause arrivée à un an sans reprise, <span class="kw">when</span> la date est atteinte, <span class="kw">then</span> l'abonnement est considéré résilié et le solde restant passe à zéro par un mouvement "solde abandonné"</li>
+        <li><span class="kw">Given</span> un abonnement expiré sans aucune activité du client (connexion, confirmation, commande ou recharge) pendant un an, <span class="kw">when</span> la date est atteinte, <span class="kw">then</span> il est considéré résilié et le solde restant passe à zéro par un mouvement "solde abandonné"</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-058</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Suivre les abonnements et les soldes détenus</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir les abonnements par statut (actif, expiré, en pause, résilié) avec leur échéance et leur solde de voucher, afin de savoir quelle somme Kolekta détient pour le compte de ses clients.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des abonnements de statuts variés, <span class="kw">when</span> Rado ouvre la vue abonnements, <span class="kw">then</span> il peut filtrer par statut et voit pour chacun l'échéance (ou la date de fin de pause) et le solde de voucher</li>
+        <li><span class="kw">Given</span> des vouchers non vides, <span class="kw">when</span> Rado consulte la synthèse, <span class="kw">then</span> il voit le total des soldes détenus par Kolekta pour ses clients</li>
+        <li><span class="kw">Given</span> des échéances ou des fins de pause dans les 5 prochains jours, <span class="kw">when</span> Rado ouvre le tableau de bord, <span class="kw">then</span> elles apparaissent dans les alertes</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-head">
+      <div class="epic-num">EPIC 05</div>
+      <h2>Collecte</h2>
+    </div>
+    <p class="lede">Le quotidien de Tojo — de la génération de sa tournée jusqu'à la validation qualité/quantité de chaque produit. La coordination avec le prestataire de livraison est traitée dans l'epic suivant.</p>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-025</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Générer la tournée de collecte du jour</div>
+      <p class="story-text">En tant que <strong>collecteur</strong>, je veux recevoir ma liste de collecte du jour, afin de savoir chez quels fournisseurs aller et quoi y prendre.</p>
+      <span class="persona-chip">Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des commandes confirmées pour le cycle du jour, <span class="kw">when</span> la tournée se génère, <span class="kw">then</span> chaque produit à collecter est rattaché à la ou les commandes qui l'ont déclenché</li>
+        <li><span class="kw">Given</span> une tournée générée la veille au soir, <span class="kw">when</span> Tojo ouvre l'app le matin en zone peu couverte, <span class="kw">then</span> la liste est déjà disponible localement, sans dépendre du réseau</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-026</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Valider la qualité d'un produit collecté</div>
+      <p class="story-text">En tant que <strong>collecteur</strong>, je veux cocher une checklist qualité par produit collecté, afin de ne jamais ramener un produit de mauvaise qualité sans m'en rendre compte.</p>
+      <span class="persona-chip">Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> Tojo sur l'écran d'un produit à collecter, <span class="kw">when</span> il ouvre la checklist qualité, <span class="kw">then</span> il voit les critères pertinents pour ce produit (fraîcheur, aspect, calibre)</li>
+        <li><span class="kw">Given</span> un critère coché "non conforme", <span class="kw">when</span> Tojo valide, <span class="kw">then</span> le produit est marqué "à vérifier" et n'est pas ajouté automatiquement au lot collecté</li>
+        <li><span class="kw">Given</span> une exigence qualité précisée par un gros compte (US-021), <span class="kw">when</span> Tojo ouvre la checklist, <span class="kw">then</span> cette exigence spécifique est mise en avant</li>
+        <li><span class="kw">Given</span> un produit "à vérifier", <span class="kw">when</span> Tojo le revoit, <span class="kw">then</span> il l'accepte avec une note ou le refuse avec un motif ; tant qu'il n'a pas tranché, le produit ne peut pas être remis au prestataire (US-034)</li>
+        <li><span class="kw">Given</span> un produit refusé pour qualité, <span class="kw">when</span> Tojo valide le refus, <span class="kw">then</span> Rado est alerté et la ligne de commande concernée est signalée comme manquante</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-027</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Confirmer la quantité collectée</div>
+      <p class="story-text">En tant que <strong>collecteur</strong>, je veux confirmer la quantité réellement collectée pour chaque produit, afin d'éviter les écarts avec ce qui a été commandé.</p>
+      <span class="persona-chip">Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une quantité attendue affichée, <span class="kw">when</span> Tojo saisit la quantité réelle, <span class="kw">then</span> un écart significatif (seuil réglable, ex: -20%) déclenche une alerte visible avant validation</li>
+        <li><span class="kw">Given</span> un fournisseur absent ou sans le produit attendu, <span class="kw">when</span> Tojo marque l'arrêt ou le produit "non collecté" avec un motif, <span class="kw">then</span> la ligne de commande est signalée comme manquante, Rado est alerté et le motif est conservé</li>
+        <li><span class="kw">Given</span> une quantité collectée inférieure à la quantité commandée, <span class="kw">when</span> Tojo valide, <span class="kw">then</span> la quantité de la ligne est ajustée à ce qui sera livré, le client en est informé par email, et le montant (facture ou réservation voucher) suit la quantité réellement livrée</li>
+        <li><span class="kw">Given</span> toutes les lignes d'une commande validées ou signalées manquantes, <span class="kw">when</span> Tojo termine l'arrêt, <span class="kw">then</span> la commande passe au statut "collectée"</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-028</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Fonctionnement hors-ligne avec synchronisation différée</div>
+      <p class="story-text">En tant que <strong>collecteur</strong>, je veux que mes saisies (qualité, quantité, disponibilité) fonctionnent même sans réseau, afin de ne jamais être bloqué en zone de collecte.</p>
+      <span class="persona-chip">Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> aucune connexion réseau, <span class="kw">when</span> Tojo valide une checklist ou une quantité, <span class="kw">then</span> la donnée est sauvegardée localement sur l'appareil</li>
+        <li><span class="kw">Given</span> des données en attente de synchronisation, <span class="kw">when</span> le réseau revient, <span class="kw">then</span> elles se synchronisent automatiquement, sans action manuelle de Tojo</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-029</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Gérer les véhicules de collecte</div>
+      <p class="story-text">En tant qu'<strong>Admin ou Gérant</strong>, je veux gérer les véhicules utilisés pour la collecte et les assigner à un collecteur, afin de savoir qui utilise quoi.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un véhicule déjà assigné à un collecteur pour la journée, <span class="kw">when</span> l'admin tente de l'assigner à un second collecteur en même temps, <span class="kw">then</span> le système empêche le conflit</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-030</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Suggestion de collecte anticipée</div>
+      <p class="story-text">En tant que <strong>collecteur</strong>, je veux voir des suggestions de collecte en plus des commandes confirmées, afin de couvrir les produits à forte rotation sans attendre la commande.</p>
+      <span class="persona-chip">Tojo · Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un historique de disponibilité montrant une forte rotation (US-014), <span class="kw">when</span> la tournée se génère, <span class="kw">then</span> une suggestion de volume additionnel apparaît, distincte visuellement des collectes liées à une commande ferme</li>
+        <li><span class="kw">Given</span> une règle simple paramétrée (ex: +15% sur les produits à forte rotation), <span class="kw">when</span> la suggestion se calcule, <span class="kw">then</span> elle reste modifiable par Tojo avant validation, jamais imposée automatiquement</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-090</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Planifier et assigner les tournées de collecte</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux relire la tournée générée, l'ajuster et l'assigner à un collecteur avec un véhicule, afin que chaque matin quelqu'un parte avec une liste claire.</p>
+      <span class="persona-chip">Rado · Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une tournée générée pour le lendemain (US-025), <span class="kw">when</span> Rado l'ouvre, <span class="kw">then</span> il voit les arrêts par fournisseur, les produits, les quantités et les commandes liées, et peut ajouter, retirer ou réordonner un arrêt</li>
+        <li><span class="kw">Given</span> une tournée, <span class="kw">when</span> Rado l'assigne à un collecteur et à un véhicule libre, <span class="kw">then</span> elle apparaît dans l'app de ce collecteur ; un véhicule déjà pris ce jour-là est refusé (US-029)</li>
+        <li><span class="kw">Given</span> une commande prioritaire (US-085), <span class="kw">when</span> la tournée est générée, <span class="kw">then</span> ses produits sont signalés en haut de la liste</li>
+        <li><span class="kw">Given</span> une tournée en cours, <span class="kw">when</span> Rado l'ouvre, <span class="kw">then</span> il voit l'avancement par arrêt (à faire, en cours, terminé, manquant) à mesure que les saisies se synchronisent</li>
+        <li><span class="kw">Given</span> des suggestions de collecte anticipée (US-030), <span class="kw">when</span> Rado relit la tournée, <span class="kw">then</span> il peut les conserver, les modifier ou les retirer avant l'assignation</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-091</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Définir les critères de la checklist qualité</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux définir les critères de qualité par produit ou par catégorie, afin que la checklist de Tojo corresponde à ce qui compte vraiment.</p>
+      <span class="persona-chip">Rado · Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une catégorie ou un produit, <span class="kw">when</span> Rado ajoute, modifie ou retire un critère (fraîcheur, aspect, calibre…), <span class="kw">then</span> la checklist de ce produit est mise à jour pour les prochaines collectes</li>
+        <li><span class="kw">Given</span> un produit sans critère propre, <span class="kw">when</span> Tojo ouvre sa checklist, <span class="kw">then</span> les critères de sa catégorie s'appliquent</li>
+        <li><span class="kw">Given</span> un critère déjà utilisé dans des collectes passées, <span class="kw">when</span> Rado le retire, <span class="kw">then</span> l'historique conserve ce critère tel qu'il était</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-head">
+      <div class="epic-num">EPIC 06</div>
+      <h2>Livraisons</h2>
+    </div>
+    <p class="lede">La livraison est assurée par un prestataire externe qui n'a pas d'accès au système en v1. Kolekta suit donc le statut à sa place : le Gérant et le collecteur mettent à jour l'état des livraisons, et le client est notifié.</p>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-031</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Définir les zones de livraison et leurs délais</div>
+      <p class="story-text">En tant qu'<strong>Admin ou Gérant</strong>, je veux définir des zones de livraison (Antsirabe ville, hors-ville selon distance) avec leur délai indicatif, afin que le système affiche un délai juste au client avant validation.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une zone configurée avec un délai, <span class="kw">when</span> un client saisit une adresse située dans cette zone, <span class="kw">then</span> le délai correspondant est celui affiché à la validation (US-018)</li>
+        <li><span class="kw">Given</span> une adresse qui ne correspond à aucune zone, <span class="kw">when</span> le client valide, <span class="kw">then</span> la commande est bloquée avec un message invitant à contacter Kolekta</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-032</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Gérer les prestataires de livraison</div>
+      <p class="story-text">En tant qu'<strong>Admin ou Gérant</strong>, je veux enregistrer les prestataires de livraison avec leurs coordonnées et les zones qu'ils couvrent, afin de savoir à qui confier chaque livraison.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un nouveau prestataire, <span class="kw">when</span> l'admin le crée, <span class="kw">then</span> son nom, un contact téléphonique et au moins une zone couverte sont obligatoires</li>
+        <li><span class="kw">Given</span> un prestataire désactivé, <span class="kw">when</span> le Gérant assigne une livraison, <span class="kw">then</span> il n'apparaît plus dans la liste proposée</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-033</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Planifier le rendez-vous collecteur / prestataire</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux définir le point et l'heure de rendez-vous entre le collecteur et le prestataire, afin que le transfert direct des produits se fasse sans passer par un dépôt.</p>
+      <span class="persona-chip">Rado · Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une tournée de collecte du jour, <span class="kw">when</span> Rado y associe un prestataire, un point et une heure, <span class="kw">then</span> ces informations apparaissent dans la tournée de Tojo</li>
+        <li><span class="kw">Given</span> l'heure de rendez-vous qui approche, <span class="kw">when</span> Tojo est encore en cours de collecte, <span class="kw">then</span> une alerte horaire lui est affichée sur l'app</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-034</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Confirmer le transfert des produits au prestataire</div>
+      <p class="story-text">En tant que <strong>collecteur</strong>, je veux confirmer sur l'app que j'ai remis les produits au prestataire, afin que les commandes concernées passent au statut "en livraison".</p>
+      <span class="persona-chip">Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des produits collectés et validés, <span class="kw">when</span> Tojo confirme la remise au prestataire, <span class="kw">then</span> les commandes liées passent en "en livraison" avec l'heure de remise enregistrée</li>
+        <li><span class="kw">Given</span> aucune connexion au point de rendez-vous, <span class="kw">when</span> Tojo confirme la remise, <span class="kw">then</span> la confirmation est conservée localement et synchronisée dès le retour du réseau</li>
+        <li><span class="kw">Given</span> un produit marqué "à vérifier" (US-026), <span class="kw">when</span> Tojo confirme la remise, <span class="kw">then</span> ce produit n'est pas inclus dans le transfert sans décision explicite</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-035</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Marquer une commande comme livrée</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux marquer une commande comme livrée après confirmation du prestataire, afin que le client voie le bon statut et que le rapprochement (US-023) puisse commencer.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande "en livraison", <span class="kw">when</span> Rado la marque livrée, <span class="kw">then</span> le statut et l'heure de livraison sont enregistrés et visibles par le client</li>
+        <li><span class="kw">Given</span> une commande qui n'est pas encore "en livraison", <span class="kw">when</span> Rado tente de la marquer livrée, <span class="kw">then</span> le système refuse (on ne saute pas d'étape)</li>
+        <li><span class="kw">Given</span> une commande à marquer livrée, <span class="kw">when</span> Rado confirme, <span class="kw">then</span> il vérifie les quantités effectivement livrées par ligne (pré-remplies avec les quantités collectées) et le montant final de la commande est calculé sur ces quantités</li>
+        <li><span class="kw">Given</span> une commande payée par voucher, <span class="kw">when</span> elle est marquée livrée, <span class="kw">then</span> le débit final correspond aux quantités livrées et l'éventuelle différence avec la réservation est recréditée (US-052)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-036</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Recevoir un email à chaque étape clé</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux recevoir un email pour la confirmation de commande et chaque changement de statut, afin de garder une trace sans avoir à ouvrir l'app.</p>
+      <span class="persona-chip">Fetra · Hanta · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande validée, <span class="kw">when</span> elle est créée, <span class="kw">then</span> un email de confirmation récapitulatif est envoyé</li>
+        <li><span class="kw">Given</span> un changement de statut (en livraison, livrée), <span class="kw">when</span> il est enregistré, <span class="kw">then</span> un email correspondant est envoyé au client</li>
+        <li><span class="kw">Given</span> un client sans adresse email, <span class="kw">when</span> un événement se produit, <span class="kw">then</span> l'envoi est ignoré sans erreur bloquante pour la commande</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-037</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Recevoir un SMS "livraison en cours"</div>
+      <p class="story-text">En tant que <strong>client particulier ou sans email</strong>, je veux recevoir un SMS quand ma livraison est en cours, afin d'être prévenu même si je ne consulte pas mes emails.</p>
+      <span class="persona-chip">Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande qui passe "en livraison" pour un particulier ou un client sans email, <span class="kw">when</span> le statut change, <span class="kw">then</span> un SMS court est envoyé</li>
+        <li><span class="kw">Given</span> un client B2B avec email, <span class="kw">when</span> le statut change, <span class="kw">then</span> aucun SMS n'est envoyé (l'email suffit, le SMS a un coût)</li>
+        <li><span class="kw">Given</span> un échec d'envoi de la passerelle SMS, <span class="kw">when</span> il survient, <span class="kw">then</span> l'échec est journalisé sans bloquer le changement de statut</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-038</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Signaler un incident de livraison</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux enregistrer un incident (retard, produit abîmé, client absent) sur une livraison, afin de garder la trace et de réagir vite.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une livraison en cours, <span class="kw">when</span> Rado enregistre un incident avec un type et un commentaire, <span class="kw">then</span> il apparaît dans l'historique de la commande et remonte dans les alertes du tableau de bord</li>
+        <li><span class="kw">Given</span> un incident "client absent" ou "livraison refusée", <span class="kw">when</span> Rado le traite, <span class="kw">then</span> il peut reprogrammer une nouvelle livraison à une autre date (le client est notifié) ou clôturer la commande avec un motif ; aucun remboursement n'est prévu</li>
+        <li><span class="kw">Given</span> un produit abîmé signalé par le client à réception (US-023), <span class="kw">when</span> Rado consulte l'écart, <span class="kw">then</span> il peut le rattacher à un incident et décider d'un geste commercial (US-083)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-092</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Consulter le journal des notifications</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir les emails et SMS envoyés aux clients et ceux qui ont échoué, afin de savoir qui a été prévenu et de relancer si besoin.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des notifications envoyées, <span class="kw">when</span> Rado ouvre le journal, <span class="kw">then</span> il voit pour chacune le destinataire, le canal (email ou SMS), l'événement, la date et le statut (envoyée, échec, ignorée)</li>
+        <li><span class="kw">Given</span> une notification en échec, <span class="kw">when</span> Rado clique sur "Renvoyer", <span class="kw">then</span> un nouvel envoi est tenté et son résultat est ajouté au journal</li>
+        <li><span class="kw">Given</span> un client sans email ni numéro valide, <span class="kw">when</span> un événement le concerne, <span class="kw">then</span> la notification apparaît "ignorée" avec la raison</li>
+        <li><span class="kw">Given</span> un utilisateur sans rôle Gérant ou Admin, <span class="kw">when</span> il appelle le journal, <span class="kw">then</span> l'API répond 403</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-head">
+      <div class="epic-num">EPIC 07</div>
+      <h2>Paiements</h2>
+    </div>
+    <p class="lede">Le règlement reste hors-ligne en v1 (pas de paiement en ligne, voir CDC) : l'app ne déplace pas d'argent, elle <strong>enregistre</strong> ce qui est payé et suit ce qui reste dû. Quatre flux : clients → Kolekta, Kolekta → fournisseurs, Kolekta → prestataire de livraison, salaires.</p>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-039</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Enregistrer le paiement d'une commande</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux enregistrer un paiement reçu d'un client (montant, mode, date) sur sa commande, afin de savoir à tout moment ce qui est payé et ce qui reste dû.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande à 100 000 Ar, <span class="kw">when</span> Rado enregistre un paiement de 40 000 Ar, <span class="kw">then</span> la commande passe "partiellement payée" avec 60 000 Ar restants</li>
+        <li><span class="kw">Given</span> un montant supérieur au reste dû, <span class="kw">when</span> Rado valide, <span class="kw">then</span> le système refuse avec un message explicite</li>
+        <li><span class="kw">Given</span> un paiement qui solde la commande, <span class="kw">when</span> Rado valide, <span class="kw">then</span> la commande passe "payée"</li>
+        <li><span class="kw">Given</span> un paiement reçu en espèces ou par mobile money, <span class="kw">when</span> Rado l'enregistre, <span class="kw">then</span> le mode est indiqué ; pour le mobile money, la référence de transaction est obligatoire et ne peut pas être déjà utilisée sur un autre paiement ; Rado l'ayant vérifiée lui-même en l'enregistrant, le paiement est enregistré directement, sans passer par l'attente de vérification</li>
+        <li><span class="kw">Given</span> un paiement en espèces validé, <span class="kw">when</span> il est enregistré, <span class="kw">then</span> il compte pour le client mais n'est "en caisse" qu'après la remise confirmée (US-071, US-072)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-040</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Voir le statut de paiement de ma commande</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux voir ce que j'ai payé et ce qui reste à payer sur chaque commande, afin de ne pas avoir à poser la question à Kolekta.</p>
+      <span class="persona-chip">Fetra · Hanta · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande avec des paiements enregistrés, <span class="kw">when</span> le client la consulte, <span class="kw">then</span> il voit le total, les paiements reçus et le reste à payer</li>
+        <li><span class="kw">Given</span> un paiement mobile money dont la référence est en cours de vérification (US-060), <span class="kw">when</span> le client consulte sa commande, <span class="kw">then</span> il le voit marqué "en attente de vérification", distinct des paiements reçus</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-041</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Télécharger bon de commande et facture</div>
+      <p class="story-text">En tant que <strong>responsable achats d'un gros compte</strong>, je veux télécharger un bon de commande et une facture pour chaque commande, afin de les transmettre à ma comptabilité interne.</p>
+      <span class="persona-chip">Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande validée, <span class="kw">when</span> le client ouvre ses documents, <span class="kw">then</span> un bon de commande téléchargeable est disponible</li>
+        <li><span class="kw">Given</span> une commande livrée, <span class="kw">when</span> le client ouvre ses documents, <span class="kw">then</span> une facture est disponible avec les quantités réellement livrées (après rapprochement, US-023)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-042</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Calculer ce qui est dû à un fournisseur</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux que le montant dû à un fournisseur soit calculé à partir des quantités réellement collectées et validées, afin de payer au juste prix ce qui a été effectivement pris.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des quantités collectées et validées (US-027), <span class="kw">when</span> la collecte est clôturée, <span class="kw">then</span> un montant dû est créé pour le fournisseur, calculé sur les quantités réelles</li>
+        <li><span class="kw">Given</span> un produit marqué "à vérifier" et non retenu (US-026), <span class="kw">when</span> le montant se calcule, <span class="kw">then</span> il n'est pas compté dans ce qui est dû</li>
+        <li><span class="kw">Given</span> un fournisseur et un produit dont le prix d'achat est défini (US-095), <span class="kw">when</span> le montant dû se calcule, <span class="kw">then</span> il utilise ce prix d'achat ; sans prix d'achat, le calcul est bloqué et Rado est alerté</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-095</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Définir le prix d'achat par fournisseur et par produit</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux enregistrer le prix auquel j'achète chaque produit à chaque fournisseur, afin que le montant dû soit juste et que je connaisse ma marge.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un fournisseur et un produit, <span class="kw">when</span> Rado enregistre un prix d'achat par unité de vente, <span class="kw">then</span> il est utilisé pour les collectes à partir de ce moment, sans modifier les montants déjà calculés</li>
+        <li><span class="kw">Given</span> un prix d'achat modifié, <span class="kw">when</span> l'enregistrement est fait, <span class="kw">then</span> l'ancien prix reste dans l'historique avec sa période de validité</li>
+        <li><span class="kw">Given</span> un produit dont le prix d'achat dépasse le prix de vente, <span class="kw">when</span> Rado enregistre, <span class="kw">then</span> un avertissement signale la marge négative avant validation</li>
+        <li><span class="kw">Given</span> un utilisateur sans rôle Gérant ou Admin, <span class="kw">when</span> il consulte les prix d'achat, <span class="kw">then</span> l'API répond 403 : le collecteur ne voit jamais les prix unitaires d'achat, seulement le montant total à payer à un arrêt (US-096)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-096</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Payer les fournisseurs sur place avec une avance de caisse</div>
+      <p class="story-text">En tant que <strong>collecteur</strong>, je veux payer en espèces l'agriculteur sur place avec une avance que Kolekta m'a confiée, afin de ne pas repartir sans avoir réglé ce que j'ai pris.</p>
+      <span class="persona-chip">Tojo · Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une tournée du jour, <span class="kw">when</span> Rado remet des espèces à Tojo et enregistre une avance (montant, date), <span class="kw">then</span> elle apparaît comme "détenue par Tojo", distincte des encaissements clients, dans le suivi des espèces (US-073)</li>
+        <li><span class="kw">Given</span> un arrêt terminé chez un fournisseur payé en espèces, <span class="kw">when</span> Tojo ouvre le paiement, <span class="kw">then</span> il voit le montant total à payer calculé sur les quantités validées, sans les prix unitaires d'achat</li>
+        <li><span class="kw">Given</span> le montant à payer affiché, <span class="kw">when</span> Tojo confirme "payé en espèces" (avec un montant différent éventuel et un motif obligatoire dans ce cas), <span class="kw">then</span> un paiement fournisseur est enregistré (US-043) et l'avance de Tojo diminue de ce montant, même hors connexion</li>
+        <li><span class="kw">Given</span> un fournisseur dont le mode de paiement est le mobile money (US-011), <span class="kw">when</span> Tojo termine l'arrêt, <span class="kw">then</span> aucun paiement sur place n'est proposé : l'écran indique "à payer par Kolekta en mobile money" et Rado règle plus tard avec la référence (US-043)</li>
+        <li><span class="kw">Given</span> une avance insuffisante pour un fournisseur, <span class="kw">when</span> Tojo veut le payer, <span class="kw">then</span> il est averti ; il peut payer une partie ou laisser le reste dû à régler plus tard par Rado</li>
+        <li><span class="kw">Given</span> la fin de la tournée, <span class="kw">when</span> Tojo remet à Rado le reste de l'avance, <span class="kw">then</span> Rado confirme la remise comme US-072 : le solde attendu est l'avance moins les paiements faits, et tout écart est enregistré avec un motif</li>
+        <li><span class="kw">Given</span> un utilisateur autre que Tojo (collecteur de la tournée) et le Gérant, <span class="kw">when</span> il consulte les avances ou les paiements d'une tournée, <span class="kw">then</span> l'API répond 403</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-043</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Enregistrer un paiement fournisseur</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux enregistrer un paiement fait à un fournisseur (montant, mode, date), afin de suivre ce que Kolekta lui doit encore.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un montant dû à un fournisseur, <span class="kw">when</span> Rado enregistre un paiement, <span class="kw">then</span> le solde dû diminue du montant payé</li>
+        <li><span class="kw">Given</span> la liste des fournisseurs, <span class="kw">when</span> Rado ouvre la vue paiements, <span class="kw">then</span> il voit pour chacun ce qui est dû, payé et en retard</li>
+        <li><span class="kw">Given</span> un paiement versé par mobile money, <span class="kw">when</span> Rado l'enregistre, <span class="kw">then</span> la référence de la transaction est obligatoire (espèces ou mobile money sont les deux modes possibles)</li>
+        <li><span class="kw">Given</span> un montant dû depuis plus de N jours (délai de paiement fournisseur paramétrable), <span class="kw">when</span> Rado ouvre la vue paiements, <span class="kw">then</span> il est marqué "en retard" et remonte dans les alertes</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-044</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Enregistrer le paiement du prestataire de livraison</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux enregistrer ce que Kolekta doit et a payé au prestataire de livraison, afin de suivre ce coût comme les autres flux.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des livraisons effectuées par un prestataire sur une période, <span class="kw">when</span> Rado saisit le montant dû, <span class="kw">then</span> il est rattaché au prestataire et aux livraisons concernées</li>
+        <li><span class="kw">Given</span> un montant dû à un prestataire, <span class="kw">when</span> Rado enregistre un paiement, <span class="kw">then</span> le solde dû diminue du montant payé</li>
+        <li><span class="kw">Given</span> un prestataire qui détient des espèces de clients (US-094) et à qui Kolekta doit de l'argent, <span class="kw">when</span> Rado règle ce qui lui est dû, <span class="kw">then</span> il peut compenser les deux montants : la compensation crée deux écritures liées (paiement et remise des espèces), visibles dans les deux suivis</li>
+        <li><span class="kw">Given</span> un paiement versé au prestataire par mobile money, <span class="kw">when</span> Rado l'enregistre, <span class="kw">then</span> la référence de la transaction est obligatoire (espèces ou mobile money sont les deux modes possibles)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-045</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Enregistrer les salaires des employés</div>
+      <p class="story-text">En tant que <strong>RH ou Gérant</strong>, je veux enregistrer le paiement du salaire d'un employé pour une période, afin de suivre la masse salariale.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un employé actif, <span class="kw">when</span> le RH enregistre un salaire pour un mois, <span class="kw">then</span> le paiement est rattaché à l'employé et à la période</li>
+        <li><span class="kw">Given</span> un salaire déjà enregistré pour ce mois, <span class="kw">when</span> le RH tente d'en saisir un second, <span class="kw">then</span> le système signale le doublon avant de valider</li>
+        <li><span class="kw">Given</span> un salaire versé par mobile money, <span class="kw">when</span> il est enregistré, <span class="kw">then</span> la référence de la transaction est obligatoire (espèces ou mobile money sont les deux modes possibles)</li>
+        <li><span class="kw">Given</span> un employé collecteur (Tojo), <span class="kw">when</span> il se connecte, <span class="kw">then</span> il ne voit jamais les salaires, ni les siens ni ceux des autres, dans l'app terrain</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-046</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Repérer les impayés clients</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir les commandes livrées mais non soldées après un délai, afin de relancer le client avant que ça ne s'accumule.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande de particulier livrée non soldée depuis plus de N jours (délai paramétrable), <span class="kw">when</span> Rado ouvre la vue paiements, <span class="kw">then</span> elle est marquée "impayé" et remonte dans les alertes du tableau de bord</li>
+        <li><span class="kw">Given</span> une commande d'un B2B sans abonnement non soldée 10 jours après la livraison, <span class="kw">when</span> Rado ouvre la vue paiements, <span class="kw">then</span> elle est marquée "impayé" et remonte dans les alertes du tableau de bord</li>
+        <li><span class="kw">Given</span> un compte en paiement mensuel (US-048), <span class="kw">when</span> une commande est livrée, <span class="kw">then</span> elle n'est considérée impayée qu'après l'échéance de la facture mensuelle, pas dès N jours</li>
+        <li><span class="kw">Given</span> un paiement mobile money en attente de vérification (US-060), <span class="kw">when</span> le délai d'impayé est atteint, <span class="kw">then</span> la commande n'est pas marquée impayée tant que la vérification est en cours</li>
+        <li><span class="kw">Given</span> une commande ou une facture marquée impayée, <span class="kw">when</span> Rado clique sur "Relancer", <span class="kw">then</span> un email de rappel est envoyé au client et la relance est tracée (date, auteur) pour éviter les doublons involontaires</li>
+        <li><span class="kw">Given</span> un paiement déclaré en espèces remis au prestataire (US-093) ou en litige (US-094), <span class="kw">when</span> la vue des impayés se calcule, <span class="kw">then</span> la commande n'est pas comptée impayée tant que la déclaration n'est pas contestée</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-047</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Journal des paiements non modifiable</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux que chaque paiement enregistré soit conservé tel quel, et corrigé par une écriture d'annulation plutôt que modifié, afin de garder une trace fiable de l'argent.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un paiement enregistré par erreur, <span class="kw">when</span> Rado veut le corriger, <span class="kw">then</span> il l'annule (le paiement reste visible, marqué annulé avec un motif) puis en saisit un nouveau</li>
+        <li><span class="kw">Given</span> n'importe quel paiement, <span class="kw">when</span> quelqu'un tente de le supprimer, <span class="kw">then</span> la suppression est impossible, seule l'annulation est proposée</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-048</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Définir les conditions de paiement d'un compte</div>
+      <p class="story-text">En tant qu'<strong>Admin ou Gérant</strong>, je veux passer un compte B2B en paiement mensuel et fixer son plafond d'encours, afin d'accorder du crédit uniquement aux clients de confiance.</p>
+      <span class="persona-chip">Rado · Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un compte B2B sans abonnement actif, <span class="kw">when</span> une commande est livrée, <span class="kw">then</span> il dispose de 10 jours pour la régler, sans option de paiement mensuel ni de voucher</li>
+        <li><span class="kw">Given</span> un compte B2B avec abonnement actif, <span class="kw">when</span> Rado active le paiement mensuel avec un plafond (ex: 500 000 Ar), <span class="kw">then</span> ses commandes s'ajoutent à son encours au lieu d'être à régler sous 10 jours</li>
+        <li><span class="kw">Given</span> un compte B2B avec abonnement actif, <span class="kw">when</span> Rado l'autorise à utiliser un voucher (US-051), <span class="kw">then</span> il peut le combiner avec le paiement mensuel</li>
+        <li><span class="kw">Given</span> un particulier sans abonnement actif, <span class="kw">when</span> Rado consulte ses conditions, <span class="kw">then</span> ni le paiement mensuel ni le voucher ne sont proposés</li>
+        <li><span class="kw">Given</span> un particulier avec abonnement actif, <span class="kw">when</span> Rado consulte ses conditions, <span class="kw">then</span> le voucher est proposé, mais pas le paiement mensuel, réservé aux B2B</li>
+        <li><span class="kw">Given</span> un client abonné (B2B ou particulier) qui résilie son abonnement, <span class="kw">when</span> la résiliation prend effet, <span class="kw">then</span> le voucher et les recharges ne sont plus disponibles (le solde restant est abandonné, sans remboursement, voir US-054) ; pour un B2B, le paiement mensuel est aussi suspendu pour les nouvelles commandes et l'encours existant reste dû à son échéance</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-049</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Bloquer une commande qui dépasse le plafond d'encours</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux que le système empêche une commande qui ferait dépasser le plafond d'un client, afin de limiter le risque d'impayés.</p>
+      <span class="persona-chip">Rado · Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un encours de 450 000 Ar et un plafond de 500 000 Ar, <span class="kw">when</span> le client valide une commande de 100 000 Ar, <span class="kw">then</span> elle est refusée avec un message neutre l'invitant à régler son solde ou à contacter Kolekta</li>
+        <li><span class="kw">Given</span> un paiement enregistré qui ramène l'encours sous le plafond, <span class="kw">when</span> le client recommande, <span class="kw">then</span> la commande passe</li>
+        <li><span class="kw">Given</span> l'occurrence d'un abonnement (US-020) qui ferait dépasser le plafond, <span class="kw">when</span> elle approche, <span class="kw">then</span> elle est signalée à Rado avant la collecte, plutôt qu'annulée en silence</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-050</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Recevoir une facture mensuelle groupée</div>
+      <p class="story-text">En tant que <strong>responsable achats d'un gros compte</strong>, je veux recevoir une facture unique en fin de mois listant toutes mes commandes livrées, afin de la traiter en une seule fois avec ma comptabilité.</p>
+      <span class="persona-chip">Fetra</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un compte en paiement mensuel avec des commandes livrées dans le mois, <span class="kw">when</span> le mois se clôture, <span class="kw">then</span> une facture groupée est générée avec le détail par commande, les quantités réellement livrées (US-023) et une date d'échéance</li>
+        <li><span class="kw">Given</span> un écart de livraison signalé et non résolu (US-023), <span class="kw">when</span> la facture se génère, <span class="kw">then</span> la ligne concernée est marquée "en litige" et n'est pas comptée dans le montant exigible</li>
+        <li><span class="kw">Given</span> une facture générée, <span class="kw">when</span> elle est prête, <span class="kw">then</span> le client la reçoit par email et peut la télécharger depuis son espace</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-051</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Recharger le voucher d'un compte abonné</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux enregistrer la recharge du voucher d'un client abonné, B2B ou particulier (le client a payé à l'avance), afin que son solde soit utilisable sur ses prochaines commandes.</p>
+      <span class="persona-chip">Rado · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un compte avec abonnement actif (B2B ou particulier), <span class="kw">when</span> Rado enregistre une recharge en espèces de 1 000 000 Ar, <span class="kw">then</span> le solde du voucher augmente de ce montant et un mouvement "recharge" apparaît dans l'historique</li>
+        <li><span class="kw">Given</span> un compte sans abonnement actif (jamais abonné, expiré, en pause ou résilié), <span class="kw">when</span> Rado tente d'enregistrer une recharge, <span class="kw">then</span> le système refuse avec la raison indiquée</li>
+        <li><span class="kw">Given</span> une recharge enregistrée par erreur, <span class="kw">when</span> Rado veut la corriger, <span class="kw">then</span> il l'annule par une écriture inverse, comme tout paiement (US-047)</li>
+        <li><span class="kw">Given</span> un solde de voucher à corriger (geste commercial, erreur de saisie), <span class="kw">when</span> Rado enregistre un ajustement positif ou négatif avec un motif obligatoire, <span class="kw">then</span> un mouvement "ajustement" apparaît dans l'historique, visible du client, sans jamais modifier un mouvement passé</li>
+        <li><span class="kw">Given</span> un client abonné qui envoie l'argent par mobile money, <span class="kw">when</span> il saisit la référence depuis son espace, <span class="kw">then</span> une demande de recharge est créée "en attente de vérification" et Rado est notifié</li>
+        <li><span class="kw">Given</span> un client qui a communiqué sa référence de recharge à un employé, <span class="kw">when</span> l'employé la saisit pour lui (US-070), <span class="kw">then</span> la demande suit le même circuit "en attente de vérification"</li>
+        <li><span class="kw">Given</span> une recharge payée par mobile money, <span class="kw">when</span> la référence a été saisie par le client ou par un employé, <span class="kw">then</span> le solde n'est crédité qu'après vérification de la transaction (US-060), jamais avant</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-052</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Payer une commande avec le voucher</div>
+      <p class="story-text">En tant que <strong>client abonné</strong>, je veux que mes commandes (y compris celles de mon abonnement) soient payées automatiquement avec mon voucher, afin de ne plus avoir de paiement à gérer à chaque livraison.</p>
+      <span class="persona-chip">Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un voucher avec un solde suffisant, <span class="kw">when</span> la commande est validée, <span class="kw">then</span> son montant est réservé sur le solde</li>
+        <li><span class="kw">Given</span> une commande livrée, <span class="kw">when</span> les quantités réelles sont confirmées (US-023), <span class="kw">then</span> le solde est débité du montant réellement dû et l'éventuelle différence est recréditée</li>
+        <li><span class="kw">Given</span> une occurrence d'abonnement avec un solde suffisant, <span class="kw">when</span> elle est confirmée, <span class="kw">then</span> le paiement se fait sans aucune action du client</li>
+        <li><span class="kw">Given</span> un solde insuffisant pour une commande, <span class="kw">when</span> elle est validée, <span class="kw">then</span> le voucher est utilisé jusqu'à épuisement et le reste est à régler selon les conditions habituelles du compte (B2B : paiement mensuel s'il est actif, sinon sous 10 jours ; particulier : règlement normal)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-053</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Consulter le solde et l'historique du voucher</div>
+      <p class="story-text">En tant que <strong>client abonné</strong>, je veux voir mon solde et chaque mouvement (recharge, débit, ajustement), afin de contrôler mon budget et, pour un B2B, de justifier la dépense en comptabilité.</p>
+      <span class="persona-chip">Fetra · Nirina · Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un voucher avec des mouvements, <span class="kw">when</span> le client ouvre son espace, <span class="kw">then</span> il voit le solde actuel et la liste des mouvements avec date, type, montant et commande concernée</li>
+        <li><span class="kw">Given</span> un solde qui ne couvre plus les prochaines occurrences de l'abonnement, <span class="kw">when</span> le seuil est atteint, <span class="kw">then</span> le client et le Gérant sont prévenus pour anticiper une recharge</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-059</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Payer par mobile money et communiquer la référence</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux payer par mobile money puis transmettre la référence de la transaction, afin que Kolekta confirme mon paiement sans que j'aie besoin d'un espace de paiement en ligne.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande à régler, <span class="kw">when</span> le client choisit le mobile money, <span class="kw">then</span> l'app affiche le numéro de Kolekta, le montant à envoyer et la marche à suivre (ex: MVola, Orange Money, Airtel Money)</li>
+        <li><span class="kw">Given</span> un client qui a envoyé l'argent, <span class="kw">when</span> il saisit la référence de la transaction et l'opérateur, <span class="kw">then</span> le paiement passe "en attente de vérification" et Rado est notifié</li>
+        <li><span class="kw">Given</span> un paiement en attente de vérification, <span class="kw">when</span> le client consulte sa commande, <span class="kw">then</span> elle n'est pas considérée payée tant que Rado n'a pas validé</li>
+        <li><span class="kw">Given</span> une référence vide ou déjà utilisée sur un autre paiement, <span class="kw">when</span> le client valide, <span class="kw">then</span> le système la refuse avec un message explicite</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-060</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Vérifier une transaction mobile money</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux contrôler chaque référence communiquée sur mon compte mobile money puis la valider ou la rejeter, afin de ne confirmer que l'argent réellement reçu.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des paiements en attente, <span class="kw">when</span> Rado ouvre la vue de vérification, <span class="kw">then</span> il voit pour chacun la référence, l'opérateur, le montant annoncé, la date, l'objet concerné (commande, facture mensuelle ou recharge de voucher) et qui l'a saisie (le client ou un employé)</li>
+        <li><span class="kw">Given</span> une transaction retrouvée au bon montant, <span class="kw">when</span> Rado la valide, <span class="kw">then</span> le paiement est enregistré, la commande (ou le voucher) est mise à jour et le client est prévenu par email</li>
+        <li><span class="kw">Given</span> une transaction retrouvée mais pour un montant différent, <span class="kw">when</span> Rado la valide, <span class="kw">then</span> il saisit le montant réellement reçu, le paiement est enregistré à ce montant et le reste dû est recalculé</li>
+        <li><span class="kw">Given</span> une transaction introuvable, <span class="kw">when</span> Rado la rejette avec un motif, <span class="kw">then</span> le paiement est marqué "rejeté" mais reste visible dans l'historique (US-047) et le client est prévenu et peut soumettre une autre référence</li>
+        <li><span class="kw">Given</span> un paiement en attente depuis plus de 24 heures (délai paramétrable), <span class="kw">when</span> Rado ouvre le tableau de bord, <span class="kw">then</span> il apparaît dans les alertes</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-070</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Saisir une référence mobile money au nom d'un client</div>
+      <p class="story-text">En tant qu'<strong>employé de Kolekta</strong>, je veux saisir la référence de transaction qu'un client m'a communiquée (téléphone, message, en personne), afin que son paiement ou sa recharge soit pris en compte sans qu'il ait besoin de passer par l'app.</p>
+      <span class="persona-chip">Rado · Hanta</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un client qui a communiqué sa référence, <span class="kw">when</span> un employé la saisit avec le client, l'objet concerné (commande, facture mensuelle ou recharge de voucher), l'opérateur et le montant annoncé, <span class="kw">then</span> le paiement passe "en attente de vérification" avec la mention "saisi par" suivie du nom de l'employé</li>
+        <li><span class="kw">Given</span> une référence vide ou déjà utilisée sur un autre paiement, <span class="kw">when</span> l'employé valide, <span class="kw">then</span> le système la refuse avec un message explicite</li>
+        <li><span class="kw">Given</span> une référence saisie par erreur et pas encore vérifiée, <span class="kw">when</span> l'employé l'annule avec un motif, <span class="kw">then</span> elle reste visible dans l'historique, marquée annulée (US-047)</li>
+        <li><span class="kw">Given</span> une référence saisie par un employé, <span class="kw">when</span> elle est enregistrée, <span class="kw">then</span> le client reçoit un email lui confirmant que son paiement est en cours de vérification</li>
+        <li><span class="kw">Given</span> un employé qui n'est ni Gérant ni Admin, <span class="kw">when</span> il saisit une référence, <span class="kw">then</span> il ne peut pas la valider : seule la vérification (US-060) la fait compter</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-071</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Enregistrer un encaissement en espèces détenu par un employé</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux qu'un paiement en espèces validé soit marqué "détenu par" l'employé qui l'a reçu, afin de savoir que l'argent n'est pas encore dans la caisse de Kolekta.</p>
+      <span class="persona-chip">Rado · Hanta</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un client qui paie en espèces à un employé, <span class="kw">when</span> l'employé (ou Rado) enregistre l'encaissement, <span class="kw">then</span> le paiement est validé pour le client (la commande n'est plus impayée) mais son état est "détenu par [employé]" et non "en caisse"</li>
+        <li><span class="kw">Given</span> un paiement en espèces enregistré par Rado lui-même, <span class="kw">when</span> il indique l'avoir reçu directement en caisse, <span class="kw">then</span> il est directement "en caisse"</li>
+        <li><span class="kw">Given</span> une recharge de voucher payée en espèces à un employé, <span class="kw">when</span> elle est enregistrée, <span class="kw">then</span> le solde du client est crédité immédiatement, et l'argent reste "détenu par [employé]" jusqu'à sa remise</li>
+        <li><span class="kw">Given</span> un employé qui n'est pas Gérant, <span class="kw">when</span> il enregistre un encaissement, <span class="kw">then</span> il ne voit que les encaissements qu'il détient lui-même</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-072</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Confirmer la remise des espèces à la caisse</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux confirmer la remise de l'argent par l'employé, afin que la caisse reflète uniquement l'argent réellement reçu.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un employé (ou un prestataire, US-094) qui détient plusieurs encaissements, <span class="kw">when</span> Rado confirme la remise en sélectionnant les encaissements concernés et le montant remis, <span class="kw">then</span> ils passent "en caisse" avec la date, la personne qui a remis et celle qui a reçu</li>
+        <li><span class="kw">Given</span> un montant remis différent du total attendu, <span class="kw">when</span> Rado confirme, <span class="kw">then</span> l'écart est enregistré avec un motif obligatoire et reste visible sur l'employé concerné</li>
+        <li><span class="kw">Given</span> une remise confirmée, <span class="kw">when</span> Rado s'est trompé, <span class="kw">then</span> il peut l'annuler avec un motif (rien n'est supprimé, cf. US-047)</li>
+        <li><span class="kw">Given</span> un employé qui n'est ni Gérant ni Admin, <span class="kw">when</span> il tente de confirmer une remise, <span class="kw">then</span> l'API répond 403</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-073</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Suivre l'argent détenu par chaque employé</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir combien chaque employé détient et depuis quand, afin de relancer les remises en retard.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des encaissements non remis, <span class="kw">when</span> Rado ouvre le suivi des espèces, <span class="kw">then</span> il voit par employé le total détenu, le détail et l'ancienneté du plus ancien encaissement</li>
+        <li><span class="kw">Given</span> un encaissement détenu depuis plus de N jours (paramétrable, 2 par défaut), <span class="kw">when</span> le délai est dépassé, <span class="kw">then</span> il apparaît en alerte pour Rado et l'employé reçoit un rappel</li>
+        <li><span class="kw">Given</span> un employé, <span class="kw">when</span> il ouvre son espace, <span class="kw">then</span> il voit ce qu'il détient et ce qu'il doit remettre</li>
+        <li><span class="kw">Given</span> de l'argent détenu par un prestataire de livraison (US-094), <span class="kw">when</span> Rado ouvre le suivi des espèces, <span class="kw">then</span> les prestataires apparaissent comme les employés, avec leur total détenu, le détail et l'ancienneté ; le prestataire n'a pas d'accès à l'app</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-093</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Déclarer un paiement en espèces remis au prestataire</div>
+      <p class="story-text">En tant que <strong>client</strong>, je veux indiquer dans mon espace que j'ai payé ma commande en espèces au prestataire à la livraison, afin que Kolekta le sache et que je ne sois pas relancé.</p>
+      <span class="persona-chip">Hanta · Fetra · Nirina</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une commande livrée dont le règlement se fait à la livraison, <span class="kw">when</span> le client ouvre la commande, <span class="kw">then</span> il peut cliquer sur "J'ai payé en espèces au livreur" et indiquer le montant remis</li>
+        <li><span class="kw">Given</span> une déclaration enregistrée, <span class="kw">when</span> le client valide, <span class="kw">then</span> le paiement passe "déclaré par le client" ; la commande n'est pas marquée impayée et le prestataire est prévenu (US-094)</li>
+        <li><span class="kw">Given</span> un montant déclaré différent du montant dû, <span class="kw">when</span> le client valide, <span class="kw">then</span> la différence est affichée clairement (reste à payer ou trop-perçu) avant confirmation</li>
+        <li><span class="kw">Given</span> une déclaration faite par erreur et pas encore prise en compte, <span class="kw">when</span> le client l'annule, <span class="kw">then</span> elle reste visible dans l'historique, marquée annulée (US-047)</li>
+        <li><span class="kw">Given</span> un client qui n'utilise pas l'app, <span class="kw">when</span> lui-même ou le prestataire appelle Kolekta pour signaler le paiement, <span class="kw">then</span> l'employé qui répond enregistre la déclaration à sa place, avec la mention "saisi par" et "signalé par le client" ou "signalé par le prestataire"</li>
+        <li><span class="kw">Given</span> un employé de Kolekta présent à la livraison, <span class="kw">when</span> le client lui paie les espèces directement, <span class="kw">then</span> il enregistre l'encaissement comme "détenu par [employé]" (US-071) au lieu d'une déclaration au prestataire</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-094</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Prévenir le prestataire et suivre la remise des espèces</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux que le prestataire soit prévenu quand un client déclare lui avoir remis de l'argent, et suivre sa remise à Kolekta, afin de récupérer toutes les sommes encaissées pour notre compte.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un paiement déclaré par un client (US-093), <span class="kw">when</span> la déclaration est enregistrée, <span class="kw">then</span> un SMS est envoyé au prestataire : tel client affirme lui avoir remis tel montant pour la commande n° X, et s'il y a une erreur il doit prévenir Kolekta tout de suite</li>
+        <li><span class="kw">Given</span> un paiement signalé par le prestataire lui-même (il a appelé Kolekta), <span class="kw">when</span> l'employé l'enregistre, <span class="kw">then</span> aucun SMS n'est envoyé : le prestataire a déjà confirmé, l'argent passe directement "détenu par [prestataire]" et le client est prévenu par email s'il en a un</li>
+        <li><span class="kw">Given</span> un prestataire qui ne signale aucune erreur après le SMS, <span class="kw">when</span> le délai de contestation est écoulé (paramétrable), <span class="kw">then</span> l'argent passe "détenu par [prestataire]" et Kolekta attend sa remise</li>
+        <li><span class="kw">Given</span> un prestataire qui contacte Kolekta pour contester, <span class="kw">when</span> Rado enregistre la contestation avec un motif, <span class="kw">then</span> le paiement passe "en litige", n'est pas compté comme reçu, la commande reste à surveiller et Rado est alerté pour contacter le client et le prestataire</li>
+        <li><span class="kw">Given</span> de l'argent détenu par un prestataire, <span class="kw">when</span> il le remet à Kolekta, <span class="kw">then</span> Rado confirme la remise avec le montant reçu, comme pour un employé (US-072), et tout écart est enregistré avec un motif</li>
+        <li><span class="kw">Given</span> de l'argent détenu par un prestataire depuis plus de N jours (paramétrable), <span class="kw">when</span> le délai est dépassé, <span class="kw">then</span> il apparaît en alerte pour Rado, qui peut relancer le prestataire</li>
+        <li><span class="kw">Given</span> un échec d'envoi du SMS, <span class="kw">when</span> il survient, <span class="kw">then</span> il est journalisé (US-092), Rado en est alerté pour prévenir le prestataire par téléphone, et le circuit de suivi reste valable</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-head">
+      <div class="epic-num">EPIC 08</div>
+      <h2>Employés & Tâches</h2>
+    </div>
+    <p class="lede">La gestion de l'équipe interne : comptes, rôles, permissions et suivi du travail au quotidien. Il n'y a pas de persona RH ou Admin distinct : leurs besoins sont portés par Rado, comme prévu à la création des personas.</p>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-061</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Gérer les employés</div>
+      <p class="story-text">En tant qu'<strong>Admin, Gérant ou RH</strong>, je veux créer, modifier et désactiver une fiche employé, afin de garder à jour la liste de l'équipe.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un nouvel employé, <span class="kw">when</span> le RH le crée, <span class="kw">then</span> le nom, un contact téléphonique et le rôle sont obligatoires</li>
+        <li><span class="kw">Given</span> une fiche employé, <span class="kw">when</span> le RH renseigne le salaire mensuel convenu, <span class="kw">then</span> il n'est visible que de l'Admin, du Gérant et du RH, et il pré-remplit l'enregistrement du salaire (US-045)</li>
+        <li><span class="kw">Given</span> n'importe quel employé connecté, <span class="kw">when</span> il ouvre son profil, <span class="kw">then</span> il peut changer son mot de passe (en saisissant l'ancien) et son téléphone, mais pas son rôle</li>
+        <li><span class="kw">Given</span> un employé qui a quitté l'équipe, <span class="kw">when</span> le RH le désactive, <span class="kw">then</span> il n'est pas supprimé : son historique, ses tâches passées et ses salaires versés restent consultables</li>
+        <li><span class="kw">Given</span> un employé avec des tâches non terminées, <span class="kw">when</span> le RH le désactive, <span class="kw">then</span> le système liste ces tâches et demande de les réassigner avant de confirmer</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-062</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Créer l'accès d'un employé et lui attribuer un rôle</div>
+      <p class="story-text">En tant qu'<strong>Admin</strong>, je veux créer le compte d'un employé avec un rôle (Admin, Gérant, RH, Collecteur), afin qu'il se connecte avec les droits qui correspondent à son poste.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un employé sans compte, <span class="kw">when</span> l'Admin crée son accès avec un rôle, <span class="kw">then</span> un mot de passe temporaire est généré et l'employé doit le changer à sa première connexion</li>
+        <li><span class="kw">Given</span> un employé connecté, <span class="kw">when</span> l'Admin le désactive, <span class="kw">then</span> il ne peut plus utiliser l'app immédiatement, même si sa session était encore ouverte</li>
+        <li><span class="kw">Given</span> un employé avec un rôle, <span class="kw">when</span> l'Admin change son rôle, <span class="kw">then</span> le changement est enregistré dans l'historique (US-064)</li>
+        <li><span class="kw">Given</span> le dernier Admin actif, <span class="kw">when</span> quelqu'un tente de le désactiver ou de changer son rôle, <span class="kw">then</span> le système refuse : il doit toujours rester un Admin</li>
+        <li><span class="kw">Given</span> un employé qui a oublié son mot de passe, <span class="kw">when</span> l'Admin lui en génère un temporaire, <span class="kw">then</span> il doit le changer à sa prochaine connexion et l'action est tracée</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-063</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Limiter chaque rôle à ses fonctions</div>
+      <p class="story-text">En tant qu'<strong>Admin</strong>, je veux que chaque rôle n'accède qu'aux fonctions de son poste, afin de protéger les données sensibles (paiements, salaires, comptes).</p>
+      <span class="persona-chip">Rado · Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> un collecteur connecté, <span class="kw">when</span> il tente d'accéder aux paiements, aux salaires ou à la gestion des employés, <span class="kw">then</span> l'accès est refusé, aussi bien dans l'interface que directement par l'API</li>
+        <li><span class="kw">Given</span> un employé RH, <span class="kw">when</span> il tente d'accéder aux paiements clients ou fournisseurs, <span class="kw">then</span> l'accès est refusé ; il accède aux employés, aux tâches et aux salaires</li>
+        <li><span class="kw">Given</span> un Gérant, <span class="kw">when</span> il utilise l'app, <span class="kw">then</span> il accède aux commandes, à la collecte, aux livraisons, aux paiements, aux salaires et aux statistiques, mais pas à la gestion des accès et des rôles, réservée à l'Admin ; il peut en revanche créer et modifier les fiches employés (sans toucher au rôle ni à l'accès)</li>
+        <li><span class="kw">Given</span> n'importe quel employé (collecteur et RH compris), <span class="kw">when</span> il saisit une référence mobile money au nom d'un client (US-070), <span class="kw">then</span> c'est autorisé, mais il ne voit ni la liste des paiements ni les montants des autres clients, et ne peut pas valider</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-064</span>
+        <span class="prio prio-could">Could</span>
+      </div>
+      <div class="story-title">Consulter l'historique des actions sur un employé</div>
+      <p class="story-text">En tant qu'<strong>Admin ou RH</strong>, je veux voir l'historique des changements sur une fiche employé, afin de savoir qui a modifié quoi et quand.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une création, une modification, un changement de rôle ou une désactivation, <span class="kw">when</span> l'action est effectuée, <span class="kw">then</span> elle est enregistrée automatiquement avec son auteur et sa date</li>
+        <li><span class="kw">Given</span> un historique existant, <span class="kw">when</span> quelqu'un le consulte, <span class="kw">then</span> il est en lecture seule, sans modification ni suppression possibles</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-065</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Créer et assigner une tâche</div>
+      <p class="story-text">En tant que <strong>Gérant ou RH</strong>, je veux créer une tâche et l'assigner à un employé, afin que le travail à faire soit clair et suivi.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une nouvelle tâche, <span class="kw">when</span> Rado la crée, <span class="kw">then</span> un titre et un employé assigné sont obligatoires ; la priorité (basse, normale, haute) et l'échéance sont optionnelles</li>
+        <li><span class="kw">Given</span> un employé désactivé, <span class="kw">when</span> Rado tente de lui assigner une tâche, <span class="kw">then</span> le système refuse</li>
+        <li><span class="kw">Given</span> une tâche créée, <span class="kw">when</span> l'employé ouvre l'app, <span class="kw">then</span> elle apparaît dans sa liste, signalée comme nouvelle</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-066</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Consulter mes tâches</div>
+      <p class="story-text">En tant qu'<strong>employé</strong>, je veux voir la liste de mes tâches avec leur priorité et leur échéance, afin de savoir quoi faire sans avoir à demander.</p>
+      <span class="persona-chip">Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des tâches assignées, <span class="kw">when</span> l'employé ouvre sa liste, <span class="kw">then</span> il ne voit que les siennes, triées par échéance puis priorité, avec un filtre par statut</li>
+        <li><span class="kw">Given</span> un collecteur sans réseau, <span class="kw">when</span> il ouvre sa liste, <span class="kw">then</span> les tâches déjà chargées restent consultables, comme sa tournée (US-028)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-067</span>
+        <span class="prio prio-must">Must</span>
+      </div>
+      <div class="story-title">Faire avancer une tâche</div>
+      <p class="story-text">En tant qu'<strong>employé</strong>, je veux changer le statut de mes tâches (à faire, en cours, terminée), afin que mon avancement soit visible de tous.</p>
+      <span class="persona-chip">Tojo · Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une tâche assignée, <span class="kw">when</span> l'employé change son statut, <span class="kw">then</span> le changement est enregistré avec son auteur et l'heure</li>
+        <li><span class="kw">Given</span> une tâche terminée, <span class="kw">when</span> quelqu'un la rouvre, <span class="kw">then</span> la réouverture est enregistrée dans l'historique de la tâche comme tout autre changement</li>
+        <li><span class="kw">Given</span> une tâche qui n'est pas la sienne, <span class="kw">when</span> un employé tente de changer son statut, <span class="kw">then</span> le système refuse (sauf Gérant ou RH)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-068</span>
+        <span class="prio prio-should">Should</span>
+      </div>
+      <div class="story-title">Suivre les tâches de l'équipe</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir les tâches de toute l'équipe par employé, statut et échéance, afin de repérer ce qui est en retard avant que ça ne bloque l'activité.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des tâches de plusieurs employés, <span class="kw">when</span> Rado ouvre la vue équipe, <span class="kw">then</span> il peut filtrer par employé, statut et échéance</li>
+        <li><span class="kw">Given</span> une tâche non terminée dont l'échéance est dépassée, <span class="kw">when</span> Rado ouvre le tableau de bord, <span class="kw">then</span> elle apparaît dans les alertes</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head">
+        <span class="story-id">US-069</span>
+        <span class="prio prio-could">Could</span>
+      </div>
+      <div class="story-title">Lier une tâche à une commande, un fournisseur ou une livraison</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux rattacher une tâche à l'élément qu'elle concerne, afin que l'employé retrouve tout le contexte sans me poser de questions.</p>
+      <span class="persona-chip">Rado · Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une tâche liée à une commande, un fournisseur ou une livraison, <span class="kw">when</span> l'employé l'ouvre, <span class="kw">then</span> un lien l'amène directement à l'élément concerné</li>
+        <li><span class="kw">Given</span> un incident de livraison enregistré (US-038), <span class="kw">when</span> Rado choisit "créer une tâche", <span class="kw">then</span> une tâche préremplie avec l'incident est proposée</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-head">
+      <div class="epic-num">EPIC 09</div>
+      <h2>Statistiques</h2>
+    </div>
+    <p class="lede">Le tableau de bord de Rado : voir l'activité, l'argent et ce qui demande son attention, sans tableur. Réservé au Gérant et à l'Admin (le RH ne voit que la masse salariale). Tous les chiffres viennent des données déjà saisies dans les autres epics.</p>
+
+    <div class="story">
+      <div class="story-head"><span class="story-id">US-074</span><span class="prio prio-must">Must</span></div>
+      <div class="story-title">Voir le chiffre d'affaires par période</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir le chiffre d'affaires du jour, de la semaine, du mois ou d'une période choisie, afin de suivre la santé de l'activité.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des commandes livrées, <span class="kw">when</span> Rado choisit une période, <span class="kw">then</span> il voit le chiffre d'affaires calculé sur les quantités réellement livrées, comparé à la période précédente</li>
+        <li><span class="kw">Given</span> un chiffre d'affaires et des prix d'achat connus (US-095), <span class="kw">when</span> Rado consulte la période, <span class="kw">then</span> il voit aussi la marge brute (chiffre d'affaires moins coût d'achat des quantités livrées)</li>
+        <li><span class="kw">Given</span> un chiffre d'affaires affiché, <span class="kw">when</span> Rado filtre par type de client (B2B, particulier) ou par zone, <span class="kw">then</span> les chiffres se mettent à jour</li>
+        <li><span class="kw">Given</span> un utilisateur sans rôle Gérant ou Admin, <span class="kw">when</span> il appelle les statistiques, <span class="kw">then</span> l'API répond 403</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head"><span class="story-id">US-075</span><span class="prio prio-must">Must</span></div>
+      <div class="story-title">Voir les commandes par statut</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir combien de commandes sont à chaque étape, afin de repérer les blocages.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des commandes à différents statuts, <span class="kw">when</span> Rado ouvre le tableau de bord, <span class="kw">then</span> il voit le nombre par statut</li>
+        <li><span class="kw">Given</span> un statut affiché, <span class="kw">when</span> Rado clique dessus, <span class="kw">then</span> il arrive sur la liste filtrée des commandes concernées</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head"><span class="story-id">US-076</span><span class="prio prio-should">Should</span></div>
+      <div class="story-title">Voir les produits les plus vendus</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux connaître les produits qui partent le plus, afin d'ajuster la collecte anticipée et le catalogue.</p>
+      <span class="persona-chip">Rado · Tojo</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une période choisie, <span class="kw">when</span> Rado ouvre le classement, <span class="kw">then</span> il voit les produits triés par quantité et par chiffre d'affaires</li>
+        <li><span class="kw">Given</span> un produit à forte rotation, <span class="kw">when</span> Rado le consulte, <span class="kw">then</span> il peut le marquer pour la collecte anticipée (US de l'epic Collecte)</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head"><span class="story-id">US-077</span><span class="prio prio-should">Should</span></div>
+      <div class="story-title">Suivre la collecte et le prestataire de livraison</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir la performance de la collecte et des livraisons, afin de contrôler la qualité du service.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des tournées sur une période, <span class="kw">when</span> Rado ouvre la vue collecte, <span class="kw">then</span> il voit les quantités collectées par rapport aux quantités prévues et le nombre de produits refusés pour qualité</li>
+        <li><span class="kw">Given</span> des livraisons sur une période, <span class="kw">when</span> Rado ouvre la vue livraison, <span class="kw">then</span> il voit le taux de livraisons à l'heure et le nombre d'incidents</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head"><span class="story-id">US-078</span><span class="prio prio-must">Must</span></div>
+      <div class="story-title">Voir la situation financière</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir ce qui est encaissé, ce qui reste à encaisser et ce que Kolekta doit payer, afin de piloter la trésorerie.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des paiements enregistrés, <span class="kw">when</span> Rado ouvre la vue finances, <span class="kw">then</span> il voit séparément : argent en caisse, espèces détenues par les employés (US-073), mobile money en attente de vérification, impayés clients</li>
+        <li><span class="kw">Given</span> des dettes de Kolekta, <span class="kw">when</span> Rado ouvre la même vue, <span class="kw">then</span> il voit ce qui est dû aux fournisseurs et au prestataire de livraison</li>
+        <li><span class="kw">Given</span> des paiements annulés, <span class="kw">when</span> les totaux sont calculés, <span class="kw">then</span> les annulations sont exclues mais consultables</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head"><span class="story-id">US-079</span><span class="prio prio-should">Should</span></div>
+      <div class="story-title">Voir la masse salariale</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir le total des salaires par période, afin de le comparer au chiffre d'affaires.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des salaires enregistrés, <span class="kw">when</span> Rado choisit une période, <span class="kw">then</span> il voit la masse salariale totale</li>
+        <li><span class="kw">Given</span> un utilisateur RH, <span class="kw">when</span> il ouvre le tableau de bord, <span class="kw">then</span> il peut voir ce bloc mais aucun chiffre de paiements clients ou fournisseurs</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head"><span class="story-id">US-080</span><span class="prio prio-should">Should</span></div>
+      <div class="story-title">Voir abonnements et soldes de voucher détenus</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux voir le nombre d'abonnements par statut et le total des soldes de voucher, afin de connaître ma dette de livraison envers les clients.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des abonnements, <span class="kw">when</span> Rado ouvre la vue, <span class="kw">then</span> il voit le nombre d'actifs, expirés, en pause et résiliés, avec les renouvellements attendus dans les 5 jours</li>
+        <li><span class="kw">Given</span> des vouchers, <span class="kw">when</span> Rado ouvre la vue, <span class="kw">then</span> il voit le total des soldes détenus et le total des soldes abandonnés à la résiliation</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head"><span class="story-id">US-081</span><span class="prio prio-should">Should</span></div>
+      <div class="story-title">Centraliser les alertes</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux une liste unique de ce qui demande mon attention, afin de ne rien oublier.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> des situations anormales, <span class="kw">when</span> Rado ouvre le tableau de bord, <span class="kw">then</span> il voit : retards de collecte, impayés, paiements à échéance, mobile money en attente depuis plus de 24 h, espèces détenues trop longtemps, tâches en retard, fins de pause ou d'abonnement dans 5 jours, incidents de livraison, paiements en litige, paiements fournisseurs en retard, espèces détenues par un prestataire trop longtemps, avances de caisse non rendues, lignes de commande manquantes après collecte, échecs d'envoi de SMS</li>
+        <li><span class="kw">Given</span> une alerte affichée, <span class="kw">when</span> Rado clique dessus, <span class="kw">then</span> il arrive directement sur l'élément concerné</li>
+        <li><span class="kw">Given</span> une alerte résolue, <span class="kw">when</span> la situation est corrigée, <span class="kw">then</span> elle disparaît d'elle-même</li>
+      </ul>
+    </div>
+
+    <div class="story">
+      <div class="story-head"><span class="story-id">US-097</span><span class="prio prio-could">Could</span></div>
+      <div class="story-title">Exporter les chiffres</div>
+      <p class="story-text">En tant que <strong>Gérant</strong>, je veux exporter les chiffres clés en fichier, afin de les partager avec un comptable ou de les analyser ailleurs.</p>
+      <span class="persona-chip">Rado</span>
+      <div class="ac-title">Critères d'acceptation</div>
+      <ul class="gherkin">
+        <li><span class="kw">Given</span> une vue de statistiques ou de paiements avec une période choisie, <span class="kw">when</span> Rado clique sur "Exporter", <span class="kw">then</span> il obtient un fichier CSV des lignes affichées, avec les filtres appliqués</li>
+        <li><span class="kw">Given</span> un export de paiements, <span class="kw">when</span> il est généré, <span class="kw">then</span> les paiements annulés sont inclus et marqués comme tels</li>
+        <li><span class="kw">Given</span> un utilisateur sans rôle Gérant ou Admin, <span class="kw">when</span> il demande un export, <span class="kw">then</span> l'API répond 403</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</body>
+</html>

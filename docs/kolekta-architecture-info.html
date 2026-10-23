@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kolekta — Architecture de l'information</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #F7F5F0; --bg-card: #FFFFFF; --text-ink: #16281D; --text-sub: #55645A;
+    --border: #E4E0D6; --brand-green: #2F7D46; --brand-green-dark: #1E5A31;
+    --brand-terracotta: #D97B4F; --brand-cream: #F3EEE1; --code-bg: #F3EEE1; --warn-bg: #FBEBDD;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg-page: #14181A; --bg-card: #1D2321; --text-ink: #F2F0E9;
+      --text-sub: #A9B2A9; --border: #333B36; --code-bg: #23301F; --warn-bg: #3A2A20;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg-page: #14181A; --bg-card: #1D2321; --text-ink: #F2F0E9;
+    --text-sub: #A9B2A9; --border: #333B36; --code-bg: #23301F; --warn-bg: #3A2A20;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg-page); color: var(--text-ink);
+    font-family: 'Inter', -apple-system, sans-serif; line-height: 1.6; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 48px 16px 96px; }
+  h1, h2, h3 { font-family: 'Manrope', 'Inter', sans-serif; font-weight: 800; margin: 0; }
+  h1 { font-size: 32px; letter-spacing: -0.5px; }
+  .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--brand-green); margin-bottom: 8px; }
+  .lede { color: var(--text-sub); font-size: 15px; max-width: 680px; margin-top: 10px; }
+  .epic { margin-top: 56px; }
+  .epic-num { font-family: 'Manrope'; font-weight: 800; font-size: 13px; color: var(--brand-terracotta); }
+  .epic h2 { font-size: 22px; }
+  .screen { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 22px 20px; margin-top: 18px; }
+  .screen h3 { font-size: 17px; }
+  .meta { font-size: 13px; color: var(--text-sub); margin-top: 4px; }
+  code { background: var(--code-bg); padding: 1px 6px; border-radius: 6px; font-size: 12.5px; }
+  .tbl-wrap { overflow-x: auto; margin-top: 14px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; min-width: 640px; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .6px;
+    color: var(--text-sub); padding: 6px 10px; border-bottom: 1px solid var(--border); }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .sub { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .6px;
+    color: var(--text-sub); margin: 18px 0 6px; }
+  ul.plain { margin: 4px 0; padding-left: 18px; font-size: 13.5px; }
+  .note { background: var(--warn-bg); border-radius: 12px; padding: 14px 16px; font-size: 13.5px; margin-top: 18px; }
+  .ok { background: var(--brand-cream); border-radius: 12px; padding: 14px 16px; font-size: 13.5px; margin-top: 18px; }
+  .pending { text-align: center; padding: 40px 0; color: var(--text-sub); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Architecture de l'information — v1</div>
+  <h1>Kolekta</h1>
+  <p class="lede">Pour chaque écran : ses éléments, l'action derrière chacun, la story qui la justifie et l'endpoint API appelé. Règle : un bouton sans story est soit inutile, soit le signe qu'une story manque. Une seule application Vue : routes publiques et client sous <code>/</code>, équipe sous <code>/admin</code>.</p>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 01</div>
+    <h2>Accès & Authentification</h2>
+
+    <div class="screen">
+      <h3>Écran 1.1 — Connexion</h3>
+      <div class="meta">Route <code>/connexion</code> · Accès : public · Un seul écran pour clients et employés (US-001, US-003) : la redirection dépend du rôle reçu.</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Champ email ou téléphone</td><td>Saisie de l'identifiant</td><td>US-001, US-003</td><td>—</td></tr>
+        <tr><td>Champ mot de passe (avec afficher/masquer)</td><td>Saisie du secret</td><td>US-001, US-003</td><td>—</td></tr>
+        <tr><td>Bouton « Se connecter »</td><td>Vérifie les identifiants, renvoie un jeton et le rôle ; redirige : employé → <code>/admin</code>, client → espace client</td><td>US-001, US-003</td><td><code>POST /api/auth/login</code></td></tr>
+        <tr><td>Lien « Mot de passe oublié ? »</td><td>Navigation vers 1.3</td><td>US-004</td><td>—</td></tr>
+        <tr><td>Lien « Créer un compte »</td><td>Navigation vers 1.2</td><td>US-002</td><td>—</td></tr>
+      </table></div>
+      <div class="sub">Règles métier</div>
+      <ul class="plain">
+        <li>Identifiants invalides : message générique, sans dire lequel est faux (US-001)</li>
+        <li>Compte désactivé : accès refusé ; message « contactez Kolekta » pour un client (US-003), message explicite pour un employé (US-001)</li>
+        <li>Client connecté : son panier précédent est restauré (US-003)</li>
+      </ul>
+      <div class="sub">États à prévoir</div>
+      <ul class="plain"><li>Chargement (bouton désactivé) · Erreur identifiants · Compte désactivé · Erreur réseau</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 1.2 — Inscription client</h3>
+      <div class="meta">Route <code>/inscription</code> · Accès : public · Les employés n'ont pas d'inscription : leurs comptes sont créés par l'Admin (epic 08).</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Choix « Particulier / Établissement »</td><td>Affiche ou masque les champs établissement</td><td>US-002</td><td>—</td></tr>
+        <tr><td>Champs nom, email ou téléphone, mot de passe</td><td>Saisie des informations de base</td><td>US-002</td><td>—</td></tr>
+        <tr><td>Champs nom et type d'établissement (si établissement)</td><td>Saisie des infos établissement</td><td>US-002</td><td>—</td></tr>
+        <tr><td>Bouton « Créer mon compte »</td><td>Crée le compte client et connecte directement</td><td>US-002, US-005</td><td><code>POST /api/auth/register</code></td></tr>
+        <tr><td>Lien « J'ai déjà un compte »</td><td>Navigation vers 1.1</td><td>US-003</td><td>—</td></tr>
+      </table></div>
+      <div class="sub">Règles métier</div>
+      <ul class="plain">
+        <li>Email ou téléphone déjà utilisé : message explicite sans révéler si le compte existant est actif (US-002)</li>
+        <li>Établissement déjà inscrit : création refusée, invitation à utiliser le compte existant (US-005)</li>
+        <li>Aucune option de compte secondaire ou d'employé affichée (US-005, hors v1)</li>
+      </ul>
+      <div class="sub">États à prévoir</div>
+      <ul class="plain"><li>Chargement · Erreurs par champ · Doublon · Établissement déjà inscrit · Succès (redirection)</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 1.3 — Mot de passe oublié</h3>
+      <div class="meta">Route <code>/mot-de-passe-oublie</code> · Accès : public</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Champ email</td><td>Saisie de l'adresse du compte</td><td>US-004</td><td>—</td></tr>
+        <tr><td>Bouton « Envoyer le lien »</td><td>Envoie un lien à usage unique, valable 30 minutes</td><td>US-004</td><td><code>POST /api/auth/forgot-password</code></td></tr>
+        <tr><td>Lien « Retour à la connexion »</td><td>Navigation vers 1.1</td><td>US-001</td><td>—</td></tr>
+      </table></div>
+      <div class="sub">Règles métier</div>
+      <ul class="plain">
+        <li>Réponse identique que l'email existe ou non (ne pas révéler les comptes)</li>
+        <li>Seuls les comptes avec email peuvent réinitialiser par ce canal ; un compte avec téléphone seul est réinitialisé par un employé (US-004)</li>
+      </ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 1.4 — Nouveau mot de passe</h3>
+      <div class="meta">Route <code>/reinitialiser-mot-de-passe?token=…</code> · Accès : public, avec lien valide</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Champs nouveau mot de passe + confirmation</td><td>Saisie et contrôle de concordance</td><td>US-004</td><td>—</td></tr>
+        <tr><td>Bouton « Enregistrer »</td><td>Change le mot de passe, invalide le lien, redirige vers 1.1</td><td>US-004</td><td><code>POST /api/auth/reset-password</code></td></tr>
+        <tr><td>Lien « Demander un nouveau lien » (si lien expiré ou utilisé)</td><td>Navigation vers 1.3</td><td>US-004</td><td>—</td></tr>
+      </table></div>
+      <div class="sub">États à prévoir</div>
+      <ul class="plain"><li>Lien valide · Lien expiré ou déjà utilisé · Mot de passe trop faible · Succès</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Éléments transverses (présents sur plusieurs écrans)</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Menu utilisateur › « Se déconnecter »</td><td>Ferme la session et revient à 1.1</td><td><strong>US-082 (nouvelle)</strong></td><td><code>POST /api/auth/logout</code></td></tr>
+        <tr><td>Garde de routes (invisible)</td><td>Redirige vers 1.1 si non connecté ; vers une page « accès refusé » si le rôle ne convient pas</td><td>US-001, US-082</td><td><code>GET /api/auth/me</code> (rôle courant)</td></tr>
+        <tr><td>Contrôle de rôle côté API (invisible)</td><td>Répond 403 si le rôle n'a pas le droit, même si l'écran est contourné</td><td>US-063 (epic 08)</td><td>tous les endpoints protégés</td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 02</div>
+    <h2>Catalogue</h2>
+
+    <div class="screen">
+      <h3>Écran 2.1 — Catalogue</h3>
+      <div class="meta">Route <code>/catalogue</code> · Accès : public (on peut consulter sans compte ; ajouter au panier demande de se connecter)</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste des produits (carte : photo, nom, catégorie, prix, unité, indicateur de disponibilité)</td><td>Charge les produits actifs</td><td>US-006</td><td><code>GET /api/products</code></td></tr>
+        <tr><td>Filtre par catégorie</td><td>Recharge la liste filtrée</td><td>US-007</td><td><code>GET /api/categories</code> (options) puis <code>GET /api/products?category=</code></td></tr>
+        <tr><td>Champ de recherche par nom</td><td>Filtre en direct, sans rechargement de page</td><td>US-007</td><td><code>GET /api/products?q=</code></td></tr>
+        <tr><td>Clic sur une carte</td><td>Ouvre la fiche produit (2.2)</td><td>US-006</td><td>—</td></tr>
+        <tr><td>Bouton « Ajouter au panier » (désactivé si indisponible)</td><td>Ajoute au panier (epic 04)</td><td>US-015</td><td>voir epic 04</td></tr>
+      </table></div>
+      <div class="sub">États à prévoir</div>
+      <ul class="plain"><li>Chargement (squelettes) · Catalogue vide · « Aucun produit trouvé » · Produit « indisponible » grisé · Erreur réseau</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 2.2 — Fiche produit</h3>
+      <div class="meta">Route <code>/catalogue/:id</code> · Accès : public</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Détail (photo, description, prix, unité)</td><td>Charge le produit</td><td>US-006</td><td><code>GET /api/products/{id}</code></td></tr>
+        <tr><td>Bloc « Récolté le … · Région … »</td><td>Affiché seulement si l'information existe</td><td>US-010</td><td>inclus dans <code>GET /api/products/{id}</code></td></tr>
+        <tr><td>Bouton « Ajouter au panier »</td><td>Ajoute au panier (epic 04)</td><td>US-015</td><td>voir epic 04</td></tr>
+        <tr><td>Lien « Retour au catalogue »</td><td>Navigation vers 2.1</td><td>US-006</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 2.3 — Gestion des catégories</h3>
+      <div class="meta">Route <code>/admin/categories</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste des catégories (avec nombre de produits)</td><td>Charge les catégories</td><td>US-008</td><td><code>GET /api/categories</code></td></tr>
+        <tr><td>Bouton « Ajouter » + formulaire</td><td>Crée une catégorie ; refuse un nom déjà existant</td><td>US-008</td><td><code>POST /api/categories</code></td></tr>
+        <tr><td>Bouton « Modifier »</td><td>Renomme la catégorie</td><td>US-008</td><td><code>PUT /api/categories/{id}</code></td></tr>
+        <tr><td>Bouton « Supprimer » + confirmation</td><td>Supprime ; bloqué si des produits actifs l'utilisent, avec leur liste</td><td>US-008</td><td><code>DELETE /api/categories/{id}</code></td></tr>
+      </table></div>
+      <div class="sub">États à prévoir</div>
+      <ul class="plain"><li>Liste vide · Nom en doublon · Suppression bloquée (produits listés) · Chargement</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 2.4 — Liste des produits (back-office)</h3>
+      <div class="meta">Route <code>/admin/produits</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau (nom, catégorie, prix, unité, statut actif/inactif)</td><td>Charge tous les produits, actifs et inactifs</td><td>US-009</td><td><code>GET /api/admin/products</code></td></tr>
+        <tr><td>Filtres catégorie / statut + recherche</td><td>Filtre la liste</td><td>US-009</td><td><code>GET /api/admin/products?…</code></td></tr>
+        <tr><td>Bouton « Nouveau produit »</td><td>Ouvre le formulaire 2.5</td><td>US-009</td><td>—</td></tr>
+        <tr><td>Bouton « Modifier »</td><td>Ouvre le formulaire 2.5 prérempli</td><td>US-009</td><td>—</td></tr>
+        <tr><td>Interrupteur « Actif »</td><td>Désactive ou réactive ; les commandes en cours ne sont pas affectées</td><td>US-009</td><td><code>PATCH /api/products/{id}/status</code></td></tr>
+        <tr><td>Bouton « Supprimer » + confirmation</td><td>Supprime ; refusé si le produit figure dans des commandes passées (désactivation proposée)</td><td>US-009</td><td><code>DELETE /api/products/{id}</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 2.5 — Formulaire produit</h3>
+      <div class="meta">Routes <code>/admin/produits/nouveau</code> et <code>/admin/produits/:id</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Champs nom, description, catégorie (obligatoire), prix (&gt; 0), unité (obligatoire)</td><td>Saisie et validation</td><td>US-009</td><td>—</td></tr>
+        <tr><td>Envoi de photo</td><td>Téléverse et prévisualise l'image</td><td>US-009</td><td><code>POST /api/products/{id}/image</code></td></tr>
+        <tr><td>Bouton « Enregistrer »</td><td>Crée ou met à jour</td><td>US-009</td><td><code>POST /api/products</code> / <code>PUT /api/products/{id}</code></td></tr>
+        <tr><td>Bouton « Annuler »</td><td>Retour à 2.4 sans enregistrer</td><td>US-009</td><td>—</td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 03</div>
+    <h2>Fournisseurs & Disponibilités</h2>
+
+    <div class="screen">
+      <h3>Écran 3.1 — Liste des fournisseurs</h3>
+      <div class="meta">Route <code>/admin/fournisseurs</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau (nom, zone, téléphone, statut)</td><td>Charge les fournisseurs</td><td>US-011</td><td><code>GET /api/suppliers</code></td></tr>
+        <tr><td>Recherche et filtre actif/inactif</td><td>Filtre la liste</td><td>US-011</td><td><code>GET /api/suppliers?…</code></td></tr>
+        <tr><td>Bouton « Nouveau fournisseur »</td><td>Ouvre le formulaire 3.2</td><td>US-011</td><td>—</td></tr>
+        <tr><td>Clic sur une ligne</td><td>Ouvre la fiche 3.3</td><td>US-011</td><td>—</td></tr>
+        <tr><td>Interrupteur « Actif »</td><td>Désactive ou réactive ; un fournisseur désactivé disparaît des suggestions de collecte</td><td>US-011</td><td><code>PATCH /api/suppliers/{id}/status</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 3.2 — Formulaire fournisseur</h3>
+      <div class="meta">Routes <code>/admin/fournisseurs/nouveau</code> et <code>/admin/fournisseurs/:id/modifier</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Champs nom, contact, téléphone</td><td>Saisie</td><td>US-011</td><td>—</td></tr>
+        <tr><td>Localisation (adresse, région, point sur carte) — obligatoire</td><td>Sert au calcul de zone et de distance</td><td>US-011</td><td>—</td></tr>
+        <tr><td>Mode de paiement : « espèces sur place » (par défaut) ou « mobile money » (opérateur, numéro)</td><td>Détermine si Tojo paie sur place ou si Rado paie plus tard</td><td>US-011, US-096</td><td>—</td></tr>
+        <tr><td>Produits habituels (sélection multiple)</td><td>Associe des produits du catalogue</td><td>US-011</td><td><code>GET /api/products</code> (options)</td></tr>
+        <tr><td>Bouton « Enregistrer »</td><td>Crée ou met à jour</td><td>US-011</td><td><code>POST /api/suppliers</code> / <code>PUT /api/suppliers/{id}</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 3.3 — Fiche fournisseur et historique</h3>
+      <div class="meta">Route <code>/admin/fournisseurs/:id</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Bloc informations</td><td>Charge la fiche</td><td>US-011</td><td><code>GET /api/suppliers/{id}</code></td></tr>
+        <tr><td>Onglet « Historique des disponibilités » (trié par date : produit, quantité)</td><td>Charge les déclarations passées</td><td>US-014</td><td><code>GET /api/suppliers/{id}/availabilities</code></td></tr>
+        <tr><td>Bouton « Modifier »</td><td>Ouvre 3.2</td><td>US-011</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 3.4 — Déclarer une disponibilité (collecteur, mobile)</h3>
+      <div class="meta">Route <code>/admin/collecte/fournisseurs/:id/disponibilites</code> · Accès : Collecteur (et Gérant) · Mobile d'abord, fonctionne hors connexion</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Nom du fournisseur et date du jour</td><td>Affichage</td><td>US-012</td><td><code>GET /api/suppliers/{id}</code></td></tr>
+        <tr><td>Liste des produits avec champ quantité approximative</td><td>Saisie rapide, peu de texte</td><td>US-012</td><td>—</td></tr>
+        <tr><td>Bouton « Enregistrer »</td><td>Enregistre ; hors connexion, garde en local et synchronise au retour du réseau</td><td>US-012</td><td><code>POST /api/suppliers/{id}/availabilities</code></td></tr>
+        <tr><td>Bouton « Corriger » sur une saisie du jour</td><td>Remplace la valeur et garde la trace</td><td>US-012</td><td><code>PUT /api/availabilities/{id}</code></td></tr>
+        <tr><td>Indicateur « en attente de synchronisation »</td><td>Montre ce qui n'est pas encore envoyé</td><td>US-012</td><td>—</td></tr>
+      </table></div>
+      <div class="sub">États à prévoir</div>
+      <ul class="plain"><li>Hors connexion · Synchronisation en cours · Synchronisation réussie · Échec de synchronisation (nouvelle tentative) · Aucun produit habituel renseigné</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 3.5 — Vue des disponibilités (Gérant)</h3>
+      <div class="meta">Route <code>/admin/disponibilites</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Disponibilités groupées par fournisseur, avec date de déclaration</td><td>Charge les déclarations récentes</td><td>US-013</td><td><code>GET /api/availabilities?groupBy=supplier</code></td></tr>
+        <tr><td>Badge « à vérifier » (plus de 7 jours)</td><td>Signale une information qui vieillit</td><td>US-013</td><td>calculé côté API</td></tr>
+        <tr><td>Filtres produit / zone</td><td>Filtre la vue</td><td>US-013</td><td><code>GET /api/availabilities?product=&amp;zone=</code></td></tr>
+        <tr><td>Lien « Voir l'historique »</td><td>Ouvre 3.3, onglet historique</td><td>US-014</td><td>—</td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 04 — partie 1 : parcours client</div>
+    <h2>Commandes & Abonnements</h2>
+
+    <div class="screen">
+      <h3>Écran 4.1 — Panier</h3>
+      <div class="meta">Route <code>/panier</code> · Accès : client connecté · Le panier est enregistré côté serveur (il se retrouve d'un appareil à l'autre).</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Lignes du panier (produit, prix, quantité)</td><td>Charge le panier ; signale un produit devenu indisponible sans bloquer le reste</td><td>US-015</td><td><code>GET /api/cart</code></td></tr>
+        <tr><td>Champ quantité (+ / −)</td><td>Modifie la quantité</td><td>US-015</td><td><code>PUT /api/cart/items/{id}</code></td></tr>
+        <tr><td>Liste « Qualité attendue » par ligne (compte à volume)</td><td>Enregistre l'exigence, visible ensuite par le collecteur</td><td>US-021</td><td><code>PUT /api/cart/items/{id}</code></td></tr>
+        <tr><td>Bouton « Retirer »</td><td>Supprime la ligne</td><td>US-015</td><td><code>DELETE /api/cart/items/{id}</code></td></tr>
+        <tr><td>Total</td><td>Calcul affiché (sans remise : elle est accordée par Rado)</td><td>US-016</td><td>inclus dans <code>GET /api/cart</code></td></tr>
+        <tr><td>Bouton « Commander »</td><td>Va à 4.2</td><td>US-016</td><td>—</td></tr>
+        <tr><td>Bouton « En faire un abonnement »</td><td>Va à 4.5 avec ce panier comme panier type</td><td>US-019</td><td>—</td></tr>
+      </table></div>
+      <div class="sub">États à prévoir</div>
+      <ul class="plain"><li>Panier vide (lien vers le catalogue) · Produit indisponible · Chargement · Erreur réseau</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.2 — Validation de la commande</h3>
+      <div class="meta">Route <code>/commande/validation</code> · Accès : client connecté</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Choix de l'adresse de livraison (par défaut présélectionnée)</td><td>Détermine la zone</td><td>US-086</td><td><code>GET /api/me/addresses</code></td></tr>
+        <tr><td>Lien « Ajouter une adresse »</td><td>Ouvre le formulaire d'adresse (écran 4.7)</td><td>US-086</td><td>—</td></tr>
+        <tr><td>Bloc « Délai estimé »</td><td>Affiche le délai court (ville) ou indicatif ~2 jours (hors ville), avant validation</td><td>US-018</td><td><code>GET /api/delivery/estimate?addressId=</code></td></tr>
+        <tr><td>Récapitulatif des lignes et du total</td><td>Affichage</td><td>US-016</td><td>—</td></tr>
+        <tr><td>Bloc « Mode de paiement » (compte concerné : voucher, facture mensuelle, sinon règlement habituel)</td><td>Rappelle les conditions applicables (détail à l'epic 07)</td><td>US-048, US-052</td><td>voir epic 07</td></tr>
+        <tr><td>Bouton « Demander une remise » (visible seulement si le client est éligible et si le total atteint le minimum du barème)</td><td>Applique le taux du barème, affiche le nouveau total ; recalculé si le panier change ; retirable avant validation</td><td><strong>US-089 (nouvelle)</strong></td><td><code>POST /api/orders/preview-discount</code> (calcule), puis inclus dans <code>POST /api/orders</code></td></tr>
+        <tr><td>Bouton « Valider la commande »</td><td>Crée la commande « en attente de collecte », envoie l'email, vide le panier. Bloqué si panier vide ou plafond d'encours dépassé.</td><td>US-016, US-049</td><td><code>POST /api/orders</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.3 — Mes commandes</h3>
+      <div class="meta">Route <code>/mes-commandes</code> · Accès : client connecté</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste (date, total, statut, statut de paiement)</td><td>Charge l'historique</td><td>US-017</td><td><code>GET /api/orders/mine</code></td></tr>
+        <tr><td>Filtre par statut</td><td>Filtre la liste</td><td>US-017</td><td><code>GET /api/orders/mine?status=</code></td></tr>
+        <tr><td>Clic sur une ligne</td><td>Ouvre le détail (4.4)</td><td>US-017</td><td>—</td></tr>
+        <tr><td>Bouton « Recommander »</td><td>Recrée un panier identique, modifiable, et ouvre 4.1</td><td>US-024</td><td><code>POST /api/orders/{id}/reorder</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.4 — Détail d'une commande</h3>
+      <div class="meta">Route <code>/mes-commandes/:id</code> · Accès : client propriétaire</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Frise de statut (en attente de collecte → collectée → en livraison → livrée)</td><td>Affiche l'avancement</td><td>US-017</td><td><code>GET /api/orders/{id}</code></td></tr>
+        <tr><td>Lignes commandées / reçues, par ligne</td><td>Comparaison des quantités une fois livrée</td><td>US-023</td><td>inclus dans <code>GET /api/orders/{id}</code></td></tr>
+        <tr><td>Bouton « Signaler un écart » (par ligne, après livraison)</td><td>Enregistre l'écart</td><td>US-023</td><td><code>POST /api/orders/{id}/discrepancies</code></td></tr>
+        <tr><td>Bouton « Annuler la commande » (visible tant que non collectée et non payée)</td><td>Confirmation puis annulation ; libère la réservation voucher</td><td><strong>US-084 (nouvelle)</strong></td><td><code>POST /api/orders/{id}/cancel</code></td></tr>
+        <tr><td>Bloc paiement (statut, référence mobile money, bon de commande et facture)</td><td>Voir epic 07</td><td>US-044, US-059</td><td>voir epic 07</td></tr>
+        <tr><td>Bouton « Recommander »</td><td>Comme en 4.3</td><td>US-024</td><td><code>POST /api/orders/{id}/reorder</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.5 — Souscrire à un abonnement</h3>
+      <div class="meta">Route <code>/abonnement/souscrire</code> · Accès : client connecté</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Panier type (repris du panier)</td><td>Affichage et ajustement</td><td>US-019</td><td><code>GET /api/cart</code></td></tr>
+        <tr><td>Sélecteur du jour de livraison récurrent</td><td>Choix du jour fixe</td><td>US-019</td><td>—</td></tr>
+        <tr><td>Choix « Renouvellement automatique / manuel »</td><td>Choix explicite, obligatoire</td><td>US-019, US-055</td><td>—</td></tr>
+        <tr><td>Adresse de livraison</td><td>Choix de l'adresse</td><td>US-086</td><td><code>GET /api/me/addresses</code></td></tr>
+        <tr><td>Bouton « Activer l'abonnement »</td><td>Crée l'abonnement et ses prochaines occurrences</td><td>US-019</td><td><code>POST /api/subscriptions</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.6 — Mon abonnement</h3>
+      <div class="meta">Route <code>/mon-abonnement</code> · Accès : client abonné</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>En-tête (statut, échéance ou fin de pause, solde de voucher)</td><td>Charge l'abonnement</td><td>US-055, US-053</td><td><code>GET /api/subscriptions/mine</code></td></tr>
+        <tr><td>Liste des prochaines occurrences</td><td>Charge les occurrences à venir</td><td>US-020</td><td><code>GET /api/subscriptions/{id}/occurrences</code></td></tr>
+        <tr><td>Bouton « Modifier cette livraison » (jusqu'à l'heure limite)</td><td>Change le panier de cette occurrence seulement ; refusé après l'heure limite, avec la prochaine date modifiable</td><td>US-020</td><td><code>PUT /api/subscriptions/{id}/occurrences/{occId}</code></td></tr>
+        <tr><td>Bandeau « Confirmer le renouvellement » (5 jours avant, mode manuel)</td><td>Renouvelle la période</td><td>US-055</td><td><code>POST /api/subscriptions/{id}/renew</code></td></tr>
+        <tr><td>Interrupteur « Renouvellement automatique »</td><td>Bascule automatique / manuel</td><td>US-055</td><td><code>PATCH /api/subscriptions/{id}/renewal-mode</code></td></tr>
+        <tr><td>Bouton « Mettre en pause » (affiche la date limite d'un an)</td><td>Suspend les occurrences et les recharges</td><td>US-056</td><td><code>POST /api/subscriptions/{id}/pause</code></td></tr>
+        <tr><td>Bouton « Reprendre » (si en pause ou expiré)</td><td>Réactive l'abonnement</td><td>US-056, US-055</td><td><code>POST /api/subscriptions/{id}/resume</code></td></tr>
+        <tr><td>Bouton « Résilier » + avertissement du solde perdu + confirmation distincte</td><td>Résilie ; solde remis à zéro par un mouvement « solde abandonné »</td><td>US-054</td><td><code>POST /api/subscriptions/{id}/cancel</code></td></tr>
+        <tr><td>Lien « Mon voucher »</td><td>Ouvre le solde et l'historique (epic 07)</td><td>US-053</td><td>voir epic 07</td></tr>
+      </table></div>
+      <div class="sub">Traitements automatiques (sans écran)</div>
+      <ul class="plain">
+        <li>Génération des occurrences d'abonnement (tâche planifiée)</li>
+        <li>Rappels 5 jours avant l'échéance, puis passage à « expiré » si pas de confirmation (US-055)</li>
+        <li>Rappels de 30 et 5 jours avant la fin d'un an de pause ou d'inactivité, puis résiliation automatique (US-057)</li>
+      </ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.7 — Mon compte et mes adresses</h3>
+      <div class="meta">Route <code>/mon-compte</code> · Accès : client connecté</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Formulaire profil (nom, email, téléphone)</td><td>Met à jour ; contrôle des doublons</td><td><strong>US-086 (nouvelle)</strong></td><td><code>GET/PUT /api/me/profile</code></td></tr>
+        <tr><td>Liste des adresses (zone choisie parmi les zones configurées, repères, téléphone)</td><td>Charge les adresses</td><td>US-086</td><td><code>GET /api/me/addresses</code></td></tr>
+        <tr><td>« Ajouter » / « Modifier » / « Supprimer » une adresse</td><td>Gère l'adresse ; suppression refusée si utilisée par une commande ou un abonnement en cours</td><td>US-086</td><td><code>POST</code>, <code>PUT</code>, <code>DELETE /api/me/addresses/{id}</code></td></tr>
+        <tr><td>Étoile « Adresse par défaut »</td><td>Présélection à la commande</td><td>US-086</td><td><code>PATCH /api/me/addresses/{id}/default</code></td></tr>
+        <tr><td>Bloc « Changer mon mot de passe »</td><td>Exige l'ancien mot de passe</td><td>US-086</td><td><code>POST /api/auth/change-password</code></td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 04 — partie 2 : back-office</div>
+    <h2>Commandes, clients, abonnements et paramètres</h2>
+
+    <div class="screen">
+      <h3>Écran 4.8 — Commandes (back-office)</h3>
+      <div class="meta">Route <code>/admin/commandes</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau (n°, client, date, zone, statut, paiement, priorité)</td><td>Charge les commandes</td><td>US-085</td><td><code>GET /api/admin/orders</code></td></tr>
+        <tr><td>Filtres statut, client, date, zone, type (commande / abonnement)</td><td>Filtre la liste ; les liens du tableau de bord arrivent ici déjà filtrés</td><td>US-085, US-075</td><td><code>GET /api/admin/orders?…</code></td></tr>
+        <tr><td>Clic sur une ligne</td><td>Ouvre le détail (4.9)</td><td>US-085</td><td>—</td></tr>
+        <tr><td>Étoile « Prioritaire »</td><td>Fait remonter la commande en tête des listes de collecte</td><td>US-085</td><td><code>PATCH /api/admin/orders/{id}/priority</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.9 — Détail d'une commande (back-office)</h3>
+      <div class="meta">Route <code>/admin/commandes/:id</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Lignes (avec qualité attendue), adresse, délai, client</td><td>Charge la commande</td><td>US-085</td><td><code>GET /api/admin/orders/{id}</code></td></tr>
+        <tr><td>Historique des changements de statut</td><td>Affichage (qui, quand)</td><td>US-085</td><td>inclus dans la réponse</td></tr>
+        <tr><td>Bouton « Accorder une faveur » (B2B uniquement ; % ou montant, motif obligatoire) et « Refuser la demande » (motif)</td><td>S'ajoute à la remise du barème déjà appliquée ; total barème + faveur sous le plafond. Le B2B a négocié par téléphone ; le refus est noté.</td><td>US-083</td><td><code>POST /api/admin/orders/{id}/discount</code></td></tr>
+        <tr><td>Bouton « Annuler la commande » (motif obligatoire)</td><td>Mêmes règles que pour le client</td><td>US-085, US-084</td><td><code>POST /api/admin/orders/{id}/cancel</code></td></tr>
+        <tr><td>Bouton « Corriger le statut » (exceptionnel)</td><td>Seules les transitions autorisées sont proposées ; les statuts avancent normalement via la collecte et la livraison</td><td>US-085</td><td><code>PATCH /api/admin/orders/{id}/status</code></td></tr>
+        <tr><td>Bloc paiement (statut, paiements liés, bouton « Enregistrer un paiement »)</td><td>Voir epic 07</td><td>US-039</td><td>voir epic 07</td></tr>
+        <tr><td>Bouton « Créer une tâche »</td><td>Préremplit une tâche liée (epic 08)</td><td>US-069</td><td>voir epic 08</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.10 — Clients</h3>
+      <div class="meta">Route <code>/admin/clients</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau (nom, type, contact, statut, abonnement)</td><td>Charge les clients</td><td><strong>US-087 (nouvelle)</strong></td><td><code>GET /api/admin/clients</code></td></tr>
+        <tr><td>Recherche et filtres type / statut / abonnement</td><td>Filtre la liste</td><td>US-087</td><td><code>GET /api/admin/clients?…</code></td></tr>
+        <tr><td>Clic sur une ligne</td><td>Ouvre la fiche (4.11)</td><td>US-087</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.11 — Fiche client</h3>
+      <div class="meta">Route <code>/admin/clients/:id</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Coordonnées, adresses, résumé (commandes, abonnement, voucher, encours)</td><td>Charge la fiche</td><td>US-087</td><td><code>GET /api/admin/clients/{id}</code></td></tr>
+        <tr><td>Bouton « Désactiver / Réactiver » (motif obligatoire)</td><td>Bloque ou rétablit la connexion ; l'historique est conservé</td><td>US-087, US-003</td><td><code>PATCH /api/admin/clients/{id}/status</code></td></tr>
+        <tr><td>Bouton « Réinitialiser le mot de passe »</td><td>Génère un mot de passe provisoire à changer à la première connexion</td><td>US-087, US-004</td><td><code>POST /api/admin/clients/{id}/reset-password</code></td></tr>
+        <tr><td>Champ « Remise permanente (%) »</td><td>Règle la remise permanente du compte, dans le plafond ; réservée aux B2B (négociée par téléphone)</td><td>US-022</td><td><code>PUT /api/admin/clients/{id}/discount</code></td></tr>
+        <tr><td>Bloc « Conditions de paiement »</td><td>Voir epic 07</td><td>US-048</td><td>voir epic 07</td></tr>
+        <tr><td>Liens vers ses commandes et son abonnement</td><td>Navigation vers 4.8 filtré / 4.12</td><td>US-085, US-058</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.12 — Abonnements et soldes détenus</h3>
+      <div class="meta">Route <code>/admin/abonnements</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau (client, statut, échéance ou fin de pause, solde de voucher)</td><td>Charge les abonnements</td><td>US-058</td><td><code>GET /api/admin/subscriptions</code></td></tr>
+        <tr><td>Filtre actif / expiré / en pause / résilié</td><td>Filtre la liste</td><td>US-058</td><td><code>GET /api/admin/subscriptions?status=</code></td></tr>
+        <tr><td>Synthèse « Total des soldes détenus »</td><td>Affiche le total dû aux clients</td><td>US-058</td><td><code>GET /api/admin/subscriptions/summary</code></td></tr>
+        <tr><td>Badge « échéance dans 5 jours »</td><td>Signale ce qui arrive à terme</td><td>US-058</td><td>calculé côté API</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 4.13 — Paramètres</h3>
+      <div class="meta">Route <code>/admin/parametres</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Formulaire des seuils : plafond de remise, barème de remise (paliers de montant → taux, montant minimal), ancienneté d'abonnement requise (1 mois), délai d'impayé particulier, délai B2B (10 jours), alerte mobile money (24 h), alerte espèces (2 jours), validité d'une disponibilité (7 jours), heure limite d'abonnement</td><td>Charge les valeurs actuelles</td><td><strong>US-088 (nouvelle)</strong></td><td><code>GET /api/admin/settings</code></td></tr>
+        <tr><td>Bouton « Enregistrer »</td><td>Valide, applique aux situations futures, trace la modification</td><td>US-088</td><td><code>PUT /api/admin/settings</code></td></tr>
+        <tr><td>Lien « Historique des modifications »</td><td>Affiche qui a changé quoi</td><td>US-088</td><td><code>GET /api/admin/settings/history</code></td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 05</div>
+    <h2>Collecte</h2>
+
+    <div class="screen">
+      <h3>Écran 5.1 — Ma tournée du jour (collecteur, mobile)</h3>
+      <div class="meta">Route <code>/admin/collecte</code> · Accès : Collecteur (et Gérant) · Disponible hors connexion : la tournée est téléchargée la veille au soir.</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste des arrêts (fournisseur, produits, quantités, avancement)</td><td>Charge la tournée et la garde en local</td><td>US-025, US-028</td><td><code>GET /api/collector/tour</code></td></tr>
+        <tr><td>Pastille « commande ferme » / « suggestion »</td><td>Distingue ce qui est commandé de ce qui est anticipé</td><td>US-030</td><td>inclus dans la réponse</td></tr>
+        <tr><td>Badge « priorité »</td><td>Signale les commandes prioritaires</td><td>US-090</td><td>inclus dans la réponse</td></tr>
+        <tr><td>Bloc rendez-vous (prestataire, point, heure) et alerte horaire</td><td>Rappelle le rendez-vous de transfert</td><td>US-033</td><td>inclus dans la réponse</td></tr>
+        <tr><td>Indicateur de synchronisation (« 3 saisies en attente »)</td><td>Montre l'état de l'envoi</td><td>US-028</td><td><code>POST /api/collector/sync</code> (envoi groupé)</td></tr>
+        <tr><td>Clic sur un arrêt</td><td>Ouvre la collecte chez ce fournisseur (5.2)</td><td>US-025</td><td>—</td></tr>
+        <tr><td>Bouton « Remettre au prestataire »</td><td>Ouvre le transfert (epic 06)</td><td>US-034</td><td>voir epic 06</td></tr>
+      </table></div>
+      <div class="sub">États à prévoir</div>
+      <ul class="plain"><li>Aucune tournée aujourd'hui · Hors connexion · Synchronisation en cours / en échec · Tournée terminée</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 5.2 — Collecte chez un fournisseur (collecteur, mobile)</h3>
+      <div class="meta">Route <code>/admin/collecte/arrets/:id</code> · Accès : Collecteur (et Gérant) · Hors connexion</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Produit : quantité attendue, commandes liées, exigences de qualité d'un gros compte</td><td>Affichage</td><td>US-025, US-026</td><td>données locales</td></tr>
+        <tr><td>Bouton « Qualité » (ouvre la checklist 5.3)</td><td>Enregistre la conformité du produit</td><td>US-026</td><td><code>PUT /api/tours/stops/{id}/items/{itemId}/quality</code></td></tr>
+        <tr><td>Champ « Quantité collectée »</td><td>Saisie ; alerte si l'écart dépasse le seuil réglé</td><td>US-027</td><td><code>PUT /api/tours/stops/{id}/items/{itemId}/quantity</code></td></tr>
+        <tr><td>Bouton « Non collecté » (motif obligatoire)</td><td>Signale la ligne manquante, alerte Rado</td><td>US-027</td><td><code>POST /api/tours/stops/{id}/items/{itemId}/skip</code></td></tr>
+        <tr><td>Produit « à vérifier » : boutons « Accepter (note) » / « Refuser (motif) »</td><td>Tranche avant la remise au prestataire</td><td>US-026</td><td><code>POST /api/tours/stops/{id}/items/{itemId}/resolve</code></td></tr>
+        <tr><td>Bloc « Payer le fournisseur » : montant total à payer (sans prix unitaires), mode du fournisseur</td><td>Si espèces : confirme « payé en espèces » (montant, motif si différent), l'avance de Tojo diminue, fonctionne hors connexion. Si mobile money : affiche « à payer par Kolekta » sans paiement sur place.</td><td><strong>US-096 (nouvelle)</strong></td><td><code>POST /api/tours/stops/{id}/supplier-payment</code></td></tr>
+        <tr><td>Bandeau « Mon avance : reste X Ar »</td><td>Affiche l'avance restante ; avertit si elle est insuffisante</td><td>US-096</td><td>inclus dans <code>GET /api/collector/tour</code></td></tr>
+        <tr><td>Lien « Déclarer ses disponibilités »</td><td>Ouvre l'écran 3.4</td><td>US-012</td><td>—</td></tr>
+        <tr><td>Bouton « Terminer l'arrêt »</td><td>Passe les commandes entièrement traitées à « collectée » ; informe le client si une quantité diminue</td><td>US-027</td><td><code>POST /api/tours/stops/{id}/complete</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 5.3 — Checklist qualité (panneau de 5.2)</h3>
+      <div class="meta">Ouvert depuis le bouton « Qualité » · Peu de saisie : cases à cocher uniquement</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Critères du produit (fraîcheur, aspect, calibre…) en cases conforme / non conforme</td><td>Saisie de la conformité ; critères hérités de la catégorie si le produit n'en a pas</td><td>US-026, US-091</td><td>données locales</td></tr>
+        <tr><td>Rappel de l'exigence du gros compte</td><td>Mise en avant</td><td>US-021, US-026</td><td>inclus dans la tournée</td></tr>
+        <tr><td>Bouton « Valider »</td><td>Un critère non conforme met le produit « à vérifier » : il n'entre pas dans le lot tant que Tojo n'a pas tranché</td><td>US-026</td><td>envoyé avec la saisie qualité</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 5.4 — Tournées (Gérant)</h3>
+      <div class="meta">Route <code>/admin/tournees</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste des tournées (date, collecteur, véhicule, avancement, statut)</td><td>Charge les tournées</td><td><strong>US-090 (nouvelle)</strong></td><td><code>GET /api/admin/tours</code></td></tr>
+        <tr><td>Filtres date / collecteur / statut</td><td>Filtre la liste</td><td>US-090</td><td><code>GET /api/admin/tours?…</code></td></tr>
+        <tr><td>Bouton « Générer la tournée » (pour une date)</td><td>Calcule les arrêts depuis les commandes confirmées et les suggestions ; lancée aussi automatiquement chaque soir</td><td>US-025, US-030</td><td><code>POST /api/admin/tours/generate</code></td></tr>
+        <tr><td>Clic sur une ligne</td><td>Ouvre le détail (5.5)</td><td>US-090</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 5.5 — Détail et planification d'une tournée</h3>
+      <div class="meta">Route <code>/admin/tournees/:id</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Arrêts (fournisseur, produits, quantités, commandes liées, suggestions)</td><td>Charge la tournée</td><td>US-090</td><td><code>GET /api/admin/tours/{id}</code></td></tr>
+        <tr><td>Boutons « Ajouter / Retirer un arrêt » et réordonner</td><td>Ajuste la tournée avant assignation</td><td>US-090</td><td><code>PUT /api/admin/tours/{id}/stops</code></td></tr>
+        <tr><td>Suggestions : « Conserver / Modifier / Retirer »</td><td>Rado tranche avant l'assignation</td><td>US-030, US-090</td><td><code>PATCH /api/admin/tours/{id}/suggestions/{sid}</code></td></tr>
+        <tr><td>Listes « Collecteur » et « Véhicule » (seuls les libres sont proposés)</td><td>Assigne ; refuse un véhicule déjà pris ce jour-là</td><td>US-090, US-029</td><td><code>PUT /api/admin/tours/{id}/assignment</code></td></tr>
+        <tr><td>Bloc « Rendez-vous prestataire » (prestataire, point, heure)</td><td>Renseigne le transfert</td><td>US-033</td><td><code>PUT /api/admin/tours/{id}/rendezvous</code> (epic 06)</td></tr>
+        <tr><td>Suivi d'avancement par arrêt (à faire, en cours, terminé, manquant)</td><td>Se met à jour à chaque synchronisation</td><td>US-090</td><td>inclus dans <code>GET /api/admin/tours/{id}</code></td></tr>
+        <tr><td>Ligne manquante signalée / produit refusé</td><td>Affichage et lien vers la commande concernée</td><td>US-026, US-027</td><td>inclus dans la réponse</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 5.6 — Véhicules de collecte</h3>
+      <div class="meta">Route <code>/admin/vehicules</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste des véhicules (immatriculation, type, état, collecteur du jour)</td><td>Charge les véhicules</td><td>US-029</td><td><code>GET /api/admin/vehicles</code></td></tr>
+        <tr><td>Boutons « Ajouter », « Modifier », « Désactiver »</td><td>Gère le véhicule</td><td>US-029</td><td><code>POST</code>, <code>PUT</code>, <code>PATCH /api/admin/vehicles/{id}</code></td></tr>
+        <tr><td>Bouton « Assigner à un collecteur » (date)</td><td>Refuse un second collecteur sur le même véhicule le même jour</td><td>US-029</td><td><code>POST /api/admin/vehicles/{id}/assignments</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 5.7 — Critères qualité</h3>
+      <div class="meta">Route <code>/admin/criteres-qualite</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Sélecteur catégorie ou produit + liste de ses critères</td><td>Charge les critères (propres ou hérités)</td><td><strong>US-091 (nouvelle)</strong></td><td><code>GET /api/admin/quality-criteria?…</code></td></tr>
+        <tr><td>Boutons « Ajouter », « Modifier », « Retirer » un critère</td><td>Met à jour la checklist des prochaines collectes ; l'historique garde l'ancien critère</td><td>US-091</td><td><code>POST</code>, <code>PUT</code>, <code>DELETE /api/admin/quality-criteria/{id}</code></td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 06</div>
+    <h2>Livraisons</h2>
+
+    <div class="screen">
+      <h3>Écran 6.1 — Zones de livraison</h3>
+      <div class="meta">Route <code>/admin/zones</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste des zones (nom, délai indicatif, prestataires qui la couvrent)</td><td>Charge les zones</td><td>US-031</td><td><code>GET /api/admin/zones</code></td></tr>
+        <tr><td>Boutons « Ajouter », « Modifier », « Désactiver »</td><td>Gère la zone et son délai ; le délai est celui affiché au client avant validation</td><td>US-031, US-018</td><td><code>POST</code>, <code>PUT</code>, <code>PATCH /api/admin/zones/{id}</code></td></tr>
+      </table></div>
+      <div class="sub">Règle à garder en tête</div>
+      <ul class="plain"><li>Une adresse qui ne correspond à aucune zone bloque la commande avec un message invitant à contacter Kolekta (US-031). Les adresses des clients (écran 4.7) choisissent leur zone parmi celles-ci.</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 6.2 — Prestataires de livraison</h3>
+      <div class="meta">Route <code>/admin/prestataires</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste (nom, contact, zones couvertes, statut)</td><td>Charge les prestataires</td><td>US-032</td><td><code>GET /api/admin/carriers</code></td></tr>
+        <tr><td>Bouton « Ajouter » / « Modifier » (formulaire : nom, téléphone, au moins une zone)</td><td>Crée ou met à jour</td><td>US-032</td><td><code>POST</code>, <code>PUT /api/admin/carriers/{id}</code></td></tr>
+        <tr><td>Interrupteur « Actif »</td><td>Un prestataire désactivé n'est plus proposé à l'assignation</td><td>US-032</td><td><code>PATCH /api/admin/carriers/{id}/status</code></td></tr>
+        <tr><td>Lien « Paiements du prestataire »</td><td>Ouvre ses paiements (epic 07)</td><td>US-043</td><td>voir epic 07</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 6.3 — Remise au prestataire (collecteur, mobile)</h3>
+      <div class="meta">Route <code>/admin/collecte/remise</code> · Accès : Collecteur (et Gérant) · Fonctionne hors connexion</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Prestataire, point et heure du rendez-vous</td><td>Rappel</td><td>US-033</td><td>inclus dans la tournée</td></tr>
+        <tr><td>Liste des produits collectés par commande, avec les produits « à vérifier » non tranchés bloqués</td><td>Récapitule ce qui est remis</td><td>US-034, US-026</td><td>données locales</td></tr>
+        <tr><td>Bouton « Confirmer la remise »</td><td>Passe les commandes à « en livraison », enregistre l'heure ; conserve en local si pas de réseau, synchronise au retour</td><td>US-034, US-028</td><td><code>POST /api/tours/{id}/handover</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 6.4 — Livraisons en cours (Gérant)</h3>
+      <div class="meta">Route <code>/admin/livraisons</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau des commandes « en livraison » (client, zone, prestataire, heure de remise)</td><td>Charge les livraisons en cours</td><td>US-035</td><td><code>GET /api/admin/deliveries?status=in_progress</code></td></tr>
+        <tr><td>Bouton « Marquer livrée »</td><td>Ouvre une fenêtre avec les quantités livrées par ligne (préremplies) ; enregistre le statut, l'heure et le montant final ; débite le voucher sur les quantités livrées. Refusé si la commande n'est pas « en livraison ».</td><td>US-035, US-052</td><td><code>POST /api/admin/orders/{id}/deliver</code></td></tr>
+        <tr><td>Bouton « Signaler un incident » (type : retard, produit abîmé, client absent, livraison refusée ; commentaire)</td><td>Ajoute l'incident à la commande et aux alertes</td><td>US-038</td><td><code>POST /api/admin/orders/{id}/incidents</code></td></tr>
+        <tr><td>Bouton « Reprogrammer » (après client absent ou refus)</td><td>Fixe une nouvelle date, notifie le client</td><td>US-038</td><td><code>POST /api/admin/orders/{id}/reschedule</code></td></tr>
+        <tr><td>Bouton « Clôturer avec motif »</td><td>Ferme la commande sans nouvelle livraison</td><td>US-038</td><td><code>POST /api/admin/orders/{id}/close</code></td></tr>
+        <tr><td>Bouton « Créer une tâche » sur un incident</td><td>Préremplit une tâche (epic 08)</td><td>US-069</td><td>voir epic 08</td></tr>
+        <tr><td>Liste des livraisons livrées récemment</td><td>Consultation de l'historique</td><td>US-035</td><td><code>GET /api/admin/deliveries?status=delivered</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 6.5 — Journal des notifications</h3>
+      <div class="meta">Route <code>/admin/notifications</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau (destinataire, canal, événement, date, statut : envoyée, échec, ignorée + raison)</td><td>Charge le journal</td><td><strong>US-092 (nouvelle)</strong></td><td><code>GET /api/admin/notifications</code></td></tr>
+        <tr><td>Filtres canal / statut / client</td><td>Filtre la liste</td><td>US-092</td><td><code>GET /api/admin/notifications?…</code></td></tr>
+        <tr><td>Bouton « Renvoyer » sur un échec</td><td>Nouvel essai, résultat ajouté au journal</td><td>US-092</td><td><code>POST /api/admin/notifications/{id}/resend</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Notifications automatiques (sans écran)</h3>
+      <div class="tbl-wrap"><table>
+        <tr><th>Événement</th><th>Canal</th><th>Story</th></tr>
+        <tr><td>Commande créée (récapitulatif)</td><td>Email</td><td>US-036</td></tr>
+        <tr><td>Commande annulée</td><td>Email</td><td>US-084</td></tr>
+        <tr><td>Quantité réduite après collecte</td><td>Email</td><td>US-027</td></tr>
+        <tr><td>Commande « en livraison »</td><td>Email, et SMS pour un particulier ou un client sans email</td><td>US-036, US-037</td></tr>
+        <tr><td>Commande « livrée »</td><td>Email</td><td>US-036</td></tr>
+        <tr><td>Livraison reprogrammée</td><td>Email (et SMS si le client n'a pas d'email)</td><td>US-038</td></tr>
+        <tr><td>Rappel de renouvellement 5 jours avant l'échéance</td><td>Email</td><td>US-055</td></tr>
+        <tr><td>Paiement mobile money en attente (côté équipe)</td><td>Alerte dans l'app</td><td>US-060</td></tr>
+        <tr><td>Un échec d'envoi ne bloque jamais l'action métier</td><td>Journalisé</td><td>US-036, US-037</td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 07 — partie 1 : l'argent des clients</div>
+    <h2>Paiements</h2>
+
+    <div class="screen">
+      <h3>Écran 7.1 — Paiement d'une commande (client)</h3>
+      <div class="meta">Bloc de l'écran 4.4 <code>/mes-commandes/:id</code> · Accès : client propriétaire</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Total, payé, reste à payer ; paiements en attente de vérification affichés à part</td><td>Charge l'état de paiement</td><td>US-040</td><td><code>GET /api/orders/{id}/payments</code></td></tr>
+        <tr><td>Choix « Mobile money »</td><td>Affiche le numéro de Kolekta de l'opérateur, le montant à envoyer et la marche à suivre</td><td>US-059</td><td><code>GET /api/payment-info</code></td></tr>
+        <tr><td>Champs « Référence de la transaction » et « Opérateur » + bouton « J'ai envoyé l'argent »</td><td>Crée un paiement « en attente de vérification » ; refuse une référence vide ou déjà utilisée ; notifie Rado</td><td>US-059</td><td><code>POST /api/orders/{id}/payments/mobile-money</code></td></tr>
+        <tr><td>Bouton « J'ai payé en espèces au livreur » (+ montant)</td><td>Crée une déclaration ; prévient le prestataire par SMS ; affiche l'écart éventuel avant confirmation</td><td><strong>US-093 (nouvelle)</strong></td><td><code>POST /api/orders/{id}/payments/cash-declaration</code></td></tr>
+        <tr><td>Lien « Annuler ma déclaration » (tant que non prise en compte)</td><td>Annule en gardant la trace</td><td>US-093, US-047</td><td><code>POST /api/payments/{id}/cancel</code></td></tr>
+        <tr><td>Boutons « Bon de commande » et « Facture »</td><td>Téléchargent les documents (la facture reflète les quantités livrées)</td><td>US-041</td><td><code>GET /api/orders/{id}/documents/{type}</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.2 — Mon voucher (client abonné)</h3>
+      <div class="meta">Route <code>/mon-voucher</code> · Accès : client avec abonnement</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Solde actuel et alerte « solde bas »</td><td>Charge le solde</td><td>US-053</td><td><code>GET /api/voucher</code></td></tr>
+        <tr><td>Historique des mouvements (recharge, débit, ajustement, solde abandonné)</td><td>Charge les mouvements avec date, type, montant, commande</td><td>US-053</td><td><code>GET /api/voucher/movements</code></td></tr>
+        <tr><td>Bouton « Recharger » : numéro de Kolekta, puis champs référence et opérateur</td><td>Crée une demande de recharge « en attente de vérification » (solde crédité après vérification)</td><td>US-051</td><td><code>POST /api/voucher/topups</code></td></tr>
+        <tr><td>Recharges en attente</td><td>Affichées à part du solde</td><td>US-051</td><td>inclus dans <code>GET /api/voucher</code></td></tr>
+      </table></div>
+      <div class="sub">États à prévoir</div>
+      <ul class="plain"><li>Abonnement en pause ou expiré : solde visible, recharge désactivée avec explication · Aucun mouvement · Référence refusée</li></ul>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.3 — Mes factures (client B2B en paiement mensuel)</h3>
+      <div class="meta">Route <code>/mes-factures</code> · Accès : client concerné</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste des factures mensuelles (mois, total, échéance, statut)</td><td>Charge les factures</td><td>US-050</td><td><code>GET /api/invoices</code></td></tr>
+        <tr><td>Détail d'une facture (commandes, quantités livrées, lignes « en litige » non exigibles)</td><td>Charge la facture</td><td>US-050</td><td><code>GET /api/invoices/{id}</code></td></tr>
+        <tr><td>Bouton « Télécharger »</td><td>PDF de la facture</td><td>US-050, US-041</td><td><code>GET /api/invoices/{id}/pdf</code></td></tr>
+        <tr><td>Bloc « Payer cette facture » (mobile money : référence et opérateur)</td><td>Crée un paiement en attente de vérification</td><td>US-059</td><td><code>POST /api/invoices/{id}/payments/mobile-money</code></td></tr>
+        <tr><td>Encours et plafond</td><td>Affichage</td><td>US-049</td><td><code>GET /api/me/credit</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.4 — Paiements (Gérant)</h3>
+      <div class="meta">Route <code>/admin/paiements</code> · Accès : Admin, Gérant · Onglets : Clients · Impayés · À vérifier · Espèces · Journal</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Onglet « Clients » : commandes et factures avec montant, payé, reste, statut</td><td>Charge les paiements clients</td><td>US-039</td><td><code>GET /api/admin/payments</code></td></tr>
+        <tr><td>Bouton « Enregistrer un paiement » (commande, mode, montant, référence si mobile money, « reçu en caisse » ou « détenu par »)</td><td>Enregistre ; la commande passe « payée » si soldée ; mobile money vérifié par Rado : enregistré directement</td><td>US-039, US-071</td><td><code>POST /api/admin/payments</code></td></tr>
+        <tr><td>Onglet « Impayés »</td><td>Liste les commandes et factures en retard selon les règles du compte (particulier N jours, B2B 10 jours, mensuel après échéance)</td><td>US-046</td><td><code>GET /api/admin/payments/overdue</code></td></tr>
+        <tr><td>Bouton « Relancer »</td><td>Email de rappel au client, relance tracée</td><td>US-046</td><td><code>POST /api/admin/orders/{id}/reminders</code></td></tr>
+        <tr><td>Onglet « À vérifier » : référence, opérateur, montant annoncé, date, objet, saisi par</td><td>Charge les paiements mobile money en attente</td><td>US-060</td><td><code>GET /api/admin/payments?status=pending</code></td></tr>
+        <tr><td>Boutons « Valider » (montant réellement reçu) et « Rejeter » (motif)</td><td>Valide ou rejette ; prévient le client par email</td><td>US-060</td><td><code>POST /api/admin/payments/{id}/verify</code>, <code>/reject</code></td></tr>
+        <tr><td>Onglet « Journal » : tous les paiements, annulés compris</td><td>Consulte la trace non modifiable</td><td>US-047</td><td><code>GET /api/admin/payments?includeCancelled=true</code></td></tr>
+        <tr><td>Bouton « Annuler » avec motif (jamais « Supprimer »)</td><td>Écriture d'annulation, le paiement reste visible</td><td>US-047</td><td><code>POST /api/admin/payments/{id}/cancel</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.5 — Suivi des espèces (Gérant)</h3>
+      <div class="meta">Onglet « Espèces » de <code>/admin/paiements</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau par détenteur (employés et prestataires) : total détenu, ancienneté, détail</td><td>Charge les espèces non remises</td><td>US-073, US-094</td><td><code>GET /api/admin/cash/holders</code></td></tr>
+        <tr><td>Alerte « détenu depuis plus de N jours »</td><td>Signale les retards</td><td>US-073, US-094</td><td>calculé côté API</td></tr>
+        <tr><td>Bouton « Confirmer la remise » (encaissements choisis, montant reçu, motif si écart)</td><td>Passe en caisse ; enregistre l'écart</td><td>US-072</td><td><code>POST /api/admin/cash/remittances</code></td></tr>
+        <tr><td>Bouton « Annuler la remise » (motif)</td><td>Annule en gardant la trace</td><td>US-072, US-047</td><td><code>POST /api/admin/cash/remittances/{id}/cancel</code></td></tr>
+        <tr><td>Déclarations en attente de contestation (prestataire concerné, délai restant)</td><td>Charge les déclarations clients</td><td>US-094</td><td><code>GET /api/admin/cash/declarations</code></td></tr>
+        <tr><td>Bouton « Enregistrer une contestation » (motif)</td><td>Passe le paiement « en litige », alerte Rado</td><td>US-094</td><td><code>POST /api/admin/cash/declarations/{id}/dispute</code></td></tr>
+        <tr><td>Bouton « Remettre une avance » (collecteur, montant, tournée)</td><td>Crée une avance « détenue par [collecteur] », distincte des encaissements clients</td><td>US-096</td><td><code>POST /api/admin/cash/advances</code></td></tr>
+        <tr><td>Avances en cours : avance, payé aux fournisseurs, reste attendu</td><td>Charge les avances ; la remise du reste se confirme comme une remise d'espèces (écart avec motif)</td><td>US-096, US-072</td><td><code>GET /api/admin/cash/advances</code></td></tr>
+        <tr><td>Bouton « Relancer le prestataire »</td><td>Renvoie un SMS de rappel</td><td>US-094</td><td><code>POST /api/admin/carriers/{id}/reminders</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.6 — Saisir une référence au nom d'un client (tous les employés)</h3>
+      <div class="meta">Route <code>/admin/references/nouvelle</code> · Accès : tout employé · Ne montre ni la liste des paiements ni les autres clients</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Recherche du client</td><td>Trouve le compte (nom ou téléphone)</td><td>US-070</td><td><code>GET /api/employee/clients/search</code></td></tr>
+        <tr><td>Choix de l'objet : commande, facture mensuelle ou recharge de voucher</td><td>Rattache la référence</td><td>US-070</td><td>—</td></tr>
+        <tr><td>Champs référence, opérateur, montant annoncé</td><td>Saisie ; refuse référence vide ou déjà utilisée</td><td>US-070</td><td>—</td></tr>
+        <tr><td>Bouton « Enregistrer »</td><td>Crée le paiement « en attente de vérification » marqué « saisi par [employé] » ; email d'accusé au client</td><td>US-070</td><td><code>POST /api/employee/payments/mobile-money</code></td></tr>
+        <tr><td>Lien « Annuler ma saisie » (tant que non vérifiée)</td><td>Annule en gardant la trace</td><td>US-070</td><td><code>POST /api/payments/{id}/cancel</code></td></tr>
+        <tr><td>Option « Déclaration d'espèces remises au livreur » (source : « signalé par le client » ou « signalé par le prestataire »)</td><td>Même circuit que le client (US-093), « saisi par » ; si c'est le prestataire qui a appelé, pas de SMS : l'argent passe directement « détenu par le prestataire »</td><td>US-093, US-094</td><td><code>POST /api/employee/payments/cash-declaration</code></td></tr>
+        <tr><td>Option « Encaissement direct en espèces » (employé présent à la livraison)</td><td>Enregistre « détenu par [employé] »</td><td>US-071, US-093</td><td><code>POST /api/employee/payments/cash</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.7 — Voucher, conditions de paiement et factures (back-office)</h3>
+      <div class="meta">Panneaux de la fiche client 4.11 <code>/admin/clients/:id</code> et liste <code>/admin/factures</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Panneau « Conditions de paiement » : paiement mensuel (oui/non), plafond d'encours, voucher autorisé</td><td>Règle les conditions ; options proposées selon le profil (B2B, abonné ou non)</td><td>US-048</td><td><code>PUT /api/admin/clients/{id}/payment-terms</code></td></tr>
+        <tr><td>Indicateur d'encours / plafond</td><td>Affichage</td><td>US-049</td><td><code>GET /api/admin/clients/{id}/credit</code></td></tr>
+        <tr><td>Panneau « Voucher » : solde et mouvements</td><td>Consulte le voucher du client</td><td>US-053</td><td><code>GET /api/admin/clients/{id}/voucher</code></td></tr>
+        <tr><td>Bouton « Enregistrer une recharge » (espèces ou mobile money vérifié)</td><td>Crédite le solde ; refusé si l'abonnement n'est pas actif</td><td>US-051</td><td><code>POST /api/admin/clients/{id}/voucher/topups</code></td></tr>
+        <tr><td>Bouton « Ajuster le solde » (± montant, motif)</td><td>Crée un mouvement « ajustement »</td><td>US-051, US-053</td><td><code>POST /api/admin/clients/{id}/voucher/adjustments</code></td></tr>
+        <tr><td>Liste <code>/admin/factures</code> : factures mensuelles, échéances, litiges</td><td>Charge, filtre et régénère si besoin</td><td>US-050</td><td><code>GET /api/admin/invoices</code></td></tr>
+      </table></div>
+      <div class="sub">Traitements automatiques (sans écran)</div>
+      <ul class="plain">
+        <li>Réservation du voucher à la commande et débit final à la livraison (US-052)</li>
+        <li>Génération de la facture mensuelle à la clôture du mois et envoi par email (US-050)</li>
+        <li>Blocage d'une commande qui dépasserait le plafond d'encours (US-049)</li>
+        <li>SMS au prestataire lors d'une déclaration d'espèces (US-094)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 07 — partie 2 : l'argent que Kolekta doit payer</div>
+    <h2>Fournisseurs, prestataire et salaires</h2>
+
+    <div class="screen">
+      <h3>Écran 7.8 — Prix d'achat</h3>
+      <div class="meta">Onglet de la fiche fournisseur 3.3 <code>/admin/fournisseurs/:id</code> · Accès : Admin, Gérant (jamais le collecteur)</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau produit / prix d'achat / unité / depuis le</td><td>Charge les prix d'achat du fournisseur</td><td><strong>US-095 (nouvelle)</strong></td><td><code>GET /api/admin/suppliers/{id}/purchase-prices</code></td></tr>
+        <tr><td>Bouton « Définir / modifier le prix »</td><td>Enregistre un prix à partir de maintenant, garde l'ancien dans l'historique ; avertit si la marge est négative</td><td>US-095</td><td><code>PUT /api/admin/suppliers/{id}/purchase-prices/{productId}</code></td></tr>
+        <tr><td>Lien « Historique des prix »</td><td>Affiche les prix passés et leur période</td><td>US-095</td><td><code>GET /api/admin/suppliers/{id}/purchase-prices/{productId}/history</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.9 — Fournisseurs à payer</h3>
+      <div class="meta">Route <code>/admin/paiements/fournisseurs</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau par fournisseur : dû, payé, reste, en retard</td><td>Charge les soldes</td><td>US-043</td><td><code>GET /api/admin/supplier-payments</code></td></tr>
+        <tr><td>Badge « en retard » (au-delà du délai réglé dans les paramètres)</td><td>Signale les retards ; remonte aux alertes</td><td>US-043</td><td>calculé côté API</td></tr>
+        <tr><td>Clic sur un fournisseur</td><td>Ouvre le détail (7.10)</td><td>US-042</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.10 — Détail des sommes dues à un fournisseur</h3>
+      <div class="meta">Route <code>/admin/paiements/fournisseurs/:id</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Lignes dues par collecte (date, produit, quantité validée, prix d'achat, montant)</td><td>Montant calculé sur les quantités réellement collectées et validées ; un produit non retenu n'est pas compté</td><td>US-042</td><td><code>GET /api/admin/supplier-payments/{id}</code></td></tr>
+        <tr><td>Alerte « prix d'achat manquant »</td><td>Calcul bloqué pour la ligne ; renvoie vers 7.8</td><td>US-042, US-095</td><td>inclus dans la réponse</td></tr>
+        <tr><td>Bouton « Enregistrer un paiement » (montant, mode, date, référence si mobile money)</td><td>Diminue le solde dû ; référence obligatoire en mobile money</td><td>US-043</td><td><code>POST /api/admin/supplier-payments/{id}/payments</code></td></tr>
+        <tr><td>Historique des paiements (annulés compris)</td><td>Consulte la trace non modifiable</td><td>US-043, US-047</td><td>inclus dans la réponse</td></tr>
+        <tr><td>Bouton « Annuler » un paiement (motif)</td><td>Écriture d'annulation, rien n'est supprimé</td><td>US-047</td><td><code>POST /api/admin/payments/{id}/cancel</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.11 — Prestataires à payer</h3>
+      <div class="meta">Route <code>/admin/paiements/prestataires</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau par prestataire : dû, payé, reste, espèces détenues de clients</td><td>Charge les soldes</td><td>US-044, US-094</td><td><code>GET /api/admin/carrier-payments</code></td></tr>
+        <tr><td>Bouton « Saisir le montant dû » (période, livraisons concernées)</td><td>Crée un montant dû rattaché au prestataire et aux livraisons</td><td>US-044</td><td><code>POST /api/admin/carrier-payments/{id}/dues</code></td></tr>
+        <tr><td>Bouton « Enregistrer un paiement » (montant, mode, référence si mobile money)</td><td>Diminue le solde dû</td><td>US-044</td><td><code>POST /api/admin/carrier-payments/{id}/payments</code></td></tr>
+        <tr><td>Case « Compenser avec les espèces détenues »</td><td>Deux écritures liées : paiement et remise d'espèces, visibles dans les deux suivis</td><td>US-044, US-072</td><td>incluse dans la requête de paiement</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 7.12 — Salaires</h3>
+      <div class="meta">Route <code>/admin/salaires</code> · Accès : Admin, Gérant, RH · Jamais visible du collecteur</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau par mois : employé, montant, mode, statut (versé / à verser)</td><td>Charge les salaires</td><td>US-045</td><td><code>GET /api/admin/salaries?month=</code></td></tr>
+        <tr><td>Bouton « Enregistrer un salaire » (employé, mois, montant, mode, référence si mobile money)</td><td>Enregistre ; signale un doublon pour le même mois</td><td>US-045</td><td><code>POST /api/admin/salaries</code></td></tr>
+        <tr><td>Bouton « Annuler » (motif)</td><td>Écriture d'annulation</td><td>US-047</td><td><code>POST /api/admin/payments/{id}/cancel</code></td></tr>
+        <tr><td>Total du mois</td><td>Alimente la masse salariale du tableau de bord</td><td>US-079</td><td>inclus dans la réponse</td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 08</div>
+    <h2>Employés & Tâches</h2>
+
+    <div class="screen">
+      <h3>Écran 8.1 — Employés</h3>
+      <div class="meta">Route <code>/admin/employes</code> · Accès : Admin, Gérant, RH</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau (nom, rôle, téléphone, statut)</td><td>Charge les employés</td><td>US-061</td><td><code>GET /api/admin/employees</code></td></tr>
+        <tr><td>Recherche et filtres rôle / statut</td><td>Filtre la liste</td><td>US-061</td><td><code>GET /api/admin/employees?…</code></td></tr>
+        <tr><td>Bouton « Nouvel employé »</td><td>Ouvre le formulaire 8.2</td><td>US-061</td><td>—</td></tr>
+        <tr><td>Clic sur une ligne</td><td>Ouvre la fiche 8.3</td><td>US-061</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 8.2 — Formulaire employé</h3>
+      <div class="meta">Routes <code>/admin/employes/nouveau</code> et <code>/admin/employes/:id/modifier</code> · Accès : Admin, Gérant, RH (le rôle et l'accès restent réservés à l'Admin)</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Champs nom, téléphone, email (optionnel), poste</td><td>Saisie ; nom, téléphone et rôle obligatoires</td><td>US-061</td><td>—</td></tr>
+        <tr><td>Champ « Salaire mensuel convenu »</td><td>Visible de l'Admin, du Gérant et du RH seulement ; pré-remplit l'écran des salaires</td><td>US-061, US-045</td><td>—</td></tr>
+        <tr><td>Liste « Rôle » (Admin, Gérant, RH, Collecteur) — Admin seulement</td><td>Attribue le rôle</td><td>US-062</td><td>—</td></tr>
+        <tr><td>Case « Créer l'accès à l'app »</td><td>Génère un mot de passe temporaire à changer à la première connexion</td><td>US-062</td><td>—</td></tr>
+        <tr><td>Bouton « Enregistrer »</td><td>Crée ou met à jour la fiche (et l'accès si demandé)</td><td>US-061, US-062</td><td><code>POST /api/admin/employees</code> / <code>PUT /api/admin/employees/{id}</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 8.3 — Fiche employé</h3>
+      <div class="meta">Route <code>/admin/employes/:id</code> · Accès : Admin, Gérant, RH (changer le rôle et réinitialiser l'accès : Admin seulement)</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Informations, rôle, statut</td><td>Charge la fiche</td><td>US-061</td><td><code>GET /api/admin/employees/{id}</code></td></tr>
+        <tr><td>Onglet « Historique » (créations, modifications, changements de rôle, désactivations ; auteur et date)</td><td>Lecture seule, sans modification ni suppression</td><td>US-064</td><td><code>GET /api/admin/employees/{id}/history</code></td></tr>
+        <tr><td>Onglets « Tâches » et « Espèces détenues » (liens)</td><td>Navigation vers 8.6 et 7.5 filtrés</td><td>US-066, US-073</td><td>—</td></tr>
+        <tr><td>Bouton « Changer le rôle » (Admin seulement)</td><td>Enregistre dans l'historique ; refusé pour le dernier Admin</td><td>US-062</td><td><code>PATCH /api/admin/employees/{id}/role</code></td></tr>
+        <tr><td>Bouton « Réinitialiser le mot de passe » (Admin)</td><td>Génère un mot de passe temporaire, tracé</td><td>US-062</td><td><code>POST /api/admin/employees/{id}/reset-password</code></td></tr>
+        <tr><td>Bouton « Désactiver / Réactiver »</td><td>Coupe l'accès tout de suite, même session ouverte ; liste les tâches en cours à réassigner avant confirmation ; refusé pour le dernier Admin</td><td>US-061, US-062</td><td><code>PATCH /api/admin/employees/{id}/status</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 8.4 — Première connexion et mon profil</h3>
+      <div class="meta">Routes <code>/changer-mot-de-passe</code> (forcé à la première connexion) et <code>/admin/mon-profil</code> · Accès : tout employé</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Champs ancien mot de passe, nouveau, confirmation</td><td>Obligatoire avec un mot de passe temporaire, sinon accès bloqué ; sinon accessible depuis le profil</td><td>US-062, US-061</td><td><code>POST /api/auth/change-password</code></td></tr>
+        <tr><td>Champ téléphone</td><td>Mise à jour de son téléphone (pas du rôle)</td><td>US-061</td><td><code>PUT /api/me/employee-profile</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 8.5 — Mes tâches (mobile, hors connexion)</h3>
+      <div class="meta">Route <code>/admin/mes-taches</code> · Accès : tout employé</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste de mes tâches (titre, priorité, échéance, statut), triées par échéance puis priorité</td><td>Charge et garde en local ; les nouvelles sont signalées</td><td>US-066</td><td><code>GET /api/tasks/mine</code></td></tr>
+        <tr><td>Filtre par statut</td><td>Filtre la liste</td><td>US-066</td><td><code>GET /api/tasks/mine?status=</code></td></tr>
+        <tr><td>Boutons « À faire / En cours / Terminée »</td><td>Change le statut ; l'auteur et l'heure sont tracés ; rouvrir est aussi tracé</td><td>US-067</td><td><code>PATCH /api/tasks/{id}/status</code></td></tr>
+        <tr><td>Lien « Voir l'élément » (commande, fournisseur, livraison)</td><td>Ouvre l'élément concerné</td><td>US-069</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 8.6 — Tâches de l'équipe</h3>
+      <div class="meta">Route <code>/admin/taches</code> · Accès : Admin, Gérant, RH</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Tableau (titre, employé, priorité, échéance, statut, retard)</td><td>Charge toutes les tâches</td><td>US-068</td><td><code>GET /api/admin/tasks</code></td></tr>
+        <tr><td>Filtres employé / statut / échéance</td><td>Filtre la vue ; les tâches en retard remontent aux alertes</td><td>US-068</td><td><code>GET /api/admin/tasks?…</code></td></tr>
+        <tr><td>Bouton « Nouvelle tâche » (titre et employé obligatoires ; priorité, échéance, élément lié facultatifs)</td><td>Crée et assigne ; refusé si l'employé est désactivé</td><td>US-065, US-069</td><td><code>POST /api/admin/tasks</code></td></tr>
+        <tr><td>Bouton « Modifier / Réassigner »</td><td>Met à jour la tâche</td><td>US-065</td><td><code>PUT /api/admin/tasks/{id}</code></td></tr>
+        <tr><td>Statut modifiable par Gérant ou RH</td><td>Même règle que pour l'employé, avec trace</td><td>US-067</td><td><code>PATCH /api/tasks/{id}/status</code></td></tr>
+        <tr><td>Historique de la tâche</td><td>Affiche les changements de statut</td><td>US-067</td><td>inclus dans <code>GET /api/admin/tasks/{id}</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Qui a accès à quoi (référence, non un écran)</h3>
+      <div class="meta">Appliqué par l'API (403), pas seulement par l'interface (US-063)</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Fonction</th><th>Admin</th><th>Gérant</th><th>RH</th><th>Collecteur</th></tr>
+        <tr><td>Catalogue, fournisseurs, prix d'achat, clients, commandes, livraisons, zones, prestataires</td><td>✔</td><td>✔</td><td>—</td><td>—</td></tr>
+        <tr><td>Paiements (clients, fournisseurs, prestataires), suivi des espèces, paramètres</td><td>✔</td><td>✔</td><td>—</td><td>—</td></tr>
+        <tr><td>Statistiques</td><td>✔</td><td>✔</td><td>masse salariale seulement</td><td>—</td></tr>
+        <tr><td>Salaires</td><td>✔</td><td>✔</td><td>✔</td><td>—</td></tr>
+        <tr><td>Fiches employés (sans rôle ni accès)</td><td>✔</td><td>✔</td><td>✔</td><td>—</td></tr>
+        <tr><td>Gestion des accès et des rôles</td><td>✔</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>Tournées (planification), critères qualité, véhicules</td><td>✔</td><td>✔</td><td>—</td><td>—</td></tr>
+        <tr><td>Ma tournée, disponibilités, paiement des fournisseurs avec mon avance, remise au prestataire</td><td>(✔)</td><td>(✔)</td><td>—</td><td>✔</td></tr>
+        <tr><td>Créer et assigner des tâches</td><td>✔</td><td>✔</td><td>✔</td><td>—</td></tr>
+        <tr><td>Mes tâches, mon profil, saisir une référence mobile money au nom d'un client</td><td>✔</td><td>✔</td><td>✔</td><td>✔</td></tr>
+      </table></div>
+    </div>
+  </div>
+
+  <div class="epic">
+    <div class="epic-num">EPIC 09</div>
+    <h2>Statistiques</h2>
+
+    <div class="screen">
+      <h3>Écran 9.1 — Tableau de bord</h3>
+      <div class="meta">Route <code>/admin</code> (page d'accueil du Gérant et de l'Admin) · Le RH arrive sur les employés et ne voit que le bloc masse salariale ; le collecteur arrive sur sa tournée (US-001)</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Cartes : chiffre d'affaires du jour / de la semaine / du mois, comparé à la période précédente</td><td>Charge les chiffres clés</td><td>US-074</td><td><code>GET /api/admin/stats/summary</code></td></tr>
+        <tr><td>Bloc « Commandes par statut » (clic sur un statut)</td><td>Ouvre la liste filtrée (écran 4.8)</td><td>US-075</td><td><code>GET /api/admin/stats/orders-by-status</code></td></tr>
+        <tr><td>Bloc « Alertes » (aperçu des plus urgentes)</td><td>Ouvre l'écran 9.5</td><td>US-081</td><td><code>GET /api/admin/alerts?limit=</code></td></tr>
+        <tr><td>Bloc « Trésorerie » (caisse, espèces détenues, mobile money en attente, impayés)</td><td>Aperçu, lien vers 9.4</td><td>US-078</td><td><code>GET /api/admin/stats/finance-summary</code></td></tr>
+        <tr><td>Bloc « Masse salariale du mois » (seul bloc visible du RH)</td><td>Aperçu</td><td>US-079</td><td><code>GET /api/admin/stats/payroll</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 9.2 — Ventes</h3>
+      <div class="meta">Route <code>/admin/statistiques/ventes</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Sélecteur de période (jour, semaine, mois, personnalisée)</td><td>Change la période de tous les blocs</td><td>US-074</td><td>—</td></tr>
+        <tr><td>Courbe du chiffre d'affaires et de la marge brute</td><td>Calculés sur les quantités réellement livrées et les prix d'achat</td><td>US-074, US-095</td><td><code>GET /api/admin/stats/revenue?from=&amp;to=</code></td></tr>
+        <tr><td>Filtres type de client (B2B / particulier) et zone</td><td>Met à jour les chiffres</td><td>US-074</td><td><code>GET /api/admin/stats/revenue?type=&amp;zone=</code></td></tr>
+        <tr><td>Classement des produits (quantité et chiffre d'affaires)</td><td>Charge le top produits</td><td>US-076</td><td><code>GET /api/admin/stats/top-products</code></td></tr>
+        <tr><td>Bouton « Marquer pour la collecte anticipée » sur un produit</td><td>Active la suggestion sur ce produit (epic 05)</td><td>US-076, US-030</td><td><code>PATCH /api/admin/products/{id}/anticipated-collection</code></td></tr>
+        <tr><td>Bouton « Exporter »</td><td>Fichier CSV des lignes affichées</td><td>US-097</td><td><code>GET /api/admin/stats/revenue/export</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 9.3 — Opérations (collecte et livraisons)</h3>
+      <div class="meta">Route <code>/admin/statistiques/operations</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Collecte : quantités collectées vs prévues, produits refusés, lignes manquantes</td><td>Charge les indicateurs de collecte</td><td>US-077</td><td><code>GET /api/admin/stats/collection</code></td></tr>
+        <tr><td>Livraisons : taux à l'heure, incidents par type, par prestataire</td><td>Charge les indicateurs de livraison</td><td>US-077</td><td><code>GET /api/admin/stats/deliveries</code></td></tr>
+        <tr><td>Clic sur un indicateur</td><td>Ouvre le détail concerné (tournées 5.4, livraisons 6.4)</td><td>US-077</td><td>—</td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 9.4 — Finances</h3>
+      <div class="meta">Route <code>/admin/statistiques/finances</code> · Accès : Admin, Gérant (le RH ne voit que la masse salariale)</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Argent en caisse / détenu par les employés / détenu par les prestataires / mobile money en attente / impayés</td><td>Charge la situation de trésorerie ; annulations exclues mais consultables</td><td>US-078</td><td><code>GET /api/admin/stats/finance</code></td></tr>
+        <tr><td>Dettes de Kolekta : fournisseurs, prestataires</td><td>Charge ce qui reste à payer</td><td>US-078</td><td>inclus dans la réponse</td></tr>
+        <tr><td>Masse salariale par période</td><td>Charge le total des salaires</td><td>US-079</td><td><code>GET /api/admin/stats/payroll?from=&amp;to=</code></td></tr>
+        <tr><td>Abonnements par statut et renouvellements dans les 5 jours</td><td>Charge les compteurs ; lien vers l'écran 4.12</td><td>US-080</td><td><code>GET /api/admin/stats/subscriptions</code></td></tr>
+        <tr><td>Soldes de voucher détenus et soldes abandonnés</td><td>Charge le total dû aux clients</td><td>US-080</td><td><code>GET /api/admin/stats/vouchers</code></td></tr>
+        <tr><td>Bouton « Exporter »</td><td>Fichier CSV, annulations marquées</td><td>US-097</td><td><code>GET /api/admin/stats/finance/export</code></td></tr>
+      </table></div>
+    </div>
+
+    <div class="screen">
+      <h3>Écran 9.5 — Alertes</h3>
+      <div class="meta">Route <code>/admin/alertes</code> · Accès : Admin, Gérant</div>
+      <div class="tbl-wrap"><table>
+        <tr><th>Élément</th><th>Action</th><th>Story</th><th>Endpoint</th></tr>
+        <tr><td>Liste groupée par type : retards de collecte, impayés, paiements à échéance, mobile money en attente depuis plus de 24 h, espèces détenues trop longtemps (employés et prestataires), avances non rendues, paiements en litige, fournisseurs en retard, tâches en retard, fins de pause ou d'abonnement dans 5 jours, incidents de livraison, lignes manquantes, échecs de SMS</td><td>Charge toutes les alertes actives</td><td>US-081</td><td><code>GET /api/admin/alerts</code></td></tr>
+        <tr><td>Filtre par type</td><td>Filtre la liste</td><td>US-081</td><td><code>GET /api/admin/alerts?type=</code></td></tr>
+        <tr><td>Clic sur une alerte</td><td>Ouvre directement l'élément concerné</td><td>US-081</td><td>—</td></tr>
+        <tr><td>Disparition automatique</td><td>Une alerte résolue disparaît d'elle-même</td><td>US-081</td><td>calculé côté API</td></tr>
+      </table></div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
