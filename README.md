@@ -2,6 +2,10 @@
 
 API REST de gestion pour une entreprise de distribution de produits agricoles malgaches, et son frontend Vue (une seule application : espace client sous `/`, espace équipe sous `/admin`).
 
+## Documentation
+
+Le cahier des charges, les personas, le brand kit, le backlog, la cartographie des écrans, le plan de sprints et la méthode de travail sont dans [`docs/`](docs/README.md).
+
 ## Stack
 
 | Couche | Technologie |
@@ -55,6 +59,7 @@ git show legacy-avant-kolekta:backend/src/main/java/com/kolekta/service/impl/Com
 │   ├── Dockerfile                   # build Vite puis nginx
 │   ├── nginx.conf
 │   └── src/                         # api/, stores/, router/, layouts/, views/, components/
+├── docs/                            # cahier des charges, personas, backlog, sprints (voir docs/README.md)
 ├── docker-compose.yml               # PostgreSQL + API + frontend
 ├── .env.example                     # modèle de configuration (à copier en .env)
 └── README.md
@@ -78,7 +83,7 @@ Le site est disponible sur `http://localhost:3000` (port réglable avec `FRONTEN
 
 Pour tout arrêter : `docker compose down`. Pour repartir d'une base vide : `docker compose down -v` (supprime aussi le volume de la base). C'est nécessaire si une migration a changé depuis le dernier démarrage.
 
-Le fichier `.env` n'est jamais versionné. `JWT_SECRET` est obligatoire (32 caractères minimum) : l'application refuse de démarrer sans lui. Pour en générer un : `openssl rand -base64 48`.
+Le fichier `.env` n'est jamais versionné. `JWT_SECRET` est obligatoire : l'application refuse de démarrer sans lui. Prévois 32 caractères au moins (cette longueur n'est pas encore vérifiée par le code, ticket S0-8). Pour en générer un : `openssl rand -base64 48`.
 
 ### Sans Docker
 

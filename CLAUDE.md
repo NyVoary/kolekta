@@ -19,8 +19,12 @@ L'ancien code est conservé sous le tag Git `legacy-avant-kolekta`.
   Espace client sous `/`, espace équipe sous `/admin`. Dossier `frontend/`.
 - Lancement : `docker compose up --build` (projet compose "kolekta"), configuration par variables
   d'environnement (voir `.env.example`). Profil Spring `dev` = données de démo fictives.
-- Documents : `docs/` (cahier des charges, personas, brand kit, backlog, cartographie des écrans,
-  plan de sprints, méthode).
+- Documents : `docs/` (voir `docs/README.md`) : `01-cahier-des-charges.md`, `02-personas.html`,
+  `03-brand-kit.html`, `04-backlog.html`, `05-cartographie-ecrans.html`, `06-plan-sprints.html`,
+  `methode-projet.md`.
+- Variables d'environnement (`.env.example`) : `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `DB_URL` (hors
+  Docker seulement), `DB_PORT` (5433 par défaut), `JWT_SECRET` (obligatoire), `JWT_EXPIRATION`
+  (3600000 ms), `FRONTEND_PORT` (3000). Le frontend est servi sur `localhost:3000`, l'API sur `8080`.
 
 ## Règles de travail (obligatoires)
 1. Un ticket = une branche (`feat/...`, `chore/...`) = une pull request. Commits par thème, atomiques.
@@ -67,8 +71,13 @@ L'ancien code est conservé sous le tag Git `legacy-avant-kolekta`.
   États à prévoir sur chaque écran : chargement, succès, erreur, vide.
 
 ## Avancement
-Sprints S0 à S10 : voir `docs/` (plan de sprints). S0 (socle) : dépôt nettoyé, versions à jour,
-Flyway + Docker, noyau authentification/employés/clients, squelette frontend. Reste en S0 : docs et
-CLAUDE.md, CI GitHub Actions + base de tests, socle API (Swagger, erreurs JSON cohérentes,
-revue de sécurité, 401 au lieu de 403 sans jeton, longueur du secret JWT). Mets cette section à jour
+Sprints S0 à S10 : voir `docs/06-plan-sprints.html`. S0 (socle), fusionné dans `main` : S0-1 à S0-5
+(dépôt nettoyé, package `com.kolekta`, versions à jour, Flyway + Docker, squelette frontend).
+Noyau existant : authentification, employés, clients (module « Accès » seulement ; les autres
+modules seront reconstruits). Comportement actuel de l'API : sans jeton ou sans le bon rôle → 403
+(le 401 est prévu en S0-8) ; la longueur minimale du secret JWT n'est pas vérifiée par le code ;
+il n'y a pas encore de tests backend (`src/test` absent) ni de CI.
+Reste en S0 : S0-6 docs, CLAUDE.md et README (branche `chore/s0-6-docs`), S0-7 CI GitHub Actions +
+base de tests (Testcontainers), S0-8 socle API (Swagger, erreurs JSON cohérentes, revue de sécurité,
+401 au lieu de 403 sans jeton, longueur du secret JWT, CORS pour le front). Mets cette section à jour
 à la fin de chaque ticket.
