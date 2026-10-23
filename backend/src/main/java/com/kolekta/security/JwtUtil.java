@@ -13,14 +13,22 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
+    /** HS256 exige une clé d'au moins 256 bits (32 octets) ; en dessous, l'application ne démarre pas. */
+    static final int SECRET_MIN_BYTES = 32;
 
-    @Value("${jwt.expiration:3600000}")
-    private long expirationMs;
+    private final SecretKey key;
+    private final long expirationMs;
 
-    private SecretKey key() {
-        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    public JwtUtil(@Value("${jwt.secret}") String secret,
+                   @Value("${jwt.expiration:3600000}") long expirationMs) {
+        byte[] bytes = secret.getBytes(StandardCharsets.UTF_8);
+        if (bytes.length < SECRET_MIN_BYTES) {
+            // Le message ne contient jamais le secret lui-même
+            throw new IllegalStateException("JWT_SECRET trop court : " + SECRET_MIN_BYTES
+                    + " octets minimum (voir .env.example pour en générer un)");
+        }
+        this.key = Keys.hmacShaKeyFor(bytes);
+        this.expirationMs = expirationMs;
     }
 
     public String generate(Long userId, String role, String userType) {
@@ -30,13 +38,13 @@ public class JwtUtil {
                 .claim("userType", userType)
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expirationMs))
-                .signWith(key())
+                .signWith(key)
                 .compact();
     }
 
     public Claims parse(String token) {
         return Jwts.parser()
-                .verifyWith(key())
+                .verifyWith(key)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();

@@ -13,6 +13,8 @@ import tools.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -73,11 +75,21 @@ class AuthAndSecurityTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void listeDesEmployesSansJeton() throws Exception {
-        // Aujourd'hui Spring Security répond 403 sans jeton ; ce sera 401 au ticket S0-8
-        // (alors, remplacer isForbidden() par isUnauthorized()).
+    void listeDesEmployesSansJetonRetourne401() throws Exception {
         mockMvc.perform(get("/api/employes"))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isUnauthorized())
+                .andExpect(header().string("WWW-Authenticate", "Bearer"))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.status").value(401))
+                .andExpect(jsonPath("$.instance").value("/api/employes"));
+    }
+
+    @Test
+    void listeDesEmployesAvecJetonInvalideRetourne401() throws Exception {
+        mockMvc.perform(get("/api/employes")
+                        .header("Authorization", "Bearer ceci.nest.pas-un-jeton"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON));
     }
 
     @Test
@@ -91,7 +103,21 @@ class AuthAndSecurityTest extends AbstractIntegrationTest {
     void listeDesEmployesAvecJetonCollecteurRetourne403() throws Exception {
         mockMvc.perform(get("/api/employes")
                         .header("Authorization", "Bearer " + connecter(loginCollecteur)))
-                .andExpect(status().isForbidden());
+                .andExpect(status().isForbidden())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.status").value(403));
+    }
+
+    @Test
+    void lectureDUnEmployeAvecSesRelations() throws Exception {
+        // open-in-view=false : les relations (sexe, mode de paiement) doivent être lues dans la transaction du service
+        Long id = creerEmploye(loginUnique("rh"), MDP, "rh").getEmploye().getIdEmploye();
+
+        mockMvc.perform(get("/api/employes/" + id)
+                        .header("Authorization", "Bearer " + connecter(loginAdmin)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.sexe").value("Autre"))
+                .andExpect(jsonPath("$.modePaiement").value("Espèces"));
     }
 
     @Test
