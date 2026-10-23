@@ -1,5 +1,7 @@
 # Kolekta
 
+[![CI](https://github.com/NyVoary/kolekta/actions/workflows/ci.yml/badge.svg)](https://github.com/NyVoary/kolekta/actions/workflows/ci.yml)
+
 API REST de gestion pour une entreprise de distribution de produits agricoles malgaches, et son frontend Vue (une seule application : espace client sous `/`, espace équipe sous `/admin`).
 
 ## Documentation

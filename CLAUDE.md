@@ -71,13 +71,14 @@ L'ancien code est conservé sous le tag Git `legacy-avant-kolekta`.
   États à prévoir sur chaque écran : chargement, succès, erreur, vide.
 
 ## Avancement
-Sprints S0 à S10 : voir `docs/06-plan-sprints.html`. S0 (socle), fusionné dans `main` : S0-1 à S0-5
-(dépôt nettoyé, package `com.kolekta`, versions à jour, Flyway + Docker, squelette frontend).
+Sprints S0 à S10 : voir `docs/06-plan-sprints.html`. S0 (socle), fusionné dans `main` : S0-1 à S0-6
+(dépôt nettoyé, package `com.kolekta`, versions à jour, Flyway + Docker, squelette frontend, docs).
 Noyau existant : authentification, employés, clients (module « Accès » seulement ; les autres
 modules seront reconstruits). Comportement actuel de l'API : sans jeton ou sans le bon rôle → 403
-(le 401 est prévu en S0-8) ; la longueur minimale du secret JWT n'est pas vérifiée par le code ;
-il n'y a pas encore de tests backend (`src/test` absent) ni de CI.
-Reste en S0 : S0-6 docs, CLAUDE.md et README (branche `chore/s0-6-docs`), S0-7 CI GitHub Actions +
-base de tests (Testcontainers), S0-8 socle API (Swagger, erreurs JSON cohérentes, revue de sécurité,
-401 au lieu de 403 sans jeton, longueur du secret JWT, CORS pour le front). Mets cette section à jour
-à la fin de chaque ticket.
+(le 401 est prévu en S0-8) ; la longueur minimale du secret JWT n'est pas vérifiée par le code.
+Tests backend : `backend/src/test` (classe de base `AbstractIntegrationTest` : PostgreSQL 18 via
+Testcontainers, Docker requis ; tests nommés `*Test`, lancés par `./mvnw verify`). CI :
+`.github/workflows/ci.yml` (jobs backend et frontend) ; Dependabot hebdomadaire (S0-7, en cours de PR).
+Reste en S0 : S0-8 socle API (Swagger, erreurs JSON cohérentes, revue de sécurité, 401 au lieu de 403
+sans jeton, longueur du secret JWT, CORS pour le front). Mets cette section à jour à la fin de chaque
+ticket.
