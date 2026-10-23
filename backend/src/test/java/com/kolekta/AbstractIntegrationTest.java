@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.TestPropertySource;
 import org.testcontainers.postgresql.PostgreSQLContainer;
 
 import java.math.BigDecimal;
@@ -26,12 +27,10 @@ import java.util.UUID;
  * leurs données avec des noms uniques et ne supposent jamais une base vide.
  * Aucune donnée du profil dev n'est chargée (seul le profil par défaut est actif).
  */
-@SpringBootTest(properties = {
-        // Faux secret réservé aux tests (au moins 32 caractères)
-        "jwt.secret=secret-de-test-uniquement-pas-un-vrai-secret-0123456789",
-        // Évite que le placeholder ${DB_PASSWORD} reste sans valeur ; le conteneur fournit les vraies infos
-        "spring.datasource.password=inutilise"
-})
+@SpringBootTest
+// Propriétés de test centralisées (voir kolekta-test.properties). Une classe fille peut ajouter son propre
+// @SpringBootTest(properties = ...) sans rien perdre : @TestPropertySource s'additionne, il ne se remplace pas.
+@TestPropertySource(locations = "classpath:kolekta-test.properties")
 public abstract class AbstractIntegrationTest {
 
     @ServiceConnection
