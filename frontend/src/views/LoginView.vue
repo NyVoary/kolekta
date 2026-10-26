@@ -5,7 +5,7 @@ import { RouterLink, useRoute, useRouter } from 'vue-router'
 
 import AppLogo from '@/components/AppLogo.vue'
 import { destinationAfterLogin } from '@/router/roles'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore, type Role } from '@/stores/auth'
 
 type Erreur = 'invalides' | 'desactive' | 'reseau' | 'autre'
 
@@ -42,9 +42,9 @@ async function seConnecter() {
   if (chargement.value) return
   erreur.value = null
   chargement.value = true
+  let role: Role | null = null
   try {
-    const role = await auth.login(identifiant.value.trim(), motDePasse.value)
-    await router.push(destinationAfterLogin(role, route.query.redirect, router))
+    role = await auth.login(identifiant.value.trim(), motDePasse.value)
   } catch (e) {
     const donnees = axios.isAxiosError(e)
       ? (e.response?.data as { code?: string; detail?: string } | undefined)
@@ -64,6 +64,12 @@ async function seConnecter() {
     }
   } finally {
     chargement.value = false
+  }
+
+  if (role) {
+    // La connexion a réussi : un échec d'ouverture de la page n'est PAS une erreur de connexion.
+    // (Une page introuvable après une mise à jour du site est gérée par le routeur, voir chunkError.ts.)
+    await router.push(destinationAfterLogin(role, route.query.redirect, router)).catch(() => {})
   }
 }
 </script>

@@ -5,6 +5,7 @@ import { createPinia } from 'pinia'
 
 import App from './App.vue'
 import router from './router'
+import { installerRechargementSurErreurDeChargement } from './router/chunkError'
 import { useAuthStore } from './stores/auth'
 
 async function start() {
@@ -15,6 +16,7 @@ async function start() {
   // On évite ainsi de montrer un instant un écran protégé avec un jeton expiré ou révoqué.
   const sessionValide = await useAuthStore().restoreSession()
 
+  installerRechargementSurErreurDeChargement(router)
   app.use(router)
   if (!sessionValide) {
     await router.replace({ name: 'connexion', query: { expiree: '1' } })
