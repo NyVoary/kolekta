@@ -182,6 +182,22 @@ describe('page de connexion', () => {
     await vi.waitFor(() => expect(router.currentRoute.value.fullPath).toBe('/admin/tournee'))
   })
 
+  it.each([
+    ['collecteur', 'admin-tournee'],
+    ['rh', 'admin-employes'],
+  ])(
+    'un %s qui se connecte après avoir demandé /admin arrive sur %s, pas sur le tableau de bord',
+    async (role, pageAttendue) => {
+      // Cas réel : on ouvre /admin sans être connecté -> /connexion?redirect=/admin -> on se connecte
+      login.mockResolvedValue(reponseLogin(role))
+      const { wrapper, router } = await monter({ redirect: '/admin' })
+
+      await remplirEtEnvoyer(wrapper)
+
+      await vi.waitFor(() => expect(router.currentRoute.value.name).toBe(pageAttendue))
+    },
+  )
+
   it('ignore une page voulue interdite ou externe et va à la page de son rôle', async () => {
     login.mockResolvedValue(reponseLogin('collecteur'))
     const interdite = await monter({ redirect: '/admin/employes' })

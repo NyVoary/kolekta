@@ -69,6 +69,43 @@ describe('garde de navigation', () => {
     },
   )
 
+  it.each([
+    ['admin', 'admin-tableau-de-bord'],
+    ['gerant', 'admin-tableau-de-bord'],
+    ['rh', 'admin-employes'],
+    ['collecteur', 'admin-tournee'],
+  ] as const)(
+    'un %s qui tape /admin à la main arrive sur %s (le tableau de bord est réservé au Gérant et à l’Admin)',
+    async (role, page) => {
+      connectAs(role)
+      const router = createAppRouter(createMemoryHistory())
+      await router.push('/admin')
+
+      expect(router.currentRoute.value.name).toBe(page)
+    },
+  )
+
+  it('renvoie un client qui tape /admin vers « Accès refusé »', async () => {
+    connectAs('client')
+    const router = createAppRouter(createMemoryHistory())
+    await router.push('/admin')
+
+    expect(router.currentRoute.value.name).toBe('acces-refuse')
+  })
+
+  it('un collecteur ne peut pas ouvrir la page des employés, un RH pas la tournée', async () => {
+    connectAs('collecteur')
+    const router = createAppRouter(createMemoryHistory())
+    await router.push('/admin/employes')
+    expect(router.currentRoute.value.name).toBe('acces-refuse')
+
+    setActivePinia(createPinia())
+    connectAs('rh')
+    const routerRh = createAppRouter(createMemoryHistory())
+    await routerRh.push('/admin/tournee')
+    expect(routerRh.currentRoute.value.name).toBe('acces-refuse')
+  })
+
   it('réserve la page de la tournée au collecteur et celle des employés au RH', async () => {
     connectAs('rh')
     const router = createAppRouter(createMemoryHistory())
