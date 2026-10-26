@@ -23,7 +23,7 @@ async function seDeconnecter() {
 <template>
   <div class="flex min-h-screen flex-col">
     <header class="border-b border-foret/20">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-4">
+      <div class="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
         <div class="flex items-center gap-4">
           <RouterLink to="/admin" aria-label="Kolekta, tableau de bord">
             <AppLogo />
@@ -47,7 +47,7 @@ async function seDeconnecter() {
       </div>
     </header>
 
-    <main class="mx-auto w-full max-w-6xl flex-1 px-4 py-10">
+    <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
       <RouterView />
     </main>
   </div>
