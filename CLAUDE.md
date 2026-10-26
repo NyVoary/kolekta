@@ -72,10 +72,19 @@ L'ancien code est conservé sous le tag Git `legacy-avant-kolekta`.
   États à prévoir sur chaque écran : chargement, succès, erreur, vide.
 
 ## Avancement
-Sprints S0 à S10 : voir `docs/06-plan-sprints.html`. S0 (socle) est terminé : S0-1 à S0-7 sont
-fusionnés dans `main`, S0-8 est en cours de PR (branche `feat/s0-8-api-foundation`). Prochain : S1.
+Sprints S0 à S10 : voir `docs/06-plan-sprints.html`. S0 (socle) est terminé et fusionné dans `main`.
+S1-1 (connexion, déconnexion, redirection par rôle : US-001, US-003, US-082) est en cours de PR
+(branche `feat/s1-1-login-logout`). Prochain : la suite de S1.
 Noyau existant : authentification, employés, clients (module « Accès » seulement ; les autres
 modules seront reconstruits).
+Connexion (S1-1) : un seul `POST /api/auth/login` (nom d'utilisateur pour un employé, e-mail pour un
+client ; le téléphone n'est pas géré car non unique en base). Réponse : jeton, rôle, identité. Identifiants
+invalides = 401 générique ; compte désactivé = 403 avec `code=COMPTE_DESACTIVE` (message « contactez
+Kolekta » pour un client). `GET /api/auth/me` (refuse aussi un compte devenu inactif) et
+`POST /api/auth/logout` : chaque jeton a un `jti` ; la déconnexion l'écrit dans `jetons_revoques` (V3) et
+`JwtAuthFilter` refuse (401) un jeton révoqué ; nettoyage horaire des lignes expirées. Frontend : page
+`/connexion`, redirection admin/gerant -> `/admin`, rh -> `/admin/employes`, collecteur ->
+`/admin/tournee`, client -> `/` ; session restaurée au démarrage par `/me` (401 -> `/connexion?expiree=1`).
 Socle API (S0-8) : erreurs au format RFC 9457 (`ProblemDetail`) via `GlobalExceptionHandler` et
 `RestSecurityErrorHandlers` (jamais de trace ni de message interne côté client) ; 401 sans jeton ou
 avec jeton invalide, 403 si le rôle ne suffit pas ; `JWT_SECRET` de 32 octets minimum (sinon l'appli
