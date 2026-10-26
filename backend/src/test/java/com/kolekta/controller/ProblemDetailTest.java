@@ -27,7 +27,7 @@ class ProblemDetailTest extends AbstractIntegrationTest {
     private String jetonAdmin() throws Exception {
         String login = loginUnique("admin");
         creerEmploye(login, MDP, "admin");
-        String reponse = mockMvc.perform(post("/api/auth/employe/login")
+        String reponse = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"login\":\"" + login + "\",\"motDePasse\":\"" + MDP + "\"}"))
                 .andReturn().getResponse().getContentAsString();
@@ -70,7 +70,7 @@ class ProblemDetailTest extends AbstractIntegrationTest {
 
     @Test
     void jsonIllisibleRetourne400SansDetailInterne() throws Exception {
-        mockMvc.perform(post("/api/auth/employe/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{pas du json"))
                 .andExpect(status().isBadRequest())
@@ -80,7 +80,7 @@ class ProblemDetailTest extends AbstractIntegrationTest {
 
     @Test
     void identifiantsInvalidesRetournent401() throws Exception {
-        mockMvc.perform(post("/api/auth/employe/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"login\":\"inconnu\",\"motDePasse\":\"x\"}"))
                 .andExpect(status().isUnauthorized())

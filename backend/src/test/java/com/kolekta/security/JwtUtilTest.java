@@ -50,4 +50,23 @@ class JwtUtilTest {
 
         assertThat(jwt.isValid(jwt.generate(5L, "admin", "EMPLOYE"))).isFalse();
     }
+
+    @Test
+    void chaqueJetonAUnJtiUniqueLisible() {
+        JwtUtil jwt = new JwtUtil("x".repeat(32), 3600000);
+
+        String premier = jwt.generate(5L, "admin", "EMPLOYE");
+        String second = jwt.generate(5L, "admin", "EMPLOYE");
+
+        assertThat(jwt.getJti(premier)).isNotBlank().isNotEqualTo(jwt.getJti(second));
+    }
+
+    @Test
+    void ladateDExpirationEstLisible() {
+        JwtUtil jwt = new JwtUtil("x".repeat(32), 3600000);
+
+        assertThat(jwt.getExpiration(jwt.generate(5L, "admin", "EMPLOYE")))
+                .isAfter(java.time.Instant.now().plusSeconds(3000))
+                .isBefore(java.time.Instant.now().plusSeconds(3700));
+    }
 }

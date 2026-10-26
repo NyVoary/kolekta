@@ -50,7 +50,7 @@ class CorsAndHeadersTest extends AbstractIntegrationTest {
 
     @Test
     void enTetesDeSecuriteSontPresents() throws Exception {
-        mockMvc.perform(post("/api/auth/employe/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"login\":\"x\",\"motDePasse\":\"y\"}"))
                 .andExpect(header().string("X-Content-Type-Options", "nosniff"))
