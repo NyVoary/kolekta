@@ -49,6 +49,24 @@ class CorsAndHeadersTest extends AbstractIntegrationTest {
     }
 
     @Test
+    void requeteDuMemeSiteViaLeProxyN_EstPasUneRequeteCors() throws Exception {
+        // Le navigateur envoie Origin: http://localhost:3000 ; nginx doit transmettre Host: localhost:3000
+        // (avec le port). Si le Host n'a pas le port, Spring croit à un autre site et répond 403.
+        String corps = "{\"login\":\"inconnu\",\"motDePasse\":\"x\"}";
+
+        mockMvc.perform(post("/api/auth/login")
+                        .with(requete -> {
+                            requete.setServerName("localhost");
+                            requete.setServerPort(3000);
+                            return requete;
+                        })
+                        .header("Origin", "http://localhost:3000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(corps))
+                .andExpect(status().isUnauthorized()); // 401 identifiants invalides, et non 403 CORS
+    }
+
+    @Test
     void enTetesDeSecuriteSontPresents() throws Exception {
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)

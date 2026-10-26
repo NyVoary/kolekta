@@ -46,17 +46,19 @@ async function seConnecter() {
     const role = await auth.login(identifiant.value.trim(), motDePasse.value)
     await router.push(destinationAfterLogin(role, route.query.redirect, router))
   } catch (e) {
+    const donnees = axios.isAxiosError(e)
+      ? (e.response?.data as { code?: string; detail?: string } | undefined)
+      : undefined
     if (!axios.isAxiosError(e)) {
       erreur.value = 'autre'
     } else if (!e.response) {
       erreur.value = 'reseau'
     } else if (e.response.status === 401) {
       erreur.value = 'invalides'
-    } else if (e.response.status === 403) {
-      erreur.value = 'desactive'
+    } else if (e.response.status === 403 && donnees?.code === 'COMPTE_DESACTIVE') {
       // Le serveur fournit le message adapté : employé (« accès refusé ») ou client (« contactez Kolekta »)
-      const detail = (e.response.data as { detail?: string } | undefined)?.detail
-      messageDesactive.value = detail ?? 'Votre compte est désactivé. Contactez Kolekta.'
+      erreur.value = 'desactive'
+      messageDesactive.value = donnees.detail ?? 'Votre compte est désactivé. Contactez Kolekta.'
     } else {
       erreur.value = 'autre'
     }
