@@ -1,5 +1,22 @@
 package com.kolekta.service;
 
+import java.time.LocalDate;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import org.mockito.Mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import com.kolekta.dto.auth.LoginRequest;
 import com.kolekta.dto.auth.LoginResponse;
 import com.kolekta.entity.Acces;
@@ -10,23 +27,6 @@ import com.kolekta.repository.AccesRepository;
 import com.kolekta.repository.ClientsRepository;
 import com.kolekta.security.JwtUtil;
 import com.kolekta.service.impl.AuthServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.time.LocalDate;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /** Test unitaire : aucune base, aucun contexte Spring, tout est simulé avec Mockito. */
 @ExtendWith(MockitoExtension.class)
