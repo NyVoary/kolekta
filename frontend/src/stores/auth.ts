@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 import { fetchMe, login as apiLogin, logout as apiLogout } from '@/api/auth'
+import { roleLabel } from '@/constants/roles'
 
 export type Role = 'admin' | 'gerant' | 'rh' | 'collecteur' | 'client'
 
@@ -75,6 +76,9 @@ export const useAuthStore = defineStore('auth', () => {
     if (!u || (!u.nom && !u.prenoms)) return null
     return [u.prenoms, u.nom].filter(Boolean).join(' ')
   })
+
+  /** Libellé lisible du rôle (« Administrateur », « Ressources humaines »…), ou null si non connecté. */
+  const roleLibelle = computed(() => (role.value ? roleLabel(role.value) : null))
 
   function setSession(session: Session): void {
     token.value = session.token
@@ -151,6 +155,7 @@ export const useAuthStore = defineStore('auth', () => {
     user,
     isAuthenticated,
     fullName,
+    roleLibelle,
     setSession,
     clear,
     login,
