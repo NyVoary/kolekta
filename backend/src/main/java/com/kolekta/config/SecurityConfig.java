@@ -51,7 +51,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 // Documentation : n'existe que si elle est activée (profil dev), sinon ces routes répondent 404
                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .requestMatchers("/api/auth/**").permitAll()
+                // Seule la connexion est publique ; /api/auth/me et /logout exigent un jeton valide
+                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/api/clients/inscription").permitAll()
                 .requestMatchers("/api/employes/**").hasAnyRole("ADMIN", "GERANT", "RH")
                 .requestMatchers("/api/clients/**").hasAnyRole("ADMIN", "GERANT")

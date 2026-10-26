@@ -1,5 +1,6 @@
 package com.kolekta.security;
 
+import com.kolekta.service.JetonRevoqueService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.List;
 public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final JetonRevoqueService jetonRevoqueService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -27,7 +29,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String header = request.getHeader("Authorization");
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
-            if (jwtUtil.isValid(token)) {
+            // Un jeton révoqué (déconnexion) n'authentifie plus : la requête sera refusée en 401
+            if (jwtUtil.isValid(token) && !jetonRevoqueService.estRevoque(jwtUtil.getJti(token))) {
                 Long userId   = jwtUtil.getUserId(token);
                 String role   = jwtUtil.getRole(token);
                 String type   = jwtUtil.getUserType(token);

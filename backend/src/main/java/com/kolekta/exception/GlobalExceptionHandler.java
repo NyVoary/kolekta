@@ -47,6 +47,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return build(HttpStatus.UNAUTHORIZED, ex.getMessage(), req);
     }
 
+    /** Compte désactivé : 403 avec un code stable que le frontend utilise pour choisir son message. */
+    @ExceptionHandler(CompteDesactiveException.class)
+    public ResponseEntity<ProblemDetail> handleCompteDesactive(CompteDesactiveException ex, HttpServletRequest req) {
+        ResponseEntity<ProblemDetail> reponse = build(HttpStatus.FORBIDDEN, ex.getMessage(), req);
+        reponse.getBody().setProperty("code", "COMPTE_DESACTIVE");
+        return reponse;
+    }
+
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ProblemDetail> handleForbidden(AccessDeniedException ex, HttpServletRequest req) {
         return build(HttpStatus.FORBIDDEN, "Accès refusé", req);

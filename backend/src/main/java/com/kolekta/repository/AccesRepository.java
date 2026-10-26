@@ -7,5 +7,6 @@ import java.util.Optional;
 
 public interface AccesRepository extends JpaRepository<Acces, Long> {
     Optional<Acces> findByNomUtilisateur(String nomUtilisateur);
+    Optional<Acces> findFirstByEmploye_IdEmploye(Long idEmploye);
     boolean existsByNomUtilisateur(String nomUtilisateur);
 }
