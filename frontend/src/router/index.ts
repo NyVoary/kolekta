@@ -11,6 +11,16 @@ export const routes: RouteRecordRaw[] = [
       { path: '', name: 'accueil', component: () => import('@/views/HomeView.vue') },
       { path: 'connexion', name: 'connexion', component: () => import('@/views/LoginView.vue') },
       {
+        path: 'mot-de-passe-oublie',
+        name: 'mot-de-passe-oublie',
+        component: () => import('@/views/ForgotPasswordView.vue'),
+      },
+      {
+        path: 'inscription',
+        name: 'inscription',
+        component: () => import('@/views/RegisterView.vue'),
+      },
+      {
         path: 'acces-refuse',
         name: 'acces-refuse',
         component: () => import('@/views/ForbiddenView.vue'),
@@ -27,6 +37,20 @@ export const routes: RouteRecordRaw[] = [
         path: '',
         name: 'admin-tableau-de-bord',
         component: () => import('@/views/AdminDashboardView.vue'),
+      },
+      {
+        // Page d'arrivée du rôle RH (US-001)
+        path: 'employes',
+        name: 'admin-employes',
+        component: () => import('@/views/AdminEmployesView.vue'),
+        meta: { roles: ['admin', 'gerant', 'rh'] },
+      },
+      {
+        // Page d'arrivée du rôle collecteur (US-001)
+        path: 'tournee',
+        name: 'admin-tournee',
+        component: () => import('@/views/AdminTourneeView.vue'),
+        meta: { roles: ['collecteur'] },
       },
     ],
   },

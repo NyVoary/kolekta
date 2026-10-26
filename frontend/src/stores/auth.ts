@@ -1,11 +1,16 @@
+import axios from 'axios'
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
+
+import { fetchMe, login as apiLogin, logout as apiLogout } from '@/api/auth'
 
 export type Role = 'admin' | 'gerant' | 'rh' | 'collecteur' | 'client'
 
 export interface AuthUser {
   id: number
   type: 'EMPLOYE' | 'CLIENT'
+  nom?: string
+  prenoms?: string
 }
 
 export interface Session {
@@ -64,6 +69,13 @@ export const useAuthStore = defineStore('auth', () => {
 
   const isAuthenticated = computed(() => token.value !== null)
 
+  /** « Prénoms Nom », ou null si l'identité n'est pas connue. */
+  const fullName = computed(() => {
+    const u = user.value
+    if (!u || (!u.nom && !u.prenoms)) return null
+    return [u.prenoms, u.nom].filter(Boolean).join(' ')
+  })
+
   function setSession(session: Session): void {
     token.value = session.token
     role.value = session.role
@@ -78,5 +90,71 @@ export const useAuthStore = defineStore('auth', () => {
     writeSession(null)
   }
 
-  return { token, role, user, isAuthenticated, setSession, clear }
+  /** Connexion : enregistre la session et retourne le rôle (pour choisir la page d'arrivée). */
+  async function login(identifiant: string, motDePasse: string): Promise<Role> {
+    const reponse = await apiLogin({ login: identifiant, motDePasse })
+    const session: Session = {
+      token: reponse.token,
+      role: normalizeRole(reponse.role),
+      user: {
+        id: reponse.userId,
+        type: reponse.userType,
+        nom: reponse.nom,
+        prenoms: reponse.prenoms,
+      },
+    }
+    setSession(session)
+    return session.role
+  }
+
+  /**
+   * Déconnexion : demande au serveur de révoquer le jeton, puis vide la session.
+   * La session locale est vidée même si le serveur est injoignable : la personne doit pouvoir partir.
+   */
+  async function logout(): Promise<void> {
+    try {
+      if (token.value) await apiLogout()
+    } catch {
+      // jeton déjà refusé ou réseau coupé : on se déconnecte quand même côté navigateur
+    } finally {
+      clear()
+    }
+  }
+
+  /**
+   * Au chargement de la page : vérifie auprès du serveur que le jeton enregistré est encore valable
+   * et met à jour l'identité. Retourne false seulement si le serveur refuse le jeton (401) ;
+   * une panne réseau garde la session (le collecteur travaille parfois hors-ligne).
+   */
+  async function restoreSession(): Promise<boolean> {
+    if (!token.value) return true
+    try {
+      const me = await fetchMe()
+      setSession({
+        token: token.value,
+        role: normalizeRole(me.role),
+        user: { id: me.userId, type: me.userType, nom: me.nom, prenoms: me.prenoms },
+      })
+      return true
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
+        clear()
+        return false
+      }
+      return true
+    }
+  }
+
+  return {
+    token,
+    role,
+    user,
+    isAuthenticated,
+    fullName,
+    setSession,
+    clear,
+    login,
+    logout,
+    restoreSession,
+  }
 })

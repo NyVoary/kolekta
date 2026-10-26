@@ -1,15 +1,22 @@
 <script setup lang="ts">
-import { RouterLink, RouterView, useRouter } from 'vue-router'
+import { ref } from 'vue'
+import { RouterLink, RouterView } from 'vue-router'
 
 import AppLogo from '@/components/AppLogo.vue'
+import { useLogout } from '@/composables/useLogout'
 import { useAuthStore } from '@/stores/auth'
 
 const auth = useAuthStore()
-const router = useRouter()
+const logout = useLogout()
+const enCours = ref(false)
 
-async function logout() {
-  auth.clear()
-  await router.push({ name: 'connexion' })
+async function seDeconnecter() {
+  enCours.value = true
+  try {
+    await logout()
+  } finally {
+    enCours.value = false
+  }
 }
 </script>
 
@@ -26,11 +33,13 @@ async function logout() {
           </span>
         </div>
         <div class="flex items-center gap-4 text-sm">
+          <span v-if="auth.fullName" class="text-encre">{{ auth.fullName }}</span>
           <span v-if="auth.role" class="text-gris">Rôle : {{ auth.role }}</span>
           <button
             type="button"
-            class="rounded bg-vert px-3 py-1.5 font-semibold text-white hover:bg-foret"
-            @click="logout"
+            class="rounded bg-vert px-3 py-1.5 font-semibold text-white hover:bg-foret disabled:cursor-not-allowed disabled:opacity-60"
+            :disabled="enCours"
+            @click="seDeconnecter"
           >
             Se déconnecter
           </button>
