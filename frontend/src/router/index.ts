@@ -37,6 +37,8 @@ export const routes: RouteRecordRaw[] = [
         path: '',
         name: 'admin-tableau-de-bord',
         component: () => import('@/views/AdminDashboardView.vue'),
+        // Tableau de bord du Gérant : le RH et le collecteur n'y ont pas accès, on les renvoie chez eux
+        meta: { roles: ['admin', 'gerant'], versAccueilDuRole: true },
       },
       {
         // Page d'arrivée du rôle RH (US-001)
