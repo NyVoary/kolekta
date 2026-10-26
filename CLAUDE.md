@@ -39,6 +39,8 @@ L'ancien code est conservé sous le tag Git `legacy-avant-kolekta`.
 8. Pas de dépendance ajoutée sans raison claire. Vérifie les versions sur les sources officielles.
 9. Ne touche pas à ce qui n'est pas dans le ticket. Si tu découvres un manque, signale-le.
 10. Un écran ou un bouton doit descendre d'une user story (voir `docs/`) ; sinon signale-le.
+11. Tout nouvel endpoint doit être déclaré dans `SecurityConfig` avec ses rôles, et testé en 200 et en 403.
+    Sinon il est fermé par défaut (`denyAll`), même pour l'Admin ; `RouteDeclarationsTest` signale un oubli.
 
 ## Décisions métier verrouillées
 - Rôles : Admin, Gérant, RH, Collecteur (employés) + client (B2B ou particulier). Contrôle côté API
@@ -73,8 +75,10 @@ L'ancien code est conservé sous le tag Git `legacy-avant-kolekta`.
 
 ## Avancement
 Sprints S0 à S10 : voir `docs/06-plan-sprints.html`. S0 (socle) est terminé et fusionné dans `main`.
-S1-1 (connexion, déconnexion, redirection par rôle : US-001, US-003, US-082) est en cours de PR
-(branche `feat/s1-1-login-logout`). Prochain : la suite de S1.
+S1-1 (connexion, déconnexion, redirection par rôle : US-001, US-003, US-082) est terminé et fusionné.
+Ticket `chore/security-deny-by-default` en cours de PR : `SecurityConfig` liste chaque route avec ses rôles
+et se termine par `anyRequest().denyAll()` (un endpoint oublié est fermé, 403 ; Swagger n'est ouvert que
+si `springdoc.*.enabled=true`, donc en profil dev). Prochain : la suite de S1.
 Noyau existant : authentification, employés, clients (module « Accès » seulement ; les autres
 modules seront reconstruits).
 Connexion (S1-1) : un seul `POST /api/auth/login` (nom d'utilisateur pour un employé, e-mail pour un

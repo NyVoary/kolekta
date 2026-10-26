@@ -33,7 +33,7 @@ Le projet repart d'un socle volontairement réduit. Les autres modules (produits
 | Employés, accès et rôles | `/api/employes/**` | admin, gerant, rh |
 | Clients | `POST /api/clients/inscription` | public |
 | Clients | autres routes `/api/clients/**` | admin, gerant |
-| Tout le reste | | jeton valide |
+| Tout le reste | | fermé (403), même pour l'Admin : un endpoint doit être déclaré dans `SecurityConfig` |
 
 Rôles des employés : `admin`, `gerant`, `rh`, `collecteur`. Sans jeton (ou avec un jeton invalide) l'API répond 401 ; avec un jeton mais sans le bon rôle, 403. Toutes les erreurs ont le même format JSON (RFC 9457, `application/problem+json`) : `status`, `title`, `detail`, `instance`, et pour une validation la liste `errors` des champs fautifs.
 
