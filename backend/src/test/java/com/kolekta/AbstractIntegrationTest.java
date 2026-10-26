@@ -1,8 +1,10 @@
 package com.kolekta;
 
 import com.kolekta.entity.Acces;
+import com.kolekta.entity.Clients;
 import com.kolekta.entity.Employes;
 import com.kolekta.repository.AccesRepository;
+import com.kolekta.repository.ClientsRepository;
 import com.kolekta.repository.EmployesRepository;
 import com.kolekta.repository.ModePaiementRepository;
 import com.kolekta.repository.RolesRepository;
@@ -42,6 +44,7 @@ public abstract class AbstractIntegrationTest {
 
     @Autowired protected EmployesRepository employesRepository;
     @Autowired protected AccesRepository accesRepository;
+    @Autowired protected ClientsRepository clientsRepository;
     @Autowired protected RolesRepository rolesRepository;
     @Autowired protected SexeRepository sexeRepository;
     @Autowired protected ModePaiementRepository modePaiementRepository;
@@ -49,12 +52,18 @@ public abstract class AbstractIntegrationTest {
 
     /** Crée un employé actif avec un accès (rôle : admin, gerant, rh ou collecteur). Retourne l'accès. */
     protected Acces creerEmploye(String nomUtilisateur, String motDePasse, String role) {
+        return creerEmploye(nomUtilisateur, motDePasse, role, null);
+    }
+
+    /** Idem, avec une date de fin d'embauche (passée ou aujourd'hui = employé désactivé). */
+    protected Acces creerEmploye(String nomUtilisateur, String motDePasse, String role, LocalDate dateFinEmbauche) {
         Employes employe = new Employes();
         employe.setNom("Test");
         employe.setPrenoms("Employe");
         employe.setDtn(LocalDate.of(1990, 1, 1));
         employe.setSexe(sexeRepository.findById("A").orElseThrow());
         employe.setDateEmbauche(LocalDate.of(2020, 1, 1));
+        employe.setDateFinEmbauche(dateFinEmbauche);
         employe.setSalaire(new BigDecimal("1000.00"));
         employe.setModePaiement(modePaiementRepository.findByLibelleIgnoreCase("Espèces").orElseThrow());
         employe = employesRepository.save(employe);
@@ -65,6 +74,21 @@ public abstract class AbstractIntegrationTest {
         acces.setMotDePasse(passwordEncoder.encode(motDePasse));
         acces.setRole(rolesRepository.findByLibelle(role).orElseThrow());
         return accesRepository.save(acces);
+    }
+
+    /** Crée un client (actif ou désactivé) avec ce mot de passe. L'e-mail doit être unique. */
+    protected Clients creerClient(String email, String motDePasse, boolean actif) {
+        Clients client = new Clients();
+        client.setNom("Client");
+        client.setPrenoms("Test");
+        client.setDtn(LocalDate.of(1995, 5, 5));
+        client.setEmail(email);
+        client.setTelephone("034-" + UUID.randomUUID().toString().substring(0, 12));
+        client.setAdresse("Antsirabe");
+        client.setSexe(sexeRepository.findById("F").orElseThrow());
+        client.setMdp(passwordEncoder.encode(motDePasse));
+        client.setEstActif(actif);
+        return clientsRepository.save(client);
     }
 
     /** Nom d'utilisateur unique : la base est partagée entre les tests. */

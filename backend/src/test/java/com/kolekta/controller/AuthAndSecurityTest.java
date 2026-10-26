@@ -46,7 +46,7 @@ class AuthAndSecurityTest extends AbstractIntegrationTest {
     }
 
     private String connecter(String login) throws Exception {
-        MvcResult res = mockMvc.perform(post("/api/auth/employe/login")
+        MvcResult res = mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json(login, MDP)))
                 .andExpect(status().isOk())
@@ -57,7 +57,7 @@ class AuthAndSecurityTest extends AbstractIntegrationTest {
 
     @Test
     void connexionReussieRetourneUnJeton() throws Exception {
-        mockMvc.perform(post("/api/auth/employe/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json(loginAdmin, MDP)))
                 .andExpect(status().isOk())
@@ -68,7 +68,7 @@ class AuthAndSecurityTest extends AbstractIntegrationTest {
 
     @Test
     void mauvaisMotDePasseRetourne401() throws Exception {
-        mockMvc.perform(post("/api/auth/employe/login")
+        mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json(loginAdmin, "mauvais-mot-de-passe")))
                 .andExpect(status().isUnauthorized());
