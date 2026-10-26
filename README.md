@@ -28,7 +28,8 @@ Le projet repart d'un socle volontairement réduit. Les autres modules (produits
 
 | Module | Contenu | Accès |
 | --- | --- | --- |
-| Authentification | `POST /api/auth/employe/login`, `POST /api/auth/client/login` | public |
+| Connexion | `POST /api/auth/login` (nom d'utilisateur pour un employé, e-mail pour un client) | public |
+| Session | `GET /api/auth/me`, `POST /api/auth/logout` | jeton valide |
 | Employés, accès et rôles | `/api/employes/**` | admin, gerant, rh |
 | Clients | `POST /api/clients/inscription` | public |
 | Clients | autres routes `/api/clients/**` | admin, gerant |
@@ -123,27 +124,33 @@ Le client B2B ne se distingue du particulier que par son nom (« SOCIETE EXEMPLE
 Exemples :
 
 ```bash
-# Connexion employé : la réponse contient un "token"
-curl -X POST http://localhost:8080/api/auth/employe/login \
+# Connexion employé : la réponse contient un "token", le rôle et l'identité
+curl -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"login":"admin.demo","motDePasse":"Admin-Demo-2026"}'
 
-# Connexion client
-curl -X POST http://localhost:8080/api/auth/client/login \
+# Connexion client (même endpoint, avec l'e-mail)
+curl -X POST http://localhost:8080/api/auth/login \
   -H "Content-Type: application/json" \
   -d '{"login":"alice.demo@example.com","motDePasse":"Client-Demo-2026"}'
 
 # Appel protégé : sans jeton -> 401, avec le jeton d'un admin/gerant/rh -> 200
 curl http://localhost:8080/api/employes -H "Authorization: Bearer <token>"
+
+# Qui suis-je ? (identité et rôle de la personne connectée)
+curl http://localhost:8080/api/auth/me -H "Authorization: Bearer <token>"
+
+# Déconnexion : le jeton est révoqué, il sera refusé (401) même avant son expiration
+curl -X POST http://localhost:8080/api/auth/logout -H "Authorization: Bearer <token>"
 ```
 
 ## Documentation de l'API (Swagger)
 
-Avec le profil `dev` (activé par Docker Compose), Swagger UI est disponible sur `http://localhost:8080/swagger-ui.html` et la description OpenAPI sur `/v3/api-docs`. Pour tester un endpoint protégé : appelle d'abord `POST /api/auth/employe/login` depuis Swagger, copie le `token` de la réponse, clique sur **Authorize** (en haut à droite) et colle-le. Sans le profil `dev` (production), la documentation est désactivée.
+Avec le profil `dev` (activé par Docker Compose), Swagger UI est disponible sur `http://localhost:8080/swagger-ui.html` et la description OpenAPI sur `/v3/api-docs`. Pour tester un endpoint protégé : appelle d'abord `POST /api/auth/login` depuis Swagger, copie le `token` de la réponse, clique sur **Authorize** (en haut à droite) et colle-le. Sans le profil `dev` (production), la documentation est désactivée.
 
 ## Frontend
 
-Une seule application Vue 3 (Composition API, `<script setup lang="ts">`) : l'espace client est servi sous `/`, l'espace équipe sous `/admin`. Pour l'instant ce n'est qu'un squelette : pages provisoires, layouts, routeur avec garde de navigation par rôle, store d'authentification et client HTTP.
+Une seule application Vue 3 (Composition API, `<script setup lang="ts">`) : l'espace client est servi sous `/`, l'espace équipe sous `/admin`. Pour l'instant : page de connexion (`/connexion`) avec redirection selon le rôle, déconnexion, restauration de la session au rechargement (`GET /api/auth/me`), routeur avec garde de navigation par rôle, store d'authentification et client HTTP. Les autres pages sont provisoires.
 
 Stack : Vite, TypeScript, Vue Router, Pinia, Tailwind CSS 4 (charte graphique dans `src/assets/main.css`), Axios, Vitest + Vue Test Utils, ESLint + Prettier. Prérequis : Node 22.13 ou plus récent (Node 24 LTS recommandé).
 
