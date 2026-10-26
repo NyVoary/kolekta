@@ -34,7 +34,7 @@ async function seDeconnecter() {
         </div>
         <div class="flex items-center gap-4 text-sm">
           <span v-if="auth.fullName" class="text-encre">{{ auth.fullName }}</span>
-          <span v-if="auth.role" class="text-gris">Rôle : {{ auth.role }}</span>
+          <span v-if="auth.roleLibelle" class="text-gris">{{ auth.roleLibelle }}</span>
           <button
             type="button"
             class="rounded bg-vert px-3 py-1.5 font-semibold text-white hover:bg-foret disabled:cursor-not-allowed disabled:opacity-60"
