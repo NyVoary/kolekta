@@ -141,6 +141,20 @@ describe('page de connexion', () => {
     expect(texte).not.toContain('désactivé')
   })
 
+  it('une page qui ne s’ouvre pas après une connexion réussie n’est pas une erreur de connexion', async () => {
+    login.mockResolvedValue(reponseLogin('collecteur'))
+    const { wrapper, router } = await monter()
+    // Simule le fichier de la page introuvable (site mis à jour pendant que l'onglet était ouvert)
+    vi.spyOn(router, 'push').mockRejectedValue(
+      new TypeError('Failed to fetch dynamically imported module'),
+    )
+
+    await remplirEtEnvoyer(wrapper)
+
+    expect(useAuthStore().isAuthenticated).toBe(true)
+    expect(wrapper.find('[role="alert"]').exists()).toBe(false)
+  })
+
   it('affiche une erreur réseau quand le serveur est injoignable', async () => {
     login.mockRejectedValue(new AxiosError('Network Error', 'ERR_NETWORK'))
     const { wrapper } = await monter()
