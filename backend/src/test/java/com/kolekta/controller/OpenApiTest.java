@@ -44,9 +44,10 @@ class OpenApiTest {
     class DesactiveeParDefaut extends Base {
 
         @Test
-        void descriptionIntrouvable() throws Exception {
+        void descriptionFermee() throws Exception {
+            // Pas de documentation hors profil dev : la route est fermée (401 sans jeton), plus seulement « introuvable »
             mockMvc.perform(get("/v3/api-docs"))
-                    .andExpect(status().isNotFound());
+                    .andExpect(status().isUnauthorized());
         }
     }
 }

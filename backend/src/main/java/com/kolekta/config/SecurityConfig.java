@@ -31,11 +31,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private static final String[] ROLES_EMPLOYES = {"ADMIN", "GERANT", "RH"};
+    private static final String[] ROLES_CLIENTS = {"ADMIN", "GERANT"};
+
     private final JwtAuthFilter jwtAuthFilter;
     private final RestSecurityErrorHandlers errorHandlers;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(
+            HttpSecurity http,
+            @Value("${springdoc.api-docs.enabled:false}") boolean apiDocsActive,
+            @Value("${springdoc.swagger-ui.enabled:false}") boolean swaggerUiActive) throws Exception {
         http
             // API sans session ni cookie (jeton dans l'en-tête Authorization) : pas de CSRF à craindre
             .csrf(AbstractHttpConfigurer::disable)
@@ -48,16 +54,39 @@ public class SecurityConfig {
                 .authenticationEntryPoint(errorHandlers)
                 .accessDeniedHandler(errorHandlers))
             .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-                // Documentation : n'existe que si elle est activée (profil dev), sinon ces routes répondent 404
-                .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                // Seule la connexion est publique ; /api/auth/me et /logout exigent un jeton valide
-                .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/clients/inscription").permitAll()
-                .requestMatchers("/api/employes/**").hasAnyRole("ADMIN", "GERANT", "RH")
-                .requestMatchers("/api/clients/**").hasAnyRole("ADMIN", "GERANT")
-                .anyRequest().authenticated()
-            )
+            .authorizeHttpRequests(auth -> {
+                // ---- Documentation : ouverte seulement quand elle est activée (profil dev), sinon fermée ----
+                if (apiDocsActive) {
+                    auth.requestMatchers(HttpMethod.GET, "/v3/api-docs", "/v3/api-docs/**").permitAll();
+                }
+                if (swaggerUiActive) {
+                    auth.requestMatchers(HttpMethod.GET, "/swagger-ui.html", "/swagger-ui/**").permitAll();
+                }
+
+                // ---- Routes publiques (aucun jeton) ----
+                auth.requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll();
+                auth.requestMatchers(HttpMethod.POST, "/api/clients/inscription").permitAll();
+
+                // ---- Tout compte connecté (employé ou client) ----
+                auth.requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated();
+                auth.requestMatchers(HttpMethod.POST, "/api/auth/logout").authenticated();
+
+                // ---- Employés : Admin, Gérant, RH (EmployeController) ----
+                auth.requestMatchers(HttpMethod.GET, "/api/employes", "/api/employes/{id}").hasAnyRole(ROLES_EMPLOYES);
+                auth.requestMatchers(HttpMethod.POST, "/api/employes", "/api/employes/acces").hasAnyRole(ROLES_EMPLOYES);
+                auth.requestMatchers(HttpMethod.PUT, "/api/employes/{id}").hasAnyRole(ROLES_EMPLOYES);
+                auth.requestMatchers(HttpMethod.DELETE, "/api/employes/{id}").hasAnyRole(ROLES_EMPLOYES);
+
+                // ---- Clients : Admin, Gérant (ClientController, hors inscription publique ci-dessus) ----
+                auth.requestMatchers(HttpMethod.GET, "/api/clients", "/api/clients/{id}").hasAnyRole(ROLES_CLIENTS);
+                auth.requestMatchers(HttpMethod.PUT, "/api/clients/{id}").hasAnyRole(ROLES_CLIENTS);
+                auth.requestMatchers(HttpMethod.DELETE, "/api/clients/{id}").hasAnyRole(ROLES_CLIENTS);
+
+                // ---- REFUS PAR DÉFAUT : tout le reste est fermé, même pour l'Admin. ----
+                // Un nouvel endpoint doit être ajouté ci-dessus avec ses rôles (et testé en 200 et en 403).
+                // Les requêtes OPTIONS (CORS) sont traitées plus haut par le filtre CORS, sans passer ici.
+                auth.anyRequest().denyAll();
+            })
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

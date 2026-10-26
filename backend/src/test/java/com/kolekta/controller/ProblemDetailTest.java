@@ -61,10 +61,11 @@ class ProblemDetailTest extends AbstractIntegrationTest {
     }
 
     @Test
-    void routeInconnueRetourne404() throws Exception {
+    void routeInconnueEstFermeeParLeRefusParDefaut() throws Exception {
+        // Refus par défaut : la sécurité répond avant la recherche du contrôleur, donc 403 et non 404
         mockMvc.perform(get("/api/nexiste-pas")
                         .header("Authorization", "Bearer " + jetonAdmin()))
-                .andExpect(status().isNotFound())
+                .andExpect(status().isForbidden())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON));
     }
 
