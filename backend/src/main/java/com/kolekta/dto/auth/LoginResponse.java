@@ -9,4 +9,6 @@ public class LoginResponse {
     private String userType;
     private Long userId;
     private String role;
+    private String nom;
+    private String prenoms;
 }

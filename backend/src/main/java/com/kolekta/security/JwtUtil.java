@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
 import java.util.Date;
+import java.util.UUID;
 
 @Component
 public class JwtUtil {
@@ -33,6 +35,8 @@ public class JwtUtil {
 
     public String generate(Long userId, String role, String userType) {
         return Jwts.builder()
+                // Identifiant unique du jeton : permet de le révoquer à la déconnexion
+                .id(UUID.randomUUID().toString())
                 .subject(String.valueOf(userId))
                 .claim("role", role)
                 .claim("userType", userType)
@@ -57,6 +61,14 @@ public class JwtUtil {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public String getJti(String token) {
+        return parse(token).getId();
+    }
+
+    public Instant getExpiration(String token) {
+        return parse(token).getExpiration().toInstant();
     }
 
     public Long getUserId(String token) {
