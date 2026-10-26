@@ -118,13 +118,27 @@ describe('page de connexion', () => {
 
   it('affiche le message du serveur pour un compte désactivé', async () => {
     login.mockRejectedValue(
-      erreurHttp(403, { detail: 'Votre compte est désactivé. Contactez Kolekta.' }),
+      erreurHttp(403, {
+        code: 'COMPTE_DESACTIVE',
+        detail: 'Votre compte est désactivé. Contactez Kolekta.',
+      }),
     )
     const { wrapper } = await monter()
 
     await remplirEtEnvoyer(wrapper)
 
     expect(wrapper.get('[role="alert"]').text()).toContain('Contactez Kolekta')
+  })
+
+  it('un 403 qui n’est pas « compte désactivé » (ex. CORS) affiche une erreur générique', async () => {
+    login.mockRejectedValue(erreurHttp(403, 'Invalid CORS request'))
+    const { wrapper } = await monter()
+
+    await remplirEtEnvoyer(wrapper)
+
+    const texte = wrapper.get('[role="alert"]').text()
+    expect(texte).toContain('Une erreur est survenue')
+    expect(texte).not.toContain('désactivé')
   })
 
   it('affiche une erreur réseau quand le serveur est injoignable', async () => {
