@@ -10,6 +10,11 @@ declare module 'vue-router' {
     requiresAuth?: boolean
     /** Rôles autorisés ; absent ou vide = tout utilisateur connecté. */
     roles?: Role[]
+    /**
+     * Si l'employé connecté n'a pas le rôle requis, on le renvoie vers la page d'accueil de son rôle
+     * (au lieu de « Accès refusé »). Un client reste renvoyé vers « Accès refusé ».
+     */
+    versAccueilDuRole?: boolean
   }
 }
 
@@ -32,6 +37,9 @@ export function authGuard(to: RouteLocationNormalized): true | RouteLocationRaw 
 
   const roles = to.meta.roles
   if (roles && roles.length > 0 && (auth.role === null || !roles.includes(auth.role))) {
+    if (to.meta.versAccueilDuRole && auth.role !== null && auth.role !== 'client') {
+      return homeForRole(auth.role)
+    }
     return { name: 'acces-refuse' }
   }
 
