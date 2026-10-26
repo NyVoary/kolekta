@@ -53,6 +53,33 @@ describe('garde de navigation', () => {
     expect(router.currentRoute.value.name).toBe('connexion')
   })
 
+  it.each([
+    ['admin', 'admin-tableau-de-bord'],
+    ['rh', 'admin-employes'],
+    ['collecteur', 'admin-tournee'],
+    ['client', 'accueil'],
+  ] as const)(
+    'renvoie un %s déjà connecté qui ouvre /connexion vers %s (bouton « retour »)',
+    async (role, page) => {
+      connectAs(role)
+      const router = createAppRouter(createMemoryHistory())
+      await router.push('/connexion')
+
+      expect(router.currentRoute.value.name).toBe(page)
+    },
+  )
+
+  it('réserve la page de la tournée au collecteur et celle des employés au RH', async () => {
+    connectAs('rh')
+    const router = createAppRouter(createMemoryHistory())
+
+    await router.push('/admin/tournee')
+    expect(router.currentRoute.value.name).toBe('acces-refuse')
+
+    await router.push('/admin/employes')
+    expect(router.currentRoute.value.name).toBe('admin-employes')
+  })
+
   it('affiche la page 404 pour une adresse inconnue', async () => {
     const router = createAppRouter(createMemoryHistory())
     await router.push('/cette-page-nexiste-pas')
